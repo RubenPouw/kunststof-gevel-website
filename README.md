@@ -37,6 +37,6 @@ Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aan
 `render.yaml` definieert een Node web service (`kunststof-gevel-website`) in Frankfurt, plan free.
 
 1. Open de Blueprint: [Render Blueprint](https://dashboard.render.com/blueprint/new?repo=https://github.com/RubenPouw/kunststof-gevel-website).
-2. Koppel GitHub als Render daarom vraagt, en klik Apply.
+2. Koppel GitHub als Render daarom vraagt, kies deze repo, en klik Apply.
 
 Health check: `GET /api/health`.
