@@ -23,8 +23,8 @@ export function Logo({
   const dark = tone === "dark";
   const content = (
     <span
-      className={cn("inline-flex flex-col self-start", className)}
-      style={{ gap: Math.round(size * 0.25) }}
+      className={cn("inline-flex w-max flex-col items-stretch", className)}
+      style={{ gap: Math.max(4, Math.round(size * 0.25)) }}
     >
       <span
         className="whitespace-nowrap"
@@ -37,7 +37,7 @@ export function Logo({
         kunststof-gevel
         <span style={{ color: "var(--kg-orange)" }}>.nl</span>
       </span>
-      {bar ? <SegmentBar size={size} tone={tone} /> : null}
+      {bar ? <SegmentBar size={size} tone={tone} className="w-full" /> : null}
       {tagline ? (
         <span
           className="uppercase"
@@ -57,9 +57,12 @@ export function Logo({
   if (!href) return content;
 
   return (
-    <Link href={href} className="inline-flex text-inherit no-underline hover:text-inherit">
-      <span className="sr-only">kunststof-gevel.nl, naar home</span>
-      <span aria-hidden>{content}</span>
+    <Link
+      href={href}
+      className="inline-flex w-max text-inherit no-underline hover:text-inherit"
+      aria-label="kunststof-gevel.nl, naar home"
+    >
+      {content}
     </Link>
   );
 }

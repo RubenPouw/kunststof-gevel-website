@@ -12,6 +12,8 @@ import {
 import { getProduct } from "@/lib/catalog";
 
 export const FREE_SHIPPING_FROM = 499;
+const STORAGE_KEY = "kg-cart";
+const EVENT_NAME = "kg-cart";
 
 export type CartLine = {
   productSlug: string;
@@ -30,68 +32,48 @@ type CartContextValue = {
   clear: () => void;
 };
 
-const STORAGE_KEY = "kg-cart";
 const CartContext = createContext<CartContextValue | null>(null);
-const empty: CartLine[] = [];
-const listeners = new Set<() => void>();
-let memory: CartLine[] = empty;
-let hydrated = false;
-
-function emit() {
-  for (const listener of listeners) listener();
-}
-
-function readStorage(): CartLine[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return empty;
-    const parsed = JSON.parse(raw) as CartLine[];
-    return Array.isArray(parsed) ? parsed : empty;
-  } catch {
-    return empty;
-  }
-}
-
-function hydrate() {
-  if (hydrated || typeof window === "undefined") return;
-  memory = readStorage();
-  hydrated = true;
-}
-
-function subscribe(listener: () => void) {
-  hydrate();
-  listeners.add(listener);
-  return () => {
-    listeners.delete(listener);
-  };
-}
-
-function getSnapshot() {
-  hydrate();
-  return memory;
-}
-
-function getServerSnapshot() {
-  return empty;
-}
-
-function write(next: CartLine[]) {
-  memory = next;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  emit();
-}
 
 function lineKey(line: Pick<CartLine, "productSlug" | "colorName">) {
   return `${line.productSlug}::${line.colorName}`;
 }
 
+function readRaw() {
+  if (typeof window === "undefined") return "[]";
+  return window.localStorage.getItem(STORAGE_KEY) ?? "[]";
+}
+
+function parseLines(raw: string): CartLine[] {
+  try {
+    const parsed = JSON.parse(raw) as CartLine[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function persist(lines: CartLine[]) {
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
+  window.dispatchEvent(new Event(EVENT_NAME));
+}
+
+function subscribe(onStoreChange: () => void) {
+  window.addEventListener(EVENT_NAME, onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    window.removeEventListener(EVENT_NAME, onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const lines = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const raw = useSyncExternalStore(subscribe, readRaw, () => "[]");
+  const lines = useMemo(() => parseLines(raw), [raw]);
 
   const add = useCallback((line: CartLine) => {
-    const current = getSnapshot();
+    const current = parseLines(readRaw());
     const existing = current.find((item) => lineKey(item) === lineKey(line));
-    write(
+    persist(
       existing
         ? current.map((item) =>
             lineKey(item) === lineKey(line) ? { ...item, qty: item.qty + line.qty } : item,
@@ -101,9 +83,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setQty = useCallback((productSlug: string, colorName: string, qty: number) => {
-    const current = getSnapshot();
+    const current = parseLines(readRaw());
     const key = lineKey({ productSlug, colorName });
-    write(
+    persist(
       qty < 1
         ? current.filter((item) => lineKey(item) !== key)
         : current.map((item) => (lineKey(item) === key ? { ...item, qty } : item)),
@@ -112,10 +94,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const remove = useCallback((productSlug: string, colorName: string) => {
     const key = lineKey({ productSlug, colorName });
-    write(getSnapshot().filter((item) => lineKey(item) !== key));
+    persist(parseLines(readRaw()).filter((item) => lineKey(item) !== key));
   }, []);
 
-  const clear = useCallback(() => write(empty), []);
+  const clear = useCallback(() => persist([]), []);
 
   const value = useMemo(() => {
     const count = lines.reduce((sum, line) => sum + line.qty, 0);

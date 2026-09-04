@@ -29,8 +29,8 @@ export function SegmentBar({
   return (
     <div
       aria-hidden
-      className={cn("flex box-border", className)}
-      style={{ gap: height, paddingInline: pad }}
+      className={cn("flex w-full box-border", className)}
+      style={{ gap: height, paddingInline: pad, minHeight: height }}
     >
       {[3, 2, 1].map((flex, index) => (
         <div
