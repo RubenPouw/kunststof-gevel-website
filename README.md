@@ -1,6 +1,8 @@
-# Kunststofgevel
+# kunststof-gevel.nl
 
-Website en webservice voor **Kunststofgevel**: advies, levering en montage van onderhoudsarme kunststof gevelbekleding.
+Webshop voor **kunststof-gevel.nl** (onderdeel van Cavemen BV): kunststof gevelbekleding, dakranden en kozijnafwerking.
+
+De huisstijl volgt het designsystem: Luminous Blue als merk, Energy Orange alleen voor actie, Barlow + Barlow Condensed, radius 0, prijzen zonder euroteken.
 
 ## Lokaal draaien
 
@@ -22,15 +24,20 @@ npm start
 
 ## Pagina's
 
-- `/` — home
-- `/assortiment` — profielen en kleuren
-- `/projecten` — recente gevels
-- `/over-ons` — werkwijze
-- `/offerte` — aanvraag met prijsindicatie
-- `/contact` — telefoon, mail, formulier
+- `/` — home (hero, merken, productgrid)
+- `/gevelbekleding`, `/dakranden`, `/kozijnafwerking` — categorieën
+- `/producten/[slug]` — productdetail
+- `/merken`, `/merken/[slug]` — merken
+- `/winkelwagen`, `/afrekenen` — checkout in drie stappen
+- `/zoeken` — productzoeken
+- `/zakelijk`, `/over-ons`, `/projecten`, `/offerte`, `/contact`
 - `/api/health` — health check voor Render
 
-Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aanvragen worden gelogd en de bezoeker krijgt een referentie plus prijsindicatie.
+Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aanvragen worden gelogd en de bezoeker krijgt een referentie plus prijsindicatie. De winkelwagen is lokaal (browser); betaling is nog geen live koppeling.
+
+## Design tokens
+
+Tokens staan in `src/styles/tokens/` (kleur, type, spacing). Componenten: `src/components/brand/`. Logo-assets: `public/brand/`.
 
 ## Render
 

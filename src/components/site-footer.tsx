@@ -1,58 +1,52 @@
 import Link from "next/link";
 
-import { nav, site } from "@/lib/site";
+import { Logo } from "@/components/brand/logo";
+import { footerNav, site } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-foreground/10 bg-primary text-primary-foreground">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+    <footer className="mt-auto text-[var(--kg-offwhite)]" style={{ background: "var(--gradient-ink)" }}>
+      <div className="container-kg grid gap-10 py-12 md:grid-cols-3">
         <div>
-          <p className="font-heading text-2xl">{site.name}</p>
-          <p className="mt-3 max-w-sm text-sm text-primary-foreground/75">
-            {site.tagline} Advies, levering en montage van kunststof gevelbekleding.
+          <Logo size={22} tone="dark" tagline />
+          <p className="mt-5 max-w-sm text-[13px] text-[var(--kg-blue-100)]">
+            Webshop voor kunststof gevelbekleding, dakranden en kozijnafwerking.
+            Onderdeel van {site.company}.
           </p>
         </div>
         <div>
-          <p className="text-xs font-semibold tracking-[0.16em] uppercase opacity-70">
-            Navigatie
-          </p>
-          <ul className="mt-3 space-y-2 text-sm">
-            {nav.map((item) => (
+          <p className="kicker text-[var(--kg-blue-100)]">Navigatie</p>
+          <ul className="mt-3 space-y-2 text-[14px]">
+            {footerNav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="hover:underline">
+                <Link href={item.href} className="text-[var(--kg-offwhite)] no-underline hover:text-white">
                   {item.label}
                 </Link>
               </li>
             ))}
-            <li>
-              <Link href="/offerte" className="hover:underline">
-                Offerte
-              </Link>
-            </li>
           </ul>
         </div>
         <div>
-          <p className="text-xs font-semibold tracking-[0.16em] uppercase opacity-70">
-            Contact
-          </p>
-          <ul className="mt-3 space-y-2 text-sm">
+          <p className="kicker text-[var(--kg-blue-100)]">Contact</p>
+          <ul className="mt-3 space-y-2 text-[14px]">
             <li>
-              <a href={site.phoneHref} className="hover:underline">
-                {site.phone}
-              </a>
-            </li>
-            <li>
-              <a href={site.emailHref} className="hover:underline">
+              <a href={site.emailHref} className="text-[var(--kg-offwhite)] no-underline hover:text-white">
                 {site.email}
               </a>
             </li>
+            <li>
+              <a href={site.phoneHref} className="text-[var(--kg-offwhite)] no-underline hover:text-white">
+                {site.phone}
+              </a>
+            </li>
+            <li>{site.address}</li>
             <li>{site.hours}</li>
-            <li>{site.region}</li>
+            <li>Onderdeel van {site.company}</li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-primary-foreground/15 px-4 py-4 text-center text-xs text-primary-foreground/60 sm:px-6">
-        © {new Date().getFullYear()} {site.name}. Onderhoudsvrije gevels, heldere prijzen.
+      <div className="border-t border-white/15 px-6 py-4 text-center text-[12px] text-[var(--kg-blue-100)]">
+        © {new Date().getFullYear()} {site.name}. {site.slogan}.
       </div>
     </footer>
   );

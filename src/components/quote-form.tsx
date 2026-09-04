@@ -4,12 +4,12 @@ import { useActionState, useState } from "react";
 
 import { submitQuote, type QuoteActionState } from "@/app/offerte/actions";
 import { buttonVariants } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { estimateRange, quoteProfiles } from "@/lib/quote";
+import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
-  "h-10 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+  "min-h-11 w-full border border-[var(--color-border-strong)] bg-surface px-3 text-[15px] outline-none focus:border-brand focus:shadow-[inset_0_0_0_1px_var(--color-focus)]";
 
 const initialState: QuoteActionState = { error: null };
 
@@ -21,11 +21,7 @@ export function QuoteForm() {
   const liveEstimate = Number.isFinite(area) && area >= 1 ? estimateRange(area) : null;
 
   return (
-    <form
-      action={action}
-      autoComplete="off"
-      className="rounded-2xl bg-card p-6 ring-1 ring-foreground/10 sm:p-8"
-    >
+    <form action={action} autoComplete="off" className="border border-[var(--color-border)] bg-surface p-6 sm:p-8">
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Naam" htmlFor="quote-name">
           <input id="quote-name" name="name" autoComplete="name" required className={fieldClass} />
@@ -93,31 +89,26 @@ export function QuoteForm() {
       </div>
 
       {liveEstimate ? (
-        <p className="mt-5 rounded-xl bg-secondary px-4 py-3 text-sm">
+        <p className="mt-5 bg-kg-offwhite px-4 py-3 text-[14px]">
           Indicatie inclusief montage:{" "}
-          <strong>
-            €{liveEstimate.low.toLocaleString("nl-NL")} – €
-            {liveEstimate.high.toLocaleString("nl-NL")}
+          <strong className="font-heading text-[22px] font-bold">
+            {formatPrice(liveEstimate.low)} – {formatPrice(liveEstimate.high)}
           </strong>
         </p>
       ) : null}
 
       {state.error ? (
-        <p className="mt-4 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
+        <p className="mt-4 border border-kg-ink px-4 py-3 text-[14px] text-kg-ink" role="alert">
           {state.error}
         </p>
       ) : null}
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <button
-          type="submit"
-          disabled={pending}
-          className={cn(buttonVariants({ size: "lg" }), "h-11 px-5")}
-        >
+        <button type="submit" disabled={pending} className={cn(buttonVariants({ variant: "primary", size: "lg" }))}>
           {pending ? "Verzenden…" : "Aanvraag versturen"}
         </button>
-        <p className="text-xs text-muted-foreground">
-          Geen spam. We gebruiken je gegevens alleen voor deze aanvraag.
+        <p className="text-[13px] text-[var(--color-text-muted)]">
+          Geen spam. We gebruiken uw gegevens alleen voor deze aanvraag.
         </p>
       </div>
     </form>
@@ -134,8 +125,10 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid gap-2">
-      <Label htmlFor={htmlFor}>{label}</Label>
+    <div className="grid gap-1.5">
+      <label htmlFor={htmlFor} className="text-[13px] font-semibold">
+        {label}
+      </label>
       {children}
     </div>
   );

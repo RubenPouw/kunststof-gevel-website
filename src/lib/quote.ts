@@ -23,10 +23,10 @@ export type QuoteResult =
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function validateQuote(input: QuoteInput): string | null {
-  if (input.name.trim().length < 2) return "Vul je naam in.";
+  if (input.name.trim().length < 2) return "Vul uw naam in.";
   if (!emailRe.test(input.email.trim())) return "Vul een geldig e-mailadres in.";
   if (input.phone.replace(/\s/g, "").length < 10) return "Vul een geldig telefoonnummer in.";
-  if (input.city.trim().length < 2) return "Vul je plaats in.";
+  if (input.city.trim().length < 2) return "Vul uw plaats in.";
   const area = Number(input.areaM2.replace(",", "."));
   if (!Number.isFinite(area) || area < 1 || area > 2000) {
     return "Vul het geveloppervlak in m² in (1–2000).";

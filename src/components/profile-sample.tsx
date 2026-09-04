@@ -21,7 +21,7 @@ export function ProfileSample({
   return (
     <div
       className={cn(
-        "relative h-44 overflow-hidden rounded-xl ring-1 ring-foreground/10",
+        "relative h-44 overflow-hidden ring-1 ring-[var(--color-border)]",
         className,
       )}
       aria-hidden
