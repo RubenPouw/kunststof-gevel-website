@@ -1,0 +1,15 @@
+:root {
+  --font-heading: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+  --font-body: var(--font-barlow), "Helvetica Neue", Arial, sans-serif;
+
+  --text-h1: 700 48px / 1 var(--font-heading);
+  --text-h2: 700 32px / 1.1 var(--font-heading);
+  --text-h3: 600 22px / 1.2 var(--font-heading);
+  --text-price: 700 28px / 1 var(--font-heading);
+  --text-body: 400 16px / 1.6 var(--font-body);
+  --text-small: 400 13px / 1.5 var(--font-body);
+  --text-button: 600 15px / 1 var(--font-body);
+  --text-kicker: 600 11px / 1 var(--font-body);
+  --kicker-tracking: 0.14em;
+  --logo-tracking: -0.03em;
+}

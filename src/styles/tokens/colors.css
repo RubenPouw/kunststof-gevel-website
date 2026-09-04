@@ -1,0 +1,49 @@
+:root {
+  /* Basis */
+  --kg-blue: #2457ff; /* Luminous Blue — merk */
+  --kg-blue-deep: #16307a; /* verloop-eindpunt, hover */
+  --kg-blue-300: #7fa3ff; /* segment, tekst op donker */
+  --kg-blue-100: #d6e0ff; /* tinten, tags, sectieverloop */
+  --kg-orange: #ff6a1f; /* Energy Orange — uitsluitend actie */
+  --kg-orange-hover: #e85c14;
+  --kg-orange-300: #ffb088; /* verloop-start, gloed */
+  --kg-ink: #0e1626;
+  --kg-ink-soft: #3a4150;
+  --kg-muted: #5b6270;
+  --kg-offwhite: #f5f4f0;
+  --kg-white: #ffffff;
+  --kg-hairline: rgba(14, 22, 38, 0.14);
+  --kg-hairline-strong: rgba(14, 22, 38, 0.2);
+  --kg-on-orange: #1a1206;
+
+  /* Semantisch */
+  --color-bg: var(--kg-offwhite);
+  --color-surface: var(--kg-white);
+  --color-text: var(--kg-ink);
+  --color-text-soft: var(--kg-ink-soft);
+  --color-text-muted: var(--kg-muted);
+  --color-brand: var(--kg-blue);
+  --color-brand-hover: var(--kg-blue-deep);
+  --color-action: var(--kg-orange);
+  --color-action-hover: var(--kg-orange-hover);
+  --color-on-action: var(--kg-on-orange);
+  --color-tint: var(--kg-blue-100);
+  --color-border: var(--kg-hairline);
+  --color-border-strong: var(--kg-hairline-strong);
+  --color-focus: var(--kg-blue);
+
+  /* Verlopen */
+  --gradient-brand: linear-gradient(120deg, #2457ff 0%, #16307a 100%);
+  --gradient-ink: linear-gradient(120deg, #0e1626 0%, #16307a 100%);
+  --gradient-light: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #f5f4f0 55%,
+    #d6e0ff 100%
+  );
+  --glow-orange: radial-gradient(
+    circle,
+    rgba(255, 106, 31, 0.45) 0%,
+    rgba(255, 106, 31, 0) 65%
+  );
+}

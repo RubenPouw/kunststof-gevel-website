@@ -1,107 +1,129 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+import { Search, ShoppingBag } from "lucide-react";
 
-import { buttonVariants } from "@/components/ui/button";
-import { nav, site } from "@/lib/site";
+import { Logo } from "@/components/brand/logo";
+import { UspBar } from "@/components/brand/usp-bar";
+import { useCart } from "@/lib/cart";
+import { shopNav, uspItems } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { count } = useCart();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  function onSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const next = query.trim();
+    router.push(next ? `/zoeken?q=${encodeURIComponent(next)}` : "/zoeken");
+    setMenuOpen(false);
+  }
 
   return (
-    <>
-      <input id="mobile-nav" type="checkbox" className="peer sr-only" />
-      <header className="sticky top-0 z-40 border-b border-foreground/10 bg-background">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="grid size-8 place-items-center rounded-md bg-primary text-[0.7rem] font-semibold tracking-wide text-primary-foreground">
-              KG
-            </span>
-            <span className="font-heading text-xl leading-none tracking-tight">
-              {site.name}
-            </span>
-          </Link>
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-surface">
+      <div className="container-kg flex h-16 items-center gap-8">
+        <Logo size={17} />
 
-          <nav className="hidden items-center gap-1 md:flex">
-            {nav.map((item) => {
-              const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "rounded-md px-3 py-2 text-sm transition-colors",
-                    active
-                      ? "bg-secondary text-foreground"
-                      : "text-muted-foreground hover:bg-secondary/70 hover:text-foreground",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href="/offerte"
-              className={cn(buttonVariants({ size: "lg" }), "hidden sm:inline-flex")}
-            >
-              Offerte aanvragen
-            </Link>
-            <label
-              htmlFor="mobile-nav"
-              className={cn(
-                buttonVariants({ variant: "outline", size: "icon" }),
-                "cursor-pointer md:hidden",
-              )}
-              aria-label="Menu openen"
-            >
-              <Menu />
-            </label>
-          </div>
-        </div>
-      </header>
-      <div className="pointer-events-none fixed inset-0 z-[100] hidden peer-checked:pointer-events-auto peer-checked:block md:!hidden">
-        <label
-          htmlFor="mobile-nav"
-          className="absolute inset-0 bg-black/40"
-          aria-label="Menu sluiten"
-        />
-        <nav className="absolute inset-y-0 right-0 flex w-[min(100%,20rem)] flex-col gap-1 border-l border-foreground/10 bg-background p-4 pt-5 shadow-xl">
-          <div className="mb-2 flex items-center justify-between px-1">
-            <p className="font-heading text-lg">{site.name}</p>
-            <label
-              htmlFor="mobile-nav"
-              className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "cursor-pointer")}
-              aria-label="Menu sluiten"
-            >
-              <X />
-            </label>
-          </div>
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-md px-3 py-3 text-base hover:bg-secondary"
-            >
-              {item.label}
-            </Link>
-          ))}
-          <Link
-            href="/offerte"
-            className={cn(buttonVariants({ size: "lg" }), "mt-4 h-11 justify-center")}
-          >
-            Offerte aanvragen
-          </Link>
+        <nav className="hidden shrink-0 items-center gap-[22px] text-[14px] font-medium whitespace-nowrap lg:flex">
+          {shopNav.map((item) => {
+            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "text-kg-ink no-underline hover:text-brand",
+                  active && "text-brand",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
+
+        <form
+          onSubmit={onSearch}
+          className="hidden min-w-0 max-w-80 flex-1 items-center gap-2 border border-[var(--color-border-strong)] px-3 py-[9px] text-[13px] text-[var(--color-text-muted)] md:flex"
+        >
+          <Search className="size-3 shrink-0" strokeWidth={1.5} />
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Zoek op product, artikelnummer…"
+            className="min-w-0 flex-1 bg-transparent text-kg-ink outline-none placeholder:text-[var(--color-text-muted)]"
+          />
+        </form>
+
+        <div className="ml-auto flex shrink-0 items-center gap-[18px] text-[13px] font-semibold">
+          <Link href="/inloggen" className="hidden text-kg-ink no-underline hover:text-brand sm:inline">
+            Inloggen
+          </Link>
+          <Link href="/winkelwagen" className="inline-flex items-center gap-1.5 text-brand no-underline hover:text-brand-hover">
+            <ShoppingBag className="size-4" strokeWidth={1.5} />
+            Winkelwagen ({count})
+          </Link>
+          <button
+            type="button"
+            className="grid size-11 place-items-center lg:hidden"
+            aria-label={menuOpen ? "Menu sluiten" : "Menu openen"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((value) => !value)}
+          >
+            <span className="flex w-4 flex-col gap-[5px]">
+              <span className="block h-0.5 bg-kg-ink" />
+              <span className="block h-0.5 bg-kg-ink" />
+            </span>
+          </button>
+        </div>
       </div>
-    </>
+
+      {menuOpen ? (
+        <div className="border-t border-[var(--color-border)] bg-surface px-6 py-4 lg:hidden">
+          <nav className="flex flex-col">
+            {shopNav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="flex min-h-11 items-center text-[15px] font-medium text-kg-ink no-underline"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link
+              href="/inloggen"
+              onClick={() => setMenuOpen(false)}
+              className="flex min-h-11 items-center text-[15px] font-medium text-kg-ink no-underline"
+            >
+              Inloggen
+            </Link>
+          </nav>
+        </div>
+      ) : null}
+
+      <form
+        onSubmit={onSearch}
+        className="flex items-center gap-2 border-t border-[var(--color-border)] px-6 py-2 text-[13px] text-[var(--color-text-muted)] md:hidden"
+      >
+        <Search className="size-3 shrink-0" strokeWidth={1.5} />
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Zoek op product, artikelnummer…"
+          className="min-h-11 min-w-0 flex-1 bg-transparent text-kg-ink outline-none placeholder:text-[var(--color-text-muted)]"
+        />
+      </form>
+
+      <UspBar items={uspItems} />
+    </header>
   );
 }

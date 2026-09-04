@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
+import { formatPrice } from "@/lib/format";
 import { site } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Aanvraag ontvangen",
@@ -28,28 +27,28 @@ export default async function OfferteBedanktPage({
   const high = Number(value("high") ?? "0");
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-16 sm:px-6 sm:py-24">
-      <div className="rounded-2xl bg-card p-6 ring-1 ring-foreground/10 sm:p-8">
-        <CheckCircle2 className="size-10 text-primary" />
-        <h1 className="font-heading mt-4 text-4xl">Aanvraag ontvangen</h1>
-        <p className="mt-3 text-muted-foreground">
-          Referentie <span className="font-medium text-foreground">{reference}</span>.
+    <div className="container-kg max-w-xl py-16">
+      <div className="border border-[var(--color-border)] bg-surface p-6 sm:p-8">
+        <p className="font-bold text-brand">✓</p>
+        <h1 className="mt-4">Aanvraag ontvangen</h1>
+        <p className="mt-3 text-[var(--color-text-soft)]">
+          Referentie <span className="font-semibold text-kg-ink">{reference}</span>.
           We reageren op werkdagen binnen 24 uur op {email}.
         </p>
         {area > 0 ? (
-          <p className="mt-4 rounded-xl bg-secondary px-4 py-3 text-sm">
+          <p className="mt-4 bg-kg-offwhite px-4 py-3 text-[14px]">
             Indicatie inclusief montage voor {area} m²:{" "}
-            <strong>
-              €{low.toLocaleString("nl-NL")} – €{high.toLocaleString("nl-NL")}
+            <strong className="font-heading text-[22px] font-bold">
+              {formatPrice(low)} – {formatPrice(high)}
             </strong>
             . Dit is geen offerte; de vaste prijs volgt na opname.
           </p>
         ) : null}
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/offerte" className={cn(buttonVariants({ size: "lg" }), "h-11 px-5")}>
+          <Link href="/offerte" className={buttonVariants({ variant: "secondary", size: "lg" })}>
             Nieuwe aanvraag
           </Link>
-          <Link href="/contact" className="self-center text-sm underline underline-offset-4">
+          <Link href="/contact" className="self-center text-[14px] underline">
             Liever bellen? {site.phone}
           </Link>
         </div>

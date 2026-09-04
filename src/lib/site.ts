@@ -1,73 +1,46 @@
 export const site = {
-  name: "Kunststofgevel",
-  tagline: "Gevels met houtlook. Zonder het onderhoud.",
+  name: "kunststof-gevel.nl",
+  shortName: "Kunststof-gevel",
+  tagline: "Kunststof gevelbekleding, ga ervoor!",
+  slogan: "Geniet langer van uw huis, ga voor kunststof",
   description:
-    "Kunststofgevel adviseert, levert en monteert onderhoudsarme kunststof gevelbekleding voor woningen, aanbouwen en bedrijfspanden in heel Nederland.",
+    "Webshop voor kunststof gevelbekleding, dakranden en kozijnafwerking. Onderhoudsvrij, uit voorraad, of wij regelen de plaatsing. Onderdeel van Cavemen BV.",
   phone: "085 401 2280",
   phoneHref: "tel:+31854012280",
-  email: "info@kunststofgevel.nl",
-  emailHref: "mailto:info@kunststofgevel.nl",
+  email: "info@kunststof-gevel.nl",
+  emailHref: "mailto:info@kunststof-gevel.nl",
+  whatsapp: "https://wa.me/31854012280",
   hours: "Ma–vr 08:00–17:00",
+  address: "Binnenkamp 7a, 5321 KA Hedel",
+  company: "Cavemen BV",
   region: "Heel Nederland",
   kvk: "In oprichting",
+  freeShippingFrom: 499,
 } as const;
 
-export const nav = [
-  { href: "/", label: "Home" },
-  { href: "/assortiment", label: "Assortiment" },
+export const shopNav = [
+  { href: "/gevelbekleding", label: "Gevelbekleding" },
+  { href: "/dakranden", label: "Dakranden" },
+  { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+  { href: "/merken", label: "Merken" },
+  { href: "/zakelijk", label: "Zakelijk" },
+] as const;
+
+export const footerNav = [
+  ...shopNav,
   { href: "/projecten", label: "Projecten" },
   { href: "/over-ons", label: "Over ons" },
+  { href: "/offerte", label: "Offerte" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
-export const profiles = [
-  {
-    slug: "rabat",
-    name: "Rabat",
-    summary: "Klassiek overlapping profiel met een warme, landelijke uitstraling.",
-    detail:
-      "Rabatdelen overlappen elkaar licht, waardoor regenwater goed wegstroomt. Geschikt voor gevels, topgevels en bergingen. Leverbaar in houtlook en strakke unikleuren.",
-    use: "Woningen, schuren, dakkapellen",
-    priceFrom: 68,
-  },
-  {
-    slug: "sponningdeel",
-    name: "Sponningdeel",
-    summary: "Strak, modern profiel met een subtiele groef. Minimalistisch en strak.",
-    detail:
-      "Sponningdelen vallen in elkaar met een sponning. Het resultaat is een rustige gevel zonder grove overlapping. Vaak gekozen bij nieuwbouw en strakke verbouwingen.",
-    use: "Nieuwbouw, aanbouwen, moderne gevels",
-    priceFrom: 74,
-  },
-  {
-    slug: "potdeksel",
-    name: "Potdeksel",
-    summary: "Diepe schaduwwerking, extra volume en een stoere, boerderij-achtige look.",
-    detail:
-      "Potdekselprofielen hebben een duidelijke overlapping. Dat geeft ritme in de gevel en extra waterkering. Populair bij renovatie van jaren-30- en jaren-70-woningen.",
-    use: "Renovatie, boerderijen, recreatiewoningen",
-    priceFrom: 71,
-  },
-  {
-    slug: "zweeds-rabat",
-    name: "Zweeds rabat",
-    summary: "Schuine delen met een Scandinavische, houtachtige gevelstructuur.",
-    detail:
-      "Zweeds rabat combineert een schuine voorkant met een strakke sluiting. Het profiel leest als hout, maar blijft kleurvast en rotvrij. Goed in combinatie met antraciet kozijnen.",
-    use: "Villa’s, recreatie, gevelrenovatie",
-    priceFrom: 79,
-  },
-] as const;
+export const nav = shopNav;
 
-export const colors = [
-  { name: "Antraciet", hex: "#3A3D41" },
-  { name: "Diepzwart", hex: "#1A1B1C" },
-  { name: "Kiezelgrijs", hex: "#8B8E8A" },
-  { name: "Crème", hex: "#E8DCC8" },
-  { name: "Eiken", hex: "#8B5E3C" },
-  { name: "Meranti", hex: "#6B3A2A" },
-  { name: "Vergrijsd eiken", hex: "#A39480" },
-  { name: "Dennengroen", hex: "#2F4A3C" },
+export const uspItems = [
+  "Onderhoudsvrij en duurzaam",
+  "Standaard 10 jaar garantie",
+  "Direct uit voorraad leverbaar",
+  "Google 4,9 / 5",
 ] as const;
 
 export type Project = {
@@ -79,7 +52,7 @@ export type Project = {
   area: string;
   year: string;
   summary: string;
-  image: string;
+  palette: string[];
 };
 
 export const projects: Project[] = [
@@ -93,8 +66,7 @@ export const projects: Project[] = [
     year: "2025",
     summary:
       "Volledige gevelrenovatie van een jaren-70-villa. Houten rabat was verweerd; we vervingen het door zweeds rabat in vergrijsd eiken, inclusief hoekprofielen en ventilatielatten.",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
+    palette: ["#A39480", "#B3A490", "#8E8170", "#C4B6A2"],
   },
   {
     slug: "aanbouw-amersfoort",
@@ -106,8 +78,7 @@ export const projects: Project[] = [
     year: "2025",
     summary:
       "Strakke aanbouw met keuken en bijkeuken. Antraciet sponningdeel sluit aan op bestaande aluminium kozijnen. Montage in twee dagen, inclusief dakrandafwerking.",
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80",
+    palette: ["#3A3D41", "#45484C", "#323538", "#4C5055"],
   },
   {
     slug: "woning-deventer",
@@ -119,8 +90,7 @@ export const projects: Project[] = [
     year: "2024",
     summary:
       "Topgevels en achtergevel kregen potdeksel in meranti-houtlook. De voorgevel bleef steen, zodat de karakteristieke uitstraling aan de straatkant behouden bleef.",
-    image:
-      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1600&q=80",
+    palette: ["#5C2E22", "#6B3828", "#4E261C", "#7A4330"],
   },
   {
     slug: "recreatie-veluwe",
@@ -132,15 +102,14 @@ export const projects: Project[] = [
     year: "2024",
     summary:
       "Chalet met rondom rabat in eiken. Lichtgewicht, onderhoudsvrij en bestand tegen vocht uit het bos. Eigenaar hoeft niet meer te beitsen.",
-    image:
-      "https://images.unsplash.com/photo-1600047509807-ba8d526a5c65?auto=format&fit=crop&w=1600&q=80",
+    palette: ["#7A4E2E", "#8C5A36", "#6E4326", "#9A6840"],
   },
-] as const;
+];
 
 export const faqs = [
   {
     q: "Wat kost kunststof gevelbekleding per m²?",
-    a: "Materiaal ligt meestal tussen €65 en €95 per m², afhankelijk van profiel en kleur. Inclusief professionele montage rekenen we grofweg €95 tot €140 per m². Hoeken, dakranden en steigerwerk tellen extra. We maken altijd een vaste prijs na opname.",
+    a: "Materiaal ligt meestal tussen 65 en 95 per m², afhankelijk van profiel en kleur. Inclusief professionele montage rekenen we grofweg 95 tot 140 per m². Hoeken, dakranden en steigerwerk tellen extra. We maken altijd een vaste prijs na opname.",
   },
   {
     q: "Hoe lang gaat het mee?",
@@ -148,11 +117,7 @@ export const faqs = [
   },
   {
     q: "Kan ik het zelf monteren?",
-    a: "Ja, als je handig bent en het regelwerk, de ventilatie en de dilatatie goed uitvoert. Wij leveren ook alleen materiaal, met een duidelijke montagelijst. Twijfel je over een lastige gevel, dan monteren wij het liever zelf — fouten in de achterconstructie zie je later terug.",
-  },
-  {
-    q: "Is kunststof beter dan hout?",
-    a: "Voor onderhoud: ja. Hout moet periodiek geschilderd of gebeitst worden en kan rotten. Kunststof blijft langer strak, maar voelt minder ‘echt’ dan massief hout. Wie de houtlook wil zonder het schilderwerk, kiest kunststof. Wie puur natuur zoekt, kiest hout of een hoogwaardig composiet.",
+    a: "Ja, als u handig bent en het regelwerk, de ventilatie en de dilatatie goed uitvoert. Wij leveren ook alleen materiaal, met een duidelijke montagelijst. Twijfelt u over een lastige gevel, dan monteren wij het liever zelf.",
   },
   {
     q: "Werken jullie in heel Nederland?",
@@ -163,22 +128,22 @@ export const faqs = [
 export const steps = [
   {
     n: "01",
-    title: "Advies",
-    text: "Stuur foto’s of plan een opname. We kijken naar ondergrond, ventilatie, kleur en profiel.",
+    title: "Kies",
+    text: "Kies merk, profiel en kleur. Of stuur foto’s, dan adviseren wij.",
   },
   {
     n: "02",
-    title: "Opname",
-    text: "We meten de gevel, checken het regelwerk en noteren hoeken, ramen en dakranden.",
+    title: "Bestel of offerte",
+    text: "Zelf monteren: direct uit voorraad. Plaatsing: één vaste prijs na opname.",
   },
   {
     n: "03",
-    title: "Vaste offerte",
-    text: "Je krijgt een duidelijke prijs: materiaal, montage, afval en eventueel steiger.",
+    title: "Levering",
+    text: "Standaard binnen een week. Altijd binnen 24 uur bericht.",
   },
   {
     n: "04",
     title: "Montage",
-    text: "Onze ploeg werkt droog, met ventilatie achter de panelen. Oplevering met garantie.",
+    text: "Zelf met onze handleiding, of onze ploeg werkt droog en ventilatie-open.",
   },
 ] as const;
