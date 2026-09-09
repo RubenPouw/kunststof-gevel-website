@@ -30,7 +30,11 @@ export function ProductCard({ product }: { product: Product }) {
         </h3>
         <p className="text-[12px] leading-[1.5] text-[var(--color-text-muted)]">{product.meta}</p>
         <div className="mt-1 flex items-baseline gap-1.5">
-          <p className="font-heading text-2xl leading-none font-bold">{formatPrice(product.price)}</p>
+          <p className="font-heading text-2xl leading-none font-bold">
+            {product.variants.some((variant) => variant.price !== product.price)
+              ? `vanaf ${formatPrice(product.price)}`
+              : formatPrice(product.price)}
+          </p>
           <p className="text-[11px] text-[var(--color-text-muted)]">incl. btw</p>
         </div>
         <p

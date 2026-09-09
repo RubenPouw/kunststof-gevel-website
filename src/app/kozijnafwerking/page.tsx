@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { CategoryPage } from "@/components/catalog/category-page";
-import { getCategory, getProductsByCategory } from "@/lib/catalog";
+import { CategoryListing } from "@/components/catalog/category-listing";
+import { getCategory } from "@/lib/catalog";
 
 const category = getCategory("kozijnafwerking")!;
 
@@ -10,13 +10,10 @@ export const metadata: Metadata = {
   description: category.summary,
 };
 
-export default function KozijnafwerkingPage() {
-  return (
-    <CategoryPage
-      kicker="Assortiment"
-      title={category.name}
-      intro={category.summary}
-      products={getProductsByCategory("kozijnafwerking")}
-    />
-  );
+export default function KozijnafwerkingPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  return <CategoryListing slug="kozijnafwerking" searchParams={searchParams} />;
 }

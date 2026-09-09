@@ -9,15 +9,15 @@ import {
   type ReactNode,
 } from "react";
 
-import { getProduct } from "@/lib/catalog";
+import { getProduct, getVariant } from "@/lib/catalog";
 
 export const FREE_SHIPPING_FROM = 499;
-const STORAGE_KEY = "kg-cart";
+const STORAGE_KEY = "kg-cart-v2";
 const EVENT_NAME = "kg-cart";
 
 export type CartLine = {
   productSlug: string;
-  colorName: string;
+  variantSku: string;
   qty: number;
 };
 
@@ -27,16 +27,12 @@ type CartContextValue = {
   subtotal: number;
   remainingForFreeShipping: number;
   add: (line: CartLine) => void;
-  setQty: (productSlug: string, colorName: string, qty: number) => void;
-  remove: (productSlug: string, colorName: string) => void;
+  setQty: (variantSku: string, qty: number) => void;
+  remove: (variantSku: string) => void;
   clear: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
-
-function lineKey(line: Pick<CartLine, "productSlug" | "colorName">) {
-  return `${line.productSlug}::${line.colorName}`;
-}
 
 function readRaw() {
   if (typeof window === "undefined") return "[]";
@@ -46,7 +42,9 @@ function readRaw() {
 function parseLines(raw: string): CartLine[] {
   try {
     const parsed = JSON.parse(raw) as CartLine[];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed)
+      ? parsed.filter((line) => line && typeof line.variantSku === "string" && typeof line.productSlug === "string")
+      : [];
   } catch {
     return [];
   }
@@ -66,45 +64,46 @@ function subscribe(onStoreChange: () => void) {
   };
 }
 
+function lineTotal(line: CartLine) {
+  const product = getProduct(line.productSlug);
+  const variant = product ? getVariant(product, line.variantSku) : undefined;
+  return variant ? variant.price * line.qty : 0;
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const raw = useSyncExternalStore(subscribe, readRaw, () => "[]");
   const lines = useMemo(() => parseLines(raw), [raw]);
 
   const add = useCallback((line: CartLine) => {
     const current = parseLines(readRaw());
-    const existing = current.find((item) => lineKey(item) === lineKey(line));
+    const existing = current.find((item) => item.variantSku === line.variantSku);
     persist(
       existing
         ? current.map((item) =>
-            lineKey(item) === lineKey(line) ? { ...item, qty: item.qty + line.qty } : item,
+            item.variantSku === line.variantSku ? { ...item, qty: item.qty + line.qty } : item,
           )
         : [...current, line],
     );
   }, []);
 
-  const setQty = useCallback((productSlug: string, colorName: string, qty: number) => {
+  const setQty = useCallback((variantSku: string, qty: number) => {
     const current = parseLines(readRaw());
-    const key = lineKey({ productSlug, colorName });
     persist(
       qty < 1
-        ? current.filter((item) => lineKey(item) !== key)
-        : current.map((item) => (lineKey(item) === key ? { ...item, qty } : item)),
+        ? current.filter((item) => item.variantSku !== variantSku)
+        : current.map((item) => (item.variantSku === variantSku ? { ...item, qty } : item)),
     );
   }, []);
 
-  const remove = useCallback((productSlug: string, colorName: string) => {
-    const key = lineKey({ productSlug, colorName });
-    persist(parseLines(readRaw()).filter((item) => lineKey(item) !== key));
+  const remove = useCallback((variantSku: string) => {
+    persist(parseLines(readRaw()).filter((item) => item.variantSku !== variantSku));
   }, []);
 
   const clear = useCallback(() => persist([]), []);
 
   const value = useMemo(() => {
     const count = lines.reduce((sum, line) => sum + line.qty, 0);
-    const subtotal = lines.reduce((sum, line) => {
-      const product = getProduct(line.productSlug);
-      return sum + (product ? product.price * line.qty : 0);
-    }, 0);
+    const subtotal = lines.reduce((sum, line) => sum + lineTotal(line), 0);
     return {
       lines,
       count,

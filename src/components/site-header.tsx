@@ -52,7 +52,9 @@ export function SiteHeader() {
           onSubmit={onSearch}
           className="hidden min-w-0 max-w-80 flex-1 items-center gap-2 border border-[var(--color-border-strong)] px-3 py-[9px] text-[13px] text-[var(--color-text-muted)] md:flex"
         >
-          <Search className="size-3 shrink-0" strokeWidth={1.5} />
+          <button type="submit" className="grid shrink-0 place-items-center text-kg-ink" aria-label="Zoeken">
+            <Search className="size-3" strokeWidth={1.5} />
+          </button>
           <input
             type="search"
             value={query}
@@ -113,7 +115,9 @@ export function SiteHeader() {
         onSubmit={onSearch}
         className="flex items-center gap-2 border-t border-[var(--color-border)] px-6 py-2 text-[13px] text-[var(--color-text-muted)] md:hidden"
       >
-        <Search className="size-3 shrink-0" strokeWidth={1.5} />
+        <button type="submit" className="grid shrink-0 place-items-center text-kg-ink" aria-label="Zoeken">
+          <Search className="size-3" strokeWidth={1.5} />
+        </button>
         <input
           type="search"
           value={query}

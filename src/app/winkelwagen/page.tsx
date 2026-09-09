@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SegmentBar } from "@/components/brand/segment-bar";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, useCart } from "@/lib/cart";
-import { getProduct } from "@/lib/catalog";
+import { getProduct, getVariant } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import { site } from "@/lib/site";
 
@@ -33,16 +33,21 @@ export default function CartPage() {
           <ul className="mt-8 divide-y divide-[var(--color-border)] border border-[var(--color-border)] bg-surface">
             {lines.map((line) => {
               const product = getProduct(line.productSlug);
-              if (!product) return null;
+              const variant = product ? getVariant(product, line.variantSku) : undefined;
+              if (!product || !variant) return null;
               return (
-                <li key={`${line.productSlug}-${line.colorName}`} className="grid gap-3 p-4 sm:grid-cols-[1fr_auto]">
+                <li key={line.variantSku} className="grid gap-3 p-4 sm:grid-cols-[1fr_auto]">
                   <div>
                     <p className="kicker">{product.brand}</p>
                     <p className="mt-1 font-heading text-[18px] font-semibold">{product.name}</p>
-                    <p className="text-[13px] text-[var(--color-text-muted)]">{line.colorName}</p>
+                    <p className="text-[13px] text-[var(--color-text-muted)]">
+                      {variant.colorName}
+                      {variant.ral ? ` · ${variant.ral}` : null}
+                    </p>
+                    <p className="text-[12px] text-[var(--color-text-muted)]">SKU {variant.sku}</p>
                     <button
                       type="button"
-                      onClick={() => remove(line.productSlug, line.colorName)}
+                      onClick={() => remove(line.variantSku)}
                       className="mt-2 text-[13px] text-brand underline"
                     >
                       Verwijderen
@@ -50,14 +55,14 @@ export default function CartPage() {
                   </div>
                   <div className="flex items-center gap-3 sm:flex-col sm:items-end">
                     <p className="font-heading text-2xl font-bold">
-                      {formatPrice(product.price * line.qty)}
+                      {formatPrice(variant.price * line.qty)}
                     </p>
                     <input
                       type="number"
                       min={1}
                       value={line.qty}
                       onChange={(event) =>
-                        setQty(line.productSlug, line.colorName, Math.max(1, Number(event.target.value) || 1))
+                        setQty(line.variantSku, Math.max(1, Number(event.target.value) || 1))
                       }
                       className="h-11 w-16 border border-[var(--color-border-strong)] bg-surface px-2"
                       aria-label={`Aantal ${product.name}`}
