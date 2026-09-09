@@ -1,0 +1,824 @@
+{
+  "featuredSlugs": [
+    "vinyplus-rondkantpaneel-150",
+    "keralit-sponning-143",
+    "zierer-hoekstuk-50x50x345",
+    "vinyplus-montage-eindprofiel-3m"
+  ],
+  "items": [
+    {
+      "slug": "vinyplus-rondkantpaneel-150",
+      "name": "Vinyplus Rondkantpaneel 150 mm",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "gevelbekleding",
+      "badge": "Bestseller",
+      "description": "Rondkantpaneel voor gevels met een zachte afronding. Werkende breedte 150 mm, standaard lengte 6 m. Past bij VinyPlus hulpstukken en dakranden.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "150 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC houtlook" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": ["vinyplus-montage-eindprofiel-3m", "vinyplus-schroeven-35x30"],
+      "paletteId": "vinyplus",
+      "skuPrefix": "VP-RK150",
+      "length": "6 m",
+      "price": 83.74,
+      "inStock": true
+    },
+    {
+      "slug": "vinyplus-quattro-299",
+      "name": "Vinyplus Quattro 299 mm werkend",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "gevelbekleding",
+      "description": "Breed Quattro-paneel, 299 mm werkend. Minder naden, rustige gevel. Zelfde folie als het rondkantpaneel.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "299 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC" },
+        { "label": "Garantie", "value": "10 jaar" }
+      ],
+      "relatedSlugs": ["vinyplus-montage-eindprofiel-3m", "vinyplus-schroeven-35x30"],
+      "paletteId": "vinyplus",
+      "skuPrefix": "VP-Q299",
+      "length": "6 m",
+      "price": 166.86,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-sponning-143",
+      "name": "Keralit sponning 143 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "gevelbekleding",
+      "badge": "Bestseller",
+      "description": "Strak sponningdeel 143 mm. Rustige gevel zonder grove overlapping. Compleet met startprofiel, verbindstuk en schroeven.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "143 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "Keralit houtlook" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": [
+        "keralit-verbindstuk-143",
+        "keralit-startprofiel-horizontaal-22",
+        "keralit-schroeven-30"
+      ],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-SP143",
+      "length": "6 m",
+      "price": 87.3,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-sponning-167",
+      "name": "Keralit sponning 167 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "gevelbekleding",
+      "description": "Sponningdeel 167 mm. Iets bredere groef dan 143 mm, zelfde Keralit-folie en garantie.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "167 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "Keralit houtlook" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": ["keralit-startprofiel-horizontaal-22", "keralit-schroeven-30"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-SP167",
+      "length": "6 m",
+      "price": 102.19,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-sponning-190",
+      "name": "Keralit sponning 190 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "gevelbekleding",
+      "description": "Breed sponningdeel 190 mm. Minder naden, zelfde systeem als 143 en 167 mm.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "190 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "Keralit houtlook" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": ["keralit-startprofiel-horizontaal-22", "keralit-schroeven-30"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-SP190",
+      "length": "6 m",
+      "price": 116.14,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-potdeksel-177",
+      "name": "Keralit potdeksel 177 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "gevelbekleding",
+      "description": "Potdeksel 177 mm met overlapping. Klassieke gevel, extra waterkering. Keralit-folie en 10 jaar kleurvast.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "177 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "Keralit houtlook" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": [
+        "keralit-basis-uitwendig-hoekprofiel",
+        "keralit-startprofiel-horizontaal-22",
+        "keralit-schroeven-30"
+      ],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-PD177",
+      "length": "6 m",
+      "price": 107.93,
+      "inStock": true
+    },
+    {
+      "slug": "eurotexx-potdeksel-180",
+      "name": "Eurotexx potdeksel 180 mm",
+      "vendor": "Eurotexx",
+      "brandSlug": "eurotexx",
+      "category": "gevelbekleding",
+      "description": "Klassiek potdeksel 180 mm. Overlapping voert regenwater af. Compleet met stootvoeg, hoek- en eindprofiel.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "180 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC houtlook" },
+        { "label": "Garantie", "value": "10 jaar" }
+      ],
+      "relatedSlugs": [
+        "eurotexx-stootvoeg-180",
+        "eurotexx-hoekprofiel-2delig",
+        "eurotexx-eindprofiel-19mm"
+      ],
+      "paletteId": "eurotexx",
+      "skuPrefix": "ET-PD180",
+      "length": "6 m",
+      "price": 79.95,
+      "inStock": true,
+      "priceNote": "Prijs live shop niet op de kaart; indicatie tot leverancierslijst."
+    },
+    {
+      "slug": "kerrafront-multi-sponningdeel-332",
+      "name": "Kerrafront Multi sponningdeel 332 mm",
+      "vendor": "Kerrafront",
+      "brandSlug": "kerrafront",
+      "category": "gevelbekleding",
+      "description": "Breed multi-sponningdeel 332 mm. Weinig naden, strakke gevel. Vraag de actuele prijs bij grote aantallen.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "332 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC" },
+        { "label": "Garantie", "value": "10 jaar" }
+      ],
+      "relatedSlugs": [],
+      "paletteId": "kerrafront",
+      "skuPrefix": "KF-MS332",
+      "length": "6 m",
+      "price": 124.5,
+      "inStock": true,
+      "priceNote": "Prijs live shop niet op de kaart; indicatie tot leverancierslijst."
+    },
+    {
+      "slug": "kerrafront-dubbel-sponningdeel-332",
+      "name": "Kerrafront dubbel sponningdeel 332 mm",
+      "vendor": "Kerrafront",
+      "brandSlug": "kerrafront",
+      "category": "gevelbekleding",
+      "description": "Dubbel sponningdeel 332 mm. Twee groeven in één deel, ritme in de gevel zonder extra naden.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "332 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC" },
+        { "label": "Garantie", "value": "10 jaar" }
+      ],
+      "relatedSlugs": ["eurotexx-stootvoeg-332"],
+      "paletteId": "kerrafront",
+      "skuPrefix": "KF-DS332",
+      "length": "6 m",
+      "price": 129.5,
+      "inStock": true,
+      "priceNote": "Prijs live shop niet op de kaart; indicatie tot leverancierslijst."
+    },
+    {
+      "slug": "profex-duafort-rabat-125",
+      "name": "Duafort Rabat 125 mm",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "gevelbekleding",
+      "description": "Duafort rabat 125 mm, gebruikt als Canexel-vervanger. Licht, onderhoudsarm, klassieke overlapping.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "125 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC" },
+        { "label": "Toepassing", "value": "Canexel-vervanger" }
+      ],
+      "relatedSlugs": [],
+      "paletteId": "profex",
+      "skuPrefix": "PX-DF125",
+      "length": "6 m",
+      "price": 43.09,
+      "inStock": true
+    },
+    {
+      "slug": "zierer-hoekstuk-50x50x345",
+      "name": "Zierer hoekstuk 50 × 50 × 345 mm wildverband",
+      "vendor": "Zierer",
+      "brandSlug": "zierer",
+      "category": "gevelbekleding",
+      "badge": "Bestseller",
+      "description": "Hoekstuk voor Zierer steenstrips, wildverband. 50 × 50 × 345 mm. Compleet met bijpassende schroeven.",
+      "specs": [
+        { "label": "Maat", "value": "50 × 50 × 345 mm" },
+        { "label": "Verband", "value": "Wildverband" },
+        { "label": "Materiaal", "value": "Kunststof steenstrip" },
+        { "label": "Toepassing", "value": "Buitenhoek" }
+      ],
+      "relatedSlugs": ["zierer-schroeven-3x40"],
+      "paletteId": "zierer",
+      "skuPrefix": "ZI-HK345",
+      "length": "345 mm",
+      "price": 13.49,
+      "inStock": true
+    },
+    {
+      "slug": "vinyplus-dakrandpaneel-200",
+      "name": "Vinyplus Dakrandpaneel 200 × 35 × 16 mm",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "dakranden",
+      "description": "Dakrandpaneel 200 mm voor boeiboord en overhang. Zelfde folie als VinyPlus geveldelen.",
+      "specs": [
+        { "label": "Maat", "value": "200 × 35 × 16 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC" },
+        { "label": "Garantie", "value": "10 jaar" }
+      ],
+      "relatedSlugs": ["vinyplus-montage-eindprofiel-3m", "vinyplus-schroeven-35x30"],
+      "paletteId": "vinyplus",
+      "skuPrefix": "VP-DR200",
+      "length": "6 m",
+      "price": 189.0,
+      "inStock": true,
+      "priceNote": "Prijs live shop niet op de kaart; indicatie tot leverancierslijst."
+    },
+    {
+      "slug": "vinyplus-dakrandpaneel-295",
+      "name": "Vinyplus Dakrandpaneel 295 × 35 × 16 mm",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "dakranden",
+      "description": "Stevig dakrandpaneel 295 mm voor boeiboord en overhang. Past bij VinyPlus geveldelen.",
+      "specs": [
+        { "label": "Maat", "value": "295 × 35 × 16 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC" },
+        { "label": "Garantie", "value": "10 jaar" }
+      ],
+      "relatedSlugs": ["vinyplus-montage-eindprofiel-3m", "vinyplus-schroeven-35x30"],
+      "paletteId": "vinyplus",
+      "skuPrefix": "VP-DR295",
+      "length": "6 m",
+      "price": 264.99,
+      "inStock": false,
+      "stockText": "Levertijd 5 werkdagen"
+    },
+    {
+      "slug": "keralit-dakrand-paneel-200",
+      "name": "Keralit dakrand paneel 200 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "dakranden",
+      "description": "Dakrandpaneel 200 mm, zelfde folie als Keralit geveldelen. Compleet met montage- en eindprofiel.",
+      "specs": [
+        { "label": "Breedte", "value": "200 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "Keralit" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": [
+        "keralit-dakrand-montage-profiel-10mm",
+        "keralit-dakrand-eindprofiel-10mm",
+        "keralit-h-verbindingprofiel-10mm"
+      ],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-DR200",
+      "length": "6 m",
+      "price": 196.98,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-dakrand-paneel-250",
+      "name": "Keralit dakrand paneel 250 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "dakranden",
+      "description": "Dakrandpaneel 250 mm voor bredere overstek. Folie en garantie gelijk aan Keralit gevel.",
+      "specs": [
+        { "label": "Breedte", "value": "250 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "Keralit" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": [
+        "keralit-dakrand-montage-profiel-10mm",
+        "keralit-dakrand-eindprofiel-10mm"
+      ],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-DR250",
+      "length": "6 m",
+      "price": 239.06,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-dakrand-paneel-300",
+      "name": "Keralit dakrand paneel 300 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "dakranden",
+      "description": "Dakrandpaneel 300 mm. Doorlopende lijn met Keralit geveldelen.",
+      "specs": [
+        { "label": "Breedte", "value": "300 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "Keralit" },
+        { "label": "Garantie", "value": "10 jaar kleurvast" }
+      ],
+      "relatedSlugs": [
+        "keralit-dakrand-montage-profiel-10mm",
+        "keralit-dakrand-eindprofiel-10mm"
+      ],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-DR300",
+      "length": "6 m",
+      "price": 276.95,
+      "inStock": true
+    },
+    {
+      "slug": "milexx-volschuim-dakrand-hoek-35",
+      "name": "Milexx volschuim dakrandpanelen haakse hoek 35 mm",
+      "vendor": "Milexx",
+      "brandSlug": "milexx",
+      "category": "dakranden",
+      "description": "Haakse hoek 35 mm voor Milexx volschuim dakrandpanelen. Licht, strak, onderhoudsarm.",
+      "specs": [
+        { "label": "Dikte", "value": "35 mm" },
+        { "label": "Vorm", "value": "Haakse hoek" },
+        { "label": "Materiaal", "value": "Volschuim PVC" },
+        { "label": "Toepassing", "value": "Dakrandhoek" }
+      ],
+      "relatedSlugs": [],
+      "paletteId": "milexx",
+      "skuPrefix": "MX-HK35",
+      "length": "stuk",
+      "price": 28.5,
+      "inStock": true,
+      "priceNote": "Prijs live shop niet op de kaart; indicatie tot leverancierslijst."
+    },
+    {
+      "slug": "keralit-dakrand-eindprofiel-10mm",
+      "name": "Keralit dakrand eindprofiel 10 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "dakranden",
+      "description": "Eindprofiel 10 mm voor Keralit dakrandpanelen. Nette sluiting aan de kopse kant.",
+      "specs": [
+        { "label": "Maat", "value": "10 mm" },
+        { "label": "Toepassing", "value": "Eind dakrand" },
+        { "label": "Systeem", "value": "Keralit dakrand" }
+      ],
+      "relatedSlugs": ["keralit-dakrand-paneel-200"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-DRE10",
+      "length": "6 m",
+      "price": 37.36,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-dakrand-montage-profiel-10mm",
+      "name": "Keralit dakrand montage profiel 10 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "dakranden",
+      "description": "Montageprofiel 10 mm waarop het Keralit dakrandpaneel klikt.",
+      "specs": [
+        { "label": "Maat", "value": "10 mm" },
+        { "label": "Toepassing", "value": "Montage dakrand" },
+        { "label": "Systeem", "value": "Keralit dakrand" }
+      ],
+      "relatedSlugs": ["keralit-dakrand-paneel-200"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-DRM10",
+      "length": "6 m",
+      "price": 42.39,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-h-verbindingprofiel-10mm",
+      "name": "H-verbindingprofiel 10 mm Keralit dakrand",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "dakranden",
+      "description": "H-verbinding 10 mm tussen twee Keralit dakrandpanelen in de lengte.",
+      "specs": [
+        { "label": "Maat", "value": "10 mm" },
+        { "label": "Toepassing", "value": "Lengteverbinding" },
+        { "label": "Systeem", "value": "Keralit dakrand" }
+      ],
+      "relatedSlugs": ["keralit-dakrand-paneel-200"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-DRH10",
+      "length": "6 m",
+      "price": 27.36,
+      "inStock": true
+    },
+    {
+      "slug": "milinboard-overzetvensterbank-380",
+      "name": "Milinboard Overzetvensterbank 380 mm",
+      "vendor": "Milinboard",
+      "brandSlug": "milinboard",
+      "category": "kozijnafwerking",
+      "description": "Overzetvensterbank 380 mm over een bestaande steenachtige bank. Inclusief bijpassende eindkap 400 mm.",
+      "specs": [
+        { "label": "Breedte", "value": "380 mm" },
+        { "label": "Type", "value": "Overzet" },
+        { "label": "Materiaal", "value": "Kunststof" }
+      ],
+      "relatedSlugs": ["milinboard-eindkap-400"],
+      "paletteId": "milinboard",
+      "skuPrefix": "MB-OV380",
+      "length": "op maat",
+      "price": 219.99,
+      "inStock": true
+    },
+    {
+      "slug": "milinboard-eindkap-400",
+      "name": "Eindkap 400 mm Overzet Vensterbank",
+      "vendor": "Milinboard",
+      "brandSlug": "milinboard",
+      "category": "kozijnafwerking",
+      "description": "Eindkap 400 mm voor de Milinboard overzetvensterbank.",
+      "specs": [
+        { "label": "Breedte", "value": "400 mm" },
+        { "label": "Toepassing", "value": "Eindkap overzetbank" }
+      ],
+      "relatedSlugs": ["milinboard-overzetvensterbank-380"],
+      "paletteId": "milinboard",
+      "skuPrefix": "MB-EK400",
+      "length": "stuk",
+      "price": 5.99,
+      "inStock": true
+    },
+    {
+      "slug": "milinboard-eindkap-steenlook-500",
+      "name": "Eindkap Steenlook vensterbank 500 mm",
+      "vendor": "Milinboard",
+      "brandSlug": "milinboard",
+      "category": "kozijnafwerking",
+      "description": "Eindkap 500 mm voor steenlook vensterbanken.",
+      "specs": [
+        { "label": "Breedte", "value": "500 mm" },
+        { "label": "Look", "value": "Steenlook" }
+      ],
+      "relatedSlugs": ["milinboard-overzetvensterbank-380"],
+      "variants": [
+        {
+          "sku": "MB-EK500-STEE",
+          "ean": "",
+          "colorName": "Steenlook",
+          "hex": "#9A8F84",
+          "length": "stuk",
+          "price": 7.36,
+          "inStock": true
+        }
+      ]
+    },
+    {
+      "slug": "afdichtingsprofiel-pvc-45",
+      "name": "Afdichtingsprofiel PVC 45 mm breed toepassing horizontaal",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "kozijnafwerking",
+      "description": "Horizontaal afdichtingsprofiel 45 mm PVC, voor aansluiting plaat of kozijn.",
+      "specs": [
+        { "label": "Breedte", "value": "45 mm" },
+        { "label": "Toepassing", "value": "Horizontaal" },
+        { "label": "Materiaal", "value": "PVC" }
+      ],
+      "relatedSlugs": [],
+      "variants": [
+        {
+          "sku": "PX-AF45-WIT",
+          "ean": "",
+          "colorName": "Wit",
+          "ral": "RAL 9010",
+          "hex": "#F4F1EA",
+          "length": "stuk",
+          "price": 14.52,
+          "inStock": true
+        }
+      ]
+    },
+    {
+      "slug": "vinyplus-montage-eindprofiel-3m",
+      "name": "Vinyplus Montage eindprofiel 3 m¹",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "montage",
+      "badge": "Bestseller",
+      "description": "Eindprofiel 3 m voor VinyPlus gevel- en dakrandpanelen. Nette sluiting aan kopse kant of dagkant.",
+      "specs": [
+        { "label": "Lengte", "value": "3 m" },
+        { "label": "Toepassing", "value": "Eind / dagkant" },
+        { "label": "Systeem", "value": "VinyPlus" }
+      ],
+      "relatedSlugs": ["vinyplus-rondkantpaneel-150", "vinyplus-schroeven-35x30"],
+      "paletteId": "vinyplus",
+      "skuPrefix": "VP-EP3",
+      "length": "3 m",
+      "price": 16.6,
+      "inStock": true
+    },
+    {
+      "slug": "vinyplus-schroeven-35x30",
+      "name": "Bevestigingsschroeven 3,5 × 30 mm",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "montage",
+      "description": "Schroeven 3,5 × 30 mm voor VinyPlus dakrand- en gevelmontage. Doos.",
+      "specs": [
+        { "label": "Maat", "value": "3,5 × 30 mm" },
+        { "label": "Systeem", "value": "VinyPlus" }
+      ],
+      "relatedSlugs": ["vinyplus-rondkantpaneel-150", "vinyplus-montage-eindprofiel-3m"],
+      "variants": [
+        {
+          "sku": "VP-SCR-35X30",
+          "ean": "",
+          "colorName": "RVS",
+          "hex": "#C5C7C4",
+          "length": "doos",
+          "price": 31.04,
+          "inStock": false,
+          "stockText": "Uitverkocht"
+        }
+      ]
+    },
+    {
+      "slug": "keralit-verbindstuk-143",
+      "name": "Keralit verbindstuk voor 143 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "montage",
+      "description": "Verbindstuk voor Keralit sponning 143 mm. Koppeling in de lengte zonder zichtbare naadbreuk.",
+      "specs": [
+        { "label": "Voor", "value": "Sponning 143 mm" },
+        { "label": "Toepassing", "value": "Lengteverbinding" }
+      ],
+      "relatedSlugs": ["keralit-sponning-143"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-VB143",
+      "length": "stuk",
+      "price": 8.05,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-startprofiel-horizontaal-22",
+      "name": "Keralit startprofiel horizontaal 22 mm ventilatie",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "montage",
+      "description": "Startlat 22 mm met ventilatie, onderaan de Keralit-gevel.",
+      "specs": [
+        { "label": "Maat", "value": "22 mm" },
+        { "label": "Toepassing", "value": "Start horizontaal" },
+        { "label": "Ventilatie", "value": "Ja" }
+      ],
+      "relatedSlugs": ["keralit-sponning-143", "keralit-eindprofiel-17"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-ST22",
+      "length": "6 m",
+      "price": 64.55,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-eindprofiel-17",
+      "name": "Keralit eindprofiel 17 mm",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "montage",
+      "description": "Eindprofiel 17 mm voor een nette sluiting van Keralit geveldelen.",
+      "specs": [
+        { "label": "Maat", "value": "17 mm" },
+        { "label": "Toepassing", "value": "Eind gevel" }
+      ],
+      "relatedSlugs": ["keralit-sponning-143", "keralit-startprofiel-horizontaal-22"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-EP17",
+      "length": "6 m",
+      "price": 38.51,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-basis-uitwendig-hoekprofiel",
+      "name": "Keralit basis uitwendig hoekprofiel",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "montage",
+      "description": "Uitwendig hoekprofiel voor Keralit geveldelen. Zelfde folie als de sponning.",
+      "specs": [
+        { "label": "Toepassing", "value": "Buitenhoek" },
+        { "label": "Systeem", "value": "Keralit gevel" }
+      ],
+      "relatedSlugs": ["keralit-sponning-143", "keralit-eindkap-hoek-uitwendig"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-HKU",
+      "length": "6 m",
+      "price": 36.33,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-eindkap-hoek-uitwendig",
+      "name": "Keralit eindkap voor uitwendig hoekprofiel",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "montage",
+      "description": "Eindkap op het uitwendige Keralit hoekprofiel.",
+      "specs": [
+        { "label": "Toepassing", "value": "Eindkap buitenhoek" }
+      ],
+      "relatedSlugs": ["keralit-basis-uitwendig-hoekprofiel"],
+      "paletteId": "keralit",
+      "skuPrefix": "KER-EKHK",
+      "length": "stuk",
+      "price": 5.76,
+      "inStock": true
+    },
+    {
+      "slug": "keralit-schroeven-30",
+      "name": "Keralit schroef 30 mm rvs 200 stuks",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "montage",
+      "description": "RVS schroeven 30 mm, 200 stuks. Voor Keralit gevel- en dakrandmontage.",
+      "specs": [
+        { "label": "Maat", "value": "30 mm" },
+        { "label": "Inhoud", "value": "200 stuks" },
+        { "label": "Materiaal", "value": "RVS" }
+      ],
+      "relatedSlugs": ["keralit-sponning-143"],
+      "variants": [
+        {
+          "sku": "KER-SCR-30-200",
+          "ean": "",
+          "colorName": "RVS",
+          "hex": "#C5C7C4",
+          "length": "doos 200 stuks",
+          "price": 20.55,
+          "inStock": true
+        }
+      ]
+    },
+    {
+      "slug": "keralit-reiniger",
+      "name": "Keralit reiniger 1 ltr.",
+      "vendor": "Keralit",
+      "brandSlug": "keralit",
+      "category": "montage",
+      "description": "Reiniger 1 liter voor Keralit gevel- en dakranddelen.",
+      "specs": [
+        { "label": "Inhoud", "value": "1 liter" },
+        { "label": "Toepassing", "value": "Onderhoud" }
+      ],
+      "relatedSlugs": ["keralit-sponning-143"],
+      "variants": [
+        {
+          "sku": "KER-REIN-1L",
+          "ean": "",
+          "colorName": "Transparant",
+          "hex": "#E8EEF4",
+          "length": "1 l",
+          "price": 14.99,
+          "inStock": true
+        }
+      ]
+    },
+    {
+      "slug": "zierer-schroeven-3x40",
+      "name": "Bevestigingsschroeven 3 × 40 mm",
+      "vendor": "Zierer",
+      "brandSlug": "zierer",
+      "category": "montage",
+      "description": "Schroeven 3 × 40 mm voor Zierer steenstrips en hoekstukken.",
+      "specs": [
+        { "label": "Maat", "value": "3 × 40 mm" },
+        { "label": "Systeem", "value": "Zierer" }
+      ],
+      "relatedSlugs": ["zierer-hoekstuk-50x50x345"],
+      "variants": [
+        {
+          "sku": "ZI-SCR-3X40",
+          "ean": "",
+          "colorName": "RVS",
+          "hex": "#C5C7C4",
+          "length": "doos",
+          "price": 21.57,
+          "inStock": true
+        }
+      ]
+    },
+    {
+      "slug": "eurotexx-hoekprofiel-2delig",
+      "name": "Eurotexx hoekprofiel 2-delig 6 m¹ per lengte",
+      "vendor": "Eurotexx",
+      "brandSlug": "eurotexx",
+      "category": "montage",
+      "description": "Tweedelig hoekprofiel 6 m voor Eurotexx potdeksel en rabat.",
+      "specs": [
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Type", "value": "2-delig" },
+        { "label": "Toepassing", "value": "Hoek" }
+      ],
+      "relatedSlugs": ["eurotexx-potdeksel-180", "eurotexx-eindprofiel-19mm"],
+      "paletteId": "eurotexx",
+      "skuPrefix": "ET-HK2",
+      "length": "6 m",
+      "price": 23.68,
+      "inStock": true
+    },
+    {
+      "slug": "eurotexx-eindprofiel-19mm",
+      "name": "Eindprofiel 19 mm inwendig 5 m¹ per lengte",
+      "vendor": "Eurotexx",
+      "brandSlug": "eurotexx",
+      "category": "montage",
+      "description": "Inwendig eindprofiel 19 mm, 5 m per lengte, voor Eurotexx geveldelen.",
+      "specs": [
+        { "label": "Maat", "value": "19 mm inwendig" },
+        { "label": "Lengte", "value": "5 m" }
+      ],
+      "relatedSlugs": ["eurotexx-potdeksel-180"],
+      "paletteId": "eurotexx",
+      "skuPrefix": "ET-EP19",
+      "length": "5 m",
+      "price": 35.27,
+      "inStock": true
+    },
+    {
+      "slug": "eurotexx-stootvoeg-180",
+      "name": "Eurotexx Stootvoegverbinding 180 mm voor Potdeksel",
+      "vendor": "Eurotexx",
+      "brandSlug": "eurotexx",
+      "category": "montage",
+      "description": "Stootvoeg 180 mm tussen twee Eurotexx potdekseldelen in de lengte.",
+      "specs": [
+        { "label": "Breedte", "value": "180 mm" },
+        { "label": "Voor", "value": "Potdeksel 180 mm" }
+      ],
+      "relatedSlugs": ["eurotexx-potdeksel-180"],
+      "paletteId": "eurotexx",
+      "skuPrefix": "ET-SV180",
+      "length": "stuk",
+      "price": 6.95,
+      "inStock": true
+    },
+    {
+      "slug": "eurotexx-stootvoeg-332",
+      "name": "Eurotexx stootvoegverbinding 332 mm voor Dubbel rabatdeel",
+      "vendor": "Eurotexx",
+      "brandSlug": "eurotexx",
+      "category": "montage",
+      "description": "Stootvoeg 332 mm voor dubbel rabat / Kerrafront 332 mm.",
+      "specs": [
+        { "label": "Breedte", "value": "332 mm" },
+        { "label": "Voor", "value": "Dubbel rabat 332 mm" }
+      ],
+      "relatedSlugs": ["kerrafront-dubbel-sponningdeel-332"],
+      "paletteId": "eurotexx",
+      "skuPrefix": "ET-SV332",
+      "length": "stuk",
+      "price": 7.99,
+      "inStock": true
+    },
+    {
+      "slug": "eurotexx-ventilatie-65x17",
+      "name": "Eurotexx ventilatie afsluitprofiel 65 × 17 mm",
+      "vendor": "Eurotexx",
+      "brandSlug": "eurotexx",
+      "category": "montage",
+      "description": "Ventilatie-afsluitprofiel 65 × 17 mm voor Eurotexx gevelsystemen.",
+      "specs": [
+        { "label": "Maat", "value": "65 × 17 mm" },
+        { "label": "Toepassing", "value": "Ventilatie" }
+      ],
+      "relatedSlugs": ["eurotexx-potdeksel-180"],
+      "paletteId": "eurotexx",
+      "skuPrefix": "ET-VENT65",
+      "length": "6 m",
+      "price": 28.89,
+      "inStock": true
+    }
+  ]
+}

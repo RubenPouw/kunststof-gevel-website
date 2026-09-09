@@ -28,6 +28,7 @@ export const shopNav = [
 
 export const footerNav = [
   ...shopNav,
+  { href: "/montage", label: "Montage" },
   { href: "/projecten", label: "Projecten" },
   { href: "/over-ons", label: "Over ons" },
   { href: "/offerte", label: "Offerte" },

@@ -1,0 +1,48 @@
+{
+  "keralit": [
+    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41", "popular": true },
+    { "skuSuffix": "VEIK", "colorName": "Vergrijsd eiken", "hex": "#A39480" },
+    { "skuSuffix": "GOLD", "colorName": "Golden oak", "hex": "#C4A36A" },
+    { "skuSuffix": "CREM", "colorName": "Crème", "ral": "RAL 9001", "hex": "#E8DCC8" },
+    { "skuSuffix": "ZWPT", "colorName": "Diepzwart", "ral": "RAL 9005", "hex": "#1A1B1C" }
+  ],
+  "vinyplus": [
+    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41", "popular": true },
+    { "skuSuffix": "WIT", "colorName": "Wit", "ral": "RAL 9010", "hex": "#F4F1EA" },
+    { "skuSuffix": "CREM", "colorName": "Crème", "ral": "RAL 9001", "hex": "#E8DCC8" },
+    { "skuSuffix": "VEIK", "colorName": "Vergrijsd eiken", "hex": "#A39480" },
+    { "skuSuffix": "MERA", "colorName": "Meranti", "hex": "#6B3A2A" }
+  ],
+  "eurotexx": [
+    { "skuSuffix": "VEIK", "colorName": "Vergrijsd eiken", "hex": "#A39480", "popular": true },
+    { "skuSuffix": "EIKN", "colorName": "Eiken", "hex": "#8B5E3C" },
+    { "skuSuffix": "MERA", "colorName": "Meranti", "hex": "#6B3A2A" },
+    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41" }
+  ],
+  "kerrafront": [
+    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41", "popular": true },
+    { "skuSuffix": "WIT", "colorName": "Wit", "ral": "RAL 9010", "hex": "#F4F1EA" },
+    { "skuSuffix": "ZAND", "colorName": "Zand", "hex": "#C4B496" },
+    { "skuSuffix": "NOTE", "colorName": "Noten", "hex": "#5C4033" }
+  ],
+  "zierer": [
+    { "skuSuffix": "GRYS", "colorName": "Grijs wildverband", "hex": "#8A8D88", "popular": true },
+    { "skuSuffix": "ROOD", "colorName": "Rood wildverband", "hex": "#8B3A32" },
+    { "skuSuffix": "ANTR", "colorName": "Antraciet wildverband", "hex": "#3A3D41" }
+  ],
+  "profex": [
+    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41", "popular": true },
+    { "skuSuffix": "BRUN", "colorName": "Bruin", "hex": "#6B4A32" },
+    { "skuSuffix": "GROE", "colorName": "Groen", "hex": "#4A5A45" }
+  ],
+  "milexx": [
+    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41", "popular": true },
+    { "skuSuffix": "WIT", "colorName": "Wit", "ral": "RAL 9010", "hex": "#F4F1EA" },
+    { "skuSuffix": "BRUN", "colorName": "Bruin", "hex": "#6B4A32" }
+  ],
+  "milinboard": [
+    { "skuSuffix": "WIT", "colorName": "Wit", "ral": "RAL 9010", "hex": "#F4F1EA", "popular": true },
+    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41" },
+    { "skuSuffix": "STEE", "colorName": "Steenlook", "hex": "#9A8F84" }
+  ]
+}

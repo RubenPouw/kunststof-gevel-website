@@ -25,15 +25,18 @@ npm start
 ## Pagina's
 
 - `/` — home (hero, merken, productgrid)
-- `/gevelbekleding`, `/dakranden`, `/kozijnafwerking` — categorieën
-- `/producten/[slug]` — productdetail
+- `/gevelbekleding`, `/dakranden`, `/kozijnafwerking`, `/montage` — categorieën (filters `?merk=` en `?voorraad=1`)
+- `/producten/[slug]` — productdetail (variant/SKU, completeer-systeem)
 - `/merken`, `/merken/[slug]` — merken
-- `/winkelwagen`, `/afrekenen` — checkout in drie stappen
+- `/winkelwagen`, `/afrekenen` — checkout in drie stappen (nog geen live betaling)
+- `/zoeken` — zoeken op naam, merk, SKU
 - `/zoeken` — productzoeken
 - `/zakelijk`, `/over-ons`, `/projecten`, `/offerte`, `/contact`
 - `/api/health` — health check voor Render
 
-Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aanvragen worden gelogd en de bezoeker krijgt een referentie plus prijsindicatie. De winkelwagen is lokaal (browser); betaling is nog geen live koppeling.
+Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aanvragen worden gelogd en de bezoeker krijgt een referentie plus prijsindicatie. De winkelwagen is lokaal (browser, `kg-cart-v2`); betaling is nog geen live koppeling.
+
+Catalogusdata staat in `data/catalog/` (JSON). Shopify-importkolommen: `data/shopify-import.csv` (Barcode/EAN leeg tot leveranciers ze aanleveren). Vernieuw de CSV met `node scripts/export-shopify-csv.mjs`.
 
 ## Design tokens
 
