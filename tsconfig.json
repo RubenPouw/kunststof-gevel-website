@@ -29,7 +29,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "data/**/*.json"
+    "src/data/**/*.json"
   ],
   "exclude": ["node_modules"]
 }

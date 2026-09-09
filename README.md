@@ -36,7 +36,7 @@ npm start
 
 Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aanvragen worden gelogd en de bezoeker krijgt een referentie plus prijsindicatie. De winkelwagen is lokaal (browser, `kg-cart-v2`); betaling is nog geen live koppeling.
 
-Catalogusdata staat in `data/catalog/` (JSON). Shopify-importkolommen: `data/shopify-import.csv` (Barcode/EAN leeg tot leveranciers ze aanleveren). Vernieuw de CSV met `node scripts/export-shopify-csv.mjs`.
+Catalogusdata staat in `src/data/catalog/` (JSON). Shopify-importkolommen: `data/shopify-import.csv` (Barcode/EAN leeg tot leveranciers ze aanleveren). Vernieuw de CSV met `node scripts/export-shopify-csv.mjs`.
 
 ## Design tokens
 

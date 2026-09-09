@@ -3,8 +3,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const palettes = JSON.parse(readFileSync(join(root, "data/catalog/palettes.json"), "utf8"));
-const productsFile = JSON.parse(readFileSync(join(root, "data/catalog/products.json"), "utf8"));
+const palettes = JSON.parse(readFileSync(join(root, "src/data/catalog/palettes.json"), "utf8"));
+const productsFile = JSON.parse(readFileSync(join(root, "src/data/catalog/products.json"), "utf8"));
 
 function csvEscape(value) {
   return `"${String(value).replaceAll('"', '""')}"`;

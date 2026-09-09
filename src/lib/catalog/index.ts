@@ -1,7 +1,7 @@
-import brandsJson from "../../../data/catalog/brands.json";
-import categoriesJson from "../../../data/catalog/categories.json";
-import palettesJson from "../../../data/catalog/palettes.json";
-import productsJson from "../../../data/catalog/products.json";
+import brandsJson from "../../data/catalog/brands.json";
+import categoriesJson from "../../data/catalog/categories.json";
+import palettesJson from "../../data/catalog/palettes.json";
+import productsJson from "../../data/catalog/products.json";
 
 import type {
   Brand,
