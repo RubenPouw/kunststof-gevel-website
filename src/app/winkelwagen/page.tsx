@@ -4,8 +4,7 @@ import Link from "next/link";
 
 import { SegmentBar } from "@/components/brand/segment-bar";
 import { buttonVariants } from "@/components/ui/button";
-import { FREE_SHIPPING_FROM, useCart } from "@/lib/cart";
-import { getProduct, getVariant } from "@/lib/catalog";
+import { FREE_SHIPPING_FROM, resolveCartLine, useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import { site } from "@/lib/site";
 
@@ -32,19 +31,17 @@ export default function CartPage() {
         <>
           <ul className="mt-8 divide-y divide-[var(--color-border)] border border-[var(--color-border)] bg-surface">
             {lines.map((line) => {
-              const product = getProduct(line.productSlug);
-              const variant = product ? getVariant(product, line.variantSku) : undefined;
-              if (!product || !variant) return null;
+              const resolved = resolveCartLine(line);
+              if (!resolved) return null;
               return (
                 <li key={line.variantSku} className="grid gap-3 p-4 sm:grid-cols-[1fr_auto]">
                   <div>
-                    <p className="kicker">{product.brand}</p>
-                    <p className="mt-1 font-heading text-[18px] font-semibold">{product.name}</p>
+                    <p className="kicker">{resolved.brand}</p>
+                    <p className="mt-1 font-heading text-[18px] font-semibold">{resolved.name}</p>
                     <p className="text-[13px] text-[var(--color-text-muted)]">
-                      {variant.colorName}
-                      {variant.ral ? ` · ${variant.ral}` : null}
+                      {resolved.colorName}
                     </p>
-                    <p className="text-[12px] text-[var(--color-text-muted)]">SKU {variant.sku}</p>
+                    <p className="text-[12px] text-[var(--color-text-muted)]">SKU {line.variantSku}</p>
                     <button
                       type="button"
                       onClick={() => remove(line.variantSku)}
@@ -55,7 +52,7 @@ export default function CartPage() {
                   </div>
                   <div className="flex items-center gap-3 sm:flex-col sm:items-end">
                     <p className="font-heading text-2xl font-bold">
-                      {formatPrice(variant.price * line.qty)}
+                      {formatPrice(resolved.price * line.qty)}
                     </p>
                     <input
                       type="number"
@@ -65,7 +62,7 @@ export default function CartPage() {
                         setQty(line.variantSku, Math.max(1, Number(event.target.value) || 1))
                       }
                       className="h-11 w-16 border border-[var(--color-border-strong)] bg-surface px-2"
-                      aria-label={`Aantal ${product.name}`}
+                      aria-label={`Aantal ${resolved.name}`}
                     />
                   </div>
                 </li>

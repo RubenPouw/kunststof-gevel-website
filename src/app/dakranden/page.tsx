@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { getCategory } from "@/lib/catalog";
+import { getStaticCategory } from "@/lib/catalog/static";
 
-const category = getCategory("dakranden")!;
+const category = getStaticCategory("dakranden")!;
 
 export const metadata: Metadata = {
   title: category.name,

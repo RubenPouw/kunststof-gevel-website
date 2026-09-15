@@ -6,8 +6,7 @@ import { FormEvent, useState } from "react";
 
 import { SegmentBar } from "@/components/brand/segment-bar";
 import { buttonVariants } from "@/components/ui/button";
-import { useCart } from "@/lib/cart";
-import { getProduct, getVariant } from "@/lib/catalog";
+import { resolveCartLine, useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -96,16 +95,15 @@ export default function CheckoutPage() {
           <h2 className="text-[22px]">Samenvatting</h2>
           <ul className="mt-3 space-y-2 text-[14px]">
             {lines.map((line) => {
-              const product = getProduct(line.productSlug);
-              const variant = product ? getVariant(product, line.variantSku) : undefined;
-              if (!product || !variant) return null;
+              const resolved = resolveCartLine(line);
+              if (!resolved) return null;
               return (
                 <li key={line.variantSku} className="flex justify-between gap-4">
                   <span>
-                    {product.name} · {variant.colorName} · {variant.sku} × {line.qty}
+                    {resolved.name} · {resolved.colorName} · {line.variantSku} × {line.qty}
                   </span>
                   <span className="font-heading text-[18px] font-bold">
-                    {formatPrice(variant.price * line.qty)}
+                    {formatPrice(resolved.price * line.qty)}
                   </span>
                 </li>
               );

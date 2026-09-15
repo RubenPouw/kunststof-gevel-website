@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { ProductVisual, visualVariantFor } from "@/components/brand/product-visual";
+import { ProductMedia } from "@/components/brand/product-media";
 import { Tag } from "@/components/brand/tag";
 import { buttonVariants } from "@/components/ui/button";
-import type { Product } from "@/lib/catalog";
+import type { Product } from "@/lib/catalog/types";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -11,10 +11,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="flex flex-col border border-[var(--color-border)] bg-surface">
       <Link href={`/producten/${product.slug}`} className="relative block text-inherit no-underline hover:text-inherit">
-        <ProductVisual
-          palette={product.palette}
-          variant={visualVariantFor(product.name)}
-        />
+        <ProductMedia product={product} />
         {product.badge ? (
           <Tag className="absolute top-2.5 left-2.5 uppercase text-[10px] tracking-[0.06em]">
             {product.badge}

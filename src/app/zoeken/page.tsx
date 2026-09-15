@@ -15,7 +15,7 @@ export default async function SearchPage({
   const params = await searchParams;
   const raw = params.q;
   const query = (Array.isArray(raw) ? raw[0] : raw) ?? "";
-  const results = searchProducts(query);
+  const results = await searchProducts(query);
 
   return (
     <CategoryPage
