@@ -100,11 +100,16 @@ export function categoryFromCollectionHandle(handle: string): CategorySlug | und
 
 export function categoryFromTitle(title: string): CategorySlug | undefined {
   const t = title.toLowerCase();
-  if (/(vensterbank|overzetbank|kozijn|eindkap)/.test(t)) return "kozijnafwerking";
+  if (/(vensterbank|overzetbank|overzetvensterbank)/.test(t)) return "kozijnafwerking";
   if (/(dakrand|boeideel)/.test(t)) return "dakranden";
-  if (/(rabat|sponning|gevelpaneel|wandpaneel|potdeksel|steenstrip|leisteen|gevelbekleding)/.test(t)) {
+  if (
+    /(rabat|sponning|gevelpaneel|wandpaneel|potdeksel|steenstrip|leisteen|gevelbekleding|rondkant|quattro|vario|gevel)/.test(
+      t,
+    )
+  ) {
     return "gevelbekleding";
   }
+  if (/(eindkap|kozijn)/.test(t)) return "kozijnafwerking";
   if (/(profiel|schroef|clip|kit|ventilatie|startpr|verbinding|montage)/.test(t)) return "montage";
   return undefined;
 }
@@ -222,7 +227,13 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
 function specsFor(product: ShopifyProduct, brand: Brand, category: CategorySlug, variants: ProductVariant[]): Spec[] {
   const specs: Spec[] = [
     { label: "Merk", value: brand.name },
-    { label: "Leverancier", value: product.vendor || brand.name },
+    {
+      label: "Leverancier",
+      value:
+        product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
+          ? product.vendor
+          : brand.name,
+    },
   ];
   if (product.productType) specs.push({ label: "Type", value: product.productType });
   specs.push({ label: "Categorie", value: category });
@@ -259,7 +270,9 @@ export function mapShopifyProduct(
   return {
     slug: product.handle,
     name: product.title,
-    vendor: product.vendor || brand.name,
+    vendor: product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
+      ? product.vendor
+      : brand.name,
     brand: brand.name,
     brandSlug: brand.slug,
     category,
