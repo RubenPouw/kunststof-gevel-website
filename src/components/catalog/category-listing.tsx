@@ -15,10 +15,10 @@ export async function CategoryListing({
   slug: CategorySlug;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const category = getCategory(slug);
+  const category = await getCategory(slug);
   if (!category) return null;
   const filters = parseListingSearchParams(await searchParams);
-  const all = getProductsByCategory(slug);
+  const all = await getProductsByCategory(slug);
   const products = applyListingFilters(all, filters);
 
   return (
@@ -27,7 +27,7 @@ export async function CategoryListing({
       title={category.name}
       intro={category.summary}
       products={products}
-      brandOptions={brandsInProducts(all)}
+      brandOptions={await brandsInProducts(all)}
       basePath={`/${slug}`}
       activeBrand={filters.brandSlug}
       inStockOnly={filters.inStockOnly}

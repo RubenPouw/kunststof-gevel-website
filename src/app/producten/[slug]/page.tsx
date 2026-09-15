@@ -2,17 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductDetail } from "@/app/producten/[slug]/product-detail";
-import { getProduct, products } from "@/lib/catalog";
+import { getCategory, getProduct, getRelatedProducts } from "@/lib/catalog";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return { title: "Product" };
   return {
     title: product.name,
@@ -22,7 +18,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
-  return <ProductDetail product={product} />;
+  const related = await getRelatedProducts(product);
+  const category = await getCategory(product.category);
+
+  return (
+    <ProductDetail
+      product={product}
+      related={related}
+      categoryName={category?.name ?? product.category}
+    />
+  );
 }

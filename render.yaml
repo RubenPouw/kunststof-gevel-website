@@ -12,3 +12,9 @@ services:
         value: "22"
       - key: NODE_ENV
         value: production
+      - key: SHOPIFY_STORE_DOMAIN
+        sync: false
+      - key: SHOPIFY_STOREFRONT_ACCESS_TOKEN
+        sync: false
+      - key: SHOPIFY_API_VERSION
+        value: "2025-01"

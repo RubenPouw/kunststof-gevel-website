@@ -9,7 +9,8 @@ import {
   type ReactNode,
 } from "react";
 
-import { getProduct, getVariant } from "@/lib/catalog";
+import { getVariant } from "@/lib/catalog/helpers";
+import { getStaticProduct } from "@/lib/catalog/static";
 
 export const FREE_SHIPPING_FROM = 499;
 const STORAGE_KEY = "kg-cart-v2";
@@ -19,6 +20,10 @@ export type CartLine = {
   productSlug: string;
   variantSku: string;
   qty: number;
+  name?: string;
+  brand?: string;
+  colorName?: string;
+  price?: number;
 };
 
 type CartContextValue = {
@@ -64,10 +69,33 @@ function subscribe(onStoreChange: () => void) {
   };
 }
 
-function lineTotal(line: CartLine) {
-  const product = getProduct(line.productSlug);
+function resolveLine(line: CartLine) {
+  if (line.name && typeof line.price === "number") {
+    return {
+      name: line.name,
+      brand: line.brand ?? "",
+      colorName: line.colorName ?? "",
+      price: line.price,
+    };
+  }
+  const product = getStaticProduct(line.productSlug);
   const variant = product ? getVariant(product, line.variantSku) : undefined;
-  return variant ? variant.price * line.qty : 0;
+  if (!product || !variant) return undefined;
+  return {
+    name: product.name,
+    brand: product.brand,
+    colorName: variant.colorName,
+    price: variant.price,
+  };
+}
+
+function lineTotal(line: CartLine) {
+  const resolved = resolveLine(line);
+  return resolved ? resolved.price * line.qty : 0;
+}
+
+export function resolveCartLine(line: CartLine) {
+  return resolveLine(line);
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
