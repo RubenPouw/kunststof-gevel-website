@@ -17,17 +17,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.shopify.com",
-      },
-    ],
-  },
-};
-
-export default nextConfig;
