@@ -1,3 +1,4 @@
+import { enrichProduct } from "@/lib/catalog/derive";
 import type {
   Brand,
   CategorySlug,
@@ -221,6 +222,8 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     inStock: variant.availableForSale,
     stockText: variant.availableForSale ? undefined : "Niet op voorraad",
     options: variant.selectedOptions,
+    colorFamily: "overig",
+    sampleId: "",
   };
 }
 
@@ -267,7 +270,7 @@ export function mapShopifyProduct(
     return Boolean(image) && list.findIndex((item) => item?.url === image?.url) === index;
   });
 
-  return {
+  return enrichProduct({
     slug: product.handle,
     name: product.title,
     vendor: product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
@@ -285,15 +288,14 @@ export function mapShopifyProduct(
     stockText: inStock ? undefined : "Niet op voorraad",
     meta: `${length} · ${variants.length} ${variants.length === 1 ? "variant" : "varianten"}`,
     palette: variants.map((variant) => variant.hex),
-    colors: variants.map((variant) => ({
-      name: variant.colorName,
-      hex: variant.hex,
-    })),
+    colors: [],
     length,
     images,
     productType: product.productType || undefined,
     source: "shopify",
-  };
+    profileType: "overig",
+    sampleable: false,
+  });
 }
 
 export function brandsFromProducts(products: Product[], extras: Brand[] = []): Brand[] {

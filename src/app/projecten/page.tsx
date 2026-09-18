@@ -15,8 +15,8 @@ export default function ProjectenPage() {
       <p className="kicker">Projecten</p>
       <h1 className="mt-2 max-w-3xl">Gevels die we zelf hebben gezet.</h1>
       <p className="mt-4 max-w-2xl text-[var(--color-text-soft)]">
-        Elke gevel is anders: ondergrond, windbelasting, dakoverstek. Hier vier
-        recente opleveringen, van een villa tot een chalet.
+        Recent opgeleverde gevels: villa’s, aanbouwen, renovatie en recreatiewoningen. Foto’s volgen;
+        tot die tijd ziet u de kleurvlakken van het profiel.
       </p>
 
       <div className="mt-12 grid gap-8">

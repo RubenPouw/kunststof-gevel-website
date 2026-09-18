@@ -2,12 +2,21 @@ import Link from "next/link";
 
 import { ProductMedia } from "@/components/brand/product-media";
 import { Tag } from "@/components/brand/tag";
+import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  showSample = false,
+}: {
+  product: Product;
+  showSample?: boolean;
+}) {
+  const color = product.colors[0];
+
   return (
     <article className="flex flex-col border border-[var(--color-border)] bg-surface">
       <Link href={`/producten/${product.slug}`} className="relative block text-inherit no-underline hover:text-inherit">
@@ -32,7 +41,7 @@ export function ProductCard({ product }: { product: Product }) {
               ? `vanaf ${formatPrice(product.price)}`
               : formatPrice(product.price)}
           </p>
-          <p className="text-[11px] text-[var(--color-text-muted)]">incl. btw</p>
+          <p className="text-[11px] text-[var(--color-text-muted)]">incl. btw · per paneel</p>
         </div>
         <p
           className={cn(
@@ -43,12 +52,27 @@ export function ProductCard({ product }: { product: Product }) {
           {product.inStock ? "● " : "○ "}
           {product.stockText ?? (product.inStock ? "Uit voorraad leverbaar" : "Levertijd 5 werkdagen")}
         </p>
-        <Link
-          href={`/producten/${product.slug}`}
-          className={cn(buttonVariants({ variant: "primary", block: true }), "mt-1 text-[14px]")}
-        >
-          Opties selecteren
-        </Link>
+        <div className={cn("mt-1 flex gap-2", showSample && color ? "flex-col sm:flex-row" : "")}>
+          <Link
+            href={`/producten/${product.slug}`}
+            className={cn(buttonVariants({ variant: "primary", block: !showSample }), "min-h-11 text-[14px]")}
+          >
+            Opties selecteren
+          </Link>
+          {showSample && color ? (
+            <SampleAddButton
+              sample={{
+                id: color.sampleId,
+                brandSlug: product.brandSlug,
+                brandName: product.brand,
+                colorName: color.name,
+                hex: color.hex,
+                ral: color.ral,
+              }}
+              className="min-h-11"
+            />
+          ) : null}
+        </div>
       </div>
     </article>
   );

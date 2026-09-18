@@ -6,6 +6,7 @@ import { ChatButton } from "@/components/brand/chat-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { CartProvider } from "@/lib/cart";
+import { SampleTrayProvider } from "@/lib/samples";
 import { site } from "@/lib/site";
 
 import "./globals.css";
@@ -44,10 +45,12 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         <CartProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <ChatButton />
+          <SampleTrayProvider>
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+            <ChatButton />
+          </SampleTrayProvider>
         </CartProvider>
       </body>
     </html>

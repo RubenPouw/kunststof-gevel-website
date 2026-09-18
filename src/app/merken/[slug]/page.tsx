@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { CategoryPage } from "@/components/catalog/category-page";
+import { BrandHero } from "@/components/catalog/brand-hero";
+import { GuaranteeBand } from "@/components/catalog/guarantee-band";
+import { ProductListing } from "@/components/catalog/product-listing";
 import {
   applyListingFilters,
   getBrand,
@@ -27,16 +29,21 @@ export default async function BrandPage({ params, searchParams }: Props) {
   if (!brand) notFound();
   const filters = parseListingSearchParams(await searchParams);
   const all = await getProductsByBrand(brand.slug);
-  const products = applyListingFilters(all, { inStockOnly: filters.inStockOnly });
+  const products = applyListingFilters(all, filters);
 
   return (
-    <CategoryPage
-      kicker="Merken"
-      title={brand.name}
-      intro={brand.summary}
-      products={products}
-      basePath={`/merken/${brand.slug}`}
-      inStockOnly={filters.inStockOnly}
-    />
+    <div className="pb-8">
+      <BrandHero brand={brand} intro={brand.summary} />
+      <div className="container-kg">
+        <ProductListing
+          products={products}
+          allProducts={all}
+          basePath={`/merken/${brand.slug}`}
+          filters={filters}
+          totalUnfiltered={all.length}
+        />
+      </div>
+      <GuaranteeBand />
+    </div>
   );
 }

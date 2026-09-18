@@ -7,6 +7,45 @@ export const categorySlugs = [
 
 export type CategorySlug = (typeof categorySlugs)[number];
 
+export const profileTypes = [
+  "sponning",
+  "potdeksel",
+  "rabat",
+  "rondkant",
+  "quattro",
+  "steenstrip",
+  "dakrand",
+  "vensterbank",
+  "profiel",
+  "overig",
+] as const;
+
+export type ProfileType = (typeof profileTypes)[number];
+
+export const colorFamilies = ["donker", "licht", "houtlook", "overig"] as const;
+
+export type ColorFamily = (typeof colorFamilies)[number];
+
+export const profileTypeLabels: Record<ProfileType, string> = {
+  sponning: "Sponning",
+  potdeksel: "Potdeksel",
+  rabat: "Rabat",
+  rondkant: "Rondkant",
+  quattro: "Quattro",
+  steenstrip: "Steenstrip",
+  dakrand: "Dakrand",
+  vensterbank: "Vensterbank",
+  profiel: "Profiel",
+  overig: "Overig",
+};
+
+export const colorFamilyLabels: Record<ColorFamily, string> = {
+  donker: "Donker",
+  licht: "Licht",
+  houtlook: "Houtlook",
+  overig: "Overig",
+};
+
 export type ProductBadge = "Bestseller" | "Nieuw" | "Actie";
 
 export type Spec = {
@@ -19,6 +58,9 @@ export type ProductColor = {
   hex: string;
   ral?: string;
   popular?: boolean;
+  family: ColorFamily;
+  skuSuffix?: string;
+  sampleId: string;
 };
 
 export type ProductVariant = {
@@ -33,6 +75,9 @@ export type ProductVariant = {
   stockText?: string;
   popular?: boolean;
   options?: { name: string; value: string }[];
+  colorFamily: ColorFamily;
+  panelsPerM2?: number;
+  sampleId: string;
 };
 
 export type ProductImage = {
@@ -74,4 +119,25 @@ export type Product = {
   images: ProductImage[];
   productType?: string;
   source?: "static" | "shopify";
+  workingWidthMm?: number;
+  profileType: ProfileType;
+  sampleable: boolean;
+  panelsPerM2?: number;
+};
+
+export type SampleColor = {
+  id: string;
+  brandSlug: string;
+  brandName: string;
+  colorName: string;
+  hex: string;
+  ral?: string;
+};
+
+export type ListingFilters = {
+  brandSlug?: string;
+  inStockOnly?: boolean;
+  profileType?: ProfileType;
+  colorFamily?: ColorFamily;
+  workingWidthMm?: number;
 };
