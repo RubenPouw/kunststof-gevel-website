@@ -10,6 +10,8 @@ import {
   getDefaultVariant,
   getVariant,
   getVariantBySku,
+  listingFacets,
+  listingHref,
   parseListingSearchParams,
   relatedProductsOf,
 } from "./helpers";
@@ -30,22 +32,35 @@ export type {
   Brand,
   Category,
   CategorySlug,
+  ColorFamily,
+  ListingFilters,
   Product,
   ProductBadge,
   ProductColor,
   ProductImage,
   ProductVariant,
+  ProfileType,
+  SampleColor,
   Spec,
 } from "./types";
-export { categorySlugs };
+export {
+  categorySlugs,
+  colorFamilies,
+  colorFamilyLabels,
+  profileTypeLabels,
+  profileTypes,
+} from "./types";
 export {
   applyListingFilters,
   getDefaultVariant,
   getVariant,
   getVariantBySku,
+  listingFacets,
+  listingHref,
   parseListingSearchParams,
 };
 export { featuredProductSlugs, shopifyCsv, shopifyCsvRows };
+export { listSampleColors, neededPanels, uniqueLengths, findVariant } from "./derive";
 
 export type CatalogData = {
   products: Product[];

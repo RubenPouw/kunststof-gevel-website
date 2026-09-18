@@ -3,6 +3,13 @@ import categoriesJson from "../../data/catalog/categories.json";
 import palettesJson from "../../data/catalog/palettes.json";
 import productsJson from "../../data/catalog/products.json";
 
+import {
+  enrichProduct,
+  inferProfileType,
+  parseWorkingWidthMm,
+  roundMoney,
+  THREE_M_PRICE_RATIO,
+} from "./derive";
 import type {
   Brand,
   Category,
@@ -64,20 +71,30 @@ function isCategorySlug(value: string): value is CategorySlug {
   return (categorySlugs as readonly string[]).includes(value);
 }
 
-function expandVariants(raw: RawProduct): ProductVariant[] {
+function asVariant(raw: RawVariant): ProductVariant {
+  return {
+    sku: raw.sku,
+    ean: raw.ean ?? "",
+    colorName: raw.colorName,
+    ral: raw.ral,
+    hex: raw.hex,
+    length: raw.length,
+    price: raw.price,
+    inStock: raw.inStock,
+    stockText: raw.stockText,
+    popular: raw.popular,
+    colorFamily: "overig",
+    sampleId: "",
+    options: [
+      { name: "Kleur", value: raw.colorName },
+      { name: "Lengte", value: raw.length },
+    ],
+  };
+}
+
+function expandColorVariants(raw: RawProduct): ProductVariant[] {
   if (raw.variants?.length) {
-    return raw.variants.map((variant) => ({
-      sku: variant.sku,
-      ean: variant.ean ?? "",
-      colorName: variant.colorName,
-      ral: variant.ral,
-      hex: variant.hex,
-      length: variant.length,
-      price: variant.price,
-      inStock: variant.inStock,
-      stockText: variant.stockText,
-      popular: variant.popular,
-    }));
+    return raw.variants.map(asVariant);
   }
 
   const palette = raw.paletteId ? palettes[raw.paletteId] : undefined;
@@ -85,18 +102,52 @@ function expandVariants(raw: RawProduct): ProductVariant[] {
     throw new Error(`Catalogusproduct ${raw.slug} mist varianten of palette.`);
   }
 
-  return palette.map((color) => ({
-    sku: `${raw.skuPrefix}-${color.skuSuffix}`,
-    ean: "",
-    colorName: color.colorName,
-    ral: color.ral,
-    hex: color.hex,
-    length: raw.length ?? "6 m",
-    price: raw.price as number,
-    inStock: raw.inStock ?? true,
-    stockText: raw.stockText,
-    popular: color.popular,
-  }));
+  return palette.map((color) =>
+    asVariant({
+      sku: `${raw.skuPrefix}-${color.skuSuffix}`,
+      ean: "",
+      colorName: color.colorName,
+      ral: color.ral,
+      hex: color.hex,
+      length: raw.length ?? "6 m",
+      price: raw.price as number,
+      inStock: raw.inStock ?? true,
+      stockText: raw.stockText,
+      popular: color.popular,
+    }),
+  );
+}
+
+function threeMeterPrice(slug: string, sixMeterPrice: number) {
+  if (slug === "keralit-sponning-143") return 46.9;
+  return roundMoney(sixMeterPrice * THREE_M_PRICE_RATIO);
+}
+
+function expandLengthVariants(raw: RawProduct, variants: ProductVariant[]): ProductVariant[] {
+  const workingWidthMm = parseWorkingWidthMm(raw.name, raw.specs);
+  const profileType = inferProfileType(raw.name);
+  const facade =
+    raw.category === "gevelbekleding" &&
+    Boolean(workingWidthMm) &&
+    ["sponning", "potdeksel", "rabat", "rondkant", "quattro"].includes(profileType);
+  const lengths = new Set(variants.map((variant) => variant.length));
+  if (!facade || !lengths.has("6 m") || lengths.has("3 m")) return variants;
+
+  const extra = variants
+    .filter((variant) => variant.length === "6 m")
+    .map((variant) => ({
+      ...variant,
+      sku: `${variant.sku}-3M`,
+      length: "3 m",
+      price: threeMeterPrice(raw.slug, variant.price),
+      popular: false,
+      options: [
+        { name: "Kleur", value: variant.colorName },
+        { name: "Lengte", value: "3 m" },
+      ],
+    }));
+
+  return [...variants, ...extra];
 }
 
 function hydrate(raw: RawProduct): Product {
@@ -108,7 +159,7 @@ function hydrate(raw: RawProduct): Product {
     throw new Error(`Onbekend merk: ${raw.brandSlug}`);
   }
 
-  const variants = expandVariants(raw);
+  const variants = expandLengthVariants(raw, expandColorVariants(raw));
   const prices = variants.map((variant) => variant.price);
   const price = Math.min(...prices);
   const inStock = variants.some((variant) => variant.inStock);
@@ -116,7 +167,7 @@ function hydrate(raw: RawProduct): Product {
   const length = uniqueLengths.length === 1 ? uniqueLengths[0] : uniqueLengths.join(" / ");
   const outOfStock = variants.find((variant) => !variant.inStock && variant.stockText);
 
-  return {
+  return enrichProduct({
     slug: raw.slug,
     name: raw.name,
     vendor: raw.vendor,
@@ -133,16 +184,13 @@ function hydrate(raw: RawProduct): Product {
     stockText: inStock ? undefined : outOfStock?.stockText ?? "Levertijd 5 werkdagen",
     meta: `${length} · ${variants.length} ${variants.length === 1 ? "variant" : "kleuren"}`,
     palette: variants.map((variant) => variant.hex),
-    colors: variants.map((variant) => ({
-      name: variant.colorName,
-      hex: variant.hex,
-      ral: variant.ral,
-      popular: variant.popular,
-    })),
+    colors: [],
     length,
     images: [],
     source: "static",
-  };
+    profileType: inferProfileType(raw.name),
+    sampleable: false,
+  });
 }
 
 export const staticProducts: Product[] = (productsJson.items as RawProduct[]).map(hydrate);
@@ -172,6 +220,8 @@ export function shopifyCsvRows() {
     "Published",
     "Option1 Name",
     "Option1 Value",
+    "Option2 Name",
+    "Option2 Value",
     "Variant SKU",
     "Variant Barcode",
     "Variant Price",
@@ -192,6 +242,8 @@ export function shopifyCsvRows() {
         index === 0 ? "TRUE" : "",
         "Kleur",
         variant.colorName,
+        "Lengte",
+        variant.length,
         variant.sku,
         variant.ean,
         variant.price.toFixed(2),
