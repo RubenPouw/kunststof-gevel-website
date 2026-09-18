@@ -26,7 +26,6 @@ import {
   staticProducts,
 } from "./static";
 import type { Brand, Category, CategorySlug, Product } from "./types";
-import { categorySlugs } from "./types";
 
 export type {
   Brand,

@@ -25,16 +25,17 @@ npm start
 
 ## Pagina's
 
-- `/` — home (hero, merken, productgrid)
-- `/gevelbekleding`, `/dakranden`, `/kozijnafwerking`, `/montage` — categorieën (filters `?merk=` en `?voorraad=1`)
-- `/producten/[slug]` — productdetail (variant/SKU, completeer-systeem)
-- `/merken`, `/merken/[slug]` — merken
+- `/` — home (hero, merkenmarquee, assortiment, kleurstalen, bestsellers, projecten)
+- `/gevelbekleding`, `/dakranden`, `/kozijnafwerking`, `/montage` — categorieën (filters `?merk=`, `?type=`, `?kleur=`, `?breedte=`, `?voorraad=1`)
+- `/producten/[slug]` — productdetail (kleur, lengte-SKU, calculator, stalen)
+- `/merken`, `/merken/[slug]` — merken (PLP met sidebarfilters)
+- `/stalen` — aanvraag gratis kleurstalen
 - `/winkelwagen`, `/afrekenen` — checkout in drie stappen (nog geen live betaling)
 - `/zoeken` — zoeken op naam, merk, SKU
 - `/zakelijk`, `/over-ons`, `/projecten`, `/offerte`, `/contact`
 - `/api/health` — health check voor Render
 
-Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aanvragen worden gelogd en de bezoeker krijgt een referentie plus prijsindicatie. De winkelwagen is lokaal (browser, `kg-cart-v2`); betaling is nog geen live koppeling.
+Het offerteformulier valideert op de server. Er is nog geen e-mailkoppeling: aanvragen worden gelogd en de bezoeker krijgt een referentie plus prijsindicatie. Kleurstalen gaan via `/stalen` (max. 4, eigen log). De winkelwagen is lokaal (browser, `kg-cart-v2`); betaling is nog geen live koppeling.
 
 ## Catalogus
 

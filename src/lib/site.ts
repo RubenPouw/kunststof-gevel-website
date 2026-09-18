@@ -1,7 +1,7 @@
 export const site = {
   name: "kunststof-gevel.nl",
   shortName: "Kunststof-gevel",
-  tagline: "Kunststof gevelbekleding, ga ervoor!",
+  tagline: "Nooit meer schilderen.",
   slogan: "Geniet langer van uw huis, ga voor kunststof",
   description:
     "Webshop voor kunststof gevelbekleding, dakranden en kozijnafwerking. Onderhoudsvrij, uit voorraad, of wij regelen de plaatsing. Onderdeel van Cavemen BV.",
@@ -16,7 +16,31 @@ export const site = {
   region: "Heel Nederland",
   kvk: "In oprichting",
   freeShippingFrom: 499,
+  googleScore: "4,9",
+  googleReviews: 312,
+  instagram: "https://www.instagram.com/kunststofgevel",
+  instagramHandle: "@kunststofgevel",
+  gevelsDelivered: "1.200+",
+  since: 2016,
 } as const;
+
+export const hero = {
+  kicker: "Kunststof gevelbekleding · Keralit · VinyPlus · Eurotexx",
+  title: "Nooit meer schilderen.",
+  subtitle: "Vervang hout door kunststof.",
+  body: "Onderhoudsvrije gevelbekleding uit voorraad. Zelf monteren, of wij zetten de gevel. U zit nergens aan vast.",
+  cta: "Bekijk alle producten",
+  samples: "Of kies eerst gratis kleurstalen",
+  micro: "Snelle levering, uit voorraad leverbaar.",
+} as const;
+
+export const heroStats = [
+  { value: "30 jr", label: "levensduur" },
+  { value: "10 jr", label: "kleurvast" },
+  { value: "24 u", label: "bericht" },
+] as const;
+
+export const paymentMethods = ["iDEAL", "Visa", "Mastercard", "PayPal", "Klarna"] as const;
 
 export const shopNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
@@ -26,14 +50,40 @@ export const shopNav = [
   { href: "/zakelijk", label: "Zakelijk" },
 ] as const;
 
-export const footerNav = [
-  ...shopNav,
-  { href: "/montage", label: "Montage" },
-  { href: "/projecten", label: "Projecten" },
-  { href: "/over-ons", label: "Over ons" },
-  { href: "/offerte", label: "Offerte" },
-  { href: "/contact", label: "Contact" },
+export const footerColumns = [
+  {
+    title: "Assortiment",
+    links: [
+      { href: "/gevelbekleding", label: "Gevelbekleding" },
+      { href: "/dakranden", label: "Dakranden" },
+      { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+      { href: "/merken", label: "Merken" },
+    ],
+  },
+  {
+    title: "Klantenservice",
+    links: [
+      { href: "/contact", label: "Contact" },
+      { href: "/offerte", label: "Offerte" },
+      { href: "/stalen", label: "Kleurstalen" },
+      { href: "/winkelwagen", label: "Winkelwagen" },
+      { href: "/zoeken", label: "Zoeken" },
+    ],
+  },
+  {
+    title: "Over ons",
+    links: [
+      { href: "/over-ons", label: "Over ons" },
+      { href: "/zakelijk", label: "Zakelijk" },
+      { href: "/projecten", label: "Projecten" },
+      { href: "/montage", label: "Montage" },
+    ],
+  },
 ] as const;
+
+export const footerNav: { href: string; label: string }[] = footerColumns.flatMap((column) => [
+  ...column.links,
+]);
 
 export const nav = shopNav;
 
@@ -42,6 +92,27 @@ export const uspItems = [
   "Standaard 10 jaar garantie",
   "Direct uit voorraad leverbaar",
   "Google 4,9 / 5",
+] as const;
+
+export const businessPoints = [
+  "Zelfde prijs voor aannemer en particulier",
+  "Bestellen op rekening na eenmalige check",
+  "Voorraad van de merken die we zelf plaatsen",
+] as const;
+
+export const reviews = [
+  {
+    quote: "Binnen een week op de bouw, kleur exact zoals de staal. Geen gedoe.",
+    author: "Mark V., aannemer in Den Bosch",
+  },
+  {
+    quote: "Eindelijk geen schilderwerk meer. De gevel ziet er na twee seizoenen nog strak uit.",
+    author: "Familie de Vries, Bergen",
+  },
+  {
+    quote: "Duidelijke calculator en de hulpstukken stonden er meteen bij. Montage zelf gedaan.",
+    author: "Sanne L., Amersfoort",
+  },
 ] as const;
 
 export type Project = {

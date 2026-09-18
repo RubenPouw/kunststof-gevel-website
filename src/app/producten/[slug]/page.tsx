@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductDetail } from "@/app/producten/[slug]/product-detail";
-import { getCategory, getProduct, getRelatedProducts } from "@/lib/catalog";
+import { getCategory, getProduct, getRelatedProducts, listProducts } from "@/lib/catalog";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -22,11 +22,15 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
   const related = await getRelatedProducts(product);
   const category = await getCategory(product.category);
+  const others = (await listProducts())
+    .filter((item) => item.slug !== product.slug && item.category === product.category)
+    .slice(0, 4);
 
   return (
     <ProductDetail
       product={product}
       related={related}
+      others={others}
       categoryName={category?.name ?? product.category}
     />
   );

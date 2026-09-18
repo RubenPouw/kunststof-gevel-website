@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { ProductCard } from "@/components/brand/product-card";
-import { SegmentBar } from "@/components/brand/segment-bar";
-import type { Brand, Product } from "@/lib/catalog";
+import { ProductListing } from "@/components/catalog/product-listing";
+import { listingHref } from "@/lib/catalog/helpers";
+import type { Brand, ListingFilters, Product } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 
 export function CategoryPage({
@@ -10,79 +10,54 @@ export function CategoryPage({
   title,
   intro,
   products,
+  allProducts,
   brandOptions = [],
   basePath,
-  activeBrand,
-  inStockOnly = false,
+  filters,
 }: {
   kicker: string;
   title: string;
   intro: string;
   products: Product[];
+  allProducts: Product[];
   brandOptions?: Brand[];
   basePath?: string;
-  activeBrand?: string;
-  inStockOnly?: boolean;
+  filters: ListingFilters;
 }) {
-  const showFilters = Boolean(basePath && (brandOptions.length > 1 || products.length > 0));
-
-  function hrefFor(next: { merk?: string; voorraad?: boolean }) {
-    const params = new URLSearchParams();
-    const merk = next.merk === undefined ? activeBrand : next.merk;
-    const voorraad = next.voorraad === undefined ? inStockOnly : next.voorraad;
-    if (merk) params.set("merk", merk);
-    if (voorraad) params.set("voorraad", "1");
-    const query = params.toString();
-    return query ? `${basePath}?${query}` : (basePath ?? ".");
-  }
+  const path = basePath ?? ".";
 
   return (
     <div className="container-kg py-12 sm:py-16">
       <p className="kicker">{kicker}</p>
-      <h1 className="mt-2 max-w-3xl">{title}</h1>
+      <h1 className="display-plp mt-2 max-w-3xl normal-case">{title}</h1>
       <p className="mt-4 max-w-2xl text-[var(--color-text-soft)]">{intro}</p>
-      <SegmentBar size={28} className="mt-8 max-w-xs" />
 
-      {showFilters ? (
-        <div className="mt-8 flex flex-col gap-3">
-          {brandOptions.length > 1 ? (
-            <div className="flex flex-wrap gap-2">
-              <FilterChip href={hrefFor({ merk: "" })} active={!activeBrand}>
-                Alle merken
-              </FilterChip>
-              {brandOptions.map((brand) => (
-                <FilterChip
-                  key={brand.slug}
-                  href={hrefFor({ merk: brand.slug })}
-                  active={activeBrand === brand.slug}
-                >
-                  {brand.name}
-                </FilterChip>
-              ))}
-            </div>
-          ) : null}
-          <div className="flex flex-wrap gap-2">
-            <FilterChip href={hrefFor({ voorraad: false })} active={!inStockOnly}>
-              Alles
+      {brandOptions.length > 1 ? (
+        <div className="mt-8 flex flex-wrap gap-2">
+          <FilterChip href={listingHref(path, filters, { brandSlug: "" })} active={!filters.brandSlug}>
+            Alle merken
+          </FilterChip>
+          {brandOptions.map((brand) => (
+            <FilterChip
+              key={brand.slug}
+              href={listingHref(path, filters, {
+                brandSlug: filters.brandSlug === brand.slug ? "" : brand.slug,
+              })}
+              active={filters.brandSlug === brand.slug}
+            >
+              {brand.name}
             </FilterChip>
-            <FilterChip href={hrefFor({ voorraad: true })} active={inStockOnly}>
-              Op voorraad
-            </FilterChip>
-          </div>
+          ))}
         </div>
       ) : null}
 
-      {products.length === 0 ? (
-        <p className="mt-10 border border-[var(--color-border)] bg-surface px-6 py-12 text-center text-[var(--color-text-muted)]">
-          Geen producten met deze filters.
-        </p>
-      ) : (
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-        </div>
-      )}
+      <ProductListing
+        products={products}
+        allProducts={allProducts}
+        basePath={path}
+        filters={filters}
+        totalUnfiltered={allProducts.length}
+      />
     </div>
   );
 }

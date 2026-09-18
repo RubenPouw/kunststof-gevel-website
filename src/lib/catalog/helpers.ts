@@ -74,16 +74,18 @@ export function listingHref(
   current: ListingFilters,
   patch: Partial<ListingFilters> & { brandSlug?: string | "" },
 ) {
+  const [path, existing] = basePath.split("?");
+  const params = new URLSearchParams(existing);
   const next: ListingFilters = { ...current, ...patch };
-  const params = new URLSearchParams();
   const brand = patch.brandSlug === "" ? undefined : next.brandSlug;
+  ["merk", "voorraad", "type", "kleur", "breedte"].forEach((key) => params.delete(key));
   if (brand) params.set("merk", brand);
   if (next.inStockOnly) params.set("voorraad", "1");
   if (next.profileType) params.set("type", next.profileType);
   if (next.colorFamily) params.set("kleur", next.colorFamily);
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
   const query = params.toString();
-  return query ? `${basePath}?${query}` : basePath;
+  return query ? `${path}?${query}` : path;
 }
 
 export function listingFacets(list: Product[]) {

@@ -7,7 +7,9 @@ import { Search, ShoppingBag } from "lucide-react";
 
 import { Logo } from "@/components/brand/logo";
 import { UspBar } from "@/components/brand/usp-bar";
+import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useCart } from "@/lib/cart";
+import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import { shopNav, uspItems } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +17,9 @@ export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const { count } = useCart();
+  const { items, count: sampleCount } = useSamples();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [trayOpen, setTrayOpen] = useState(false);
   const [query, setQuery] = useState("");
 
   function onSearch(event: FormEvent<HTMLFormElement>) {
@@ -25,12 +29,25 @@ export function SiteHeader() {
     setMenuOpen(false);
   }
 
+  function onSamplesClick() {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches) {
+      setTrayOpen(true);
+      setMenuOpen(false);
+      return;
+    }
+    if (pathname === "/") {
+      document.getElementById("stalen")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    router.push("/#stalen");
+  }
+
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-surface">
-      <div className="container-kg flex h-16 items-center gap-8">
+      <div className="container-kg flex h-16 items-center gap-6 lg:gap-8">
         <Logo size={17} />
 
-        <nav className="hidden shrink-0 items-center gap-[22px] text-[14px] font-medium whitespace-nowrap lg:flex">
+        <nav className="hidden h-16 shrink-0 items-stretch lg:flex">
           {shopNav.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
@@ -38,8 +55,9 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-kg-ink no-underline hover:text-brand",
-                  active && "text-brand",
+                  "flex items-center px-0 py-6 text-[14px] font-medium text-kg-ink no-underline transition-colors duration-150 hover:text-brand",
+                  "mr-[22px] last:mr-0",
+                  active && "box-border border-b-2 border-brand text-kg-ink",
                 )}
               >
                 {item.label}
@@ -50,10 +68,10 @@ export function SiteHeader() {
 
         <form
           onSubmit={onSearch}
-          className="hidden min-w-0 max-w-80 flex-1 items-center gap-2 border border-[var(--color-border-strong)] px-3 py-[9px] text-[13px] text-[var(--color-text-muted)] md:flex"
+          className="hidden h-10 w-[320px] max-w-80 min-w-0 flex-1 items-center gap-2 border border-[var(--color-border-strong)] px-3 text-[13px] text-[var(--color-text-muted)] md:flex"
         >
           <button type="submit" className="grid shrink-0 place-items-center text-kg-ink" aria-label="Zoeken">
-            <Search className="size-3" strokeWidth={1.5} />
+            <Search className="size-3.5" strokeWidth={1.5} />
           </button>
           <input
             type="search"
@@ -64,13 +82,34 @@ export function SiteHeader() {
           />
         </form>
 
-        <div className="ml-auto flex shrink-0 items-center gap-[18px] text-[13px] font-semibold">
+        <div className="ml-auto flex shrink-0 items-center gap-3 text-[13px] font-semibold sm:gap-[18px]">
+          <button
+            type="button"
+            onClick={onSamplesClick}
+            className="hidden min-h-11 items-center gap-2 bg-tint px-2.5 text-[13px] font-semibold text-kg-blue-deep sm:inline-flex"
+            aria-label={`Kleurstalen ${sampleCount} van ${SAMPLE_LIMIT}`}
+          >
+            <span className="flex">
+              {Array.from({ length: Math.max(sampleCount, 1) }, (_, index) => (
+                <span
+                  key={items[index]?.id ?? `empty-${index}`}
+                  className="-ml-1 size-3.5 first:ml-0"
+                  style={{ background: items[index]?.hex ?? "var(--kg-blue-300)" }}
+                />
+              )).slice(0, 4)}
+            </span>
+            Kleurstalen {sampleCount}/{SAMPLE_LIMIT}
+          </button>
           <Link href="/inloggen" className="hidden text-kg-ink no-underline hover:text-brand sm:inline">
             Inloggen
           </Link>
-          <Link href="/winkelwagen" className="inline-flex items-center gap-1.5 text-brand no-underline hover:text-brand-hover">
+          <Link
+            href="/winkelwagen"
+            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-kg-ink no-underline hover:text-brand"
+          >
             <ShoppingBag className="size-4" strokeWidth={1.5} />
-            Winkelwagen ({count})
+            <span className="hidden sm:inline">Winkelwagen</span>{" "}
+            <span className="text-brand">({count})</span>
           </Link>
           <button
             type="button"
@@ -100,6 +139,13 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={onSamplesClick}
+              className="flex min-h-11 items-center text-left text-[15px] font-medium text-kg-ink"
+            >
+              Kleurstalen {sampleCount}/{SAMPLE_LIMIT}
+            </button>
             <Link
               href="/inloggen"
               onClick={() => setMenuOpen(false)}
@@ -116,7 +162,7 @@ export function SiteHeader() {
         className="flex items-center gap-2 border-t border-[var(--color-border)] px-6 py-2 text-[13px] text-[var(--color-text-muted)] md:hidden"
       >
         <button type="submit" className="grid shrink-0 place-items-center text-kg-ink" aria-label="Zoeken">
-          <Search className="size-3" strokeWidth={1.5} />
+          <Search className="size-3.5" strokeWidth={1.5} />
         </button>
         <input
           type="search"
@@ -128,6 +174,7 @@ export function SiteHeader() {
       </form>
 
       <UspBar items={uspItems} />
+      <SampleTraySheet open={trayOpen} onOpenChange={setTrayOpen} />
     </header>
   );
 }

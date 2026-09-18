@@ -5,7 +5,11 @@
   --text-h1: 700 48px / 1 var(--font-heading);
   --text-h2: 700 32px / 1.1 var(--font-heading);
   --text-h3: 600 22px / 1.2 var(--font-heading);
+  --text-display-home: 700 84px / 0.92 var(--font-heading);
+  --text-display-plp: 700 64px / 0.95 var(--font-heading);
+  --text-display-pdp: 700 44px / 1 var(--font-heading);
   --text-price: 700 28px / 1 var(--font-heading);
+  --text-price-lg: 700 40px / 1 var(--font-heading);
   --text-body: 400 16px / 1.6 var(--font-body);
   --text-small: 400 13px / 1.5 var(--font-body);
   --text-button: 600 15px / 1 var(--font-body);

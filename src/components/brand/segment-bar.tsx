@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 type SegmentBarProps = {
   size?: number;
   tone?: "light" | "dark";
-  progress?: 1 | 2 | 3;
+  progress?: 0 | 1 | 2 | 3;
   className?: string;
 };
 

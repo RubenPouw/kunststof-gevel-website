@@ -27,10 +27,10 @@ export async function CategoryListing({
       title={category.name}
       intro={category.summary}
       products={products}
+      allProducts={all}
       brandOptions={await brandsInProducts(all)}
       basePath={`/${slug}`}
-      activeBrand={filters.brandSlug}
-      inStockOnly={filters.inStockOnly}
+      filters={filters}
     />
   );
 }

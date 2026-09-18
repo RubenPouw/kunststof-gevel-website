@@ -21,9 +21,8 @@ export default function ZakelijkPage() {
           inclusief hoekprofielen, startlatten en afvoer van zaagresten.
         </p>
         <p>
-          We werken met een korte lijst merken: Keralit, VinyPlus, Eurotexx en
-          Wooddesign. Dat betekent voorraad, bekende folies en garantie die we
-          uit ons hoofd kennen.
+          We werken met een korte lijst merken die we uit voorraad kennen. Dat
+          betekent bekende folies en garantie die we uit ons hoofd kennen.
         </p>
         <p>
           Bestellen via de webshop of een projectofferte. Altijd binnen 24 uur
