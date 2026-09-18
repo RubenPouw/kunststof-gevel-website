@@ -9,13 +9,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { brands, featuredProductSlugs, products } from "@/lib/catalog";
+import { getFeaturedProducts, listBrands } from "@/lib/catalog";
 import { faqs, site, steps } from "@/lib/site";
 
-export default function HomePage() {
-  const featured = featuredProductSlugs
-    .map((slug) => products.find((product) => product.slug === slug))
-    .filter((product): product is NonNullable<typeof product> => Boolean(product));
+export default async function HomePage() {
+  const [featured, brands] = await Promise.all([getFeaturedProducts(), listBrands()]);
 
   return (
     <div>

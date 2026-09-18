@@ -32,6 +32,12 @@ export type ProductVariant = {
   inStock: boolean;
   stockText?: string;
   popular?: boolean;
+  options?: { name: string; value: string }[];
+};
+
+export type ProductImage = {
+  url: string;
+  alt: string;
 };
 
 export type Brand = {
@@ -65,4 +71,7 @@ export type Product = {
   palette: string[];
   colors: ProductColor[];
   length: string;
+  images: ProductImage[];
+  productType?: string;
+  source?: "static" | "shopify";
 };

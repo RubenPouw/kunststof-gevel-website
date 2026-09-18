@@ -1,292 +1,162 @@
-import brandsJson from "../../data/catalog/brands.json";
-import categoriesJson from "../../data/catalog/categories.json";
-import palettesJson from "../../data/catalog/palettes.json";
-import productsJson from "../../data/catalog/products.json";
+import { cache } from "react";
 
-import type {
+import { isShopifyConfigured } from "@/lib/shopify/config";
+import { fetchShopifySearchHandles, loadShopifyCatalog } from "@/lib/shopify/catalog";
+
+import {
+  applyListingFilters,
+  brandsInProducts as brandsInProductList,
+  filterProductsByQuery,
+  getDefaultVariant,
+  getVariant,
+  getVariantBySku,
+  parseListingSearchParams,
+  relatedProductsOf,
+} from "./helpers";
+import {
+  featuredProductSlugs,
+  getStaticBrand,
+  getStaticCategory,
+  shopifyCsv,
+  shopifyCsvRows,
+  staticBrands,
+  staticCategories,
+  staticProducts,
+} from "./static";
+import type { Brand, Category, CategorySlug, Product } from "./types";
+import { categorySlugs } from "./types";
+
+export type {
   Brand,
   Category,
   CategorySlug,
   Product,
   ProductBadge,
   ProductColor,
+  ProductImage,
   ProductVariant,
   Spec,
 } from "./types";
-import { categorySlugs } from "./types";
-
-export type { Brand, Category, CategorySlug, Product, ProductBadge, ProductColor, ProductVariant, Spec };
 export { categorySlugs };
+export {
+  applyListingFilters,
+  getDefaultVariant,
+  getVariant,
+  getVariantBySku,
+  parseListingSearchParams,
+};
+export { featuredProductSlugs, shopifyCsv, shopifyCsvRows };
 
-type PaletteColor = {
-  skuSuffix: string;
-  colorName: string;
-  ral?: string;
-  hex: string;
-  popular?: boolean;
+export type CatalogData = {
+  products: Product[];
+  brands: Brand[];
+  categories: Category[];
+  source: "shopify" | "static";
 };
 
-type RawVariant = {
-  sku: string;
-  ean?: string;
-  colorName: string;
-  ral?: string;
-  hex: string;
-  length: string;
-  price: number;
-  inStock: boolean;
-  stockText?: string;
-  popular?: boolean;
-};
-
-type RawProduct = {
-  slug: string;
-  name: string;
-  vendor: string;
-  brandSlug: string;
-  category: CategorySlug;
-  badge?: ProductBadge;
-  description: string;
-  specs: Spec[];
-  relatedSlugs: string[];
-  paletteId?: string;
-  skuPrefix?: string;
-  length?: string;
-  price?: number;
-  inStock?: boolean;
-  stockText?: string;
-  variants?: RawVariant[];
-};
-
-const palettes = palettesJson as Record<string, PaletteColor[]>;
-
-export const brands: Brand[] = brandsJson;
-export const categories: Category[] = categoriesJson as Category[];
-
-function isCategorySlug(value: string): value is CategorySlug {
-  return (categorySlugs as readonly string[]).includes(value);
-}
-
-function expandVariants(raw: RawProduct): ProductVariant[] {
-  if (raw.variants?.length) {
-    return raw.variants.map((variant) => ({
-      sku: variant.sku,
-      ean: variant.ean ?? "",
-      colorName: variant.colorName,
-      ral: variant.ral,
-      hex: variant.hex,
-      length: variant.length,
-      price: variant.price,
-      inStock: variant.inStock,
-      stockText: variant.stockText,
-      popular: variant.popular,
-    }));
-  }
-
-  const palette = raw.paletteId ? palettes[raw.paletteId] : undefined;
-  if (!palette?.length || !raw.skuPrefix || raw.price === undefined) {
-    throw new Error(`Catalogusproduct ${raw.slug} mist varianten of palette.`);
-  }
-
-  return palette.map((color) => ({
-    sku: `${raw.skuPrefix}-${color.skuSuffix}`,
-    ean: "",
-    colorName: color.colorName,
-    ral: color.ral,
-    hex: color.hex,
-    length: raw.length ?? "6 m",
-    price: raw.price as number,
-    inStock: raw.inStock ?? true,
-    stockText: raw.stockText,
-    popular: color.popular,
-  }));
-}
-
-function hydrate(raw: RawProduct): Product {
-  if (!isCategorySlug(raw.category)) {
-    throw new Error(`Onbekende categorie: ${raw.category}`);
-  }
-  const brand = brands.find((item) => item.slug === raw.brandSlug);
-  if (!brand) {
-    throw new Error(`Onbekend merk: ${raw.brandSlug}`);
-  }
-
-  const variants = expandVariants(raw);
-  const prices = variants.map((variant) => variant.price);
-  const price = Math.min(...prices);
-  const inStock = variants.some((variant) => variant.inStock);
-  const uniqueLengths = [...new Set(variants.map((variant) => variant.length))];
-  const length = uniqueLengths.length === 1 ? uniqueLengths[0] : uniqueLengths.join(" / ");
-  const outOfStock = variants.find((variant) => !variant.inStock && variant.stockText);
-
+function staticCatalog(): CatalogData {
   return {
-    slug: raw.slug,
-    name: raw.name,
-    vendor: raw.vendor,
-    brand: brand.name,
-    brandSlug: brand.slug,
-    category: raw.category,
-    description: raw.description,
-    specs: raw.specs,
-    relatedSlugs: raw.relatedSlugs,
-    badge: raw.badge,
-    variants,
-    price,
-    inStock,
-    stockText: inStock ? undefined : outOfStock?.stockText ?? "Levertijd 5 werkdagen",
-    meta: `${length} · ${variants.length} ${variants.length === 1 ? "variant" : "kleuren"}`,
-    palette: variants.map((variant) => variant.hex),
-    colors: variants.map((variant) => ({
-      name: variant.colorName,
-      hex: variant.hex,
-      ral: variant.ral,
-      popular: variant.popular,
-    })),
-    length,
+    products: staticProducts,
+    brands: staticBrands,
+    categories: staticCategories,
+    source: "static",
   };
 }
 
-export const products: Product[] = (productsJson.items as RawProduct[]).map(hydrate);
-
-export const featuredProductSlugs = productsJson.featuredSlugs as readonly string[];
-
-export function getProduct(slug: string) {
-  return products.find((product) => product.slug === slug);
-}
-
-export function getVariant(product: Product, sku: string) {
-  return product.variants.find((variant) => variant.sku === sku);
-}
-
-export function getVariantBySku(sku: string) {
-  for (const product of products) {
-    const variant = getVariant(product, sku);
-    if (variant) return { product, variant };
+export const getCatalog = cache(async (): Promise<CatalogData> => {
+  if (!isShopifyConfigured()) {
+    return staticCatalog();
   }
-  return undefined;
-}
 
-export function getDefaultVariant(product: Product) {
-  return product.variants.find((variant) => variant.popular) ?? product.variants[0];
-}
-
-export function getProductsByCategory(category: CategorySlug) {
-  return products.filter((product) => product.category === category);
-}
-
-export function getProductsByBrand(brandSlug: string) {
-  return products.filter((product) => product.brandSlug === brandSlug);
-}
-
-export function getRelatedProducts(product: Product) {
-  return product.relatedSlugs
-    .map((slug) => getProduct(slug))
-    .filter((item): item is Product => Boolean(item));
-}
-
-export function searchProducts(query: string) {
-  const q = query.trim().toLowerCase();
-  if (!q) return products;
-  return products.filter((product) => {
-    const haystack = [
-      product.name,
-      product.brand,
-      product.vendor,
-      product.meta,
-      product.category,
-      product.slug,
-      ...product.variants.flatMap((variant) => [variant.sku, variant.ean, variant.colorName]),
-    ]
-      .join(" ")
-      .toLowerCase();
-    return haystack.includes(q);
-  });
-}
-
-export function applyListingFilters(
-  list: Product[],
-  filters: { brandSlug?: string; inStockOnly?: boolean },
-) {
-  return list.filter((product) => {
-    if (filters.brandSlug && product.brandSlug !== filters.brandSlug) return false;
-    if (filters.inStockOnly && !product.inStock) return false;
-    return true;
-  });
-}
-
-export function brandsInProducts(list: Product[]) {
-  const slugs = [...new Set(list.map((product) => product.brandSlug))];
-  return slugs
-    .map((slug) => brands.find((brand) => brand.slug === slug))
-    .filter((brand): brand is Brand => Boolean(brand));
-}
-
-export function getCategory(slug: string) {
-  return categories.find((category) => category.slug === slug);
-}
-
-export function getBrand(slug: string) {
-  return brands.find((brand) => brand.slug === slug);
-}
-
-export function parseListingSearchParams(searchParams: Record<string, string | string[] | undefined>) {
-  const merkRaw = searchParams.merk;
-  const voorraadRaw = searchParams.voorraad;
-  const brandSlug = Array.isArray(merkRaw) ? merkRaw[0] : merkRaw;
-  const voorraad = Array.isArray(voorraadRaw) ? voorraadRaw[0] : voorraadRaw;
-  return {
-    brandSlug: brandSlug || undefined,
-    inStockOnly: voorraad === "1",
-  };
-}
-
-export function shopifyCsvRows() {
-  const header = [
-    "Handle",
-    "Title",
-    "Body (HTML)",
-    "Vendor",
-    "Type",
-    "Tags",
-    "Published",
-    "Option1 Name",
-    "Option1 Value",
-    "Variant SKU",
-    "Variant Barcode",
-    "Variant Price",
-    "Variant Grams",
-    "Variant Inventory Qty",
-    "Status",
-  ];
-  const rows = [header];
-  for (const product of products) {
-    product.variants.forEach((variant, index) => {
-      rows.push([
-        product.slug,
-        index === 0 ? product.name : "",
-        index === 0 ? product.description : "",
-        index === 0 ? product.vendor : "",
-        index === 0 ? product.category : "",
-        index === 0 ? product.brandSlug : "",
-        index === 0 ? "TRUE" : "",
-        "Kleur",
-        variant.colorName,
-        variant.sku,
-        variant.ean,
-        variant.price.toFixed(2),
-        "",
-        variant.inStock ? "10" : "0",
-        index === 0 ? "active" : "",
-      ]);
-    });
+  try {
+    const shopify = await loadShopifyCatalog();
+    if (!shopify.products.length) {
+      console.warn("[catalog] Shopify gaf geen producten; val terug op statische catalogus.");
+      return staticCatalog();
+    }
+    return {
+      products: shopify.products,
+      brands: shopify.brands.length ? shopify.brands : staticBrands,
+      categories: shopify.categories,
+      source: "shopify",
+    };
+  } catch (error) {
+    console.error("[catalog] Shopify Storefront mislukt, statische fallback", error);
+    return staticCatalog();
   }
-  return rows;
+});
+
+export async function listProducts() {
+  return (await getCatalog()).products;
 }
 
-export function shopifyCsv() {
-  return shopifyCsvRows()
-    .map((row) =>
-      row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","),
-    )
-    .join("\n");
+export async function listBrands() {
+  return (await getCatalog()).brands;
 }
+
+export async function listCategories() {
+  return (await getCatalog()).categories;
+}
+
+export async function getProduct(slug: string) {
+  return (await listProducts()).find((product) => product.slug === slug);
+}
+
+export async function getCategory(slug: string) {
+  return getStaticCategory(slug) ?? (await listCategories()).find((category) => category.slug === slug);
+}
+
+export async function getBrand(slug: string) {
+  return (await listBrands()).find((brand) => brand.slug === slug) ?? getStaticBrand(slug);
+}
+
+export async function getProductsByCategory(category: CategorySlug) {
+  return (await listProducts()).filter((product) => product.category === category);
+}
+
+export async function getProductsByBrand(brandSlug: string) {
+  return (await listProducts()).filter((product) => product.brandSlug === brandSlug);
+}
+
+export async function getRelatedProducts(product: Product) {
+  return relatedProductsOf(product, await listProducts());
+}
+
+export async function searchProducts(query: string) {
+  const products = await listProducts();
+  const local = filterProductsByQuery(products, query);
+  if (!query.trim() || !isShopifyConfigured()) return local;
+
+  try {
+    const handles = await fetchShopifySearchHandles(query);
+    if (!handles.length) return local;
+    const byHandle = new Map(products.map((product) => [product.slug, product]));
+    const fromSearch = handles
+      .map((handle) => byHandle.get(handle))
+      .filter((product): product is Product => Boolean(product));
+    const extra = local.filter((product) => !fromSearch.some((item) => item.slug === product.slug));
+    return [...fromSearch, ...extra];
+  } catch {
+    return local;
+  }
+}
+
+export async function brandsInProducts(list: Product[]) {
+  return brandsInProductList(list, await listBrands());
+}
+
+export async function getFeaturedProducts() {
+  const products = await listProducts();
+  const bySlug = new Map(products.map((product) => [product.slug, product]));
+  const featured = featuredProductSlugs
+    .map((slug) => bySlug.get(slug))
+    .filter((product): product is Product => Boolean(product));
+  if (featured.length) return featured;
+
+  const gevel = products.filter((product) => product.category === "gevelbekleding");
+  return (gevel.length ? gevel : products).slice(0, 4);
+}
+
+export const brands = staticBrands;
+export const categories = staticCategories;
+export const products = staticProducts;
