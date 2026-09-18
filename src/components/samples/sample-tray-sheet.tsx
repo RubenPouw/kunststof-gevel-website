@@ -18,6 +18,8 @@ export function SampleTraySheet({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  if (!open) return null;
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
