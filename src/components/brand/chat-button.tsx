@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, X } from "lucide-react";
 
 import { site } from "@/lib/site";
 
@@ -25,23 +24,23 @@ export function ChatButton() {
           ref={panelRef}
           role="dialog"
           aria-label="Chat"
-          className="w-[min(calc(100vw-2rem),20rem)] border border-[var(--color-border-strong)] bg-surface p-5"
+          className="w-[min(calc(100vw-2rem),20rem)] border border-kg-lijn bg-white p-5"
         >
           <div className="flex items-start justify-between gap-3">
-            <p className="font-heading text-[22px] font-semibold">Hebt u een vraag?</p>
+            <p className="text-[22px] font-bold tracking-[-0.03em]">Hebt u een vraag?</p>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="grid size-11 place-items-center text-kg-ink"
+              className="grid size-11 place-items-center text-kg-navy"
               aria-label="Chat sluiten"
             >
-              <X strokeWidth={1.5} />
+              ×
             </button>
           </div>
-          <p className="mt-2 text-[13px] text-[var(--color-text-muted)]">
+          <p className="mt-2 font-mono text-[13px] text-kg-text-2">
             Altijd binnen 24 uur bericht. Op werkdagen {site.hours}.
           </p>
-          <div className="mt-4 flex flex-col gap-2 text-[15px] font-semibold">
+          <div className="mt-4 flex flex-col gap-2 text-[15px] font-medium">
             <a href={site.whatsapp} target="_blank" rel="noreferrer">
               WhatsApp
             </a>
@@ -53,11 +52,11 @@ export function ChatButton() {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="grid size-[52px] place-items-center bg-brand text-white"
+        className="grid size-[52px] place-items-center bg-kg-navy font-mono text-[12px] font-medium text-kg-kalk"
         aria-expanded={open}
         aria-label={open ? "Chat sluiten" : "Chat openen"}
       >
-        {open ? <X strokeWidth={1.5} /> : <MessageCircle strokeWidth={1.5} />}
+        {open ? "×" : "Chat"}
       </button>
     </div>
   );

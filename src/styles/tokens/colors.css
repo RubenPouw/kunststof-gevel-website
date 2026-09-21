@@ -1,49 +1,54 @@
 :root {
-  /* Basis */
-  --kg-blue: #2457ff; /* Luminous Blue — merk */
-  --kg-blue-deep: #16307a; /* verloop-eindpunt, hover */
-  --kg-blue-300: #7fa3ff; /* segment, tekst op donker */
-  --kg-blue-100: #d6e0ff; /* tinten, tags, sectieverloop */
-  --kg-orange: #ff6a1f; /* Energy Orange — uitsluitend actie */
-  --kg-orange-hover: #e85c14;
-  --kg-orange-300: #ffb088; /* verloop-start, gloed */
-  --kg-ink: #0e1626;
-  --kg-ink-soft: #3a4150;
-  --kg-muted: #5b6270;
-  --kg-offwhite: #f5f4f0;
+  /* Cavesupplies Brandbook — zes kleuren */
   --kg-white: #ffffff;
-  --kg-hairline: rgba(14, 22, 38, 0.14);
-  --kg-hairline-strong: rgba(14, 22, 38, 0.2);
-  --kg-on-orange: #1a1206;
+  --kg-kalk: #f4f2ed;
+  --kg-navy: #1b2838;
+  --kg-navy-2: #22354a;
+  --kg-line-dark: #2a4258;
+  --kg-text-2: #4a5568;
+  --kg-grind: #b9c0c7;
+  --kg-lijn: #ddd9d0;
+  --kg-signal: #ffd400;
+  --kg-stock: #2e7a6c;
+  --kg-alert: #8e4a3c;
+  --kg-placeholder: #c9c4b8;
+  --kg-placeholder-2: #d9d5cb;
+
+  /* Aliassen zodat bestaande kg-* klassen de huisstijl erven */
+  --kg-blue: var(--kg-navy);
+  --kg-blue-deep: var(--kg-navy-2);
+  --kg-blue-300: var(--kg-grind);
+  --kg-blue-100: var(--kg-kalk);
+  --kg-orange: var(--kg-signal);
+  --kg-orange-hover: #f5b800;
+  --kg-orange-300: #ffe45c;
+  --kg-ink: var(--kg-navy);
+  --kg-ink-soft: var(--kg-text-2);
+  --kg-muted: var(--kg-text-2);
+  --kg-offwhite: var(--kg-kalk);
+  --kg-hairline: var(--kg-lijn);
+  --kg-hairline-strong: var(--kg-lijn);
+  --kg-on-orange: var(--kg-navy);
 
   /* Semantisch */
-  --color-bg: var(--kg-offwhite);
+  --color-bg: var(--kg-white);
   --color-surface: var(--kg-white);
-  --color-text: var(--kg-ink);
-  --color-text-soft: var(--kg-ink-soft);
-  --color-text-muted: var(--kg-muted);
-  --color-brand: var(--kg-blue);
-  --color-brand-hover: var(--kg-blue-deep);
-  --color-action: var(--kg-orange);
-  --color-action-hover: var(--kg-orange-hover);
-  --color-on-action: var(--kg-on-orange);
-  --color-tint: var(--kg-blue-100);
-  --color-border: var(--kg-hairline);
-  --color-border-strong: var(--kg-hairline-strong);
-  --color-focus: var(--kg-blue);
+  --color-text: var(--kg-navy);
+  --color-text-soft: var(--kg-text-2);
+  --color-text-muted: var(--kg-text-2);
+  --color-brand: var(--kg-navy);
+  --color-brand-hover: var(--kg-navy-2);
+  --color-action: var(--kg-navy);
+  --color-action-hover: var(--kg-navy-2);
+  --color-on-action: var(--kg-kalk);
+  --color-tint: var(--kg-kalk);
+  --color-border: var(--kg-lijn);
+  --color-border-strong: var(--kg-lijn);
+  --color-focus: var(--kg-navy);
 
-  /* Verlopen */
-  --gradient-brand: linear-gradient(120deg, #2457ff 0%, #16307a 100%);
-  --gradient-ink: linear-gradient(120deg, #0e1626 0%, #16307a 100%);
-  --gradient-light: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #f5f4f0 55%,
-    #d6e0ff 100%
-  );
-  --glow-orange: radial-gradient(
-    circle,
-    rgba(255, 106, 31, 0.45) 0%,
-    rgba(255, 106, 31, 0) 65%
-  );
+  --gradient-signal: linear-gradient(135deg, #ffe45c, #f5b800);
+  --gradient-brand: var(--gradient-signal);
+  --gradient-ink: var(--kg-navy);
+  --gradient-light: var(--kg-kalk);
+  --glow-orange: none;
 }

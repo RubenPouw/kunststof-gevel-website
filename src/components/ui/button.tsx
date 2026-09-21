@@ -4,30 +4,34 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center border text-[15px] leading-none font-semibold whitespace-nowrap transition-colors duration-150 outline-none select-none disabled:pointer-events-none disabled:opacity-45 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex shrink-0 items-center justify-center border text-[15px] leading-none font-medium whitespace-nowrap transition-colors duration-150 outline-none select-none disabled:pointer-events-none disabled:opacity-45 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-action text-on-action hover:bg-action-hover",
+          "border-transparent bg-kg-navy text-kg-kalk hover:bg-kg-navy-2",
         primary:
-          "border-transparent bg-action text-on-action hover:bg-action-hover",
+          "border-transparent bg-kg-navy text-kg-kalk hover:bg-kg-navy-2",
         secondary:
-          "border-transparent bg-brand text-white hover:bg-brand-hover",
+          "border-kg-navy bg-transparent text-kg-navy hover:bg-kg-kalk",
         tertiary:
-          "border-[1.5px] border-kg-ink bg-transparent text-kg-ink hover:bg-tint",
+          "border-kg-navy bg-transparent text-kg-navy hover:bg-kg-kalk",
         outline:
-          "border-[1.5px] border-kg-ink bg-transparent text-kg-ink hover:bg-tint",
-        ghost: "border-transparent bg-transparent text-kg-ink hover:bg-tint",
-        link: "border-0 bg-transparent p-0 text-brand underline hover:text-brand-hover",
+          "border-kg-navy bg-transparent text-kg-navy hover:bg-kg-kalk",
+        ghost: "border-transparent bg-transparent text-kg-navy hover:bg-kg-kalk",
+        link: "border-0 bg-transparent p-0 text-kg-navy underline underline-offset-4 hover:text-kg-navy",
         destructive:
-          "border-kg-ink bg-transparent text-kg-ink hover:bg-kg-offwhite",
+          "border-kg-navy bg-transparent text-kg-navy hover:bg-kg-kalk",
+        signal:
+          "border-transparent bg-kg-signal text-kg-navy hover:bg-kg-signal",
+        "on-dark":
+          "border-[var(--kg-grind)] bg-transparent text-kg-kalk hover:bg-kg-navy-2",
       },
       size: {
-        default: "min-h-11 px-[18px] py-3",
-        xs: "min-h-11 px-3 py-2 text-[13px]",
-        sm: "min-h-11 px-3.5 py-2.5 text-[14px]",
-        lg: "min-h-11 px-5 py-3",
+        default: "h-12 min-h-11 px-[18px]",
+        xs: "h-10 min-h-10 px-3 text-[13px]",
+        sm: "h-11 min-h-11 px-3.5 text-[14px]",
+        lg: "h-12 min-h-11 px-5",
         icon: "size-11",
         "icon-xs": "size-11",
         "icon-sm": "size-11",

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function SampleAddButton({
   sample,
   className,
-  label = "+ staal",
+  label = "Staal",
 }: {
   sample: SampleColor;
   className?: string;
@@ -24,9 +24,9 @@ export function SampleAddButton({
       onClick={() => toggle(sample)}
       disabled={blocked}
       className={cn(
-        buttonVariants({ variant: "outline" }),
+        buttonVariants({ variant: "outline", size: "sm" }),
         "text-[14px]",
-        selected && "bg-tint",
+        selected && "bg-kg-kalk",
         className,
       )}
     >

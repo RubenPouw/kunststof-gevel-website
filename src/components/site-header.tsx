@@ -3,15 +3,22 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { Search, ShoppingBag } from "lucide-react";
 
 import { Logo } from "@/components/brand/logo";
-import { UspBar } from "@/components/brand/usp-bar";
 import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
-import { shopNav, uspItems } from "@/lib/site";
+import { shopNav } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 48 48" width="14" height="14" fill="none" stroke="#4A5568" strokeWidth="4" aria-hidden>
+      <circle cx="21" cy="21" r="13" />
+      <path d="M31 31l11 11" />
+    </svg>
+  );
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -42,12 +49,14 @@ export function SiteHeader() {
     router.push("/#stalen");
   }
 
-  return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-surface">
-      <div className="container-kg flex h-16 items-center gap-6 lg:gap-8">
-        <Logo size={17} />
+  const trayDots = Array.from({ length: SAMPLE_LIMIT }, (_, index) => items[index]?.hex ?? "#DDD9D0");
 
-        <nav className="hidden h-16 shrink-0 items-stretch lg:flex">
+  return (
+    <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy">
+      <div className="container-kg flex h-[72px] items-center gap-4 lg:gap-6">
+        <Logo size={20} tone="dark" />
+
+        <nav className="hidden items-center gap-2 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
           {shopNav.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
@@ -55,9 +64,8 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center px-0 py-6 text-[14px] font-medium text-kg-ink no-underline transition-colors duration-150 hover:text-brand",
-                  "mr-[22px] last:mr-0",
-                  active && "box-border border-b-2 border-brand text-kg-ink",
+                  "px-2.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline",
+                  active && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
                 )}
               >
                 {item.label}
@@ -68,48 +76,49 @@ export function SiteHeader() {
 
         <form
           onSubmit={onSearch}
-          className="hidden h-10 w-[320px] max-w-80 min-w-0 flex-1 items-center gap-2 border border-[var(--color-border-strong)] px-3 text-[13px] text-[var(--color-text-muted)] md:flex"
+          className="hidden h-10 max-w-[260px] min-w-0 flex-1 items-center gap-2 bg-white px-3 md:flex"
         >
-          <button type="submit" className="grid shrink-0 place-items-center text-kg-ink" aria-label="Zoeken">
-            <Search className="size-3.5" strokeWidth={1.5} />
+          <button type="submit" className="grid shrink-0 place-items-center" aria-label="Zoeken">
+            <SearchIcon />
           </button>
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Zoek op product, artikelnummer…"
-            className="min-w-0 flex-1 bg-transparent text-kg-ink outline-none placeholder:text-[var(--color-text-muted)]"
+            placeholder="Zoek op product of artikelnummer"
+            className="min-w-0 flex-1 bg-transparent text-[14px] text-kg-navy outline-none placeholder:text-kg-text-2"
           />
         </form>
 
-        <div className="ml-auto flex shrink-0 items-center gap-3 text-[13px] font-semibold sm:gap-[18px]">
+        <div className="ml-auto flex shrink-0 items-center gap-2">
           <button
             type="button"
             onClick={onSamplesClick}
-            className="hidden min-h-11 items-center gap-2 bg-tint px-2.5 text-[13px] font-semibold text-kg-blue-deep sm:inline-flex"
-            aria-label={`Kleurstalen ${sampleCount} van ${SAMPLE_LIMIT}`}
+            className="hidden h-10 items-center gap-2.5 border border-[var(--kg-grind)] px-3 text-[14px] font-medium text-kg-kalk transition-colors duration-150 hover:bg-kg-navy-2 sm:inline-flex"
+            aria-label={`Stalen ${sampleCount} van ${SAMPLE_LIMIT}`}
           >
-            <span className="flex">
-              {Array.from({ length: Math.max(sampleCount, 1) }, (_, index) => (
+            <span className="flex pl-1">
+              {trayDots.map((hex, index) => (
                 <span
-                  key={items[index]?.id ?? `empty-${index}`}
-                  className="-ml-1 size-3.5 first:ml-0"
-                  style={{ background: items[index]?.hex ?? "var(--kg-blue-300)" }}
+                  key={index}
+                  className="-ml-1 size-3.5 border-2 border-kg-navy first:ml-0"
+                  style={{ background: hex }}
                 />
-              )).slice(0, 4)}
+              ))}
             </span>
-            Kleurstalen {sampleCount}/{SAMPLE_LIMIT}
+            Stalen <span className="font-mono">{sampleCount}/4</span>
           </button>
-          <Link href="/inloggen" className="hidden text-kg-ink no-underline hover:text-brand sm:inline">
-            Inloggen
+          <Link
+            href="/inloggen"
+            className="hidden h-10 items-center px-3 font-mono text-[13px] text-kg-grind no-underline hover:text-kg-kalk hover:no-underline sm:inline-flex"
+          >
+            Account
           </Link>
           <Link
             href="/winkelwagen"
-            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-kg-ink no-underline hover:text-brand"
+            className="inline-flex h-10 items-center gap-2 bg-kg-signal px-3.5 text-[14px] font-medium text-kg-navy no-underline hover:text-kg-navy hover:no-underline"
           >
-            <ShoppingBag className="size-4" strokeWidth={1.5} />
-            <span className="hidden sm:inline">Winkelwagen</span>{" "}
-            <span className="text-brand">({count})</span>
+            Winkelwagen <span className="font-mono text-[13px]">{count}</span>
           </Link>
           <button
             type="button"
@@ -119,22 +128,22 @@ export function SiteHeader() {
             onClick={() => setMenuOpen((value) => !value)}
           >
             <span className="flex w-4 flex-col gap-[5px]">
-              <span className="block h-0.5 bg-kg-ink" />
-              <span className="block h-0.5 bg-kg-ink" />
+              <span className="block h-0.5 bg-kg-kalk" />
+              <span className="block h-0.5 bg-kg-kalk" />
             </span>
           </button>
         </div>
       </div>
 
       {menuOpen ? (
-        <div className="border-t border-[var(--color-border)] bg-surface px-6 py-4 lg:hidden">
+        <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 lg:hidden">
           <nav className="flex flex-col">
             {shopNav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className="flex min-h-11 items-center text-[15px] font-medium text-kg-ink no-underline"
+                className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk"
               >
                 {item.label}
               </Link>
@@ -142,16 +151,16 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={onSamplesClick}
-              className="flex min-h-11 items-center text-left text-[15px] font-medium text-kg-ink"
+              className="flex min-h-11 items-center text-left text-[15px] font-medium text-kg-kalk"
             >
-              Kleurstalen {sampleCount}/{SAMPLE_LIMIT}
+              Stalen {sampleCount}/{SAMPLE_LIMIT}
             </button>
             <Link
               href="/inloggen"
               onClick={() => setMenuOpen(false)}
-              className="flex min-h-11 items-center text-[15px] font-medium text-kg-ink no-underline"
+              className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline"
             >
-              Inloggen
+              Account
             </Link>
           </nav>
         </div>
@@ -159,21 +168,20 @@ export function SiteHeader() {
 
       <form
         onSubmit={onSearch}
-        className="flex items-center gap-2 border-t border-[var(--color-border)] px-6 py-2 text-[13px] text-[var(--color-text-muted)] md:hidden"
+        className="flex items-center gap-2 border-t border-[var(--kg-line-dark)] bg-white px-6 py-2 text-[13px] md:hidden"
       >
-        <button type="submit" className="grid shrink-0 place-items-center text-kg-ink" aria-label="Zoeken">
-          <Search className="size-3.5" strokeWidth={1.5} />
+        <button type="submit" className="grid shrink-0 place-items-center" aria-label="Zoeken">
+          <SearchIcon />
         </button>
         <input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Zoek op product, artikelnummer…"
-          className="min-h-11 min-w-0 flex-1 bg-transparent text-kg-ink outline-none placeholder:text-[var(--color-text-muted)]"
+          placeholder="Zoek op product of artikelnummer"
+          className="min-h-11 min-w-0 flex-1 bg-transparent text-kg-navy outline-none placeholder:text-kg-text-2"
         />
       </form>
 
-      <UspBar items={uspItems} />
       <SampleTraySheet open={trayOpen} onOpenChange={setTrayOpen} />
     </header>
   );

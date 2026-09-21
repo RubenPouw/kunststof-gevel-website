@@ -2,14 +2,14 @@
 
 import { useEffect } from "react";
 
-import { ColorPanel } from "@/components/brand/color-panel";
+import { SectionHead } from "@/components/brand/section-head";
 import { SampleTrayCard } from "@/components/samples/sample-tray-card";
 import type { SampleColor } from "@/lib/catalog/types";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
 export function SamplesSection({ colors }: { colors: SampleColor[] }) {
-  const { has, toggle, count } = useSamples();
+  const { has, toggle, count, items } = useSamples();
 
   useEffect(() => {
     if (window.location.hash !== "#stalen") return;
@@ -18,17 +18,16 @@ export function SamplesSection({ colors }: { colors: SampleColor[] }) {
 
   return (
     <section id="stalen" className="container-kg section-kg scroll-mt-[130px]">
-      <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
+      <div className="grid gap-8 lg:grid-cols-[8fr_4fr]">
         <div>
-          <p className="kicker">Gratis kleurstalen</p>
-          <h2 className="mt-2 font-heading text-[44px] leading-none font-bold uppercase">Kies je kleur</h2>
-          <p className="mt-4 max-w-xl text-[var(--color-text-soft)]">
-            Vraag tot vier kleuren gratis aan. U ziet de folie in uw licht, zonder verplichting.
-            Kies hieronder; de tray rechts houdt bij wat u meeneemt.
+          <SectionHead title="Kies je kleur" aside="Gratis · maximaal 4 stalen" />
+          <p className="mb-5 max-w-[560px] text-kg-text-2">
+            Echte paneelstalen, binnen 2 werkdagen thuis. Kies in daglicht, niet op een scherm.
           </p>
-          <div className="mt-8 grid grid-cols-3 gap-px bg-[var(--color-border)] sm:grid-cols-4 md:grid-cols-6">
-            {colors.map((color) => {
+          <div className="grid grid-cols-3 gap-x-5 gap-y-3 sm:grid-cols-4 md:grid-cols-6">
+            {colors.slice(0, 12).map((color) => {
               const selected = has(color.id);
+              const pos = items.findIndex((item) => item.id === color.id);
               const blocked = !selected && count >= SAMPLE_LIMIT;
               return (
                 <button
@@ -36,28 +35,26 @@ export function SamplesSection({ colors }: { colors: SampleColor[] }) {
                   type="button"
                   onClick={() => toggle(color)}
                   disabled={blocked}
-                  className="relative bg-kg-offwhite p-0 text-left transition-colors duration-150 disabled:opacity-45"
+                  className="relative text-left disabled:opacity-45"
                 >
-                  <div className="relative aspect-square">
-                    <ColorPanel hex={color.hex} className="absolute inset-0" />
+                  <div
+                    className={cn("relative aspect-square", selected && "outline outline-2 outline-offset-2 outline-kg-navy")}
+                    style={{ background: color.hex }}
+                  >
                     {selected ? (
-                      <span className="absolute top-2 right-2 grid size-6 place-items-center bg-brand text-[12px] font-bold text-white">
-                        ✓
+                      <span className="absolute top-1.5 right-1.5 bg-kg-navy px-1.5 py-0.5 font-mono text-[11px] text-kg-signal">
+                        {String(pos + 1).padStart(2, "0")}
                       </span>
                     ) : null}
                   </div>
-                  <span className="block px-2 py-2">
-                    <span className="block text-[14px] font-medium">{color.colorName}</span>
-                    <span className="block text-[11px] text-[var(--color-text-muted)]">
-                      {color.ral ?? color.brandName}
-                    </span>
-                  </span>
+                  <span className="mt-2 block text-[15px] font-medium">{color.colorName}</span>
+                  <span className="block font-mono text-[12px] text-kg-text-2">{color.ral ?? color.brandName}</span>
                 </button>
               );
             })}
           </div>
         </div>
-        <SampleTrayCard className={cn("lg:sticky lg:top-[130px] h-fit")} />
+        <SampleTrayCard className="h-fit lg:sticky lg:top-[130px]" />
       </div>
     </section>
   );

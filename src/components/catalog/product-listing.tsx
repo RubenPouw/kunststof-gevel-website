@@ -30,8 +30,8 @@ export function ProductListing({
   const shown = products.slice(0, visible);
 
   return (
-    <div className="mt-12 grid gap-10 lg:grid-cols-[260px_1fr] lg:gap-10">
-      <aside className="lg:sticky lg:top-[130px] h-fit">
+    <div className="mt-10 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
+      <aside className="h-fit lg:sticky lg:top-[130px]">
         {facets.profileTypes.length > 1 ? (
           <FilterSection title="Producttype">
             {facets.profileTypes.map((item) => {
@@ -41,8 +41,8 @@ export function ProductListing({
                   <Link
                     href={listingHref(basePath, filters, { profileType: active ? undefined : item.slug })}
                     className={cn(
-                      "grid size-[18px] place-items-center border-[1.5px] border-kg-ink text-[11px] text-white no-underline",
-                      active && "bg-brand border-brand",
+                      "grid size-4 place-items-center border border-kg-navy text-[10px] text-white no-underline hover:no-underline",
+                      active && "bg-kg-navy",
                     )}
                     aria-pressed={active}
                   >
@@ -50,10 +50,10 @@ export function ProductListing({
                   </Link>
                   <Link
                     href={listingHref(basePath, filters, { profileType: active ? undefined : item.slug })}
-                    className="flex flex-1 items-baseline justify-between gap-2 text-[15px] text-kg-ink no-underline hover:text-kg-ink"
+                    className="flex flex-1 items-baseline justify-between gap-2 text-[15px] text-kg-navy no-underline hover:no-underline"
                   >
                     {profileTypeLabels[item.slug]}
-                    <span className="text-[12px] text-[var(--color-text-muted)]">{item.count}</span>
+                    <span className="font-mono text-[12px] text-kg-text-2">{item.count}</span>
                   </Link>
                 </label>
               );
@@ -68,17 +68,14 @@ export function ProductListing({
                 <Link
                   key={item.slug}
                   href={listingHref(basePath, filters, { colorFamily: active ? undefined : item.slug })}
-                  className="flex min-h-11 items-center gap-3 text-[15px] text-kg-ink no-underline hover:text-kg-ink"
+                  className="flex min-h-11 items-center gap-3 text-[15px] text-kg-navy no-underline hover:no-underline"
                 >
                   <span
-                    className={cn(
-                      "size-[18px] border border-[var(--color-border)]",
-                      active && "outline outline-[1.5px] outline-brand outline-offset-1",
-                    )}
+                    className={cn("size-4", active && "outline outline-2 outline-offset-1 outline-kg-navy")}
                     style={{ background: item.hex }}
                   />
                   {colorFamilyLabels[item.slug]}
-                  <span className="ml-auto text-[12px] text-[var(--color-text-muted)]">{item.count}</span>
+                  <span className="ml-auto font-mono text-[12px] text-kg-text-2">{item.count}</span>
                 </Link>
               );
             })}
@@ -94,10 +91,10 @@ export function ProductListing({
                     key={item.mm}
                     href={listingHref(basePath, filters, { workingWidthMm: active ? undefined : item.mm })}
                     className={cn(
-                      "inline-flex min-h-11 items-center border px-3 text-[13px] font-medium no-underline",
+                      "inline-flex h-10 min-h-10 items-center border px-3 font-mono text-[13px] no-underline hover:no-underline",
                       active
-                        ? "border-brand bg-tint text-kg-ink"
-                        : "border-[var(--color-border-strong)] text-kg-ink hover:bg-tint",
+                        ? "border-kg-navy bg-white text-kg-navy"
+                        : "border-kg-lijn bg-white text-kg-navy hover:bg-kg-kalk",
                     )}
                   >
                     {item.mm} mm
@@ -110,18 +107,18 @@ export function ProductListing({
       </aside>
 
       <div>
-        <p className="text-[13px] text-[var(--color-text-muted)]">
+        <p className="border-b border-kg-navy pb-2.5 font-mono text-[14px] text-kg-text-2">
           {products.length === 0
             ? "Geen producten met deze filters."
-            : `1 – ${shown.length} van ${products.length} producten`}
+            : `1 – ${shown.length} van ${products.length} · prijzen excl. btw`}
           {totalUnfiltered !== products.length ? ` (van ${totalUnfiltered})` : null}
         </p>
         {products.length === 0 ? (
-          <p className="mt-8 border border-[var(--color-border)] bg-surface px-6 py-12 text-center text-[var(--color-text-muted)]">
+          <p className="mt-8 border border-kg-lijn bg-white px-6 py-12 text-center text-kg-text-2">
             Geen producten met deze filters.
           </p>
         ) : (
-          <div className="mt-6 grid gap-4">
+          <div className="mt-5 grid gap-4 lg:grid-cols-2">
             {shown.map((product) => (
               <ListingCard key={product.slug} product={product} />
             ))}
@@ -131,9 +128,9 @@ export function ProductListing({
           <button
             type="button"
             onClick={() => setVisible((value) => value + PAGE_SIZE)}
-            className={cn(buttonVariants({ variant: "tertiary" }), "mt-8")}
+            className={cn(buttonVariants({ variant: "outline" }), "mt-8")}
           >
-            Toon de volgende {Math.min(PAGE_SIZE, products.length - visible)} producten
+            Toon de volgende {Math.min(PAGE_SIZE, products.length - visible)}
           </button>
         ) : null}
       </div>
@@ -144,7 +141,7 @@ export function ProductListing({
 function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-8">
-      <p className="kicker">{title}</p>
+      <p className="border-b border-kg-navy pb-2 font-mono text-[13px] text-kg-navy">{title}</p>
       <div className="mt-3">{children}</div>
     </section>
   );

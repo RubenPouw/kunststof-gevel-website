@@ -4,16 +4,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-import { SegmentBar } from "@/components/brand/segment-bar";
 import { buttonVariants } from "@/components/ui/button";
-import { resolveCartLine, useCart } from "@/lib/cart";
-import { formatPrice } from "@/lib/format";
+import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
+import { formatPrice, roundMoney } from "@/lib/format";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { lines, subtotal, remainingForFreeShipping, clear } = useCart();
+  const { lines, subtotal, remainingForFreeShipping, mountGevel, mountPrice, clear } = useCart();
+  const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
+  const mount = mountGevel ? mountPrice : 0;
+  const net = subtotal + mount + shipping;
+  const vat = roundMoney(net * 0.21);
+  const totalIncl = roundMoney(net + vat);
   const [customerType, setCustomerType] = useState<"particulier" | "zakelijk">("particulier");
   const [error, setError] = useState<string | null>(null);
 
@@ -44,10 +48,9 @@ export default function CheckoutPage() {
 
   return (
     <div className="container-kg max-w-3xl py-12">
-      <p className="kicker">Afrekenen</p>
+      <p className="font-mono text-[13px] text-kg-text-2">Afrekenen</p>
       <h1 className="mt-2">Gegevens</h1>
-      <SegmentBar size={32} progress={2} className="mt-6" />
-      <p className="mt-2 text-[13px] text-[var(--color-text-muted)]">
+      <p className="mt-2 font-mono text-[13px] text-kg-text-2">
         Winkelwagen / Gegevens / Betalen
       </p>
 
@@ -102,8 +105,8 @@ export default function CheckoutPage() {
                   <span>
                     {resolved.name} · {resolved.colorName} · {line.variantSku} × {line.qty}
                   </span>
-                  <span className="font-heading text-[18px] font-bold">
-                    {formatPrice(resolved.price * line.qty)}
+                  <span className="font-mono text-[16px] font-bold">
+                    {formatPrice(resolved.unitExcl * line.qty)}
                   </span>
                 </li>
               );
@@ -116,7 +119,7 @@ export default function CheckoutPage() {
           </p>
           <div className="mt-4 flex items-baseline justify-between">
             <span>Totaal incl. btw</span>
-            <span className="font-heading text-[28px] font-bold">{formatPrice(subtotal)}</span>
+            <span className="font-mono text-[28px] font-bold">{formatPrice(totalIncl)}</span>
           </div>
           <button type="submit" className={cn(buttonVariants({ variant: "primary", block: true }), "mt-5")}>
             Verder naar betalen

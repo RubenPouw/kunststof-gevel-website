@@ -3,29 +3,20 @@ import Link from "next/link";
 import type { Brand } from "@/lib/catalog/types";
 
 export function BrandMarquee({ brands }: { brands: Brand[] }) {
-  const names = brands.map((brand) => brand.name);
-  const loop = [...names, ...names];
+  const items = brands.slice(0, 8);
 
   return (
-    <section className="container-kg border-b border-[var(--color-border)] py-[22px]">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-        <p className="kicker shrink-0 text-[var(--color-text-muted)]">Alle merken uit voorraad</p>
-        <div className="relative min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
-          <div
-            className="flex w-max"
-            style={{ animation: "kg-marquee 28s linear infinite" }}
+    <section className="container-kg section-kg">
+      <div className="grid grid-cols-2 border-y border-kg-lijn sm:grid-cols-4 lg:grid-cols-8">
+        {items.map((brand) => (
+          <Link
+            key={brand.slug}
+            href={`/merken/${brand.slug}`}
+            className="border-kg-lijn px-3 py-[18px] text-center text-[16px] font-bold tracking-[-0.02em] text-kg-navy no-underline transition-colors duration-150 hover:bg-kg-kalk hover:text-kg-navy hover:no-underline sm:border-r sm:last:border-r-0"
           >
-            {loop.map((name, index) => (
-              <Link
-                key={`${name}-${index}`}
-                href={`/merken/${brands[index % brands.length]?.slug ?? ""}`}
-                className="px-8 font-heading text-[26px] font-semibold tracking-wide text-kg-ink/55 uppercase no-underline hover:text-kg-ink"
-              >
-                {name}
-              </Link>
-            ))}
-          </div>
-        </div>
+            {brand.name}
+          </Link>
+        ))}
       </div>
     </section>
   );

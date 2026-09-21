@@ -1,29 +1,40 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
+import { CavesuppliesMark } from "@/components/brand/marks";
 import { footerColumns, paymentMethods, site } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto text-[var(--kg-blue-100)]" style={{ background: "var(--gradient-ink)" }}>
-      <div className="container-kg grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-12">
+    <footer className="mt-auto bg-kg-navy text-kg-grind">
+      <div className="h-1.5" style={{ background: "var(--gradient-signal)" }} />
+      <div className="container-kg grid gap-10 py-14 lg:grid-cols-[5fr_2fr_2fr_3fr] lg:gap-5">
         <div>
-          <Logo size={26} tone="dark" tagline />
-          <p className="mt-5 max-w-sm text-[14px] text-[var(--kg-blue-100)]">
-            Webshop voor kunststof gevelbekleding, dakranden en kozijnafwerking.
-            Onderdeel van {site.company}.
+          <Logo size={20} tone="dark" href="/" />
+          <p className="mt-4 flex items-center gap-1.5 text-[12px] text-kg-grind">
+            <CavesuppliesMark size={22} fill="url(#gb)" />
+            <span className="sr-only">Cavesupplies</span>
           </p>
-          <p className="mt-4 text-[14px] text-[var(--kg-blue-100)]">{site.address}</p>
+          <p className="mt-3 max-w-sm text-[15px] text-kg-grind">
+            Nooit meer schilderen. Vervang hout door kunststof.
+          </p>
+          <p className="mt-4 font-mono text-[13px] text-kg-grind">
+            {site.address}
+            <br />
+            {site.phone} · {site.hours}
+          </p>
         </div>
         {footerColumns.map((column) => (
           <div key={column.title}>
-            <p className="kicker text-[var(--kg-blue-300)]">{column.title}</p>
-            <ul className="mt-4 space-y-2 text-[14px]">
+            <p className="border-b border-[var(--kg-line-dark)] pb-2 font-mono text-[13px] text-kg-grind">
+              {column.title}
+            </p>
+            <ul className="mt-4 space-y-2 text-[15px]">
               {column.links.map((item) => (
-                <li key={item.href}>
+                <li key={`${item.href}-${item.label}`}>
                   <Link
                     href={item.href}
-                    className="text-[var(--kg-blue-100)] no-underline transition-colors duration-150 hover:text-white"
+                    className="text-kg-kalk no-underline transition-colors duration-150 hover:text-white hover:no-underline"
                   >
                     {item.label}
                   </Link>
@@ -33,13 +44,13 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div className="container-kg flex flex-col gap-4 border-t border-white/15 py-4 pb-8 text-[12px] text-[var(--kg-blue-100)] sm:flex-row sm:items-center sm:justify-between">
+      <div className="container-kg flex flex-col gap-4 border-t border-[var(--kg-line-dark)] py-4 pb-8 font-mono text-[13px] text-kg-grind sm:flex-row sm:items-center sm:justify-between">
         <p>
-          © {new Date().getFullYear()} {site.name}. {site.slogan}.
+          © {new Date().getFullYear()} {site.house} · via {site.name}
         </p>
         <ul className="flex flex-wrap gap-2">
           {paymentMethods.map((method) => (
-            <li key={method} className="border border-white/25 px-2 py-1 text-[11px] tracking-wide uppercase">
+            <li key={method} className="text-[13px]">
               {method}
             </li>
           ))}

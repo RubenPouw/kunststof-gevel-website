@@ -12,20 +12,28 @@
   --color-foreground: var(--color-text);
   --font-sans: var(--font-body);
   --font-heading: var(--font-heading);
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --color-kg-blue: var(--kg-blue);
-  --color-kg-blue-deep: var(--kg-blue-deep);
-  --color-kg-blue-300: var(--kg-blue-300);
-  --color-kg-blue-100: var(--kg-blue-100);
-  --color-kg-orange: var(--kg-orange);
+  --font-mono: var(--font-mono);
+  --color-kg-blue: var(--kg-navy);
+  --color-kg-blue-deep: var(--kg-navy-2);
+  --color-kg-blue-300: var(--kg-grind);
+  --color-kg-blue-100: var(--kg-kalk);
+  --color-kg-orange: var(--kg-signal);
   --color-kg-orange-hover: var(--kg-orange-hover);
   --color-kg-orange-300: var(--kg-orange-300);
-  --color-kg-ink: var(--kg-ink);
-  --color-kg-ink-soft: var(--kg-ink-soft);
-  --color-kg-muted: var(--kg-muted);
-  --color-kg-offwhite: var(--kg-offwhite);
+  --color-kg-ink: var(--kg-navy);
+  --color-kg-ink-soft: var(--kg-text-2);
+  --color-kg-muted: var(--kg-text-2);
+  --color-kg-offwhite: var(--kg-kalk);
   --color-kg-white: var(--kg-white);
-  --color-kg-on-orange: var(--kg-on-orange);
+  --color-kg-on-orange: var(--kg-navy);
+  --color-kg-navy: var(--kg-navy);
+  --color-kg-navy-2: var(--kg-navy-2);
+  --color-kg-kalk: var(--kg-kalk);
+  --color-kg-grind: var(--kg-grind);
+  --color-kg-lijn: var(--kg-lijn);
+  --color-kg-signal: var(--kg-signal);
+  --color-kg-stock: var(--kg-stock);
+  --color-kg-text-2: var(--kg-text-2);
   --color-brand: var(--color-brand);
   --color-brand-hover: var(--color-brand-hover);
   --color-action: var(--color-action);
@@ -56,7 +64,7 @@
   --color-muted: var(--color-tint);
   --color-secondary-foreground: var(--color-text);
   --color-secondary: var(--color-tint);
-  --color-primary-foreground: #ffffff;
+  --color-primary-foreground: var(--kg-kalk);
   --color-primary: var(--color-brand);
   --color-popover-foreground: var(--color-text);
   --color-popover: var(--color-surface);
@@ -79,29 +87,29 @@
   --popover: var(--color-surface);
   --popover-foreground: var(--color-text);
   --primary: var(--color-brand);
-  --primary-foreground: #ffffff;
+  --primary-foreground: var(--kg-kalk);
   --secondary: var(--color-tint);
   --secondary-foreground: var(--color-text);
-  --muted: var(--kg-offwhite);
+  --muted: var(--kg-kalk);
   --muted-foreground: var(--color-text-muted);
   --accent: var(--color-tint);
-  --accent-foreground: var(--kg-blue-deep);
-  --destructive: var(--kg-ink);
+  --accent-foreground: var(--kg-navy);
+  --destructive: var(--kg-navy);
   --border: var(--color-border);
   --input: var(--color-border-strong);
   --ring: var(--color-focus);
-  --chart-1: var(--kg-orange);
-  --chart-2: var(--kg-blue);
-  --chart-3: var(--kg-blue-300);
-  --chart-4: var(--kg-blue-deep);
-  --chart-5: var(--kg-ink);
+  --chart-1: var(--kg-signal);
+  --chart-2: var(--kg-navy);
+  --chart-3: var(--kg-grind);
+  --chart-4: var(--kg-navy-2);
+  --chart-5: var(--kg-navy);
   --radius: 0px;
   --sidebar: var(--color-surface);
   --sidebar-foreground: var(--color-text);
   --sidebar-primary: var(--color-brand);
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary-foreground: var(--kg-kalk);
   --sidebar-accent: var(--color-tint);
-  --sidebar-accent-foreground: var(--kg-blue-deep);
+  --sidebar-accent-foreground: var(--kg-navy);
   --sidebar-border: var(--color-border);
   --sidebar-ring: var(--color-focus);
 }
@@ -115,6 +123,7 @@
     font: var(--text-body);
     color: var(--color-text);
     background: var(--color-bg);
+    font-variant-numeric: tabular-nums;
   }
 
   body {
@@ -125,11 +134,13 @@
 
   h1 {
     font: var(--text-h1);
+    letter-spacing: -0.045em;
     margin: 0;
   }
 
   h2 {
     font: var(--text-h2);
+    letter-spacing: -0.03em;
     margin: 0;
   }
 
@@ -139,11 +150,14 @@
   }
 
   a {
-    color: var(--color-brand);
+    color: var(--kg-navy);
+    text-decoration: none;
   }
 
   a:hover {
-    color: var(--color-brand-hover);
+    color: var(--kg-navy);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   :focus-visible {
@@ -157,6 +171,11 @@
   textarea {
     border-radius: 0;
   }
+
+  ::selection {
+    background: var(--kg-signal);
+    color: var(--kg-navy);
+  }
 }
 
 @utility container-kg {
@@ -166,52 +185,85 @@
   padding-inline: 24px;
 }
 
+@media (min-width: 1024px) {
+  .container-kg {
+    padding-inline: 48px;
+  }
+}
+
 @utility kicker {
   font: var(--text-kicker);
-  letter-spacing: var(--kicker-tracking);
-  text-transform: uppercase;
-  color: var(--color-brand);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--kg-text-2);
+  font-family: var(--font-mono);
 }
 
 @utility price {
   font: var(--text-price);
+  font-variant-numeric: tabular-nums;
 }
 
 @utility display-home {
   font: var(--text-display-home);
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.045em;
 }
 
 @utility display-plp {
   font: var(--text-display-plp);
-  text-transform: uppercase;
+  letter-spacing: -0.04em;
 }
 
 @utility display-pdp {
   font: var(--text-display-pdp);
-  text-transform: uppercase;
+  letter-spacing: -0.035em;
 }
 
 @utility section-kg {
   margin-top: 64px;
 }
 
+@utility mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@utility bevel-8 {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+@utility bevel-16 {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+}
+
+@utility bevel-24 {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+}
+
 @media (max-width: 1023px) {
+  h1 {
+    font: 700 40px / 1 var(--font-heading);
+    letter-spacing: -0.04em;
+  }
+
+  h2 {
+    font: 700 24px / 1.15 var(--font-heading);
+    letter-spacing: -0.03em;
+  }
+
   .display-home {
-    font: 700 44px / 0.95 var(--font-heading);
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
+    font: 700 40px / 1 var(--font-heading);
+    letter-spacing: -0.04em;
   }
 
   .display-plp {
-    font: 700 40px / 1 var(--font-heading);
-    text-transform: uppercase;
+    font: 700 36px / 1.05 var(--font-heading);
+    letter-spacing: -0.03em;
   }
 
   .display-pdp {
-    font: 700 32px / 1.05 var(--font-heading);
-    text-transform: uppercase;
+    font: 700 28px / 1.1 var(--font-heading);
+    letter-spacing: -0.03em;
   }
 }
 

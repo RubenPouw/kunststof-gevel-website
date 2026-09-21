@@ -10,10 +10,12 @@
   --radius: 0px;
   --border-width: 1px;
   --hit-target: 44px;
-  --container: 1200px;
-  --header-height: 64px;
+  --container: 1344px;
+  --header-height: 72px;
+  --gutter: 20px;
+  --page-gutter: 48px;
   --segbar-height-ratio: 0.16;
   --segbar-gap-ratio: 0.25;
-  --segbar-skew: -24deg;
-  --shadow-action: 0 8px 24px rgba(255, 106, 31, 0.35);
+  --segbar-skew: 0deg;
+  --shadow-action: none;
 }

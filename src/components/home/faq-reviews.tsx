@@ -2,39 +2,35 @@
 
 import { useState } from "react";
 
+import { SectionHead } from "@/components/brand/section-head";
 import { faqs, reviews, site } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 export function FaqReviews() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="container-kg section-kg mb-16 grid gap-12 lg:grid-cols-2">
+    <section className="container-kg section-kg mb-16 grid gap-12 lg:grid-cols-[7fr_5fr]">
       <div>
-        <h2 className="font-heading text-[36px] leading-none font-bold uppercase">Veelgestelde vragen</h2>
-        <div className="mt-6 border-t border-[var(--color-border)]">
+        <SectionHead title="Veelgestelde vragen" aside="01 – 03" />
+        <div>
           {faqs.map((item, index) => {
             const expanded = open === index;
             return (
-              <div key={item.q} className="border-b border-[var(--color-border)]">
+              <div key={item.q} className="border-b border-kg-lijn">
                 <button
                   type="button"
                   onClick={() => setOpen(expanded ? null : index)}
                   className="flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left"
                   aria-expanded={expanded}
                 >
-                  <span className="font-heading text-[20px] font-semibold">{item.q}</span>
-                  <span
-                    className={cn(
-                      "grid size-7 shrink-0 place-items-center text-[18px] leading-none",
-                      expanded ? "bg-brand text-white" : "bg-tint text-kg-blue-deep",
-                    )}
-                  >
-                    {expanded ? "–" : "+"}
+                  <span className="flex items-baseline gap-4">
+                    <span className="font-mono text-[13px] text-kg-text-2">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="text-[17px] font-medium">{item.q}</span>
                   </span>
+                  <span className="font-mono text-[18px] text-kg-text-2">{expanded ? "–" : "+"}</span>
                 </button>
                 {expanded ? (
-                  <p className="pb-4 text-[15px] leading-[1.65] text-[var(--color-text-soft)]">{item.a}</p>
+                  <p className="pb-4 pl-12 text-[15px] leading-[1.5] text-kg-text-2">{item.a}</p>
                 ) : null}
               </div>
             );
@@ -42,18 +38,15 @@ export function FaqReviews() {
         </div>
       </div>
       <div>
-        <div className="flex items-end gap-4 bg-brand px-5 py-4 text-white">
-          <p className="font-heading text-[28px] leading-none font-bold">{site.googleScore}</p>
-          <p className="text-[13px] text-[var(--kg-blue-100)]">
-            Google reviews / {site.googleReviews} beoordelingen
-          </p>
-        </div>
-        <div className="grid gap-px bg-[var(--color-border)]">
+        <SectionHead title="Klanten" aside={`${site.googleScore} · ${site.googleReviews} beoordelingen`} />
+        <div className="grid gap-3">
           {reviews.map((review) => (
-            <figure key={review.author} className="bg-surface p-5">
-              <p className="text-[15px] tracking-widest text-brand">● ● ● ● ●</p>
-              <blockquote className="mt-3 text-[15px] leading-[1.6]">“{review.quote}”</blockquote>
-              <figcaption className="mt-3 text-[13px] text-[var(--color-text-muted)]">{review.author}</figcaption>
+            <figure key={review.author} className="border border-kg-lijn bg-white p-5">
+              <blockquote className="text-[15px] leading-[1.5]">“{review.quote}”</blockquote>
+              <figcaption className="mt-3 flex justify-between font-mono text-[13px] text-kg-text-2">
+                <span>{review.author}</span>
+                <span>{review.score}</span>
+              </figcaption>
             </figure>
           ))}
         </div>
