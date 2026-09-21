@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ColorPanel } from "@/components/brand/color-panel";
+import { Bevel } from "@/components/brand/section-head";
 import { buttonVariants } from "@/components/ui/button";
 import type { Brand } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
@@ -13,42 +13,41 @@ export function BrandHero({
   intro: string;
 }) {
   return (
-    <section className="container-kg mt-6">
-      <div className="grid border border-[var(--color-border)] lg:grid-cols-2">
-        <div className="px-8 py-12 text-white sm:px-14 sm:py-12" style={{ background: "var(--gradient-ink)" }}>
-          <p className="text-[13px] text-[var(--kg-blue-300)]">
-            <Link href="/" className="text-[var(--kg-blue-300)] no-underline hover:text-white">
+    <section className="container-kg pt-8 lg:pt-10">
+      <div className="grid items-end gap-5 lg:grid-cols-[7fr_5fr]">
+        <div>
+          <p className="font-mono text-[13px] text-kg-text-2">
+            <Link href="/" className="no-underline hover:underline">
               Home
             </Link>
             {" / "}
-            <Link href="/merken" className="text-[var(--kg-blue-300)] no-underline hover:text-white">
+            <Link href="/merken" className="no-underline hover:underline">
               Merken
             </Link>
             {" / "}
             {brand.name}
           </p>
-          <h1 className="display-plp mt-4 text-white">{brand.name} gevelbekleding</h1>
-          <p className="mt-4 max-w-lg text-[15px] text-white/85">{intro}</p>
-          <ul className="mt-6 space-y-2 text-[15px] text-white">
-            {["Onderhoudsvrij en kleurvast", "Direct uit voorraad", "Passende hulpstukken erbij"].map((item) => (
-              <li key={item}>
-                <span className="mr-2 text-[var(--kg-blue-300)]">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link href="/#stalen" className={cn(buttonVariants({ variant: "primary" }))}>
-              Vraag {brand.name} stalen aan
+          <h1 className="display-plp mt-3">{brand.name}</h1>
+          <p className="mt-4 max-w-lg text-[16px] text-kg-text-2">{intro}</p>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <Link href="/#stalen" className={cn(buttonVariants({ variant: "primary" }), "no-underline hover:no-underline")}>
+              {brand.name} stalen aanvragen
             </Link>
-            <Link href="/offerte" className="text-[15px] text-white underline underline-offset-4 hover:text-[var(--kg-blue-100)]">
-              Groot project? Prijs op maat
+            <Link href="/montage" className={cn(buttonVariants({ variant: "outline" }), "no-underline hover:no-underline")}>
+              Montage-instructie
             </Link>
+            <span className="font-mono text-[13px] text-kg-text-2">Groot project? Prijs op maat</span>
           </div>
         </div>
-        <div className="relative min-h-[280px] lg:min-h-[420px]">
-          <ColorPanel hex="#3A3D41" className="absolute inset-0" />
-        </div>
+        <Bevel size={24} className="relative h-[220px] lg:h-[300px]" style={{ background: "#3A3D41" }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "repeating-linear-gradient(90deg, #2f3236 0 10px, #3A3D41 10px 22px)",
+            }}
+          />
+        </Bevel>
       </div>
     </section>
   );

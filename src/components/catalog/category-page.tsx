@@ -27,10 +27,10 @@ export function CategoryPage({
   const path = basePath ?? ".";
 
   return (
-    <div className="container-kg py-12 sm:py-16">
-      <p className="kicker">{kicker}</p>
-      <h1 className="display-plp mt-2 max-w-3xl normal-case">{title}</h1>
-      <p className="mt-4 max-w-2xl text-[var(--color-text-soft)]">{intro}</p>
+    <div className="container-kg py-10 sm:py-12">
+      <p className="font-mono text-[13px] text-kg-text-2">{kicker}</p>
+      <h1 className="display-plp mt-2 max-w-3xl">{title}</h1>
+      <p className="mt-4 max-w-2xl text-kg-text-2">{intro}</p>
 
       {brandOptions.length > 1 ? (
         <div className="mt-8 flex flex-wrap gap-2">
@@ -75,10 +75,10 @@ function FilterChip({
     <Link
       href={href}
       className={cn(
-        "inline-flex min-h-11 items-center px-3 text-[13px] font-semibold no-underline",
+        "inline-flex h-10 min-h-10 items-center px-3 font-mono text-[13px] no-underline hover:no-underline",
         active
-          ? "bg-kg-ink text-white"
-          : "border border-[var(--color-border-strong)] bg-surface text-kg-ink hover:bg-tint",
+          ? "bg-kg-navy text-kg-kalk"
+          : "border border-kg-lijn bg-white text-kg-navy hover:bg-kg-kalk",
       )}
     >
       {children}

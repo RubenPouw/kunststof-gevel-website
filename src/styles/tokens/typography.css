@@ -1,19 +1,20 @@
 :root {
-  --font-heading: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
-  --font-body: var(--font-barlow), "Helvetica Neue", Arial, sans-serif;
+  --font-heading: var(--font-plex-sans), Helvetica, Arial, sans-serif;
+  --font-body: var(--font-plex-sans), Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), Menlo, Consolas, monospace;
 
-  --text-h1: 700 48px / 1 var(--font-heading);
-  --text-h2: 700 32px / 1.1 var(--font-heading);
-  --text-h3: 600 22px / 1.2 var(--font-heading);
-  --text-display-home: 700 84px / 0.92 var(--font-heading);
-  --text-display-plp: 700 64px / 0.95 var(--font-heading);
-  --text-display-pdp: 700 44px / 1 var(--font-heading);
-  --text-price: 700 28px / 1 var(--font-heading);
-  --text-price-lg: 700 40px / 1 var(--font-heading);
-  --text-body: 400 16px / 1.6 var(--font-body);
-  --text-small: 400 13px / 1.5 var(--font-body);
-  --text-button: 600 15px / 1 var(--font-body);
-  --text-kicker: 600 11px / 1 var(--font-body);
-  --kicker-tracking: 0.14em;
+  --text-h1: 700 68px / 0.96 var(--font-heading);
+  --text-h2: 700 28px / 1.1 var(--font-heading);
+  --text-h3: 500 17px / 1.3 var(--font-heading);
+  --text-display-home: 700 68px / 0.96 var(--font-heading);
+  --text-display-plp: 700 56px / 1 var(--font-heading);
+  --text-display-pdp: 700 40px / 1.05 var(--font-heading);
+  --text-price: 700 32px / 1 var(--font-mono);
+  --text-price-lg: 700 32px / 1 var(--font-mono);
+  --text-body: 400 16px / 1.5 var(--font-body);
+  --text-small: 400 14px / 1.5 var(--font-body);
+  --text-button: 500 15px / 1 var(--font-body);
+  --text-kicker: 400 13px / 1.4 var(--font-mono);
+  --kicker-tracking: 0;
   --logo-tracking: -0.03em;
 }

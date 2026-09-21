@@ -1,8 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="112" viewBox="0 0 600 112">
-  <text x="8" y="64" font-family="Barlow, Helvetica Neue, Arial, sans-serif" font-weight="500" font-size="66" letter-spacing="-1.98" fill="#0E1626">kunststof-gevel<tspan fill="#FF6A1F">.nl</tspan></text>
-  <g transform="translate(14 82)">
-    <polygon points="0,0 288,0 283.3,10.5 -4.7,10.5" fill="#2457FF"/>
-    <polygon points="298.5,0 490,0 485.3,10.5 293.8,10.5" fill="#7FA3FF"/>
-    <polygon points="500.5,0 592,0 587.3,10.5 495.8,10.5" fill="#FF6A1F"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFE45C"/>
+      <stop offset="1" stop-color="#F5B800"/>
+    </linearGradient>
+  </defs>
+  <path d="M12 10 H78 L88 20 V32 H12 Z" fill="url(#gb)"/>
+  <rect x="12" y="35" width="22" height="33" fill="#1B2838"/>
+  <rect x="12" y="68" width="76" height="22" fill="#1B2838"/>
 </svg>

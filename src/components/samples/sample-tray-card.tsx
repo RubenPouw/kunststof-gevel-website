@@ -2,24 +2,20 @@
 
 import Link from "next/link";
 
-import { ColorPanel } from "@/components/brand/color-panel";
-import { SegmentBar } from "@/components/brand/segment-bar";
-import { buttonVariants } from "@/components/ui/button";
-import { SAMPLE_LIMIT, trayProgress, useSamples } from "@/lib/samples";
+import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
 export function SampleTrayCard({ className }: { className?: string }) {
   const { items, count, remove } = useSamples();
 
   return (
-    <aside className={cn("border border-[var(--color-border)] bg-surface p-6", className)}>
+    <aside className={cn("bg-kg-navy p-6 text-kg-kalk", className)}>
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="font-heading text-[22px] font-semibold">Uw stalen</h3>
-        <p className="text-[13px] text-[var(--color-text-muted)]">
+        <h3 className="text-[22px] font-bold tracking-[-0.03em]">Uw stalen</h3>
+        <p className="font-mono text-[13px] text-kg-grind">
           {count} van {SAMPLE_LIMIT}
         </p>
       </div>
-      <SegmentBar size={60} progress={trayProgress(count)} className="mt-4" />
       <ul className="mt-5 grid gap-2">
         {Array.from({ length: SAMPLE_LIMIT }, (_, index) => {
           const item = items[index];
@@ -27,12 +23,13 @@ export function SampleTrayCard({ className }: { className?: string }) {
             return (
               <li
                 key={`empty-${index}`}
-                className="flex min-h-14 items-center gap-3 border border-dashed border-[var(--color-border-strong)] px-3"
+                className="flex min-h-14 items-center gap-3 bg-kg-navy-2 px-3"
+                style={{ boxShadow: "inset 0 3px 0 #2A4258" }}
               >
-                <span className="size-8 border border-dashed border-[var(--color-border-strong)]" />
-                <span className="text-[13px] text-[var(--color-text-muted)]">
+                <span className="size-[30px] bg-[var(--kg-line-dark)]" />
+                <span className="font-mono text-[13px] text-kg-grind">
                   Staal {index + 1}
-                  <span className="block text-[11px]">Kies een kleur</span>
+                  <span className="block">kies een kleur</span>
                 </span>
               </li>
             );
@@ -40,19 +37,20 @@ export function SampleTrayCard({ className }: { className?: string }) {
           return (
             <li
               key={item.id}
-              className="flex min-h-14 items-center gap-3 border border-brand px-3"
+              className="flex min-h-14 items-center gap-3 bg-kg-navy-2 px-3"
+              style={{ boxShadow: "inset 0 3px 0 #FFD400" }}
             >
-              <ColorPanel hex={item.hex} className="size-8" />
+              <span className="size-[30px]" style={{ background: item.hex }} />
               <span className="min-w-0 flex-1">
-                <span className="block text-[14px] font-medium">{item.colorName}</span>
-                <span className="block text-[11px] text-[var(--color-text-muted)]">
+                <span className="block text-[14px] font-medium text-kg-kalk">{item.colorName}</span>
+                <span className="block font-mono text-[12px] text-kg-grind">
                   {item.ral ?? item.brandName}
                 </span>
               </span>
               <button
                 type="button"
                 onClick={() => remove(item.id)}
-                className="grid size-11 place-items-center text-[18px] leading-none text-kg-ink"
+                className="grid size-11 place-items-center text-[18px] leading-none text-kg-kalk"
                 aria-label={`${item.colorName} verwijderen`}
               >
                 ×
@@ -64,16 +62,15 @@ export function SampleTrayCard({ className }: { className?: string }) {
       <Link
         href="/stalen"
         className={cn(
-          buttonVariants({ variant: "primary", block: true }),
-          "mt-5",
+          "mt-5 flex h-12 items-center justify-center bg-kg-signal text-[15px] font-medium text-kg-navy no-underline hover:no-underline",
           count === 0 && "pointer-events-none opacity-45",
         )}
         aria-disabled={count === 0}
       >
-        Stalen gratis aanvragen
+        Stalen aanvragen
       </Link>
-      <p className="mt-2 text-[13px] text-[var(--color-text-muted)]">
-        Binnen 2 werkdagen thuis. U zit nergens aan vast.
+      <p className="mt-2 font-mono text-[13px] text-kg-grind">
+        Gratis · binnen 2 werkdagen · geen verplichting
       </p>
     </aside>
   );

@@ -1,55 +1,50 @@
 import Link from "next/link";
 
-import { ColorPanel } from "@/components/brand/color-panel";
+import { Bevel } from "@/components/brand/section-head";
 import { buttonVariants } from "@/components/ui/button";
-import { hero, heroStats } from "@/lib/site";
+import { hero } from "@/lib/site";
+import { weekNow } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 export function HomeHero() {
+  const week = weekNow();
+
   return (
-    <section className="container-kg mt-6">
-      <div className="grid min-h-[560px] border border-[var(--color-border)] lg:grid-cols-[1.05fr_1fr]">
-        <div
-          className="relative flex flex-col justify-center overflow-hidden px-8 py-12 text-white sm:px-14 sm:py-14"
-          style={{ background: "var(--gradient-brand)" }}
-        >
-          <div
-            className="pointer-events-none absolute -right-[110px] -bottom-[140px] size-[420px]"
-            style={{ background: "var(--glow-orange)" }}
-          />
-          <p className="kicker relative text-[var(--kg-blue-100)]">{hero.kicker}</p>
-          <h1 className="display-home relative mt-3 text-white">
+    <section className="container-kg pt-10 pb-4 lg:pt-14">
+      <div className="grid items-end gap-5 lg:grid-cols-[7fr_5fr]">
+        <div>
+          <h1 className="display-home text-balance">
             {hero.title}
-            <span className="mt-1 block text-[var(--kg-blue-100)]">{hero.subtitle}</span>
+            <br />
+            {hero.subtitle}
           </h1>
-          <p className="relative mt-5 max-w-[480px] text-[17px] leading-[1.55] text-white/88">
-            {hero.body}
-          </p>
-          <div className="relative mt-8 flex flex-wrap items-center gap-4">
+          <p className="mt-5 max-w-[560px] text-[17px] text-kg-text-2">{hero.body}</p>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link href="/gevelbekleding" className={cn(buttonVariants({ variant: "primary" }))}>
               {hero.cta}
             </Link>
-            <a href="#stalen" className="text-[15px] font-medium text-white underline underline-offset-4 hover:text-[var(--kg-blue-100)]">
+            <a href="#stalen" className={cn(buttonVariants({ variant: "outline" }), "no-underline hover:no-underline")}>
               {hero.samples}
             </a>
-          </div>
-          <p className="relative mt-3 text-[13px] text-[var(--kg-blue-100)]">{hero.micro}</p>
-          <div className="relative mt-10 grid grid-cols-3 gap-4 border-t border-white/22 pt-6">
-            {heroStats.map((stat) => (
-              <div key={stat.label}>
-                <p className="font-heading text-[34px] leading-none font-bold">{stat.value}</p>
-                <p className="mt-1 text-[13px] text-[var(--kg-blue-100)]">{stat.label}</p>
-              </div>
-            ))}
+            <span className="ml-2 font-mono text-[13px] text-kg-text-2">{hero.micro}</span>
           </div>
         </div>
-        <div className="relative min-h-[240px] lg:min-h-full">
-          <ColorPanel hex="#3A3D41" className="absolute inset-0" />
-          <div className="absolute bottom-6 left-6 bg-white p-4">
-            <p className="kicker">Project · Houten</p>
-            <p className="mt-1 font-heading text-[16px] font-semibold">VinyPlus rondkant · Antraciet</p>
+        <Bevel size={24} className="relative h-[240px] lg:h-[380px]" style={{ background: "#4a4f52" }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(27,40,56,.15), rgba(27,40,56,.35)), repeating-linear-gradient(90deg, #3b3f42 0 8px, #4a4f52 8px 18px)",
+            }}
+          />
+          <div className="absolute top-0 left-0 bg-kg-navy px-[18px] py-3.5 font-mono text-[13px] leading-[1.5] text-kg-kalk">
+            VinyPlus rondkant 150 mm · antraciet
+            <br />
+            <span className="text-[22px] font-medium tracking-[-0.02em] sm:text-[26px]">
+              levering week {week}
+            </span>
           </div>
-        </div>
+        </Bevel>
       </div>
     </section>
   );

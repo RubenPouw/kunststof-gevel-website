@@ -1,10 +1,11 @@
 export const site = {
   name: "kunststof-gevel.nl",
-  shortName: "Kunststof-gevel",
+  shortName: "kunststof-gevel.nl",
   tagline: "Nooit meer schilderen.",
-  slogan: "Geniet langer van uw huis, ga voor kunststof",
+  slogan: "Nooit meer schilderen. Vervang hout door kunststof.",
+  house: "Cavesupplies",
   description:
-    "Webshop voor kunststof gevelbekleding, dakranden en kozijnafwerking. Onderhoudsvrij, uit voorraad, of wij regelen de plaatsing. Onderdeel van Cavemen BV.",
+    "Webshop voor kunststof gevelbekleding, dakranden en kozijnen. Op voorraad in Hedel, levering in vaste weken. Zelf zetten of een Caveman erbij. Onderdeel van Cavesupplies, Cavemen BV.",
   phone: "085 401 2280",
   phoneHref: "tel:+31854012280",
   email: "info@kunststof-gevel.nl",
@@ -16,22 +17,23 @@ export const site = {
   region: "Heel Nederland",
   kvk: "In oprichting",
   freeShippingFrom: 499,
-  googleScore: "4,9",
+  googleScore: "9,3",
   googleReviews: 312,
   instagram: "https://www.instagram.com/kunststofgevel",
   instagramHandle: "@kunststofgevel",
   gevelsDelivered: "1.200+",
   since: 2016,
+  articleCount: 214,
 } as const;
 
 export const hero = {
   kicker: "Kunststof gevelbekleding · Keralit · VinyPlus · Eurotexx",
   title: "Nooit meer schilderen.",
   subtitle: "Vervang hout door kunststof.",
-  body: "Onderhoudsvrije gevelbekleding uit voorraad. Zelf monteren, of wij zetten de gevel. U zit nergens aan vast.",
-  cta: "Bekijk alle producten",
-  samples: "Of kies eerst gratis kleurstalen",
-  micro: "Snelle levering, uit voorraad leverbaar.",
+  body: "Kunststof gevelbekleding, dakranden en kozijnafwerking. Op voorraad in Hedel, levering in vaste weken. Zelf zetten of een Caveman erbij.",
+  cta: "Bekijk voorraad",
+  samples: "Kies gratis kleurstalen",
+  micro: "Altijd binnen 24 uur bericht",
 } as const;
 
 export const heroStats = [
@@ -45,7 +47,7 @@ export const paymentMethods = ["iDEAL", "Visa", "Mastercard", "PayPal", "Klarna"
 export const shopNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
   { href: "/dakranden", label: "Dakranden" },
-  { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+  { href: "/kozijnen", label: "Kozijnen" },
   { href: "/merken", label: "Merken" },
   { href: "/zakelijk", label: "Zakelijk" },
 ] as const;
@@ -56,27 +58,28 @@ export const footerColumns = [
     links: [
       { href: "/gevelbekleding", label: "Gevelbekleding" },
       { href: "/dakranden", label: "Dakranden" },
-      { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+      { href: "/kozijnen", label: "Kunststof kozijnen" },
+      { href: "/montage", label: "Bevestiging" },
       { href: "/merken", label: "Merken" },
     ],
   },
   {
-    title: "Klantenservice",
+    title: "Service",
     links: [
       { href: "/contact", label: "Contact" },
       { href: "/offerte", label: "Offerte" },
       { href: "/stalen", label: "Kleurstalen" },
-      { href: "/winkelwagen", label: "Winkelwagen" },
-      { href: "/zoeken", label: "Zoeken" },
+      { href: "/zakelijk", label: "Zakelijk account" },
+      { href: "/montage", label: "Montage-instructies" },
     ],
   },
   {
-    title: "Over ons",
+    title: "Cavesupplies",
     links: [
-      { href: "/over-ons", label: "Over ons" },
-      { href: "/zakelijk", label: "Zakelijk" },
+      { href: "/over-ons", label: "Over het huis" },
+      { href: "/montage", label: "Cavemen · plaats een klus" },
+      { href: "/zakelijk", label: "Word Caveman" },
       { href: "/projecten", label: "Projecten" },
-      { href: "/montage", label: "Montage" },
     ],
   },
 ] as const;
@@ -87,11 +90,18 @@ export const footerNav: { href: string; label: string }[] = footerColumns.flatMa
 
 export const nav = shopNav;
 
+export const facts = [
+  { k: "214", v: "artikelen op voorraad" },
+  { k: "Levering", v: "in vaste weken" },
+  { k: "10 jaar", v: "garantie" },
+  { k: "Cavemen", v: "per klus erbij" },
+] as const;
+
 export const uspItems = [
-  "Onderhoudsvrij en duurzaam",
-  "Standaard 10 jaar garantie",
-  "Direct uit voorraad leverbaar",
-  "Google 4,9 / 5",
+  "214 artikelen op voorraad",
+  "Levering in vaste weken",
+  "10 jaar garantie",
+  "Cavemen per klus erbij",
 ] as const;
 
 export const businessPoints = [
@@ -102,16 +112,19 @@ export const businessPoints = [
 
 export const reviews = [
   {
-    quote: "Binnen een week op de bouw, kleur exact zoals de staal. Geen gedoe.",
-    author: "Mark V., aannemer in Den Bosch",
+    quote: "Binnen een dag een heldere offerte. Bij aflevering klopte alles tot het laatste profiel.",
+    author: "Familie de Wit · Houten",
+    score: "10",
   },
   {
-    quote: "Eindelijk geen schilderwerk meer. De gevel ziet er na twee seizoenen nog strak uit.",
-    author: "Familie de Vries, Bergen",
+    quote: "Zelf gemonteerd met het montageschema. Gevel staat strak, geen schilder meer nodig.",
+    author: "Mark B. · Amersfoort",
+    score: "9",
   },
   {
-    quote: "Duidelijke calculator en de hulpstukken stonden er meteen bij. Montage zelf gedaan.",
-    author: "Sanne L., Amersfoort",
+    quote: "Kleurstalen vooraf gekregen. Scheelde ons een verkeerde keuze van 80 m².",
+    author: "Bouwbedrijf Kramer",
+    score: "10",
   },
 ] as const;
 
@@ -181,19 +194,15 @@ export const projects: Project[] = [
 export const faqs = [
   {
     q: "Wat kost kunststof gevelbekleding per m²?",
-    a: "Materiaal ligt meestal tussen 65 en 95 per m², afhankelijk van profiel en kleur. Inclusief professionele montage rekenen we grofweg 95 tot 140 per m². Hoeken, dakranden en steigerwerk tellen extra. We maken altijd een vaste prijs na opname.",
+    a: "Tussen € 65 en € 120 per m² excl. btw, afhankelijk van profiel, merk en kleur. Rechte gevels zonder veel snijwerk zitten aan de onderkant. Wij rekenen het voor uw woning door, binnen 24 uur.",
   },
   {
-    q: "Hoe lang gaat het mee?",
-    a: "Een goed gemonteerd systeem gaat 25 tot 40 jaar mee. De panelen rotten niet, splinteren niet en hoeven niet geschilderd te worden. Kleurvastheid hangt af van het folie; wij werken met merken die daar 10 tot 15 jaar garantie op geven.",
+    q: "Hoe lang gaat kunststof gevelbekleding mee?",
+    a: "25 tot 35 jaar. De panelen zijn bestand tegen vocht, temperatuurwisselingen en verkleuring. Schilderen is niet nodig, af en toe reinigen wel.",
   },
   {
-    q: "Kan ik het zelf monteren?",
-    a: "Ja, als u handig bent en het regelwerk, de ventilatie en de dilatatie goed uitvoert. Wij leveren ook alleen materiaal, met een duidelijke montagelijst. Twijfelt u over een lastige gevel, dan monteren wij het liever zelf.",
-  },
-  {
-    q: "Werken jullie in heel Nederland?",
-    a: "Ja. Adviesgesprekken kunnen telefonisch of op locatie. Montage plannen we landelijk; bij kleine oppervlakken wegen reiskosten mee in de offerte.",
+    q: "Keralit of VinyPlus?",
+    a: "Keralit: stijver paneel, fijnere houtstructuur, hoogste kleurvastheid. VinyPlus: dezelfde garantie, scherpere prijs. Vraag van allebei een staal aan en leg ze naast elkaar.",
   },
 ] as const;
 

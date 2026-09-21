@@ -5,7 +5,6 @@ import { BusinessBand } from "@/components/home/business-band";
 import { FaqReviews } from "@/components/home/faq-reviews";
 import { HomeHero } from "@/components/home/home-hero";
 import { ProjectMosaic } from "@/components/home/project-mosaic";
-import { QuoteBand } from "@/components/home/quote-band";
 import { SamplesSection } from "@/components/home/samples-section";
 import {
   getFeaturedProducts,
@@ -28,18 +27,17 @@ export default async function HomePage() {
       products.filter((product) => product.category === category.slug).length,
     ]),
   );
-  const samples = listSampleColors(products).slice(0, 18);
+  const samples = listSampleColors(products).slice(0, 12);
 
   return (
     <div className="pb-8">
       <HomeHero />
+      <AssortmentGrid counts={counts} total={products.length} />
       <BrandMarquee brands={brands} />
-      <AssortmentGrid categories={categories} counts={counts} total={products.length} />
-      <SamplesSection colors={samples} />
       <Bestsellers products={featured} />
+      <SamplesSection colors={samples} />
       <ProjectMosaic />
       <BusinessBand />
-      <QuoteBand />
       <FaqReviews />
     </div>
   );
