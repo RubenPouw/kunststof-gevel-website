@@ -113,7 +113,14 @@ export async function listCategories() {
 }
 
 export async function getProduct(slug: string) {
-  return (await listProducts()).find((product) => product.slug === slug);
+  const products = await listProducts();
+  const direct = products.find((product) => product.slug === slug);
+  if (direct) return direct;
+  const base = slug.replace(/-(\d+)$/, "");
+  if (base !== slug) {
+    return products.find((product) => product.slug === base);
+  }
+  return products.find((product) => product.slug.startsWith(`${slug}-`));
 }
 
 export async function getCategory(slug: string) {

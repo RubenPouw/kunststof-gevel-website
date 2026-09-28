@@ -30,7 +30,7 @@ export async function storefrontFetch<T>(
       "X-Shopify-Storefront-Access-Token": config.storefrontAccessToken,
     },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 300, tags: ["shopify-catalog"] },
+    next: { revalidate: 60, tags: ["shopify-catalog"] },
   });
 
   if (!response.ok) {

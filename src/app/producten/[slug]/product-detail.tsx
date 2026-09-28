@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -118,27 +119,46 @@ export function ProductDetail({
       <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
         <div>
           <div className="relative">
-            <Bevel size={24} className="aspect-square" style={{ background: selected.hex }} />
+            {product.images[0] ? (
+              <Bevel size={24} className="relative aspect-square overflow-hidden bg-[#e9e7e1]">
+                <Image
+                  src={product.images[0].url}
+                  alt={product.images[0].alt || product.name}
+                  fill
+                  sizes="(min-width: 1024px) 480px, 100vw"
+                  className="object-contain p-2"
+                  priority
+                />
+              </Bevel>
+            ) : (
+              <Bevel size={24} className="aspect-square" style={{ background: selected.hex }} />
+            )}
             <span className="absolute top-4 left-4 bg-kg-kalk px-2 py-1 font-mono text-[13px]">
               {selected.colorName}
               {selected.ral ? ` · ${selected.ral}` : ""}
             </span>
           </div>
           <div className="mt-2 grid grid-cols-5 gap-2">
-            {product.colors.slice(0, 5).map((color) => (
-              <button
-                key={color.sampleId}
-                type="button"
-                onClick={() => setColorName(color.name)}
-                className={cn(
-                  "relative aspect-square",
-                  color.name === selected.colorName && "outline outline-2 outline-kg-navy",
-                )}
-                aria-label={color.name}
-              >
-                <span className="absolute inset-0" style={{ background: color.hex }} />
-              </button>
-            ))}
+            {product.images.length
+              ? product.images.slice(0, 5).map((image) => (
+                  <div key={image.url} className="relative aspect-square overflow-hidden bg-[#e9e7e1]">
+                    <Image src={image.url} alt={image.alt || product.name} fill sizes="80px" className="object-contain p-0.5" />
+                  </div>
+                ))
+              : product.colors.slice(0, 5).map((color) => (
+                  <button
+                    key={color.sampleId}
+                    type="button"
+                    onClick={() => setColorName(color.name)}
+                    className={cn(
+                      "relative aspect-square",
+                      color.name === selected.colorName && "outline outline-2 outline-kg-navy",
+                    )}
+                    aria-label={color.name}
+                  >
+                    <span className="absolute inset-0" style={{ background: color.hex }} />
+                  </button>
+                ))}
           </div>
         </div>
 

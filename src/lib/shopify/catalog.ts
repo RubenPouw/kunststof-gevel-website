@@ -97,6 +97,46 @@ export type ShopifyCatalog = {
   collectionHandles: string[];
 };
 
+
+function canonicalHandle(handle: string) {
+  return handle.replace(/-(\d+)$/, "");
+}
+
+/** Prefer the product with images; keep clean handle when a -N duplicate exists. */
+function dedupeShopifyProducts(products: Product[]): Product[] {
+  const byKey = new Map<string, Product[]>();
+  for (const product of products) {
+    const key = `${product.brandSlug}::${product.name.trim().toLowerCase()}`;
+    const list = byKey.get(key) ?? [];
+    list.push(product);
+    byKey.set(key, list);
+  }
+
+  const result: Product[] = [];
+  for (const group of byKey.values()) {
+    if (group.length === 1) {
+      result.push(group[0]);
+      continue;
+    }
+    const scored = [...group].sort((a, b) => {
+      const img = Number(b.images.length > 0) - Number(a.images.length > 0);
+      if (img) return img;
+      const clean =
+        Number(canonicalHandle(a.slug) === a.slug) - Number(canonicalHandle(b.slug) === b.slug);
+      if (clean) return clean;
+      return b.variants.length - a.variants.length;
+    });
+    const preferred = scored[0];
+    const images = [
+      ...preferred.images,
+      ...scored.flatMap((item) => item.images),
+    ].filter((image, index, list) => list.findIndex((item) => item.url === image.url) === index);
+    preferred.images = images;
+    result.push(preferred);
+  }
+  return result;
+}
+
 export const loadShopifyCatalog = cache(async (): Promise<ShopifyCatalog> => {
   const [rawProducts, collections] = await Promise.all([
     paginateProducts(PRODUCTS_PAGE_QUERY),
@@ -131,9 +171,11 @@ export const loadShopifyCatalog = cache(async (): Promise<ShopifyCatalog> => {
     }),
   );
 
-  const products = rawProducts
-    .map((product) => mapShopifyProduct(product, handlesByProduct.get(product.handle) ?? []))
-    .filter((product): product is Product => Boolean(product));
+  const products = dedupeShopifyProducts(
+    rawProducts
+      .map((product) => mapShopifyProduct(product, handlesByProduct.get(product.handle) ?? []))
+      .filter((product): product is Product => Boolean(product)),
+  );
 
   const relatedByCategory = new Map<string, string[]>();
   for (const product of products) {

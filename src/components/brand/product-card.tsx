@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Bevel } from "@/components/brand/section-head";
@@ -20,7 +21,19 @@ export function ProductCard({
   return (
     <article className="flex flex-col border border-kg-lijn bg-white">
       <Link href={`/producten/${product.slug}`} className="relative block p-3 text-inherit no-underline hover:no-underline">
-        <Bevel size={16} className="aspect-[4/3]" style={{ background: color?.hex ?? "#C9C4B8" }} />
+        {product.images[0] ? (
+          <Bevel size={16} className="relative aspect-[4/3] overflow-hidden bg-[#e9e7e1]">
+            <Image
+              src={product.images[0].url}
+              alt={product.images[0].alt || product.name}
+              fill
+              sizes="(min-width: 1024px) 280px, 50vw"
+              className="object-contain p-1"
+            />
+          </Bevel>
+        ) : (
+          <Bevel size={16} className="aspect-[4/3]" style={{ background: color?.hex ?? "#C9C4B8" }} />
+        )}
       </Link>
       <div className="flex flex-1 flex-col gap-1.5 px-3.5 pb-3.5">
         <p className="font-mono text-[13px] text-kg-text-2">{product.brand}</p>
