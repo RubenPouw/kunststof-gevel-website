@@ -1,3 +1,5 @@
+import { facadeOrder } from "@/lib/area";
+
 import type {
   ColorFamily,
   Product,
@@ -182,6 +184,17 @@ export function findVariant(product: Product, colorName: string, length?: string
   );
 }
 
-export function neededPanels(widthM: number, heightM: number, coverage: number) {
-  return Math.ceil(widthM * heightM * coverage * 1.1);
+export function neededPanels(
+  widthM: number,
+  heightM: number,
+  coverage: number,
+  openingsM2 = 0,
+) {
+  const result = facadeOrder({
+    widthM,
+    heightM,
+    openingsM2,
+    panelsPerM2: coverage,
+  });
+  return result.ok ? result.panels : 0;
 }

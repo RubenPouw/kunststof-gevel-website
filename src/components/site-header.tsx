@@ -6,6 +6,7 @@ import { FormEvent, useState } from "react";
 
 import { Logo } from "@/components/brand/logo";
 import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
+import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import { shopNav } from "@/lib/site";
@@ -24,6 +25,8 @@ export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const { count } = useCart();
+  const { user } = useAccount();
+  const accountHref = user ? "/account" : "/inloggen";
   const { items, count: sampleCount } = useSamples();
   const [menuOpen, setMenuOpen] = useState(false);
   const [trayOpen, setTrayOpen] = useState(false);
@@ -109,7 +112,7 @@ export function SiteHeader() {
             Stalen <span className="font-mono">{sampleCount}/4</span>
           </button>
           <Link
-            href="/inloggen"
+            href={accountHref}
             className="hidden h-10 items-center px-3 font-mono text-[13px] text-kg-grind no-underline hover:text-kg-kalk hover:no-underline sm:inline-flex"
           >
             Account
@@ -156,7 +159,7 @@ export function SiteHeader() {
               Stalen {sampleCount}/{SAMPLE_LIMIT}
             </button>
             <Link
-              href="/inloggen"
+              href={accountHref}
               onClick={() => setMenuOpen(false)}
               className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline"
             >

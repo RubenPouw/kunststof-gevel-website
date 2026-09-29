@@ -5,16 +5,17 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { AreaCalculator } from "@/components/catalog/area-calculator";
 import { Bevel } from "@/components/brand/section-head";
 import { CavemenMark } from "@/components/brand/marks";
 import { ProductCard } from "@/components/brand/product-card";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
-import { findVariant, neededPanels, uniqueLengths } from "@/lib/catalog/derive";
+import { findVariant, uniqueLengths } from "@/lib/catalog/derive";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product, ProductVariant } from "@/lib/catalog/types";
-import { exclVat, formatLengthMm, formatNlNumber, formatPrice } from "@/lib/format";
+import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
 import { paymentMethods } from "@/lib/site";
 import { weekNow, stockLabel } from "@/lib/week";
 import { cn } from "@/lib/utils";
@@ -54,8 +55,6 @@ export function ProductDetail({
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("omschrijving");
-  const [width, setWidth] = useState("8");
-  const [height, setHeight] = useState("2.6");
   const { add, setMountGevel } = useCart();
   const week = weekNow();
 
@@ -65,13 +64,7 @@ export function ProductDetail({
   );
 
   const coverage = selected.panelsPerM2;
-  const area = Number(width.replace(",", ".")) * Number(height.replace(",", "."));
-  const panels =
-    coverage && Number.isFinite(area) && area > 0
-      ? neededPanels(Number(width.replace(",", ".")), Number(height.replace(",", ".")), coverage)
-      : 0;
   const unitExcl = exclVat(selected.price);
-  const calcTotal = panels * unitExcl;
   const priceM2 = coverage ? unitExcl * coverage : undefined;
   const status = stockLabel(selected.inStock, week, selected.stockText);
   const skuShort = selected.sku.replace(/-3M$/, "");
@@ -258,42 +251,13 @@ export function ProductDetail({
           </div>
 
           {coverage ? (
-            <div className="border border-kg-lijn bg-white p-4">
-              <div className="grid grid-cols-2 gap-3">
-                <label className="font-mono text-[13px] text-kg-text-2">
-                  Breedte (m)
-                  <input
-                    value={width}
-                    onChange={(event) => setWidth(event.target.value)}
-                    inputMode="decimal"
-                    className="mt-1 h-10 w-full bg-kg-kalk px-3 font-mono text-[14px] text-kg-navy outline-none"
-                  />
-                </label>
-                <label className="font-mono text-[13px] text-kg-text-2">
-                  Hoogte (m)
-                  <input
-                    value={height}
-                    onChange={(event) => setHeight(event.target.value)}
-                    inputMode="decimal"
-                    className="mt-1 h-10 w-full bg-kg-kalk px-3 font-mono text-[14px] text-kg-navy outline-none"
-                  />
-                </label>
-              </div>
-              {panels > 0 ? (
-                <p className="mt-3 font-mono text-[14px]">
-                  {formatNlNumber(area, 1)} m² → {panels} panelen van {formatLengthMm(selected.length)} ·{" "}
-                  {formatPrice(calcTotal)} excl. btw
-                </p>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => panels > 0 && setQty(panels)}
-                disabled={panels < 1}
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "mt-3")}
-              >
-                Neem over
-              </button>
-            </div>
+            <AreaCalculator
+              panelsPerM2={coverage}
+              lengthLabel={formatLengthMm(selected.length)}
+              unitExcl={unitExcl}
+              onTake={(panels) => setQty(panels)}
+              onOrder={(panels) => onAdd(panels)}
+            />
           ) : null}
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
