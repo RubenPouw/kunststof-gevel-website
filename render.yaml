@@ -24,3 +24,7 @@ services:
         sync: false
       - key: ACTIVECAMPAIGN_LIST_ID
         sync: false
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: GOOGLE_PLACE_ID
+        value: "ChIJpTqzqNL_hy8RDIC8CeY0l9g"

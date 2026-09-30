@@ -75,9 +75,15 @@ SHOPIFY_API_VERSION=2025-01
 ACTIVECAMPAIGN_API_URL=https://jouwaccount.api-us1.com
 ACTIVECAMPAIGN_API_KEY=your-activecampaign-api-key
 ACTIVECAMPAIGN_LIST_ID=
+
+# Optioneel. Zonder API-key blijft de statische Google-regel (4,9 · 120) staan.
+GOOGLE_PLACES_API_KEY=your-places-api-key
+GOOGLE_PLACE_ID=ChIJpTqzqNL_hy8RDIC8CeY0l9g
 ```
 
 `ACTIVECAMPAIGN_API_URL` is het accountadres zonder `/api/3`. `ACTIVECAMPAIGN_LIST_ID` is het numerieke lijst-id; leeg laten mag. De API-key komt uit ActiveCampaign → Settings → Developer. Zet de drie keys op Render met sync vanuit het dashboard (`render.yaml` declareert ze als `sync: false`). Commit de waarden niet.
+
+`GOOGLE_PLACES_API_KEY` komt uit Google Cloud (Places API New). Zonder key bouwt de site gewoon en toont de homepage de vaste regel 4,9 · 120 beoordelingen plus de statische klantcitaten. Met de key komen rating, aantal en reviews van Places, twee uur gecachet. `GOOGLE_PLACE_ID` staat al op Kunststof-gevel.nl; alleen overschrijven als het vestigings-id wijzigt. De WebwinkelKeur-shop `1214873` is openbaar en staat in `src/lib/site.ts`, geen env var.
 
 `render.yaml` declareert deze variabelen (`sync: false` voor domain en token, zodat het geheim in het Dashboard blijft). Na een Blueprint-apply of op de bestaande web service de waarden invullen en opnieuw deployen.
 
