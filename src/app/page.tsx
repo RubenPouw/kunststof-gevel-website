@@ -8,6 +8,7 @@ import { HomeHero } from "@/components/home/home-hero";
 import { ProjectMosaic } from "@/components/home/project-mosaic";
 import { SamplesSection } from "@/components/home/samples-section";
 import {
+  getCategoryImages,
   getFeaturedProducts,
   listBrands,
   listCategories,
@@ -16,11 +17,12 @@ import {
 import { listSampleColors } from "@/lib/catalog/derive";
 
 export default async function HomePage() {
-  const [featured, brands, categories, products] = await Promise.all([
+  const [featured, brands, categories, products, categoryImages] = await Promise.all([
     getFeaturedProducts(),
     listBrands(),
     listCategories(),
     listProducts(),
+    getCategoryImages(),
   ]);
   const counts = Object.fromEntries(
     categories.map((category) => [
@@ -33,7 +35,7 @@ export default async function HomePage() {
   return (
     <div className="pb-8">
       <HomeHero />
-      <AssortmentGrid counts={counts} total={products.length} />
+      <AssortmentGrid counts={counts} total={products.length} images={categoryImages} />
       <BrandMarquee brands={brands} />
       <Bestsellers products={featured} />
       <SamplesSection colors={samples} />

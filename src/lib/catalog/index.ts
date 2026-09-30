@@ -25,7 +25,7 @@ import {
   staticCategories,
   staticProducts,
 } from "./static";
-import type { Brand, Category, CategorySlug, Product } from "./types";
+import type { Brand, Category, CategorySlug, Product, ProductImage } from "./types";
 
 export type {
   Brand,
@@ -175,7 +175,22 @@ export async function getFeaturedProducts() {
   if (featured.length) return featured;
 
   const gevel = products.filter((product) => product.category === "gevelbekleding");
-  return (gevel.length ? gevel : products).slice(0, 4);
+  return withPhotosFirst(gevel.length ? gevel : products).slice(0, 4);
+}
+
+function withPhotosFirst(products: Product[]) {
+  return [...products].sort((a, b) => Number(b.images.length > 0) - Number(a.images.length > 0));
+}
+
+/** First product photo per category, for category tiles. */
+export async function getCategoryImages() {
+  const images: Partial<Record<CategorySlug, ProductImage>> = {};
+  for (const product of await listProducts()) {
+    if (!images[product.category] && product.images[0]) {
+      images[product.category] = product.images[0];
+    }
+  }
+  return images;
 }
 
 export const brands = staticBrands;
