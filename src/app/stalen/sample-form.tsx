@@ -1,11 +1,12 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState, type ReactNode } from "react";
 import Link from "next/link";
 
 import { submitSamples } from "@/app/stalen/actions";
 import { SampleTrayCard } from "@/components/samples/sample-tray-card";
 import { buttonVariants } from "@/components/ui/button";
+import { useLeadDefaults } from "@/lib/account";
 import { type SampleActionState } from "@/lib/sample-request";
 import { useSamples } from "@/lib/samples";
 import { cn } from "@/lib/utils";
@@ -17,10 +18,7 @@ const initial: SampleActionState = { error: null };
 
 export function SampleRequestForm() {
   const { items, count } = useSamples();
-  const [state, action, pending] = useActionState(submitSamples, initial);
-  const payload = items
-    .map((item) => `${item.colorName}${item.ral ? ` ${item.ral}` : ""} (${item.brandName})`)
-    .join("|");
+  const defaults = useLeadDefaults();
 
   if (count === 0) {
     return (
@@ -34,18 +32,73 @@ export function SampleRequestForm() {
   }
 
   return (
+    <SampleFields
+      key={defaults.email || "gast"}
+      defaults={defaults}
+      payload={items
+        .map((item) => `${item.colorName}${item.ral ? ` ${item.ral}` : ""} (${item.brandName})`)
+        .join("|")}
+    />
+  );
+}
+
+function SampleFields({
+  defaults,
+  payload,
+}: {
+  defaults: { name: string; email: string; phone: string };
+  payload: string;
+}) {
+  const [state, action, pending] = useActionState(submitSamples, initial);
+  const [name, setName] = useState(defaults.name);
+  const [email, setEmail] = useState(defaults.email);
+  const [phone, setPhone] = useState(defaults.phone);
+
+  return (
     <form action={action} className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <div className="border border-[var(--color-border)] bg-surface p-6 sm:p-8">
         <input type="hidden" name="samples" value={payload} />
+        <p className="sr-only" aria-hidden>
+          <label>
+            Website
+            <input name="companyWebsite" tabIndex={-1} autoComplete="off" />
+          </label>
+        </p>
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Naam" htmlFor="sample-name">
-            <input id="sample-name" name="name" autoComplete="name" required className={fieldClass} />
+            <input
+              id="sample-name"
+              name="name"
+              autoComplete="name"
+              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className={fieldClass}
+            />
           </Field>
           <Field label="E-mail" htmlFor="sample-email">
-            <input id="sample-email" name="email" type="email" autoComplete="email" required className={fieldClass} />
+            <input
+              id="sample-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className={fieldClass}
+            />
           </Field>
           <Field label="Telefoon" htmlFor="sample-phone">
-            <input id="sample-phone" name="phone" type="tel" autoComplete="tel" required className={fieldClass} />
+            <input
+              id="sample-phone"
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              required
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              className={fieldClass}
+            />
           </Field>
           <Field label="Adres" htmlFor="sample-address">
             <input id="sample-address" name="address" autoComplete="street-address" required className={fieldClass} />
@@ -85,7 +138,7 @@ function Field({
 }: {
   label: string;
   htmlFor: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="grid gap-1.5">

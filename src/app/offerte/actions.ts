@@ -2,11 +2,8 @@
 
 import { redirect } from "next/navigation";
 
-import {
-  estimateRange,
-  parseQuoteBody,
-  validateQuote,
-} from "@/lib/quote";
+import { submitQuoteLead } from "@/lib/leads";
+import { parseQuoteBody } from "@/lib/quote";
 
 export type QuoteActionState = { error: string | null };
 
@@ -22,36 +19,24 @@ export async function submitQuote(
     areaM2: String(formData.get("areaM2") ?? ""),
     profile: String(formData.get("profile") ?? "Nog niet zeker"),
     message: String(formData.get("message") ?? ""),
+    wantsMontage: formData.get("wantsMontage") === "ja" ? "ja" : "nee",
+    companyWebsite: String(formData.get("companyWebsite") ?? ""),
   });
 
   if (!input) {
     return { error: "Ongeldige aanvraag." };
   }
 
-  const error = validateQuote(input);
-  if (error) {
-    return { error };
-  }
-
-  const area = Number(input.areaM2.replace(",", "."));
-  const estimate = estimateRange(area);
-  const reference = `KG-${Date.now().toString(36).toUpperCase()}`;
-
-  console.info("[offerte]", {
-    reference,
-    name: input.name,
-    email: input.email,
-    city: input.city,
-    areaM2: area,
-    profile: input.profile,
-  });
+  const result = await submitQuoteLead(input);
+  if (!result.ok) return { error: result.error };
 
   const params = new URLSearchParams({
-    ref: reference,
-    email: input.email,
-    area: String(estimate.area),
-    low: String(estimate.low),
-    high: String(estimate.high),
+    ref: result.reference,
+    email: input.email.trim(),
+    area: String(result.estimate.area),
+    low: String(result.estimate.low),
+    high: String(result.estimate.high),
+    montage: result.estimate.montage ? "1" : "0",
   });
 
   redirect(`/offerte/bedankt?${params.toString()}`);

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { parseSampleBody, validateSampleRequest } from "@/lib/sample-request";
+import { submitSampleLead } from "@/lib/leads";
+import { parseSampleBody } from "@/lib/sample-request";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -14,12 +15,11 @@ export async function POST(request: Request) {
   if (!input) {
     return NextResponse.json({ ok: false, error: "Ongeldige aanvraag." }, { status: 400 });
   }
-  const error = validateSampleRequest(input);
-  if (error) {
-    return NextResponse.json({ ok: false, error }, { status: 400 });
+
+  const result = await submitSampleLead(input);
+  if (!result.ok) {
+    return NextResponse.json({ ok: false, error: result.error }, { status: 400 });
   }
 
-  const reference = `ST-${Date.now().toString(36).toUpperCase()}`;
-  console.info("[stalen]", { reference, email: input.email, samples: input.samples });
-  return NextResponse.json({ ok: true, reference });
+  return NextResponse.json({ ok: true, reference: result.reference });
 }

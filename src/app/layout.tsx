@@ -6,6 +6,7 @@ import { ChatButton } from "@/components/brand/chat-button";
 import { FactsStrip } from "@/components/brand/facts-strip";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { AccountProvider } from "@/lib/account";
 import { CartProvider } from "@/lib/cart";
 import { SampleTrayProvider } from "@/lib/samples";
 import { site } from "@/lib/site";
@@ -34,6 +35,14 @@ export const metadata: Metadata = {
   description: site.description,
   metadataBase: new URL("https://kunststof-gevel.nl"),
   icons: { icon: "/favicon.svg", apple: "/brand/avatar.svg" },
+  openGraph: {
+    type: "website",
+    locale: "nl_NL",
+    siteName: site.name,
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    url: "/",
+  },
 };
 
 export default function RootLayout({
@@ -53,15 +62,37 @@ export default function RootLayout({
             </linearGradient>
           </defs>
         </svg>
-        <CartProvider>
-          <SampleTrayProvider>
-            <SiteHeader />
-            <FactsStrip />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-            <ChatButton />
-          </SampleTrayProvider>
-        </CartProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "HomeAndConstructionBusiness",
+              name: site.name,
+              url: "https://kunststof-gevel.nl",
+              telephone: site.phone,
+              email: site.email,
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Binnenkamp 7a",
+                postalCode: "5321 KA",
+                addressLocality: "Hedel",
+                addressCountry: "NL",
+              },
+            }),
+          }}
+        />
+        <AccountProvider>
+          <CartProvider>
+            <SampleTrayProvider>
+              <SiteHeader />
+              <FactsStrip />
+              <main className="flex-1">{children}</main>
+              <SiteFooter />
+              <ChatButton />
+            </SampleTrayProvider>
+          </CartProvider>
+        </AccountProvider>
       </body>
     </html>
   );

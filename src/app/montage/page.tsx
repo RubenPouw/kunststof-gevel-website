@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
 
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { getStaticCategory } from "@/lib/catalog/static";
+import { categoryMetadata } from "@/data/seo/categories";
 
-const category = getStaticCategory("montage")!;
-
-export const metadata: Metadata = {
-  title: category.name,
-  description: category.summary,
-};
+export const metadata: Metadata = categoryMetadata("montage");
 
 export default function MontagePage({
   searchParams,

@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 
-import {
-  estimateRange,
-  parseQuoteBody,
-  validateQuote,
-} from "@/lib/quote";
+import { submitQuoteLead } from "@/lib/leads";
+import { parseQuoteBody } from "@/lib/quote";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -19,26 +16,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Ongeldige aanvraag." }, { status: 400 });
   }
 
-  const error = validateQuote(input);
-  if (error) {
-    return NextResponse.json({ ok: false, error }, { status: 400 });
+  const result = await submitQuoteLead(input);
+  if (!result.ok) {
+    return NextResponse.json({ ok: false, error: result.error }, { status: 400 });
   }
-
-  const area = Number(input.areaM2.replace(",", "."));
-  const reference = `KG-${Date.now().toString(36).toUpperCase()}`;
-
-  console.info("[offerte]", {
-    reference,
-    name: input.name,
-    email: input.email,
-    city: input.city,
-    areaM2: area,
-    profile: input.profile,
-  });
 
   return NextResponse.json({
     ok: true,
-    reference,
-    estimate: estimateRange(area),
+    reference: result.reference,
+    estimate: result.estimate,
   });
 }

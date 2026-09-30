@@ -1,11 +1,12 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, type ReactNode } from "react";
 
 import { submitQuote, type QuoteActionState } from "@/app/offerte/actions";
 import { buttonVariants } from "@/components/ui/button";
-import { estimateRange, quoteProfiles } from "@/lib/quote";
+import { useLeadDefaults } from "@/lib/account";
 import { formatPrice } from "@/lib/format";
+import { estimateRange, quoteProfiles } from "@/lib/quote";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
@@ -14,17 +15,44 @@ const fieldClass =
 const initialState: QuoteActionState = { error: null };
 
 export function QuoteForm() {
+  const defaults = useLeadDefaults();
+  return <QuoteFields key={defaults.email || "gast"} defaults={defaults} />;
+}
+
+function QuoteFields({
+  defaults,
+}: {
+  defaults: { name: string; email: string; phone: string };
+}) {
   const [state, action, pending] = useActionState(submitQuote, initialState);
+  const [name, setName] = useState(defaults.name);
+  const [email, setEmail] = useState(defaults.email);
+  const [phone, setPhone] = useState(defaults.phone);
   const [areaM2, setAreaM2] = useState("");
+  const [montage, setMontage] = useState(true);
 
   const area = Number(areaM2.replace(",", "."));
-  const liveEstimate = Number.isFinite(area) && area >= 1 ? estimateRange(area) : null;
+  const liveEstimate = Number.isFinite(area) && area >= 1 ? estimateRange(area, montage) : null;
 
   return (
     <form action={action} autoComplete="off" className="border border-[var(--color-border)] bg-surface p-6 sm:p-8">
+      <p className="sr-only" aria-hidden>
+        <label>
+          Website
+          <input name="companyWebsite" tabIndex={-1} autoComplete="off" />
+        </label>
+      </p>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Naam" htmlFor="quote-name">
-          <input id="quote-name" name="name" autoComplete="name" required className={fieldClass} />
+          <input
+            id="quote-name"
+            name="name"
+            autoComplete="name"
+            required
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            className={fieldClass}
+          />
         </Field>
         <Field label="E-mail" htmlFor="quote-email">
           <input
@@ -33,6 +61,8 @@ export function QuoteForm() {
             type="email"
             autoComplete="email"
             required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
             className={fieldClass}
           />
         </Field>
@@ -43,6 +73,8 @@ export function QuoteForm() {
             type="tel"
             autoComplete="tel"
             required
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
             className={fieldClass}
           />
         </Field>
@@ -63,7 +95,8 @@ export function QuoteForm() {
             required
             placeholder="bijv. 80"
             className={fieldClass}
-            onInput={(event) => setAreaM2(event.currentTarget.value)}
+            value={areaM2}
+            onChange={(event) => setAreaM2(event.target.value)}
           />
         </Field>
         <Field label="Profiel" htmlFor="quote-profile">
@@ -75,6 +108,24 @@ export function QuoteForm() {
             ))}
           </select>
         </Field>
+        <div className="sm:col-span-2">
+          <label className="flex items-start gap-3 text-[15px]">
+            <input
+              type="checkbox"
+              name="wantsMontage"
+              value="ja"
+              checked={montage}
+              onChange={(event) => setMontage(event.target.checked)}
+              className="mt-1 size-4 accent-[var(--kg-navy)]"
+            />
+            <span>
+              Inclusief montage door een Caveman
+              <span className="mt-1 block text-[13px] text-[var(--color-text-muted)]">
+                Uitvinken als u alleen materiaal wilt. De bandbreedte past mee.
+              </span>
+            </span>
+          </label>
+        </div>
         <div className="sm:col-span-2">
           <Field label="Toelichting (optioneel)" htmlFor="quote-message">
             <textarea
@@ -90,7 +141,7 @@ export function QuoteForm() {
 
       {liveEstimate ? (
         <p className="mt-5 bg-kg-offwhite px-4 py-3 text-[14px]">
-          Indicatie inclusief montage:{" "}
+          Indicatie {liveEstimate.montage ? "inclusief montage" : "materiaal"}:{" "}
           <strong className="font-heading text-[22px] font-bold">
             {formatPrice(liveEstimate.low)} – {formatPrice(liveEstimate.high)}
           </strong>
@@ -122,7 +173,7 @@ function Field({
 }: {
   label: string;
   htmlFor: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="grid gap-1.5">

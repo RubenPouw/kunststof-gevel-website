@@ -2,7 +2,8 @@
 
 import { redirect } from "next/navigation";
 
-import { parseSampleBody, validateSampleRequest, type SampleActionState } from "@/lib/sample-request";
+import { submitSampleLead } from "@/lib/leads";
+import { parseSampleBody, type SampleActionState } from "@/lib/sample-request";
 
 export async function submitSamples(
   _prev: SampleActionState,
@@ -16,25 +17,19 @@ export async function submitSamples(
     postcode: String(formData.get("postcode") ?? ""),
     city: String(formData.get("city") ?? ""),
     samples: String(formData.get("samples") ?? ""),
+    companyWebsite: String(formData.get("companyWebsite") ?? ""),
   });
 
   if (!input) return { error: "Ongeldige aanvraag." };
-  const error = validateSampleRequest(input);
-  if (error) return { error };
 
-  const reference = `ST-${Date.now().toString(36).toUpperCase()}`;
-  console.info("[stalen]", {
-    reference,
-    name: input.name,
-    email: input.email,
-    city: input.city,
-    samples: input.samples.split("|").filter(Boolean),
-  });
+  const result = await submitSampleLead(input);
+  if (!result.ok) return { error: result.error };
 
+  const count = input.samples.split("|").filter(Boolean).length;
   const params = new URLSearchParams({
-    ref: reference,
-    email: input.email,
-    n: String(input.samples.split("|").filter(Boolean).length),
+    ref: result.reference,
+    email: input.email.trim(),
+    n: String(count),
   });
   redirect(`/stalen/bedankt?${params.toString()}`);
 }

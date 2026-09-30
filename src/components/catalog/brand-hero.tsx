@@ -33,10 +33,12 @@ export function BrandHero({
             <Link href="/#stalen" className={cn(buttonVariants({ variant: "primary" }), "no-underline hover:no-underline")}>
               {brand.name} stalen aanvragen
             </Link>
-            <Link href="/montage" className={cn(buttonVariants({ variant: "outline" }), "no-underline hover:no-underline")}>
-              Montage-instructie
+            <Link href="/blog/montage-kunststof-gevelbekleding" className={cn(buttonVariants({ variant: "outline" }), "no-underline hover:no-underline")}>
+              Montage-uitleg
             </Link>
-            <span className="font-mono text-[13px] text-kg-text-2">Groot project? Prijs op maat</span>
+            <Link href="/offerte" className="font-mono text-[13px] text-kg-text-2 underline">
+              Groot project? Prijs op maat
+            </Link>
           </div>
         </div>
         <Bevel size={24} className="relative h-[220px] lg:h-[300px]" style={{ background: "#3A3D41" }}>

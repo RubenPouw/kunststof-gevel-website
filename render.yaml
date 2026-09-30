@@ -18,3 +18,9 @@ services:
         sync: false
       - key: SHOPIFY_API_VERSION
         value: "2025-01"
+      - key: ACTIVECAMPAIGN_API_URL
+        sync: false
+      - key: ACTIVECAMPAIGN_API_KEY
+        sync: false
+      - key: ACTIVECAMPAIGN_LIST_ID
+        sync: false
