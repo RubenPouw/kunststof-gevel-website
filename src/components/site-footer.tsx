@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
 import { CavesuppliesMark } from "@/components/brand/marks";
+import { WebwinkelKeurBadge } from "@/components/brand/webwinkelkeur-badge";
 import { footerColumns, paymentMethods, site } from "@/lib/site";
 
 export function SiteFooter() {
@@ -48,13 +49,16 @@ export function SiteFooter() {
         <p>
           © {new Date().getFullYear()} {site.house} · via {site.name}
         </p>
-        <ul className="flex flex-wrap gap-2">
-          {paymentMethods.map((method) => (
-            <li key={method} className="text-[13px]">
-              {method}
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <WebwinkelKeurBadge />
+          <ul className="flex flex-wrap gap-2">
+            {paymentMethods.map((method) => (
+              <li key={method} className="text-[13px]">
+                {method}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );
