@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { CavemenMark } from "@/components/brand/marks";
-import { Bevel } from "@/components/brand/section-head";
+import { ProductPhoto } from "@/components/brand/product-photo";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
@@ -71,7 +71,14 @@ export default function CartPage() {
                       className="grid items-center gap-3 border-b border-kg-lijn py-4 sm:grid-cols-[2fr_0.7fr_0.9fr_1.4fr]"
                     >
                       <div className="flex items-center gap-3">
-                        <Bevel size={8} className="size-10 shrink-0" style={{ background: resolved.hex }} />
+                        <ProductPhoto
+                          image={resolved.image ? { url: resolved.image, alt: resolved.name } : undefined}
+                          alt={resolved.name}
+                          sizes="56px"
+                          fallback={resolved.hex}
+                          bevel={8}
+                          className="size-14 shrink-0 border border-kg-lijn"
+                        />
                         <div>
                           <p className="text-[15px] font-medium">{resolved.name}</p>
                           <p className="font-mono text-[13px] text-kg-text-2">

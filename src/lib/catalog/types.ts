@@ -78,6 +78,7 @@ export type ProductVariant = {
   colorFamily: ColorFamily;
   panelsPerM2?: number;
   sampleId: string;
+  image?: ProductImage;
 };
 
 export type ProductImage = {

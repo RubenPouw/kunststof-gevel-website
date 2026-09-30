@@ -30,6 +30,7 @@ export type CartLine = {
   price?: number;
   kind?: "product" | "kozijn";
   hex?: string;
+  image?: string;
   length?: string;
   areaM2?: number;
   mount?: boolean;
@@ -43,6 +44,7 @@ type ResolvedLine = {
   /** Unit price excl. btw */
   unitExcl: number;
   hex: string;
+  image?: string;
   length: string;
   areaM2: number;
   kind: "product" | "kozijn";
@@ -140,6 +142,7 @@ function resolveLine(line: CartLine): ResolvedLine | undefined {
     colorName: line.colorName ?? variant?.colorName ?? "",
     unitExcl: exclVat(priceIncl),
     hex: line.hex ?? variant?.hex ?? "#c9c4b8",
+    image: line.image ?? product?.images[0]?.url,
     length: line.length ?? variant?.length ?? "",
     areaM2: derivedArea,
     kind: "product",

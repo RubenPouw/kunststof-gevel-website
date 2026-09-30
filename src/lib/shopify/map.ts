@@ -224,6 +224,7 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     options: variant.selectedOptions,
     colorFamily: "overig",
     sampleId: "",
+    image: mapImage(variant.image, `${product.title}, ${color}`),
   };
 }
 
@@ -266,6 +267,7 @@ export function mapShopifyProduct(
   const images = [
     mapImage(product.featuredImage, product.title),
     ...product.images.nodes.map((image) => mapImage(image, product.title)),
+    ...variants.map((variant) => variant.image),
   ].filter((image, index, list): image is ProductImage => {
     return Boolean(image) && list.findIndex((item) => item?.url === image?.url) === index;
   });
