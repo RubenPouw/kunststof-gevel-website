@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { Bevel, SectionHead } from "@/components/brand/section-head";
+import { ProductPhoto } from "@/components/brand/product-photo";
+import { SectionHead } from "@/components/brand/section-head";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
@@ -22,7 +23,14 @@ export function Bestsellers({ products }: { products: Product[] }) {
           return (
             <article key={product.slug} className="flex flex-col border border-kg-lijn bg-white">
               <Link href={`/producten/${product.slug}`} className="block p-3 no-underline hover:no-underline">
-                <Bevel size={16} className="aspect-[4/3]" style={{ background: color?.hex ?? "#C9C4B8" }} />
+                <ProductPhoto
+                  image={product.images[0]}
+                  alt={product.name}
+                  sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw"
+                  fallback={color?.hex}
+                  className="aspect-[4/3]"
+                  imageClassName="p-1"
+                />
               </Link>
               <div className="flex flex-1 flex-col gap-2 px-3.5 pb-3.5">
                 <div className="font-mono text-[13px] text-kg-text-2">

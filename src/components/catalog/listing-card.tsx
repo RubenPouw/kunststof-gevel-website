@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { Bevel } from "@/components/brand/section-head";
+import { ProductPhoto } from "@/components/brand/product-photo";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
@@ -30,19 +29,14 @@ export function ListingCard({ product }: { product: Product }) {
   return (
     <article className="grid gap-4 border border-kg-lijn bg-white p-3.5 sm:grid-cols-[170px_1fr]">
       <Link href={`/producten/${product.slug}`} className="relative block text-inherit no-underline hover:no-underline">
-        {product.images[0] ? (
-          <Bevel size={16} className="relative aspect-square overflow-hidden bg-[#e9e7e1]">
-            <Image
-              src={product.images[0].url}
-              alt={product.images[0].alt || product.name}
-              fill
-              sizes="170px"
-              className="object-contain p-1"
-            />
-          </Bevel>
-        ) : (
-          <Bevel size={16} className="aspect-square" style={{ background: selected.hex }} />
-        )}
+        <ProductPhoto
+          image={selected.image ?? product.images[0]}
+          alt={product.name}
+          sizes="(min-width: 640px) 170px, 100vw"
+          fallback={selected.hex}
+          className="aspect-square"
+          imageClassName="p-1"
+        />
       </Link>
       <div className="flex min-w-0 flex-col">
         <p className="font-mono text-[13px] text-kg-text-2">Art. {sku}</p>

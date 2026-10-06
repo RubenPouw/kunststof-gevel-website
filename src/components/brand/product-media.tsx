@@ -1,5 +1,4 @@
-import Image from "next/image";
-
+import { ProductPhoto } from "@/components/brand/product-photo";
 import { ProductVisual, visualVariantFor } from "@/components/brand/product-visual";
 import type { Product } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
@@ -14,15 +13,13 @@ export function ProductMedia({
   const image = product.images[0];
   if (image) {
     return (
-      <div className={cn("relative aspect-[4/3] overflow-hidden bg-[#e9e7e1]", className)}>
-        <Image
-          src={image.url}
-          alt={image.alt || product.name}
-          fill
-          sizes="(min-width: 1024px) 480px, 100vw"
-          className="object-contain"
-        />
-      </div>
+      <ProductPhoto
+        image={image}
+        alt={product.name}
+        sizes="(min-width: 1024px) 480px, 100vw"
+        bevel={null}
+        className={cn("aspect-[4/3]", className)}
+      />
     );
   }
 

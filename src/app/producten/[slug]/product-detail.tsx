@@ -1,14 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AreaCalculator } from "@/components/catalog/area-calculator";
-import { Bevel } from "@/components/brand/section-head";
 import { CavemenMark } from "@/components/brand/marks";
 import { ProductCard } from "@/components/brand/product-card";
+import { ProductPhoto } from "@/components/brand/product-photo";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
@@ -51,6 +50,7 @@ export function ProductDetail({
   const lengths = uniqueLengths(product).filter(Boolean);
   const showLength = lengths.length > 1;
   const [colorName, setColorName] = useState(fallback.colorName);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [length, setLength] = useState(fallback.length);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
@@ -62,6 +62,14 @@ export function ProductDetail({
     () => findVariant(product, colorName, length) ?? fallback,
     [colorName, fallback, length, product],
   );
+
+  const mainImage =
+    product.images.find((image) => image.url === imageUrl) ?? selected.image ?? product.images[0];
+
+  function chooseColor(name: string) {
+    setColorName(name);
+    setImageUrl(null);
+  }
 
   const coverage = selected.panelsPerM2;
   const unitExcl = exclVat(selected.price);
@@ -79,6 +87,7 @@ export function ProductDetail({
       colorName: selected.colorName,
       price: selected.price,
       hex: selected.hex,
+      image: (selected.image ?? product.images[0])?.url,
       length: selected.length,
       areaM2: coverage ? count / coverage : undefined,
       skuLabel: `Art. ${skuShort} · ${formatLengthMm(selected.length)}`,
@@ -112,37 +121,52 @@ export function ProductDetail({
       <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
         <div>
           <div className="relative">
-            {product.images[0] ? (
-              <Bevel size={24} className="relative aspect-square overflow-hidden bg-[#e9e7e1]">
-                <Image
-                  src={product.images[0].url}
-                  alt={product.images[0].alt || product.name}
-                  fill
-                  sizes="(min-width: 1024px) 480px, 100vw"
-                  className="object-contain p-2"
-                  priority
-                />
-              </Bevel>
-            ) : (
-              <Bevel size={24} className="aspect-square" style={{ background: selected.hex }} />
-            )}
+            <ProductPhoto
+              image={mainImage}
+              alt={product.name}
+              sizes="(min-width: 1024px) 600px, 100vw"
+              fallback={selected.hex}
+              bevel={24}
+              priority
+              className="aspect-square border border-kg-lijn"
+              imageClassName="p-4"
+            />
             <span className="absolute top-4 left-4 bg-kg-kalk px-2 py-1 font-mono text-[13px]">
               {selected.colorName}
               {selected.ral ? ` · ${selected.ral}` : ""}
             </span>
           </div>
           <div className="mt-2 grid grid-cols-5 gap-2">
-            {product.images.length
-              ? product.images.slice(0, 5).map((image) => (
-                  <div key={image.url} className="relative aspect-square overflow-hidden bg-[#e9e7e1]">
-                    <Image src={image.url} alt={image.alt || product.name} fill sizes="80px" className="object-contain p-0.5" />
-                  </div>
+            {product.images.length > 1
+              ? product.images.slice(0, 10).map((image, index) => (
+                  <button
+                    key={image.url}
+                    type="button"
+                    onClick={() => setImageUrl(image.url)}
+                    className={cn(
+                      "border border-kg-lijn",
+                      image.url === mainImage?.url && "outline outline-2 outline-offset-1 outline-kg-navy",
+                    )}
+                    aria-label={`Foto ${index + 1} van ${product.images.length}`}
+                    aria-pressed={image.url === mainImage?.url}
+                  >
+                    <ProductPhoto
+                      image={image}
+                      alt={product.name}
+                      sizes="120px"
+                      bevel={null}
+                      className="aspect-square"
+                      imageClassName="p-1"
+                    />
+                  </button>
                 ))
-              : product.colors.slice(0, 5).map((color) => (
+              : null}
+            {product.images.length === 0
+              ? product.colors.slice(0, 5).map((color) => (
                   <button
                     key={color.sampleId}
                     type="button"
-                    onClick={() => setColorName(color.name)}
+                    onClick={() => chooseColor(color.name)}
                     className={cn(
                       "relative aspect-square",
                       color.name === selected.colorName && "outline outline-2 outline-kg-navy",
@@ -151,7 +175,8 @@ export function ProductDetail({
                   >
                     <span className="absolute inset-0" style={{ background: color.hex }} />
                   </button>
-                ))}
+                ))
+              : null}
           </div>
         </div>
 
@@ -193,7 +218,7 @@ export function ProductDetail({
                   <button
                     key={color.sampleId}
                     type="button"
-                    onClick={() => setColorName(color.name)}
+                    onClick={() => chooseColor(color.name)}
                     className={cn(
                       "size-8",
                       color.name === selected.colorName && "outline outline-2 outline-offset-2 outline-kg-navy",
