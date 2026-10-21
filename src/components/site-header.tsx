@@ -59,7 +59,7 @@ export function SiteHeader() {
       <div className="container-kg flex h-[72px] items-center gap-4 lg:gap-6">
         <Logo size={20} tone="dark" />
 
-        <nav className="hidden items-center gap-2 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
+        <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
           {shopNav.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
@@ -67,7 +67,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-2.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline",
+                  "px-2 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline",
                   active && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
                 )}
               >

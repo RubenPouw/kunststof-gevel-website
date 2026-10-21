@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { blogPosts } from "@/data/blog/posts";
+import { projects } from "@/data/projects";
 import { staticBrands } from "@/lib/catalog/static";
 import { getCatalog } from "@/lib/catalog";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
@@ -62,6 +63,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogPosts.map((post) => ({
       url: `${base}/blog/${post.slug}`,
       lastModified: new Date(post.date),
+    })),
+    ...projects.map((project) => ({
+      url: `${base}/projecten/${project.slug}`,
+      lastModified: new Date(project.date),
     })),
   ];
 }

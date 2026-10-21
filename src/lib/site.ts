@@ -53,6 +53,7 @@ export const shopNav = [
   { href: "/dakranden", label: "Dakranden" },
   { href: "/kozijnen", label: "Kozijnen" },
   { href: "/merken", label: "Merken" },
+  { href: "/projecten", label: "Projecten" },
   { href: "/zakelijk", label: "Zakelijk" },
 ] as const;
 
@@ -123,69 +124,6 @@ export const businessPoints = [
   "Bestellen op rekening na eenmalige check",
   "Voorraad van de merken die we zelf plaatsen",
 ] as const;
-
-export type Project = {
-  slug: string;
-  title: string;
-  location: string;
-  profile: string;
-  color: string;
-  area: string;
-  year: string;
-  summary: string;
-  palette: string[];
-};
-
-export const projects: Project[] = [
-  {
-    slug: "villa-bergen",
-    title: "Villa in Bergen",
-    location: "Bergen, Noord-Holland",
-    profile: "Zweeds rabat",
-    color: "Vergrijsd eiken",
-    area: "186 m²",
-    year: "2025",
-    summary:
-      "Volledige gevelrenovatie van een jaren-70-villa. Houten rabat was verweerd; we vervingen het door zweeds rabat in vergrijsd eiken, inclusief hoekprofielen en ventilatielatten.",
-    palette: ["#A39480", "#B3A490", "#8E8170", "#C4B6A2"],
-  },
-  {
-    slug: "aanbouw-amersfoort",
-    title: "Aanbouw in Amersfoort",
-    location: "Amersfoort, Utrecht",
-    profile: "Sponningdeel",
-    color: "Antraciet",
-    area: "42 m²",
-    year: "2025",
-    summary:
-      "Strakke aanbouw met keuken en bijkeuken. Antraciet sponningdeel sluit aan op bestaande aluminium kozijnen. Montage in twee dagen, inclusief dakrandafwerking.",
-    palette: ["#3A3D41", "#45484C", "#323538", "#4C5055"],
-  },
-  {
-    slug: "woning-deventer",
-    title: "Jaren-30-woning in Deventer",
-    location: "Deventer, Overijssel",
-    profile: "Potdeksel",
-    color: "Meranti",
-    area: "98 m²",
-    year: "2024",
-    summary:
-      "Topgevels en achtergevel kregen potdeksel in meranti-houtlook. De voorgevel bleef steen, zodat de karakteristieke uitstraling aan de straatkant behouden bleef.",
-    palette: ["#5C2E22", "#6B3828", "#4E261C", "#7A4330"],
-  },
-  {
-    slug: "recreatie-veluwe",
-    title: "Recreatiewoning op de Veluwe",
-    location: "Nunspeet, Gelderland",
-    profile: "Rabat",
-    color: "Eiken",
-    area: "64 m²",
-    year: "2024",
-    summary:
-      "Chalet met rondom rabat in eiken. Lichtgewicht, onderhoudsvrij en bestand tegen vocht uit het bos. Eigenaar hoeft niet meer te beitsen.",
-    palette: ["#7A4E2E", "#8C5A36", "#6E4326", "#9A6840"],
-  },
-];
 
 export const faqs = [
   {
