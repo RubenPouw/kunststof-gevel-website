@@ -1,5 +1,6 @@
 import { cache } from "react";
 
+import { findListedProduct } from "@/lib/catalog/dedupe";
 import { isShopifyConfigured } from "@/lib/shopify/config";
 import { fetchShopifySearchHandles, loadShopifyCatalog } from "@/lib/shopify/catalog";
 
@@ -115,14 +116,7 @@ export async function listCategories() {
 }
 
 export async function getProduct(slug: string) {
-  const products = await listProducts();
-  const direct = products.find((product) => product.slug === slug || product.aliasSlugs?.includes(slug));
-  if (direct) return direct;
-  const base = slug.replace(/-(\d+)$/, "");
-  if (base !== slug) {
-    return products.find((product) => product.slug === base || product.aliasSlugs?.includes(base));
-  }
-  return products.find((product) => product.slug === `${base}-1` || product.aliasSlugs?.includes(slug));
+  return findListedProduct(await listProducts(), slug);
 }
 
 export async function getCategory(slug: string) {

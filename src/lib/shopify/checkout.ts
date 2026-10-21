@@ -1,4 +1,5 @@
 import { getCatalog } from "@/lib/catalog";
+import { findListedProduct } from "@/lib/catalog/dedupe";
 import { hasPurchasePrice } from "@/lib/catalog/text-rules";
 import type { ProductVariant } from "@/lib/catalog/types";
 import { site } from "@/lib/site";
@@ -82,9 +83,7 @@ function findVariant(
   products: { slug: string; name?: string; aliasSlugs?: string[]; variants: ProductVariant[] }[],
 ) {
   return lines.map((line) => {
-    const product = products.find(
-      (item) => item.slug === line.productSlug || item.aliasSlugs?.includes(line.productSlug),
-    );
+    const product = findListedProduct(products, line.productSlug);
     const variant =
       product?.variants.find((item) => item.shopifyVariantId && item.shopifyVariantId === line.shopifyVariantId) ??
       product?.variants.find((item) => item.sku === line.variantSku);

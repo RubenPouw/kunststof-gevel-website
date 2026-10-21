@@ -79,13 +79,13 @@ ACTIVECAMPAIGN_API_KEY=your-activecampaign-api-key
 ACTIVECAMPAIGN_LIST_ID=
 
 LEAD_EMAIL_TO=info@kunststof-gevel.nl
-LEAD_EMAIL_FROM=
-LEAD_EMAIL_PROVIDER=auto
+LEAD_EMAIL_FROM=info@kunststof-gevel.nl
+LEAD_EMAIL_PROVIDER=smtp
 RESEND_API_KEY=
 MAILERSEND_API_KEY=
-SMTP_HOST=
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=
+SMTP_USER=info@kunststof-gevel.nl
 SMTP_PASS=
 SHOPIFY_ADMIN_ACCESS_TOKEN=
 NEXT_PUBLIC_GTM_ID=GTM-N3DQ6G5
@@ -93,6 +93,8 @@ NOINDEX=
 ```
 
 `ACTIVECAMPAIGN_API_URL` is het accountadres zonder `/api/3`. `ACTIVECAMPAIGN_LIST_ID` is het numerieke lijst-id; leeg laten mag. De API-key komt uit ActiveCampaign → Settings → Developer. Zet de drie keys op Render met sync vanuit het dashboard (`render.yaml` declareert ze als `sync: false`). Commit de waarden niet.
+
+Offerte- en staalmail gaat via Google Workspace. `SMTP_HOST` is `smtp.gmail.com`, poort `587` (STARTTLS) of `465` (TLS). Afzender en ontvanger zijn allebei `info@kunststof-gevel.nl`. `SMTP_PASS` is een Google-appwachtwoord en blijft `sync: false`. Zonder dat wachtwoord én zonder ActiveCampaign toont het formulier een fout. `RESEND_API_KEY` en `MAILERSEND_API_KEY` zijn alleen nodig als `LEAD_EMAIL_PROVIDER` op `resend` of `mailersend` staat.
 
 `render.yaml` declareert deze variabelen (`sync: false` voor domain en token, zodat het geheim in het Dashboard blijft). Na een Blueprint-apply of op de bestaande web service de waarden invullen en opnieuw deployen.
 
@@ -108,6 +110,6 @@ Tokens staan in `src/styles/tokens/` (kleur, type, spacing). Componenten: `src/c
 
 1. Open de Blueprint: [Render Blueprint](https://dashboard.render.com/blueprint/new?repo=https://github.com/RubenPouw/kunststof-gevel-website).
 2. Koppel GitHub als Render daarom vraagt, kies deze repo, en klik Apply.
-3. Vul `SHOPIFY_STORE_DOMAIN` en `SHOPIFY_STOREFRONT_ACCESS_TOKEN` in bij Environment. Laat `SHOPIFY_API_VERSION` op `2025-01` tenzij Shopify een nieuwere Storefront-versie vereist. ActiveCampaign-keys zijn optioneel; zonder keys blijft de site aanvragen loggen.
+3. Vul `SHOPIFY_STORE_DOMAIN` en `SHOPIFY_STOREFRONT_ACCESS_TOKEN` in bij Environment. Laat `SHOPIFY_API_VERSION` op `2025-01` tenzij Shopify een nieuwere Storefront-versie vereist. Zet `SMTP_PASS` (Google-appwachtwoord voor `info@kunststof-gevel.nl`). ActiveCampaign blijft optioneel.
 
 Health check: `GET /api/health`.

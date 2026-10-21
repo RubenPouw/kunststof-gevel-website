@@ -34,8 +34,9 @@ export function hasPurchasePrice(price: number) {
   return Number.isFinite(price) && price > 0;
 }
 
+/** Shopify adds `-1` when a handle already exists. A width such as `-167` stays part of the handle. */
 export function canonicalHandle(handle: string) {
-  return handle.replace(/-(\d+)$/, "");
+  return handle.replace(/-1$/, "");
 }
 
 export function normalizeProductName(name: string) {

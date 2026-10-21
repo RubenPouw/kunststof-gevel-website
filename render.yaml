@@ -31,19 +31,19 @@ services:
       - key: LEAD_EMAIL_TO
         value: info@kunststof-gevel.nl
       - key: LEAD_EMAIL_FROM
-        sync: false
+        value: info@kunststof-gevel.nl
       - key: LEAD_EMAIL_PROVIDER
-        value: auto
+        value: smtp
       - key: RESEND_API_KEY
         sync: false
       - key: MAILERSEND_API_KEY
         sync: false
       - key: SMTP_HOST
-        sync: false
+        value: smtp.gmail.com
       - key: SMTP_PORT
-        sync: false
+        value: "587"
       - key: SMTP_USER
-        sync: false
+        value: info@kunststof-gevel.nl
       - key: SMTP_PASS
         sync: false
       - key: NEXT_PUBLIC_GTM_ID

@@ -79,8 +79,26 @@ function mergeGroup(group: Product[]): Product {
 }
 
 /**
+ * Find a listed product by its public slug or by a duplicate handle (`slug-1`).
+ * A request for the duplicate still resolves after that copy leaves the Storefront.
+ */
+export function findListedProduct<T extends { slug: string; aliasSlugs?: string[] }>(
+  products: T[],
+  slug: string,
+) {
+  const direct = products.find((product) => product.slug === slug || product.aliasSlugs?.includes(slug));
+  if (direct) return direct;
+  const base = slug.replace(/-1$/, "");
+  if (base !== slug) {
+    return products.find((product) => product.slug === base || product.aliasSlugs?.includes(base));
+  }
+  return products.find((product) => product.slug === `${base}-1` || product.aliasSlugs?.includes(slug));
+}
+
+/**
  * Collapse Shopify duplicates (same title, often `slug` and `slug-1`).
- * The public URL keeps the clean handle. Prices and variant ids come from the copy that actually has a price.
+ * The public URL keeps the clean handle. While both copies are in the Storefront, prices and variant ids come from the copy that has a price.
+ * When the `-1` copy is drafted and disappears, the remaining product is listed with its own variant id.
  * Nothing is written back to Shopify.
  */
 export function dedupeProducts(products: Product[]): Product[] {

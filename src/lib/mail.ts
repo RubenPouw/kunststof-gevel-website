@@ -23,31 +23,54 @@ function providerName(value: string | undefined): Provider | "auto" | "invalid" 
 }
 
 function fromAddress() {
-  return process.env.LEAD_EMAIL_FROM?.trim() || "";
+  return process.env.LEAD_EMAIL_FROM?.trim() || site.email;
 }
 
 function toAddress() {
   return process.env.LEAD_EMAIL_TO?.trim() || site.email;
 }
 
+function smtpHost() {
+  return process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+}
+
+function smtpUser() {
+  return process.env.SMTP_USER?.trim() || site.email;
+}
+
+function smtpPort() {
+  const port = Number(process.env.SMTP_PORT?.trim() || "587");
+  return Number.isFinite(port) && port > 0 ? port : 587;
+}
+
 function providerReady(provider: Provider) {
-  const from = fromAddress();
-  if (!from) return false;
   if (provider === "resend") return Boolean(process.env.RESEND_API_KEY?.trim());
   if (provider === "mailersend") return Boolean(process.env.MAILERSEND_API_KEY?.trim());
-  return Boolean(
-    process.env.SMTP_HOST?.trim() && process.env.SMTP_USER?.trim() && process.env.SMTP_PASS?.trim(),
-  );
+  return Boolean(process.env.SMTP_PASS?.trim() && fromAddress() && smtpUser() && smtpHost());
 }
 
 function detectProvider(): Provider | null {
   const explicit = providerName(process.env.LEAD_EMAIL_PROVIDER);
   if (explicit === "invalid") return null;
   if (explicit !== "auto") return explicit;
+  if (providerReady("smtp")) return "smtp";
   if (providerReady("resend")) return "resend";
   if (providerReady("mailersend")) return "mailersend";
-  if (providerReady("smtp")) return "smtp";
   return null;
+}
+
+/** Resolved lead-mail settings. SMTP through Google Workspace is the default once SMTP_PASS is set. */
+export function leadMailPlan() {
+  const provider = detectProvider();
+  return {
+    provider,
+    from: fromAddress(),
+    to: toAddress(),
+    host: smtpHost(),
+    port: smtpPort(),
+    user: smtpUser(),
+    ready: provider ? providerReady(provider) : false,
+  };
 }
 
 async function sendResend(message: LeadEmail, from: string, to: string): Promise<LeadEmailResult> {
@@ -132,9 +155,9 @@ function smtpCommand(socket: net.Socket | tls.TLSSocket, command: string) {
 }
 
 async function sendSmtp(message: LeadEmail, from: string, to: string): Promise<LeadEmailResult> {
-  const host = process.env.SMTP_HOST?.trim() ?? "";
-  const port = Number(process.env.SMTP_PORT?.trim() || "587");
-  const user = process.env.SMTP_USER?.trim() ?? "";
+  const host = smtpHost();
+  const port = smtpPort();
+  const user = smtpUser();
   const pass = process.env.SMTP_PASS?.trim() ?? "";
   const secure = port === 465;
 
