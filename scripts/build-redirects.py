@@ -252,15 +252,42 @@ def category_target(path: str) -> tuple[str, str]:
     return "/gevelbekleding", "category"
 
 
+def load_duplicate_pairs() -> tuple[dict[str, str], set[str]]:
+    """Active `-1` handle → clean public slug. The clean Shopify product is the empty draft."""
+    dup_to_clean: dict[str, str] = {}
+    cleans: set[str] = set()
+    with (SEO / "shopify-duplicate-handles.csv").open(newline="") as handle:
+        for row in csv.DictReader(handle):
+            dup_to_clean[row["duplicate_handle"]] = row["canonical_handle"]
+            cleans.add(row["canonical_handle"])
+    return dup_to_clean, cleans
+
+
+def public_handle(handle: str, handle_set: set[str], dup_to_clean: dict[str, str], cleans: set[str]) -> str:
+    mapped = dup_to_clean.get(handle)
+    if mapped:
+        return mapped
+    match = re.fullmatch(r"(.+)-\d+", handle)
+    if match and (match.group(1) in handle_set or match.group(1) in cleans):
+        return match.group(1)
+    return handle
+
+
 def main() -> None:
     handles = json.loads((SEO / "catalog-handles.json").read_text())
-    canonical = []
+    dup_to_clean, cleans = load_duplicate_pairs()
+    (SEO / "duplicate-public-slugs.json").write_text(
+        json.dumps(dict(sorted(dup_to_clean.items())), ensure_ascii=False, indent=2) + "\n"
+    )
     handle_set = set(handles)
+    canonical: list[str] = []
+    seen_public: set[str] = set()
     for handle in handles:
-        match = re.fullmatch(r"(.+)-\d+", handle)
-        if match and match.group(1) in handle_set:
+        public = public_handle(handle, handle_set, dup_to_clean, cleans)
+        if public in seen_public:
             continue
-        canonical.append(handle)
+        seen_public.add(public)
+        canonical.append(public)
     by_norm: dict[str, list[str]] = {}
     for handle in canonical:
         by_norm.setdefault(norm(handle), []).append(handle)
@@ -313,6 +340,9 @@ def main() -> None:
     # Pages we map even if the crawl missed them (aliases).
     for path, (target, reason, status) in PAGES.items():
         add(path, target, reason, status)
+
+    for duplicate, clean in sorted(dup_to_clean.items()):
+        add(f"/producten/{duplicate}", f"/producten/{clean}", "shopify-duplicate-handle", 301)
 
     rows.sort(key=lambda row: row["from"])
     homepage = [row for row in rows if row["to"] in {"/", "/?"} and row["from"] != "/"]

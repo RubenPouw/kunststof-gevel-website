@@ -1,10 +1,18 @@
+import duplicatePublicSlugs from "../../../data/seo/duplicate-public-slugs.json" with { type: "json" };
 import {
   canonicalHandle,
   hasPurchasePrice,
-  normalizeProductName,
   sanitizeDescription,
 } from "@/lib/catalog/text-rules";
 import type { Product, ProductImage } from "@/lib/catalog/types";
+
+/** Shopify handle of the active `-1` copy → public slug of the empty handle, now draft. */
+const duplicateHandleToClean = duplicatePublicSlugs as Record<string, string>;
+
+/** Public product slug. Known `-1` copies are served on the clean handle. Other handles stay. */
+export function publicProductSlug(handle: string) {
+  return duplicateHandleToClean[handle] ?? handle;
+}
 
 function positivePrice(product: Product) {
   return Math.max(0, ...product.variants.map((variant) => variant.price), product.price);
@@ -12,15 +20,6 @@ function positivePrice(product: Product) {
 
 function pricedVariantCount(product: Product) {
   return product.variants.filter((variant) => hasPurchasePrice(variant.price)).length;
-}
-
-function descriptionScore(text: string, name: string) {
-  const clean = sanitizeDescription(text, name);
-  const token = normalizeProductName(name).split(" ").slice(0, 3).join(" ");
-  let score = Math.min(clean.length, 800);
-  if (token && normalizeProductName(clean).includes(token)) score += 400;
-  if (/aj fust/i.test(text)) score -= 200;
-  return score;
 }
 
 function uniqueImages(products: Product[]): ProductImage[] {
@@ -36,16 +35,14 @@ function uniqueImages(products: Product[]): ProductImage[] {
   return images;
 }
 
-function mergeGroup(group: Product[]): Product {
-  if (group.length === 1) {
-    const only = group[0];
-    return {
-      ...only,
-      description: sanitizeDescription(only.description, only.name),
-      aliasSlugs: only.aliasSlugs ?? [],
-    };
-  }
+function cleanedDescription(text: string, name: string) {
+  const clean = sanitizeDescription(text, name);
+  const fallback = sanitizeDescription("", name);
+  if (!text.trim() || clean === fallback) return "";
+  return clean;
+}
 
+function mergeGroup(group: Product[]): Product {
   const ranked = [...group].sort((a, b) => {
     const price = positivePrice(b) - positivePrice(a);
     if (price) return price;
@@ -57,14 +54,16 @@ function mergeGroup(group: Product[]): Product {
   });
 
   const donor = ranked[0];
-  const clean = group.find((product) => canonicalHandle(product.slug) === product.slug);
-  const slug = clean?.slug ?? donor.slug;
-  const aliasSlugs = [...new Set(group.map((product) => product.slug).filter((item) => item !== slug))];
+  const slug = publicProductSlug(donor.slug);
+  const aliasSlugs = [
+    ...new Set(group.flatMap((product) => [product.slug, ...(product.aliasSlugs ?? [])])),
+  ].filter((item) => item !== slug);
   const priced = donor.variants.filter((variant) => hasPurchasePrice(variant.price));
   const variants = priced.length ? priced : donor.variants;
-  const description = [...group].sort(
-    (a, b) => descriptionScore(b.description, donor.name) - descriptionScore(a.description, donor.name),
-  )[0].description;
+  const description =
+    [donor, ...group]
+      .map((product) => cleanedDescription(product.description, donor.name))
+      .find(Boolean) || sanitizeDescription(donor.description, donor.name);
 
   return {
     ...donor,
@@ -73,14 +72,14 @@ function mergeGroup(group: Product[]): Product {
     images: uniqueImages([donor, ...group]),
     description: sanitizeDescription(description, donor.name),
     variants,
-    price: Math.min(...variants.map((variant) => variant.price)),
+    price: variants.length ? Math.min(...variants.map((variant) => variant.price)) : donor.price,
     inStock: variants.some((variant) => variant.inStock),
   };
 }
 
 /**
- * Find a listed product by its public slug or by a duplicate handle (`slug-1`).
- * A request for the duplicate still resolves after that copy leaves the Storefront.
+ * Find a listed product by its public slug or by the active `-1` handle.
+ * `/producten/{clean}-1` resolves to the same product as `/producten/{clean}`.
  */
 export function findListedProduct<T extends { slug: string; aliasSlugs?: string[] }>(
   products: T[],
@@ -88,23 +87,23 @@ export function findListedProduct<T extends { slug: string; aliasSlugs?: string[
 ) {
   const direct = products.find((product) => product.slug === slug || product.aliasSlugs?.includes(slug));
   if (direct) return direct;
-  const base = slug.replace(/-1$/, "");
-  if (base !== slug) {
-    return products.find((product) => product.slug === base || product.aliasSlugs?.includes(base));
+  const clean = publicProductSlug(slug);
+  if (clean !== slug) {
+    return products.find((product) => product.slug === clean || product.aliasSlugs?.includes(clean));
   }
-  return products.find((product) => product.slug === `${base}-1` || product.aliasSlugs?.includes(slug));
+  return products.find((product) => product.aliasSlugs?.includes(slug) || publicProductSlug(product.slug) === slug);
 }
 
 /**
- * Collapse Shopify duplicates (same title, often `slug` and `slug-1`).
- * The public URL keeps the clean handle. While both copies are in the Storefront, prices and variant ids come from the copy that has a price.
- * When the `-1` copy is drafted and disappears, the remaining product is listed with its own variant id.
+ * Collapse a drafted empty handle and its active `-1` copy into one product.
+ * The public URL is the clean handle. Price, variants, SKU and description come from the `-1` copy.
+ * A handle that merely ends in `-1` and is not one of those pairs is left alone.
  * Nothing is written back to Shopify.
  */
 export function dedupeProducts(products: Product[]): Product[] {
   const groups = new Map<string, Product[]>();
   for (const product of products) {
-    const key = normalizeProductName(product.name) || canonicalHandle(product.slug);
+    const key = publicProductSlug(product.slug);
     const list = groups.get(key) ?? [];
     list.push(product);
     groups.set(key, list);

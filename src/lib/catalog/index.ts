@@ -147,7 +147,11 @@ export async function searchProducts(query: string) {
   try {
     const handles = await fetchShopifySearchHandles(query);
     if (!handles.length) return local;
-    const byHandle = new Map(products.map((product) => [product.slug, product]));
+    const byHandle = new Map<string, Product>();
+    for (const product of products) {
+      byHandle.set(product.slug, product);
+      for (const alias of product.aliasSlugs ?? []) byHandle.set(alias, product);
+    }
     const fromSearch = handles
       .map((handle) => byHandle.get(handle))
       .filter((product): product is Product => Boolean(product));
