@@ -85,6 +85,7 @@ export const footerColumns = [
     links: [
       { href: "/over-ons", label: "Over ons" },
       { href: "/projecten", label: "Projecten" },
+      { href: "/reviews", label: "Reviews" },
       { href: "/zakelijk", label: "Zakelijk" },
       { href: "/montage", label: "Montage" },
     ],

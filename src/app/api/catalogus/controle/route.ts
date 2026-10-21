@@ -5,6 +5,8 @@ import { revalidateAfterCatalogChange } from "@/lib/catalog/revalidate";
 import { syncCatalogFromShopify } from "@/lib/catalog/sync";
 import { databaseUrl } from "@/lib/db/client";
 import { catalogCounts } from "@/lib/db/store";
+import { revalidateReviewPages } from "@/lib/reviews/revalidate";
+import { syncReviews } from "@/lib/reviews/sync";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -24,13 +26,18 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   if (!authorized(request)) return NextResponse.json({ ok: false }, { status: 401 });
   if (!databaseUrl()) return NextResponse.json({ ok: false, error: "DATABASE_URL ontbreekt" }, { status: 503 });
+  const reviews = await syncReviews().catch((error) => {
+    console.error("[reviews] nachtcontrole mislukt", error instanceof Error ? error.message : "fout");
+    return { ok: false as const };
+  });
   try {
     const result = await syncCatalogFromShopify("nacht");
     clearCatalogCache();
     revalidateAfterCatalogChange(result.touch);
-    return NextResponse.json({ ok: true, ...result, touch: undefined });
+    revalidateReviewPages();
+    return NextResponse.json({ ok: true, ...result, reviews, touch: undefined });
   } catch (error) {
     console.error("[catalog] nachtcontrole mislukt", error);
-    return NextResponse.json({ ok: false }, { status: 500 });
+    return NextResponse.json({ ok: false, reviews }, { status: 500 });
   }
 }

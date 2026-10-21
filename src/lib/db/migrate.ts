@@ -30,6 +30,21 @@ const STATEMENTS = [
     value text not null,
     updated_at timestamptz not null default now()
   )`,
+  `create table if not exists reviews (
+    source text not null,
+    external_id text not null,
+    author_name text not null,
+    rating numeric not null,
+    text text not null default '',
+    language text not null default '',
+    created_at timestamptz not null,
+    reply_text text,
+    verified boolean not null default false,
+    source_url text,
+    fetched_at timestamptz not null default now(),
+    primary key (source, external_id)
+  )`,
+  `create index if not exists reviews_source_created_idx on reviews (source, created_at desc)`,
 ];
 
 export async function migrate() {

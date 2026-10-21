@@ -8,6 +8,8 @@ import { FaqReviews } from "@/components/home/faq-reviews";
 import { HomeGuides } from "@/components/seo/home-guides";
 import { HomeHero } from "@/components/home/home-hero";
 import { ProjectMosaic } from "@/components/home/project-mosaic";
+import { HomeQuotes } from "@/components/reviews/home-quotes";
+import { ReviewScoreStrip } from "@/components/reviews/score-strip";
 import { SamplesSection } from "@/components/home/samples-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import {
@@ -19,6 +21,7 @@ import {
 } from "@/lib/catalog";
 import { listSampleColors } from "@/lib/catalog/derive";
 import { faqJsonLd } from "@/lib/seo/schema";
+import { getReviewSnapshot } from "@/lib/reviews/read";
 import { faqs } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -42,16 +45,19 @@ export default async function HomePage() {
     ]),
   );
   const samples = listSampleColors(products).slice(0, 12);
+  const reviews = await getReviewSnapshot();
 
   return (
     <div className="pb-8">
       <JsonLd data={faqJsonLd(faqs)} />
+      <ReviewScoreStrip snapshot={reviews} />
       <HomeHero />
       <AssortmentGrid counts={counts} total={products.length} images={categoryImages} />
       <BrandMarquee brands={brands} />
       <Bestsellers products={featured} />
       <SamplesSection colors={samples} />
       <ProjectMosaic />
+      <HomeQuotes reviews={reviews.reviews} />
       <BusinessBand />
       <HomeGuides />
       <FaqReviews />

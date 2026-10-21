@@ -3,6 +3,7 @@ import { syncCatalogFromShopify } from "@/lib/catalog/sync";
 import { databaseUrl } from "@/lib/db/client";
 import { migrate } from "@/lib/db/migrate";
 import { catalogCounts } from "@/lib/db/store";
+import { syncReviewsIfEmpty } from "@/lib/reviews/sync";
 import { isShopifyConfigured } from "@/lib/shopify/config";
 
 export async function bootCatalog(options: { syncIfEmpty: boolean }) {
@@ -11,6 +12,9 @@ export async function bootCatalog(options: { syncIfEmpty: boolean }) {
     return;
   }
   await migrate();
+  await syncReviewsIfEmpty().catch((error) => {
+    console.error("[reviews] eerste sync mislukt", error instanceof Error ? error.message : "fout");
+  });
   if (!options.syncIfEmpty) {
     console.log("[catalog] schema gecontroleerd");
     return;
