@@ -1,8 +1,11 @@
 import { cache } from "react";
 
 import { findListedProduct } from "@/lib/catalog/dedupe";
+import { databaseUrl } from "@/lib/db/client";
+import { readStoredProducts } from "@/lib/db/store";
 import { isShopifyConfigured } from "@/lib/shopify/config";
 import { fetchShopifySearchHandles, loadShopifyCatalog } from "@/lib/shopify/catalog";
+import { brandsFromProducts } from "@/lib/shopify/map";
 
 import {
   applyListingFilters,
@@ -68,8 +71,15 @@ export type CatalogData = {
   products: Product[];
   brands: Brand[];
   categories: Category[];
-  source: "shopify" | "static";
+  source: "postgres" | "shopify" | "static";
 };
+
+const CATALOG_MEMORY_MS = 30_000;
+let catalogMemory: { at: number; data: CatalogData } | null = null;
+
+export function clearCatalogCache() {
+  catalogMemory = null;
+}
 
 function staticCatalog(): CatalogData {
   return {
@@ -80,10 +90,25 @@ function staticCatalog(): CatalogData {
   };
 }
 
-export const getCatalog = cache(async (): Promise<CatalogData> => {
-  if (!isShopifyConfigured()) {
-    return staticCatalog();
+async function loadCatalog(): Promise<CatalogData> {
+  if (databaseUrl()) {
+    try {
+      const products = await readStoredProducts();
+      if (products && products.length) {
+        const brands = brandsFromProducts(products);
+        return {
+          products,
+          brands: brands.length ? brands : staticBrands,
+          categories: staticCategories,
+          source: "postgres",
+        };
+      }
+    } catch (error) {
+      console.error("[catalog] Postgres niet bereikbaar, val terug op Shopify", error);
+    }
   }
+
+  if (!isShopifyConfigured()) return staticCatalog();
 
   try {
     const shopify = await loadShopifyCatalog();
@@ -101,6 +126,13 @@ export const getCatalog = cache(async (): Promise<CatalogData> => {
     console.error("[catalog] Shopify Storefront mislukt, statische fallback", error);
     return staticCatalog();
   }
+}
+
+export const getCatalog = cache(async (): Promise<CatalogData> => {
+  if (catalogMemory && Date.now() - catalogMemory.at < CATALOG_MEMORY_MS) return catalogMemory.data;
+  const data = await loadCatalog();
+  catalogMemory = { at: Date.now(), data };
+  return data;
 });
 
 export async function listProducts() {

@@ -16,6 +16,7 @@ export async function storefrontFetch<T>(
   query: string,
   variables?: Record<string, unknown>,
   config: ShopifyConfig | null = getShopifyConfig(),
+  fresh = false,
 ): Promise<T> {
   if (!config) {
     throw new ShopifyStorefrontError(
@@ -31,7 +32,9 @@ export async function storefrontFetch<T>(
       "X-Shopify-Storefront-Access-Token": config.storefrontAccessToken,
     },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 3600, tags: ["shopify-catalog"] },
+    ...(fresh
+      ? { cache: "no-store" as const }
+      : { next: { revalidate: 3600, tags: ["shopify-catalog"] } }),
   });
 
   if (!response.ok) {

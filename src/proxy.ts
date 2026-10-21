@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { resolveNavigation } from "@/lib/seo/redirects";
+import { listingRewriteTarget } from "@/lib/catalog/paths";
+import { normalizePath, resolveNavigation } from "@/lib/seo/redirects";
 
 export function proxy(request: NextRequest) {
   const decision = resolveNavigation({
@@ -10,6 +11,18 @@ export function proxy(request: NextRequest) {
   });
 
   if (decision.action === "next") {
+    const target = listingRewriteTarget(
+      normalizePath(request.nextUrl.pathname),
+      request.nextUrl.searchParams,
+    );
+    if (target) {
+      const url = request.nextUrl.clone();
+      url.pathname = target;
+      url.search = "";
+      const response = NextResponse.rewrite(url);
+      if (decision.noindex) response.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return response;
+    }
     const response = NextResponse.next();
     if (decision.noindex) response.headers.set("X-Robots-Tag", "noindex, nofollow");
     return response;

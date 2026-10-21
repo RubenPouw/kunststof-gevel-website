@@ -6,6 +6,7 @@ import type { Brand, Category, Product } from "@/lib/catalog/types";
 import { storefrontFetch } from "./client";
 import { brandsFromProducts, mapShopifyProduct } from "./map";
 import {
+  COLLECTION_BY_HANDLE_QUERY,
   COLLECTIONS_QUERY,
   PRODUCT_BY_HANDLE_QUERY,
   PRODUCTS_PAGE_QUERY,
@@ -24,24 +25,49 @@ type ProductByHandleData = {
   product: ShopifyProduct | null;
 };
 
+export type ShopifyCollectionNode = {
+  id: string;
+  handle: string;
+  title: string;
+  description: string;
+};
+
 type CollectionsData = {
-  collections: { nodes: { handle: string; title: string; description: string }[] };
+  collections: {
+    pageInfo: ShopifyPageInfo;
+    nodes: ShopifyCollectionNode[];
+  };
+};
+
+type CollectionByHandleData = {
+  collection: {
+    id: string;
+    handle: string;
+    title: string;
+    description: string;
+    products: {
+      pageInfo: ShopifyPageInfo;
+      nodes: ShopifyProduct[];
+    };
+  } | null;
 };
 
 type SearchData = {
   search: { nodes: Array<{ handle?: string } | null> };
 };
 
-async function paginateProducts(query: string, variables: Record<string, unknown> = {}) {
+async function paginateProducts(query: string, fresh: boolean) {
   const nodes: ShopifyProduct[] = [];
   let cursor: string | null = null;
   let hasNextPage = true;
 
   while (hasNextPage) {
-    const data: ProductsPageData = await storefrontFetch<ProductsPageData>(query, {
-      ...variables,
-      cursor,
-    });
+    const data: ProductsPageData = await storefrontFetch<ProductsPageData>(
+      query,
+      { cursor },
+      undefined,
+      fresh,
+    );
     nodes.push(...data.products.nodes);
     hasNextPage = data.products.pageInfo.hasNextPage;
     cursor = data.products.pageInfo.endCursor;
@@ -50,28 +76,41 @@ async function paginateProducts(query: string, variables: Record<string, unknown
   return nodes;
 }
 
-export type ShopifyCatalog = {
-  products: Product[];
-  brands: Brand[];
-  categories: Category[];
-  collectionHandles: string[];
-};
+async function paginateCollections(fresh: boolean) {
+  const nodes: ShopifyCollectionNode[] = [];
+  let cursor: string | null = null;
+  let hasNextPage = true;
 
+  while (hasNextPage) {
+    const data: CollectionsData = await storefrontFetch<CollectionsData>(
+      COLLECTIONS_QUERY,
+      { cursor },
+      undefined,
+      fresh,
+    );
+    nodes.push(...data.collections.nodes);
+    hasNextPage = data.collections.pageInfo.hasNextPage;
+    cursor = data.collections.pageInfo.endCursor;
+  }
 
-const CATALOG_TTL_MS = 60 * 60 * 1000;
+  return nodes;
+}
 
-let memoryCache: { at: number; catalog: ShopifyCatalog } | null = null;
-let memoryInflight: Promise<ShopifyCatalog> | null = null;
-
-async function loadShopifyCatalogFresh(): Promise<ShopifyCatalog> {
-  const [rawProducts, collections] = await Promise.all([
-    paginateProducts(PRODUCTS_PAGE_QUERY),
-    storefrontFetch<CollectionsData>(COLLECTIONS_QUERY).catch(() => ({
-      collections: { nodes: [] },
-    })),
+export async function fetchShopifySnapshot(fresh = false) {
+  const [products, collections] = await Promise.all([
+    paginateProducts(PRODUCTS_PAGE_QUERY, fresh),
+    paginateCollections(fresh).catch((error) => {
+      console.error("[catalog] collecties ophalen mislukt", error);
+      return [] as ShopifyCollectionNode[];
+    }),
   ]);
+  return { products, collections };
+}
 
-  const collectionHandles = collections.collections.nodes.map((collection) => collection.handle);
+export function assembleCatalog(
+  rawProducts: ShopifyProduct[],
+  collections: { handle: string }[],
+): ShopifyCatalog {
   const products = dedupeProducts(
     rawProducts
       .map((product) =>
@@ -100,8 +139,26 @@ async function loadShopifyCatalogFresh(): Promise<ShopifyCatalog> {
     products,
     brands: brandsFromProducts(products),
     categories: categoriesJson as Category[],
-    collectionHandles,
+    collectionHandles: collections.map((collection) => collection.handle),
   };
+}
+
+export type ShopifyCatalog = {
+  products: Product[];
+  brands: Brand[];
+  categories: Category[];
+  collectionHandles: string[];
+};
+
+
+const CATALOG_TTL_MS = 60 * 60 * 1000;
+
+let memoryCache: { at: number; catalog: ShopifyCatalog } | null = null;
+let memoryInflight: Promise<ShopifyCatalog> | null = null;
+
+async function loadShopifyCatalogFresh(): Promise<ShopifyCatalog> {
+  const snapshot = await fetchShopifySnapshot(false);
+  return assembleCatalog(snapshot.products, snapshot.collections);
 }
 
 export function loadShopifyCatalog(): Promise<ShopifyCatalog> {
@@ -121,10 +178,47 @@ export function loadShopifyCatalog(): Promise<ShopifyCatalog> {
   return memoryInflight;
 }
 
+export async function fetchShopifyProductNode(handle: string) {
+  const data = await storefrontFetch<ProductByHandleData>(PRODUCT_BY_HANDLE_QUERY, { handle }, undefined, true);
+  return data.product;
+}
+
 export async function fetchShopifyProductByHandle(handle: string) {
-  const data = await storefrontFetch<ProductByHandleData>(PRODUCT_BY_HANDLE_QUERY, { handle });
-  if (!data.product) return null;
-  return mapShopifyProduct(data.product);
+  const product = await fetchShopifyProductNode(handle);
+  if (!product) return null;
+  return mapShopifyProduct(
+    product,
+    product.collections?.nodes.map((collection) => collection.handle) ?? [],
+  );
+}
+
+export async function fetchShopifyCollection(handle: string) {
+  const products: ShopifyProduct[] = [];
+  let cursor: string | null = null;
+  let hasNextPage = true;
+  let collection: ShopifyCollectionNode | null = null;
+
+  while (hasNextPage) {
+    const data: CollectionByHandleData = await storefrontFetch<CollectionByHandleData>(
+      COLLECTION_BY_HANDLE_QUERY,
+      { handle, cursor },
+      undefined,
+      true,
+    );
+    if (!data.collection) return null;
+    collection = {
+      id: data.collection.id,
+      handle: data.collection.handle,
+      title: data.collection.title,
+      description: data.collection.description,
+    };
+    products.push(...data.collection.products.nodes);
+    hasNextPage = data.collection.products.pageInfo.hasNextPage;
+    cursor = data.collection.products.pageInfo.endCursor;
+  }
+
+  if (!collection) return null;
+  return { collection, products };
 }
 
 export async function fetchShopifySearchHandles(query: string) {

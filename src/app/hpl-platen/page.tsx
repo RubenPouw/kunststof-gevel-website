@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
-
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { categoryPageMetadata } from "@/data/seo/categories";
+import { categoryRouteMetadata } from "@/data/seo/categories";
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
+export const revalidate = 3600;
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  return categoryPageMetadata("hpl-platen", searchParams);
+export function generateMetadata() {
+  return categoryRouteMetadata("hpl-platen");
 }
 
-export default function HplPlatenPage({ searchParams }: Props) {
-  return <CategoryListing slug="hpl-platen" searchParams={searchParams} />;
+export default function HplPlatenPage() {
+  return <CategoryListing slug="hpl-platen" filters={{}} page={1} />;
 }

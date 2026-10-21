@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
-
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { categoryPageMetadata } from "@/data/seo/categories";
+import { categoryRouteMetadata } from "@/data/seo/categories";
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
+export const revalidate = 3600;
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  return categoryPageMetadata("gevelbekleding", searchParams);
+export function generateMetadata() {
+  return categoryRouteMetadata("gevelbekleding");
 }
 
-export default function GevelbekledingPage({ searchParams }: Props) {
-  return <CategoryListing slug="gevelbekleding" searchParams={searchParams} />;
+export default function GevelbekledingPage() {
+  return <CategoryListing slug="gevelbekleding" filters={{}} page={1} />;
 }

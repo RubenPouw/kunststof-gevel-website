@@ -2,28 +2,23 @@ import { CategoryPage } from "@/components/catalog/category-page";
 import { SeoArticle } from "@/components/seo/article";
 import { getCategoryStory } from "@/data/seo/categories";
 import { site } from "@/lib/site";
-import {
-  applyListingFilters,
-  brandsInProducts,
-  getCategory,
-  getProductsByCategory,
-  parseListingSearchParams,
-  type CategorySlug,
-} from "@/lib/catalog";
+import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
+import { prepareListing } from "@/lib/catalog/listing";
+import type { ListingFilters } from "@/lib/catalog/types";
 
 export async function CategoryListing({
   slug,
-  searchParams,
+  filters,
+  page,
 }: {
   slug: CategorySlug;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  filters: ListingFilters;
+  page: number;
 }) {
   const category = await getCategory(slug);
   if (!category) return null;
-  const filters = parseListingSearchParams(await searchParams);
   const all = await getProductsByCategory(slug);
-  const products = applyListingFilters(all, filters);
-
+  const view = prepareListing(all, filters, page);
   const story = getCategoryStory(slug);
 
   return (
@@ -32,8 +27,12 @@ export async function CategoryListing({
         kicker="Assortiment"
         title={category.name}
         intro={category.summary}
-        products={products}
-        allProducts={all}
+        cards={view.cards}
+        total={view.total}
+        totalUnfiltered={view.totalUnfiltered}
+        facets={view.facets}
+        page={view.page}
+        pageSize={view.pageSize}
         brandOptions={await brandsInProducts(all)}
         basePath={`/${slug}`}
         filters={filters}

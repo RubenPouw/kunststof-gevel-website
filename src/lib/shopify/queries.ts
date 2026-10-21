@@ -1,5 +1,6 @@
 export const PRODUCT_FIELDS = /* GraphQL */ `
   fragment ProductFields on Product {
+    id
     handle
     title
     description
@@ -74,9 +75,14 @@ export const PRODUCT_BY_HANDLE_QUERY = /* GraphQL */ `
 `;
 
 export const COLLECTIONS_QUERY = /* GraphQL */ `
-  query Collections {
-    collections(first: 50) {
+  query CollectionsPage($cursor: String) {
+    collections(first: 50, after: $cursor) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       nodes {
+        id
         handle
         title
         description
@@ -89,6 +95,7 @@ export const COLLECTION_BY_HANDLE_QUERY = /* GraphQL */ `
   ${PRODUCT_FIELDS}
   query CollectionByHandle($handle: String!, $cursor: String) {
     collection(handle: $handle) {
+      id
       handle
       title
       description

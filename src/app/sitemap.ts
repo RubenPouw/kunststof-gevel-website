@@ -5,6 +5,8 @@ import { staticBrands } from "@/lib/catalog/static";
 import { getCatalog } from "@/lib/catalog";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
 
+export const revalidate = 3600;
+
 const base = "https://www.kunststof-gevel.nl";
 const contentDate = new Date(CONTENT_UPDATED);
 

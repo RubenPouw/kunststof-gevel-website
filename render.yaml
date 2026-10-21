@@ -50,3 +50,22 @@ services:
         value: GTM-N3DQ6G5
       - key: NOINDEX
         sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SHOPIFY_WEBHOOK_SECRET
+        sync: false
+      - key: SYNC_SECRET
+        sync: false
+  - type: cron
+    name: kunststofgevel-catalogus-controle
+    runtime: node
+    region: frankfurt
+    plan: starter
+    schedule: "20 2 * * *"
+    buildCommand: node -e "process.exit(0)"
+    startCommand: node scripts/catalog-cron.mjs
+    envVars:
+      - key: SYNC_SECRET
+        sync: false
+      - key: CATALOG_SYNC_URL
+        value: https://kunststofgevel-website.onrender.com/api/catalogus/controle

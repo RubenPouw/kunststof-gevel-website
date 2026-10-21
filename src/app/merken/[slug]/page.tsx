@@ -1,67 +1,44 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { BrandHero } from "@/components/catalog/brand-hero";
-import { GuaranteeBand } from "@/components/catalog/guarantee-band";
-import { ProductListing } from "@/components/catalog/product-listing";
-import { SeoArticle } from "@/components/seo/article";
+import { BrandListing } from "@/components/catalog/brand-listing";
 import { getBrandStory } from "@/data/seo/brands";
-import { site } from "@/lib/site";
-import {
-  applyListingFilters,
-  getBrand,
-  getProductsByBrand,
-  hasActiveFilters,
-  parseListingSearchParams,
-} from "@/lib/catalog";
+import { getBrand, getProductsByBrand, listBrands } from "@/lib/catalog";
+import { PAGE_SIZE } from "@/lib/catalog/listing";
+import { staticBrands } from "@/lib/catalog/static";
 
-type Props = {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
+type Props = { params: Promise<{ slug: string }> };
 
-export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const brands = await listBrands();
+  const slugs = new Set<string>([
+    ...staticBrands.map((brand) => brand.slug),
+    ...brands.map((brand) => brand.slug),
+  ]);
+  return [...slugs].map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const brand = await getBrand(slug);
   if (!brand) return { title: "Merk" };
   const story = getBrandStory(brand.slug);
-  const filters = parseListingSearchParams(await searchParams);
+  const products = await getProductsByBrand(brand.slug);
+  const pages = Math.ceil(products.length / PAGE_SIZE);
   return {
     title: story?.metaTitle ?? brand.name,
     description: story?.description ?? brand.summary,
     alternates: { canonical: `/merken/${brand.slug}` },
-    robots: hasActiveFilters(filters) ? { index: false, follow: true } : undefined,
+    ...(pages > 1 ? { pagination: { next: `/merken/${brand.slug}?pagina=2` } } : {}),
   };
 }
 
-export default async function BrandPage({ params, searchParams }: Props) {
+export default async function BrandPage({ params }: Props) {
   const { slug } = await params;
-  const brand = await getBrand(slug);
-  if (!brand) notFound();
-  const story = getBrandStory(brand.slug);
-  const filters = parseListingSearchParams(await searchParams);
-  const all = await getProductsByBrand(brand.slug);
-  const products = applyListingFilters(all, filters);
-
-  return (
-    <div className="pb-8">
-      <BrandHero brand={brand} intro={story?.lead ?? brand.summary} />
-      <div className="container-kg">
-        <ProductListing
-          products={products}
-          allProducts={all}
-          basePath={`/merken/${brand.slug}`}
-          filters={filters}
-          totalUnfiltered={all.length}
-          emptyMessage={
-            all.length === 0
-              ? `${brand.name} staat nu niet in de webshopvoorraad. Bel ${site.phone} of vraag een offerte, dan kijken we of we het kunnen leveren.`
-              : undefined
-          }
-        />
-      </div>
-      {story ? <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} /> : null}
-      <GuaranteeBand />
-    </div>
-  );
+  const listing = await BrandListing({ slug, filters: {}, page: 1 });
+  if (!listing) notFound();
+  return listing;
 }

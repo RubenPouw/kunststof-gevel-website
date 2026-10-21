@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { CategoryPage } from "@/components/catalog/category-page";
 import { parseListingSearchParams, searchProducts } from "@/lib/catalog";
+import { prepareListing } from "@/lib/catalog/listing";
 
 export const metadata: Metadata = {
   title: "Zoeken",
@@ -19,7 +20,9 @@ export default async function SearchPage({
   const query = (Array.isArray(raw) ? raw[0] : raw) ?? "";
   const results = await searchProducts(query);
   const filters = parseListingSearchParams(params);
-  const products = results;
+  const paginaRaw = Array.isArray(params.pagina) ? params.pagina[0] : params.pagina;
+  const pagina = Number(paginaRaw || "1");
+  const view = prepareListing(results, filters, Number.isFinite(pagina) ? pagina : 1);
 
   return (
     <CategoryPage
@@ -30,8 +33,12 @@ export default async function SearchPage({
           ? `${results.length} product${results.length === 1 ? "" : "en"} gevonden.`
           : "Typ een merk, profiel of artikel in de zoekbalk."
       }
-      products={products}
-      allProducts={results}
+      cards={view.cards}
+      total={view.total}
+      totalUnfiltered={view.totalUnfiltered}
+      facets={view.facets}
+      page={view.page}
+      pageSize={view.pageSize}
       filters={filters}
       basePath={query ? `/zoeken?q=${encodeURIComponent(query)}` : "/zoeken"}
     />

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
-import { hasActiveFilters, parseListingSearchParams } from "@/lib/catalog/helpers";
-import type { CategorySlug } from "@/lib/catalog/types";
+import { getProductsByCategory } from "@/lib/catalog";
+import { hasActiveFilters } from "@/lib/catalog/helpers";
+import { PAGE_SIZE, listingPageHref } from "@/lib/catalog/listing";
+import type { CategorySlug, ListingFilters } from "@/lib/catalog/types";
 
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
 
@@ -197,14 +199,31 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
   },
 };
 
-export async function categoryPageMetadata(
+export async function categoryRouteMetadata(slug: CategorySlug): Promise<Metadata> {
+  const products = await getProductsByCategory(slug);
+  const pages = Math.ceil(products.length / PAGE_SIZE);
+  return {
+    ...categoryMetadata(slug),
+    ...(pages > 1 ? { pagination: { next: `/${slug}?pagina=2` } } : {}),
+  };
+}
+
+export function categoryViewMetadata(
   slug: CategorySlug,
-  searchParams: Promise<Record<string, string | string[] | undefined>>,
-): Promise<Metadata> {
+  filters: ListingFilters,
+  pagina: number,
+  pages: number,
+): Metadata {
   const base = categoryMetadata(slug);
-  const filters = parseListingSearchParams(await searchParams);
-  if (!hasActiveFilters(filters)) return base;
-  return { ...base, robots: { index: false, follow: true } };
+  const path = `/${slug}`;
+  return {
+    ...base,
+    robots: hasActiveFilters(filters) ? { index: false, follow: true } : undefined,
+    pagination: {
+      previous: pagina > 1 ? listingPageHref(path, filters, pagina - 1) : undefined,
+      next: pagina < pages ? listingPageHref(path, filters, pagina + 1) : undefined,
+    },
+  };
 }
 
 export function getCategoryStory(slug: string) {

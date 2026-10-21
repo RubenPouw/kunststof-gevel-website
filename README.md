@@ -64,6 +64,30 @@ Collecties moeten op het **Storefront / Headless**-kanaal gepubliceerd staan, an
 
 Shopify-importkolommen voor de statische catalogus: `data/shopify-import.csv` (Barcode/EAN leeg tot leveranciers ze aanleveren). Vernieuw de CSV met `node scripts/export-shopify-csv.mjs`.
 
+### Lokale kopie (Postgres)
+
+Staat `DATABASE_URL`, dan leest de site de catalogus uit Postgres en niet uit Shopify op het moment van een paginaverzoek. De database is de bestaande Render Postgres `kunststofgevel-website-db` in Frankfurt (basic 256 MB). Het schema wordt bij build en start aangemaakt als het er nog niet is. Is de kopie leeg, dan haalt de build de catalogus één keer op via de Storefront API. Lukt dat niet, dan valt de site terug op Shopify en daarna op de statische JSON.
+
+`SHOPIFY_WEBHOOK_SECRET` en `SYNC_SECRET` zet je zelf in het Render-dashboard. Zonder die secrets blijft de site werken. Webhooks en de nachtcontrole blijven dan dicht.
+
+Webhook-URL: `https://<jouw-host>/api/inkomend`  
+Nachtcontrole: `POST https://<jouw-host>/api/catalogus/controle` met header `Authorization: Bearer <SYNC_SECRET>`.  
+`render.yaml` bevat een cron om 02:20 UTC naar `https://kunststofgevel-website.onrender.com/api/catalogus/controle`. Die cron gaat pas lopen als het blueprint wordt toegepast en `SYNC_SECRET` gezet is.
+
+Registreer in Shopify (Settings, Notifications, Webhooks) deze onderwerpen, API-versie 2025-01, formaat JSON:
+
+- `products/create`
+- `products/update`
+- `products/delete`
+- `collections/create`
+- `collections/update`
+- `collections/delete`
+- `inventory_levels/update`
+
+Voorraadwebhooks worden aangenomen. De Storefront API kent het inventory-item-id niet, dus de voorraad op de site volgt `products/update` en de nachtcontrole. De site gebruikt geen Shopify-metafields. Specificaties komen uit titel, producttype, opties en tags. De kolom `shopify_product.metafields` blijft leeg tot een metafield met bekende namespace en key in de Storefront-query staat.
+
+Lijstpagina's (`/gevelbekleding`, `/dakranden`, `/kozijnafwerking`, `/montage`, `/hpl-platen`, `/merken/...`) sturen alleen de eerste 10 kaarten mee. "Toon de volgende" en filters halen `/api/catalogus` op. `?pagina=2` blijft een echte link voor crawlers. Canonical van die URL wijst naar de basis-URL. De basis-URL's en productpagina's worden van tevoren gebouwd (`revalidate` 3600). Een webhook bouwt de geraakte pagina's opnieuw.
+
 ## Shopify-omgevingsvariabelen
 
 Kopieer `.env.example` naar `.env.local` voor lokaal. Zet **dezelfde keys** op Render (Dashboard → service → Environment). Commit nooit het echte Storefront-token; `.env*` staat in `.gitignore`.

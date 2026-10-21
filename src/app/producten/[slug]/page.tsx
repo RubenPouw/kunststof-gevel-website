@@ -3,12 +3,18 @@ import { notFound, permanentRedirect } from "next/navigation";
 
 import { ProductDetail } from "@/app/producten/[slug]/product-detail";
 import { JsonLd } from "@/components/seo/json-ld";
-import { getCategory, getProduct, getRelatedProducts } from "@/lib/catalog";
+import { getCategory, getProduct, getRelatedProducts, listProducts } from "@/lib/catalog";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/schema";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const products = await listProducts();
+  return products.map((product) => ({ slug: product.slug }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

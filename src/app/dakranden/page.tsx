@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
-
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { categoryPageMetadata } from "@/data/seo/categories";
+import { categoryRouteMetadata } from "@/data/seo/categories";
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
+export const revalidate = 3600;
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  return categoryPageMetadata("dakranden", searchParams);
+export function generateMetadata() {
+  return categoryRouteMetadata("dakranden");
 }
 
-export default function DakrandenPage({ searchParams }: Props) {
-  return <CategoryListing slug="dakranden" searchParams={searchParams} />;
+export default function DakrandenPage() {
+  return <CategoryListing slug="dakranden" filters={{}} page={1} />;
 }

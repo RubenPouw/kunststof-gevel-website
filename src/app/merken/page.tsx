@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { listBrands, listProducts } from "@/lib/catalog";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Merken",
   description: "Keralit, VinyPlus, Eurotexx en de HPL lijnen uit de shop.",

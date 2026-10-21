@@ -24,6 +24,7 @@ export type ShopifyVariant = {
 };
 
 export type ShopifyProduct = {
+  id: string;
   handle: string;
   title: string;
   description: string;
