@@ -51,10 +51,12 @@ export function ProductDetail({
   product,
   related,
   categoryName,
+  staalHref,
 }: {
   product: Product;
   related: Product[];
   categoryName: string;
+  staalHref?: string;
 }) {
   const router = useRouter();
   const fallback = getDefaultVariant(product);
@@ -355,6 +357,11 @@ export function ProductDetail({
             <Link href="/offerte" className="flex h-12 items-center px-3 text-[15px] font-medium text-kg-text-2">
               Montage via offerte
             </Link>
+            {staalHref ? (
+              <Link href={staalHref} className="flex h-12 items-center px-3 text-[15px] font-medium">
+                Gratis staalaanvraag
+              </Link>
+            ) : null}
           </div>
           {added ? (
             <p className="font-mono text-[13px] text-kg-stock">

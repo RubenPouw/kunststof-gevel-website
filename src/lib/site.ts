@@ -74,6 +74,7 @@ export const footerColumns = [
       { href: "/contact", label: "Contact" },
       { href: "/offerte", label: "Offerte" },
       { href: "/stalen", label: "Kleurstalen" },
+      { href: "/staalaanvraag", label: "Staalaanvraag" },
       { href: "/blog", label: "Kennis" },
       { href: "/account", label: "Account" },
     ],

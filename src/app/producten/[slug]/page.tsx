@@ -5,6 +5,7 @@ import { ProductDetail } from "@/app/producten/[slug]/product-detail";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getCategory, getProduct, getRelatedProducts, listProducts } from "@/lib/catalog";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/schema";
+import { staalTarget } from "@/lib/staal/tree";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -46,6 +47,8 @@ export default async function ProductPage({ params }: Props) {
   const category = await getCategory(product.category);
 
   const categoryName = category?.name ?? product.category;
+  const staal = staalTarget(product);
+  const staalHref = staal ? `/staalaanvraag?groep=${staal.groupId}&product=${product.slug}` : undefined;
   return (
     <>
       <JsonLd data={productJsonLd(product, categoryName)} />
@@ -56,7 +59,7 @@ export default async function ProductPage({ params }: Props) {
           { name: product.name, path: `/producten/${product.slug}` },
         ])}
       />
-      <ProductDetail product={product} related={related} categoryName={categoryName} />
+      <ProductDetail product={product} related={related} categoryName={categoryName} staalHref={staalHref} />
     </>
   );
 }

@@ -10,6 +10,9 @@ import {
   validateSampleRequest,
   type SampleRequestInput,
 } from "@/lib/sample-request";
+import { customerStaalText, describeStaalLine, shopStaalText, staalGroupLabel } from "@/lib/staal/messages";
+import { resolveStaalLine, type StaalRequest } from "@/lib/staal/validate";
+import type { StaalTree } from "@/lib/staal/tree";
 import { site } from "@/lib/site";
 
 export type SampleLeadResult =
@@ -30,6 +33,73 @@ function reference(prefix: "KG" | "ST") {
 
 export function leadDeliveryError() {
   return `De aanvraag is niet aangekomen. Bel ${site.phone} of WhatsApp ${site.mobileDisplay}, dan nemen we hem zelf op.`;
+}
+
+export async function submitStaalAanvraag(input: StaalRequest, tree: StaalTree): Promise<SampleLeadResult> {
+  const described = input.lines.map((line) => {
+    const resolved = resolveStaalLine(tree, line);
+    if ("error" in resolved) return line.path.join(" / ");
+    return describeStaalLine(resolved.node, resolved.colorIds);
+  });
+  const ref = reference("ST");
+  const groups = [...new Set(input.lines.map((line) => staalGroupLabel(tree, line.path)).filter(Boolean))];
+  const tags = ["Staalaanvraag", ...groups, input.wantsQuote ? "Prijsindicatie" : ""].filter(Boolean);
+  const { firstName, lastName } = splitName(input.name);
+  const note = `Staalaanvraag ${ref}. ${described.join("; ")}. ${input.postcode.trim()} ${input.houseNumber.trim()}. Prijsindicatie ${input.wantsQuote ? "ja" : "nee"}.`;
+  console.info("[staalaanvraag]", { reference: ref, count: described.length });
+
+  const shopText = shopStaalText({
+    reference: ref,
+    lines: described,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    postcode: input.postcode,
+    houseNumber: input.houseNumber,
+    wantsQuote: input.wantsQuote,
+  });
+  const customerText = customerStaalText({
+    reference: ref,
+    lines: described,
+    name: input.name,
+    phone: input.phone,
+    postcode: input.postcode,
+    houseNumber: input.houseNumber,
+    wantsQuote: input.wantsQuote,
+  });
+
+  const [email, customer, ac] = await Promise.all([
+    sendLeadEmail({
+      subject: `Staalaanvraag ${ref}`,
+      text: shopText,
+      replyTo: input.email.trim(),
+    }),
+    sendLeadEmail({
+      to: input.email.trim(),
+      replyTo: site.email,
+      subject: `Bevestiging staalaanvraag ${ref}`,
+      text: customerText,
+    }),
+    syncActiveCampaignContact({
+      email: input.email.trim(),
+      firstName,
+      lastName,
+      phone: input.phone.trim(),
+      note,
+      tags,
+    }),
+  ]);
+
+  const emailOk = email.ok && !email.skipped;
+  const acOk = ac.ok && !ac.skipped;
+  if (!email.ok) console.error("[staalaanvraag] e-mail", email.error);
+  if (!customer.ok) console.error("[staalaanvraag] bevestiging", customer.error);
+  if (customer.ok && customer.skipped) console.info("[staalaanvraag] bevestiging overgeslagen (geen provider)");
+  if (!ac.ok) console.error("[staalaanvraag] ActiveCampaign", ac.error);
+  if (email.ok && email.skipped) console.info("[staalaanvraag] e-mail overgeslagen (geen provider)");
+  if (ac.ok && ac.skipped) console.info("[staalaanvraag] ActiveCampaign overgeslagen (geen sleutels)");
+  if (emailOk || acOk) return { ok: true, reference: ref };
+  return { ok: false, error: leadDeliveryError() };
 }
 
 async function deliverLead(input: {

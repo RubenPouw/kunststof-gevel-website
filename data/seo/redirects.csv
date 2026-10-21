@@ -549,7 +549,7 @@ from,to,status,reason
 /shop,/gevelbekleding,301,shop-is-category
 /showroom-kunststof-gevel,/contact,301,showroom-staat-op-contact
 /sitemap_index.xml,/sitemap.xml,301,old-sitemap
-/staalaanvraag,/stalen,301,same-job
+/staalaanvraag,/staalaanvraag,200,same-url
 /track-order,/contact,301,geen-losse-ordertracking
 /unipanel-bouwpaneel,/merken/unipanel,301,brand
 /unipanel-montage,/montage?merk=unipanel,301,montage-brand

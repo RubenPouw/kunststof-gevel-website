@@ -3301,9 +3301,9 @@
   },
   {
     "from": "/staalaanvraag",
-    "to": "/stalen",
-    "status": "301",
-    "reason": "same-job"
+    "to": "/staalaanvraag",
+    "status": "200",
+    "reason": "same-url"
   },
   {
     "from": "/track-order",

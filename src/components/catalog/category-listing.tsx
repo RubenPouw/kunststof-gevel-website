@@ -4,6 +4,7 @@ import { getCategoryStory } from "@/data/seo/categories";
 import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
 import { prepareListing } from "@/lib/catalog/listing";
+import { categoryStaalGroup } from "@/lib/staal/tree";
 import type { ListingFilters } from "@/lib/catalog/types";
 
 export async function CategoryListing({
@@ -20,6 +21,7 @@ export async function CategoryListing({
   const all = await getProductsByCategory(slug);
   const view = prepareListing(all, filters, page);
   const story = getCategoryStory(slug);
+  const staalGroep = categoryStaalGroup(slug);
 
   return (
     <>
@@ -37,6 +39,7 @@ export async function CategoryListing({
         basePath={`/${slug}`}
         filters={filters}
         sheetCalculator={slug === "hpl-platen"}
+        sampleHref={staalGroep ? `/staalaanvraag?groep=${staalGroep}` : undefined}
         emptyMessage={
           slug === "hpl-platen" && all.length === 0
             ? `De HPL platen komen uit de shopcollectie. Ziet u ze nog niet, bel ${site.phone}. Een plaat is 3050 × 1300 × 6 mm, hele plaat, 3,965 m².`

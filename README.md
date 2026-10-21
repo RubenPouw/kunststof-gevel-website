@@ -120,6 +120,8 @@ NOINDEX=
 
 Offerte- en staalmail gaat via Google Workspace. `SMTP_HOST` is `smtp.gmail.com`, poort `587` (STARTTLS) of `465` (TLS). Afzender en ontvanger zijn allebei `info@kunststof-gevel.nl`. `SMTP_PASS` is een Google-appwachtwoord en blijft `sync: false`. Zonder dat wachtwoord én zonder ActiveCampaign toont het formulier een fout. `RESEND_API_KEY` en `MAILERSEND_API_KEY` zijn alleen nodig als `LEAD_EMAIL_PROVIDER` op `resend` of `mailersend` staat.
 
+`/staalaanvraag` gebruikt dezelfde variabelen. De winkelmail gaat naar `LEAD_EMAIL_TO` en de klant krijgt een bevestiging op het adres uit het formulier. ActiveCampaign krijgt het contact plus de tags Staalaanvraag, de productgroep en Prijsindicatie. Zonder `ACTIVECAMPAIGN_API_URL` en `ACTIVECAMPAIGN_API_KEY` slaat de site dat over. Er zijn geen extra env vars voor dit formulier.
+
 `render.yaml` declareert deze variabelen (`sync: false` voor domain en token, zodat het geheim in het Dashboard blijft). Na een Blueprint-apply of op de bestaande web service de waarden invullen en opnieuw deployen.
 
 Dit is alleen voor de **Onrender-preview / development webshop**. Geen productie-DNS, geen custom domain en geen live betalingen in deze koppeling.

@@ -7,6 +7,8 @@ export type LeadEmail = {
   subject: string;
   text: string;
   replyTo?: string;
+  /** Defaults to LEAD_EMAIL_TO. Set this for the customer confirmation. */
+  to?: string;
 };
 
 export type LeadEmailResult =
@@ -226,7 +228,7 @@ export async function sendLeadEmail(message: LeadEmail): Promise<LeadEmailResult
   }
 
   const from = fromAddress();
-  const to = toAddress();
+  const to = message.to?.trim() || toAddress();
   try {
     if (provider === "resend") return await sendResend(message, from, to);
     if (provider === "mailersend") return await sendMailerSend(message, from, to);
