@@ -1,4 +1,9 @@
-import { enrichProduct } from "@/lib/catalog/derive";
+import { enrichProduct, inferProfileType } from "@/lib/catalog/derive";
+import {
+  DISTRIBUTOR_BRAND_SLUGS,
+  matchProductLine,
+  sanitizeDescription,
+} from "@/lib/catalog/text-rules";
 import type {
   Brand,
   CategorySlug,
@@ -11,7 +16,7 @@ import { categorySlugs } from "@/lib/catalog/types";
 
 import type { ShopifyImage, ShopifyProduct, ShopifyVariant } from "./types";
 
-const GENERIC_VENDORS = new Set(["mijn winkel", "my store", "shop", ""]);
+const GENERIC_VENDORS = new Set(["mijn winkel", "my store", "shop", "", "aj fust", "ajfust"]);
 
 const EXCLUDED_HANDLE = /^(verzendkosten|pakketservice)(-|$)/i;
 const EXCLUDED_TITLE = /verzendkosten|pakketservice/i;
@@ -56,6 +61,8 @@ const KNOWN_BRANDS: Brand[] = [
   { slug: "werzalit", name: "Werzalit", summary: "Vensterbanken en plaatmateriaal." },
   { slug: "thomdeck", name: "ThomDeck", summary: "Kunststof dek- en afwerkproducten." },
   { slug: "multitexx", name: "Multitexx", summary: "Gevelpanelen voor renovatie en nieuwbouw." },
+  { slug: "unipanel", name: "Unipanel", summary: "Bouwpanelen en afwerking voor overstek en wand." },
+  { slug: "florence", name: "Florence", summary: "Plafondpanelen voor binnen en buiten, met bijpassende profielen." },
 ];
 
 const COLOR_HEX: Record<string, string> = {
@@ -144,12 +151,31 @@ function slugify(value: string) {
     .replace(/^-|-$/g, "");
 }
 
-export function inferBrand(product: Pick<ShopifyProduct, "vendor" | "title" | "tags">): Brand {
-  const haystack = [product.vendor, product.title, ...product.tags].join(" ");
-  const matched = KNOWN_BRANDS.find((brand) => {
-    const re = new RegExp(`\\b${brand.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
-    return re.test(haystack);
-  });
+function brandBySlug(slug: string) {
+  return KNOWN_BRANDS.find((brand) => brand.slug === slug);
+}
+
+export function inferBrand(
+  product: Pick<ShopifyProduct, "vendor" | "title" | "tags" | "handle">,
+): Brand {
+  const fromTitle = matchProductLine(`${product.title} ${product.handle.replace(/-/g, " ")}`);
+  if (fromTitle && !DISTRIBUTOR_BRAND_SLUGS.has(fromTitle)) {
+    const brand = brandBySlug(fromTitle);
+    if (brand) return brand;
+  }
+
+  const fromTags = matchProductLine(product.tags.join(" "));
+  if (fromTags && !DISTRIBUTOR_BRAND_SLUGS.has(fromTags)) {
+    const brand = brandBySlug(fromTags);
+    if (brand) return brand;
+  }
+
+  if (fromTitle) {
+    const brand = brandBySlug(fromTitle);
+    if (brand) return brand;
+  }
+
+  const matched = brandBySlug(matchProductLine(product.vendor) ?? "");
   if (matched) return matched;
 
   const vendor = product.vendor.trim();
@@ -193,9 +219,17 @@ function lengthFromTitle(title: string) {
   return match?.[1]?.replace("mtr", "m");
 }
 
+function usableAlt(alt: string | null | undefined, fallback: string) {
+  const value = alt?.trim() ?? "";
+  if (value.length < 3) return fallback;
+  if (/^(img|image|foto|screenshot|schermafbeelding|dsc|img_)/i.test(value)) return fallback;
+  if (/\.(jpe?g|png|webp|gif)$/i.test(value)) return fallback;
+  return value;
+}
+
 function mapImage(image: ShopifyImage | null | undefined, fallbackAlt: string): ProductImage | undefined {
   if (!image?.url) return undefined;
-  return { url: image.url, alt: image.altText || fallbackAlt };
+  return { url: image.url, alt: usableAlt(image.altText, fallbackAlt) };
 }
 
 function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: number): ProductVariant {
@@ -224,21 +258,13 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     options: variant.selectedOptions,
     colorFamily: "overig",
     sampleId: "",
+    shopifyVariantId: variant.id,
     image: mapImage(variant.image, `${product.title}, ${color}`),
   };
 }
 
 function specsFor(product: ShopifyProduct, brand: Brand, category: CategorySlug, variants: ProductVariant[]): Spec[] {
-  const specs: Spec[] = [
-    { label: "Merk", value: brand.name },
-    {
-      label: "Leverancier",
-      value:
-        product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
-          ? product.vendor
-          : brand.name,
-    },
-  ];
+  const specs: Spec[] = [{ label: "Merk", value: brand.name }];
   if (product.productType) specs.push({ label: "Type", value: product.productType });
   specs.push({ label: "Categorie", value: category });
   const lengths = [...new Set(variants.map((variant) => variant.length))];
@@ -256,6 +282,7 @@ export function mapShopifyProduct(
 
   const brand = inferBrand(product);
   const category = inferCategory(product, collectionHandles);
+  const profileType = inferProfileType(product.title, product.productType);
   const variants = product.variants.nodes.map((variant, index) => mapVariant(product, variant, index));
   if (!variants.length) return null;
 
@@ -264,9 +291,10 @@ export function mapShopifyProduct(
   const inStock = variants.some((variant) => variant.inStock);
   const uniqueLengths = [...new Set(variants.map((variant) => variant.length))];
   const length = uniqueLengths.length === 1 ? uniqueLengths[0] : uniqueLengths.join(" / ");
+  const alt = `${brand.name} ${product.title}`;
   const images = [
-    mapImage(product.featuredImage, product.title),
-    ...product.images.nodes.map((image) => mapImage(image, product.title)),
+    mapImage(product.featuredImage, alt),
+    ...product.images.nodes.map((image) => mapImage(image, alt)),
     ...variants.map((variant) => variant.image),
   ].filter((image, index, list): image is ProductImage => {
     return Boolean(image) && list.findIndex((item) => item?.url === image?.url) === index;
@@ -281,7 +309,10 @@ export function mapShopifyProduct(
     brand: brand.name,
     brandSlug: brand.slug,
     category,
-    description: product.description || `${product.title} van ${brand.name}.`,
+    description: sanitizeDescription(
+      product.description || `${product.title} van ${brand.name}.`,
+      product.title,
+    ),
     specs: specsFor(product, brand, category, variants),
     relatedSlugs: [],
     variants,
@@ -295,8 +326,9 @@ export function mapShopifyProduct(
     images,
     productType: product.productType || undefined,
     source: "shopify",
-    profileType: "overig",
+    profileType,
     sampleable: false,
+    updatedAt: product.updatedAt,
   });
 }
 

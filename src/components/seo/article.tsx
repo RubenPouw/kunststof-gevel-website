@@ -1,6 +1,9 @@
 import Link from "next/link";
 
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
+import { faqJsonLd } from "@/lib/seo/schema";
+
+import { JsonLd } from "./json-ld";
 
 export function SeoArticle({
   sections,
@@ -13,6 +16,7 @@ export function SeoArticle({
 }) {
   return (
     <section className="container-kg border-t border-kg-lijn py-14">
+      <JsonLd data={faqJsonLd(faqs)} />
       <div className="grid gap-10 lg:grid-cols-[minmax(0,42rem)_minmax(0,22rem)]">
         <div className="space-y-8">
           {sections.map((section) => (

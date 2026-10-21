@@ -32,7 +32,14 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
         heading: "Rekenen per gevelvlak",
         paragraphs: [
           "Op het product staat een m²-calculator: breedte, hoogte en openingen. Daar bovenop rekenen wij 10% snijverlies. Het aantal panelen kunt u meteen in de bestelling zetten.",
-          "Hulpstukken — start, hoek, eind — staan onder montage. Zonder die profielen is de gevel niet af.",
+          "Hulpstukken (start, hoek, eind) staan onder montage. Zonder die profielen is de gevel niet af.",
+        ],
+      },
+      {
+        heading: "Waar het paneel past",
+        paragraphs: [
+          "Een rechte zijgevel, een dakkapel, een schuur of een chalet gebruiken hetzelfde systeem. Het verschil zit in de hoeken, de dagkanten en of de ondergrond nog recht is.",
+          "Voor een schuur of tuinhuis volstaat vaak een lichter rabat. Een woning in de zon, met een lange gevel, heeft meer aan een stijf paneel zoals Keralit. Leg daar een staal op de bestaande muur, niet alleen op een foto.",
         ],
       },
     ],
@@ -108,7 +115,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
         heading: "Hulpstukken per systeem",
         paragraphs: [
           "Elk merk heeft een eigen start, een eigen hoek en een eigen eind. Een aluminium VinyPlus-hoek past niet op een Keralit-sponning. Filter op merk en bestel de profielen in de lengte van het paneel.",
-          "De uitgewerkte volgorde — regels, spouw, startprofiel, schroefmaat — staat in de montage-uitleg. Laten zetten kan via de offerte: een Caveman rekent plaatsing apart van het materiaal.",
+          "De uitgewerkte volgorde (regels, spouw, startprofiel, schroefmaat) staat in de montage-uitleg. Laten zetten kan via de offerte. Plaatsing rekenen we apart van het materiaal.",
         ],
       },
     ],

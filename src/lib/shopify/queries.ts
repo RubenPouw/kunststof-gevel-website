@@ -3,6 +3,7 @@ export const PRODUCT_FIELDS = /* GraphQL */ `
     handle
     title
     description
+    updatedAt
     productType
     vendor
     tags
@@ -18,6 +19,11 @@ export const PRODUCT_FIELDS = /* GraphQL */ `
       nodes {
         url
         altText
+      }
+    }
+    collections(first: 10) {
+      nodes {
+        handle
       }
     }
     variants(first: 100) {

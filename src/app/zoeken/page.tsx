@@ -5,6 +5,8 @@ import { parseListingSearchParams, searchProducts } from "@/lib/catalog";
 
 export const metadata: Metadata = {
   title: "Zoeken",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/zoeken" },
 };
 
 export default async function SearchPage({

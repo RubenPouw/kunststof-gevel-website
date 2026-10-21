@@ -38,5 +38,15 @@
     "slug": "milinboard",
     "name": "Milinboard",
     "summary": "Kunststof vensterbanken en overzetbanken, inclusief eindkappen."
+  },
+  {
+    "slug": "unipanel",
+    "name": "Unipanel",
+    "summary": "Bouwpanelen en afwerking voor overstek en wand."
+  },
+  {
+    "slug": "florence",
+    "name": "Florence",
+    "summary": "Plafondpanelen voor binnen en buiten, met bijpassende profielen."
   }
 ]

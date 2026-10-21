@@ -1,6 +1,6 @@
 # kunststof-gevel.nl
 
-Webshop voor **kunststof-gevel.nl** (onderdeel van Cavemen BV): kunststof gevelbekleding, dakranden en kozijnafwerking.
+Webshop voor **kunststof-gevel.nl** (Pouw Online Group B.V.): kunststof gevelbekleding, dakranden en kozijnafwerking.
 
 De huisstijl volgt het designsystem: Luminous Blue als merk, Energy Orange alleen voor actie, Barlow + Barlow Condensed, radius 0, prijzen zonder euroteken.
 
@@ -30,14 +30,16 @@ npm start
 - `/producten/[slug]` — productdetail (kleur, lengte-SKU, calculator, stalen)
 - `/merken`, `/merken/[slug]` — merken (PLP met sidebarfilters)
 - `/stalen` — aanvraag gratis kleurstalen
-- `/winkelwagen`, `/afrekenen` — checkout in drie stappen (nog geen live betaling)
+- `/winkelwagen`, `/afrekenen`: winkelwagen, daarna Shopify-checkout (Storefront cart, of een conceptbestelling als het Admin-token gezet is)
 - `/zoeken` — zoeken op naam, merk, SKU
 - `/zakelijk`, `/over-ons`, `/projecten`, `/offerte`, `/contact`
 - `/blog`, `/blog/[slug]` — kennisartikelen (prijs, merken, montage, stalen)
 - `/inloggen`, `/registreren`, `/account` — klantaccount in de browser (geen serverwachtwoord)
 - `/api/health` — health check voor Render
 
-Het offerteformulier valideert op de server. Zonder ActiveCampaign-sleutels worden aanvragen gelogd en krijgt de bezoeker een referentie plus prijsindicatie (materiaal € 65–120/m² of inclusief montage € 95–140/m²). Kleurstalen gaan via `/stalen` (max. 4). Beide flows schrijven, als de sleutels gezet zijn, een contact naar ActiveCampaign. De winkelwagen is lokaal (browser, `kg-cart-v2`); het klantaccount ook (`kg-account-v1`, wachtwoord blijft in de browser). Betaling is nog geen live koppeling.
+Het offerteformulier valideert op de server. Een aanvraag is pas gelukt als de mailprovider of ActiveCampaign de lead heeft aangenomen. Zonder beide kanalen ziet de bezoeker een fout met het telefoonnummer. Kleurstalen gaan via `/stalen` (max. 4). De winkelwagen is lokaal (browser, `kg-cart-v2`). Afrekenen maakt een Shopify-checkout. Er is geen succespagina zonder betaallink.
+
+`npm test` dekt redirects, de m²-calculator, checkout-weigeringen en leads. `CHECK_BASE=http://127.0.0.1:43147 node scripts/check-redirects.mjs` controleert elke oude URL uit `data/seo/redirects.csv` tegen een draaiende server.
 
 De productpagina rekent een gevelvlak om naar panelen: breedte × hoogte, minus openingen, plus 10% snijverlies. Merkpagina’s en categorieën hebben SEO-tekst; `/blog` bundelt de uitleg. Deze repo wijzigt de oude WordPress-site op kunststof-gevel.nl niet.
 
@@ -75,6 +77,19 @@ SHOPIFY_API_VERSION=2025-01
 ACTIVECAMPAIGN_API_URL=https://jouwaccount.api-us1.com
 ACTIVECAMPAIGN_API_KEY=your-activecampaign-api-key
 ACTIVECAMPAIGN_LIST_ID=
+
+LEAD_EMAIL_TO=info@kunststof-gevel.nl
+LEAD_EMAIL_FROM=
+LEAD_EMAIL_PROVIDER=auto
+RESEND_API_KEY=
+MAILERSEND_API_KEY=
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+SHOPIFY_ADMIN_ACCESS_TOKEN=
+NEXT_PUBLIC_GTM_ID=GTM-N3DQ6G5
+NOINDEX=
 ```
 
 `ACTIVECAMPAIGN_API_URL` is het accountadres zonder `/api/3`. `ACTIVECAMPAIGN_LIST_ID` is het numerieke lijst-id; leeg laten mag. De API-key komt uit ActiveCampaign → Settings → Developer. Zet de drie keys op Render met sync vanuit het dashboard (`render.yaml` declareert ze als `sync: false`). Commit de waarden niet.

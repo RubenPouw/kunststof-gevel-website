@@ -6,26 +6,25 @@ import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
 import { exclVat, formatPrice } from "@/lib/format";
-import { weekNow, stockLabel } from "@/lib/week";
+import { productAlt } from "@/lib/seo/alt";
+import { stockLabel } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 export function Bestsellers({ products }: { products: Product[] }) {
-  const week = weekNow();
-
   return (
     <section className="container-kg section-kg">
-      <SectionHead title="Deze week leverbaar" aside="Meest besteld · prijzen excl. btw" />
+      <SectionHead title="Veel gekozen" aside="Prijzen excl. btw" />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {products.slice(0, 4).map((product) => {
           const variant = product.variants[0];
-          const status = stockLabel(product.inStock, week, product.stockText);
+          const status = stockLabel(product.inStock, product.stockText);
           const color = product.colors[0];
           return (
             <article key={product.slug} className="flex flex-col border border-kg-lijn bg-white">
               <Link href={`/producten/${product.slug}`} className="block p-3 no-underline hover:no-underline">
                 <ProductPhoto
                   image={product.images[0]}
-                  alt={product.name}
+                  alt={productAlt(product)}
                   sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw"
                   fallback={color?.hex}
                   className="aspect-[4/3]"

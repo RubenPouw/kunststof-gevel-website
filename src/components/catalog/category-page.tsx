@@ -51,6 +51,15 @@ export function CategoryPage({
         </div>
       ) : null}
 
+      <div className="mt-3">
+        <FilterChip
+          href={listingHref(path, filters, { inStockOnly: !filters.inStockOnly })}
+          active={Boolean(filters.inStockOnly)}
+        >
+          Op voorraad
+        </FilterChip>
+      </div>
+
       <ProductListing
         products={products}
         allProducts={allProducts}

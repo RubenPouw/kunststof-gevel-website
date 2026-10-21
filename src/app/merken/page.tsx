@@ -5,7 +5,8 @@ import { listBrands, listProducts } from "@/lib/catalog";
 
 export const metadata: Metadata = {
   title: "Merken",
-  description: "Keralit, VinyPlus, Eurotexx en de overige merken uit de shop.",
+  description: "Keralit, VinyPlus, Eurotexx, Unipanel, Florence en de overige merken uit de shop.",
+  alternates: { canonical: "/merken" },
 };
 
 export default async function MerkenPage() {

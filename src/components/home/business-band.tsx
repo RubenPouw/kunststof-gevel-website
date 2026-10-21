@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { CavemenMark } from "@/components/brand/marks";
 import { buttonVariants } from "@/components/ui/button";
 import { businessPoints } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -9,24 +8,21 @@ export function BusinessBand() {
   return (
     <section className="container-kg section-kg grid gap-5 lg:grid-cols-2">
       <div className="bg-kg-navy p-8 text-kg-kalk sm:p-10">
-        <div className="flex items-center gap-2 text-[16px] font-bold">
-          <CavemenMark size={18} />
-          Cavemen
-        </div>
+        <p className="font-mono text-[13px] text-kg-grind">Montage</p>
         <h2 className="mt-5 text-[28px] leading-[1.1] font-bold tracking-[-0.03em] sm:text-[34px]">
-          Materiaal geregeld,
+          Materiaal geregeld.
           <br />
-          <span className="text-kg-signal">handen tekort?</span>
+          <span className="text-kg-signal">Ook laten zetten?</span>
         </h2>
         <p className="mt-4 max-w-md text-[15px] leading-[1.5] text-kg-grind">
-          Een Caveman zet de gevel of het kozijn. Eén factuur via uw account. Niet als vierde shop, als extra handen.
+          Montage rekenen we apart, na foto of opname. U krijgt één offerte, materiaal en werk zichtbaar.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/montage" className={cn(buttonVariants({ variant: "signal" }), "no-underline hover:no-underline")}>
-            Plaats een klus
+          <Link href="/offerte" className={cn(buttonVariants({ variant: "signal" }), "no-underline hover:no-underline")}>
+            Offerte met montage
           </Link>
           <Link href="/zakelijk" className={cn(buttonVariants({ variant: "on-dark" }), "no-underline hover:no-underline")}>
-            Word Caveman
+            Zakelijk bestellen
           </Link>
         </div>
       </div>

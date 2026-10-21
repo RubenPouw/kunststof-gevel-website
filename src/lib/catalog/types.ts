@@ -77,8 +77,11 @@ export type ProductVariant = {
   options?: { name: string; value: string }[];
   colorFamily: ColorFamily;
   panelsPerM2?: number;
+  /** True when the length was not in the article data and we used 6 m. */
+  lengthAssumed?: boolean;
   sampleId: string;
   image?: ProductImage;
+  shopifyVariantId?: string;
 };
 
 export type ProductImage = {
@@ -124,6 +127,11 @@ export type Product = {
   profileType: ProfileType;
   sampleable: boolean;
   panelsPerM2?: number;
+  /** Other Shopify handles that are the same article. Not written back to Shopify. */
+  aliasSlugs?: string[];
+  lengthAssumed?: boolean;
+  /** Shopify product.updatedAt when the catalog comes from the Storefront API. */
+  updatedAt?: string;
 };
 
 export type SampleColor = {

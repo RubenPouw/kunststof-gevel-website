@@ -1,4 +1,5 @@
 import { syncActiveCampaignContact } from "@/lib/activecampaign";
+import { sendLeadEmail } from "@/lib/mail";
 import {
   estimateRange,
   validateQuote,
@@ -9,6 +10,7 @@ import {
   validateSampleRequest,
   type SampleRequestInput,
 } from "@/lib/sample-request";
+import { site } from "@/lib/site";
 
 export type SampleLeadResult =
   | { ok: true; reference: string }
@@ -26,25 +28,42 @@ function reference(prefix: "KG" | "ST") {
   return `${prefix}-${Date.now().toString(36).toUpperCase()}`;
 }
 
-async function pushContact(input: {
+export function leadDeliveryError() {
+  return `De aanvraag is niet aangekomen. Bel ${site.phone} of WhatsApp ${site.mobileDisplay}, dan nemen we hem zelf op.`;
+}
+
+async function deliverLead(input: {
   email: string;
   name: string;
   phone: string;
+  subject: string;
+  text: string;
   note: string;
 }) {
   const { firstName, lastName } = splitName(input.name);
-  const ac = await syncActiveCampaignContact({
-    email: input.email.trim(),
-    firstName,
-    lastName,
-    phone: input.phone.trim(),
-    note: input.note,
-  });
-  if (!ac.ok) {
-    console.error("[leads] ActiveCampaign", ac.error);
-  } else if (ac.skipped) {
-    console.info("[leads] ActiveCampaign overgeslagen (geen sleutels)");
-  }
+  const [email, ac] = await Promise.all([
+    sendLeadEmail({
+      subject: input.subject,
+      text: input.text,
+      replyTo: input.email.trim(),
+    }),
+    syncActiveCampaignContact({
+      email: input.email.trim(),
+      firstName,
+      lastName,
+      phone: input.phone.trim(),
+      note: input.note,
+    }),
+  ]);
+
+  const emailOk = email.ok && !email.skipped;
+  const acOk = ac.ok && !ac.skipped;
+  if (!email.ok) console.error("[leads] e-mail", email.error);
+  if (!ac.ok) console.error("[leads] ActiveCampaign", ac.error);
+  if (email.ok && email.skipped) console.info("[leads] e-mail overgeslagen (geen provider)");
+  if (ac.ok && ac.skipped) console.info("[leads] ActiveCampaign overgeslagen (geen sleutels)");
+  if (emailOk || acOk) return null;
+  return leadDeliveryError();
 }
 
 export async function submitQuoteLead(input: QuoteInput): Promise<QuoteResult> {
@@ -59,24 +78,28 @@ export async function submitQuoteLead(input: QuoteInput): Promise<QuoteResult> {
   const estimate = estimateRange(area, input.wantsMontage);
   const ref = reference("KG");
 
-  console.info("[offerte]", {
-    reference: ref,
-    name: input.name.trim(),
-    email: input.email.trim(),
-    phone: input.phone.trim(),
-    city: input.city.trim(),
-    areaM2: area,
-    profile: input.profile,
-    montage: input.wantsMontage,
-    message: input.message.trim().slice(0, 500),
-  });
+  const note = `Offerte ${ref}. ${area} m², ${input.profile}, montage ${input.wantsMontage ? "ja" : "nee"}, ${input.city.trim()}. ${input.message.trim()}`;
+  console.info("[offerte]", { reference: ref, city: input.city.trim(), areaM2: area });
 
-  await pushContact({
+  const deliveryError = await deliverLead({
     email: input.email,
     name: input.name,
     phone: input.phone,
-    note: `Offerte ${ref}. ${area} m², ${input.profile}, montage ${input.wantsMontage ? "ja" : "nee"}, ${input.city.trim()}. ${input.message.trim()}`,
+    subject: `Offerte ${ref}`,
+    text: [
+      `Nieuwe offerteaanvraag ${ref}`,
+      `Naam: ${input.name.trim()}`,
+      `E-mail: ${input.email.trim()}`,
+      `Telefoon: ${input.phone.trim()}`,
+      `Plaats: ${input.city.trim()}`,
+      `Oppervlak: ${area} m2`,
+      `Profiel: ${input.profile}`,
+      `Montage: ${input.wantsMontage ? "ja" : "nee"}`,
+      `Bericht: ${input.message.trim() || "-"}`,
+    ].join("\n"),
+    note,
   });
+  if (deliveryError) return { ok: false, error: deliveryError };
 
   return { ok: true, reference: ref, estimate };
 }
@@ -92,23 +115,78 @@ export async function submitSampleLead(input: SampleRequestInput): Promise<Sampl
   const samples = input.samples.split("|").map((item) => item.trim()).filter(Boolean);
   const ref = reference("ST");
 
-  console.info("[stalen]", {
-    reference: ref,
-    name: input.name.trim(),
-    email: input.email.trim(),
-    phone: input.phone.trim(),
-    address: input.address.trim(),
-    postcode: input.postcode.trim(),
-    city: input.city.trim(),
-    samples,
-  });
+  const note = `Kleurstalen ${ref}. ${samples.join(", ")}. ${input.address.trim()}, ${input.postcode.trim()} ${input.city.trim()}.`;
+  console.info("[stalen]", { reference: ref, count: samples.length });
 
-  await pushContact({
+  const deliveryError = await deliverLead({
     email: input.email,
     name: input.name,
     phone: input.phone,
-    note: `Kleurstalen ${ref}. ${samples.join(", ")}. ${input.address.trim()}, ${input.postcode.trim()} ${input.city.trim()}.`,
+    subject: `Kleurstalen ${ref}`,
+    text: [
+      `Nieuwe staalaanvraag ${ref}`,
+      `Naam: ${input.name.trim()}`,
+      `E-mail: ${input.email.trim()}`,
+      `Telefoon: ${input.phone.trim()}`,
+      `Adres: ${input.address.trim()}`,
+      `Postcode: ${input.postcode.trim()}`,
+      `Plaats: ${input.city.trim()}`,
+      `Stalen: ${samples.join(", ")}`,
+    ].join("\n"),
+    note,
   });
+  if (deliveryError) return { ok: false, error: deliveryError };
 
+  return { ok: true, reference: ref };
+}
+
+export type WithdrawalInput = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  postcode: string;
+  city: string;
+  orderReference: string;
+  orderedOn: string;
+  receivedOn: string;
+  goods: string;
+  iban: string;
+  companyWebsite: string;
+};
+
+export async function submitWithdrawalLead(
+  input: WithdrawalInput,
+): Promise<{ ok: true; reference: string } | { ok: false; error: string }> {
+  if (input.companyWebsite.trim()) return { ok: true, reference: "SKIP" };
+  if (input.name.trim().length < 2) return { ok: false, error: "Vul uw naam in." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) {
+    return { ok: false, error: "Vul een geldig e-mailadres in." };
+  }
+  if (input.goods.trim().length < 3) return { ok: false, error: "Vul in welke goederen u herroept." };
+
+  const ref = reference("KG");
+  const error = await deliverLead({
+    email: input.email,
+    name: input.name,
+    phone: input.phone || site.phone,
+    subject: `Herroeping ${ref}`,
+    text: [
+      `Herroeping ${ref}`,
+      `Naam: ${input.name.trim()}`,
+      `E-mail: ${input.email.trim()}`,
+      `Telefoon: ${input.phone.trim() || "-"}`,
+      `Adres: ${input.address.trim()}`,
+      `Postcode: ${input.postcode.trim()}`,
+      `Plaats: ${input.city.trim()}`,
+      `Bestelnummer: ${input.orderReference.trim() || "-"}`,
+      `Besteld op: ${input.orderedOn.trim() || "-"}`,
+      `Ontvangen op: ${input.receivedOn.trim() || "-"}`,
+      `Goederen: ${input.goods.trim()}`,
+      `IBAN: ${input.iban.trim() || "-"}`,
+    ].join("\n"),
+    note: `Herroeping ${ref}. ${input.goods.trim()}`,
+  });
+  if (error) return { ok: false, error };
   return { ok: true, reference: ref };
 }

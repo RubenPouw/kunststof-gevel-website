@@ -28,6 +28,7 @@ export type CartLine = {
   brand?: string;
   colorName?: string;
   price?: number;
+  shopifyVariantId?: string;
   kind?: "product" | "kozijn";
   hex?: string;
   image?: string;

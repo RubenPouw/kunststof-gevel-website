@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { CavesuppliesMark } from "@/components/brand/marks";
 import { cn } from "@/lib/utils";
 
 type LogoProps = {
@@ -33,16 +32,6 @@ export function Logo({
       >
         kunststof-gevel.nl
       </span>
-      <span
-        className="flex items-center gap-1.5 whitespace-nowrap"
-        style={{
-          fontSize: Math.max(11, Math.round(size * 0.6)),
-          color: dark ? "var(--kg-grind)" : "var(--kg-text-2)",
-        }}
-      >
-        <CavesuppliesMark size={Math.max(11, Math.round(size * 0.55))} fill="currentColor" />
-        onderdeel van Cavesupplies
-      </span>
       {tagline ? (
         <span
           className="mt-3 max-w-xs"
@@ -64,7 +53,7 @@ export function Logo({
     <Link
       href={href}
       className="inline-flex w-max text-inherit no-underline hover:text-inherit hover:no-underline"
-      aria-label="kunststof-gevel.nl, onderdeel van Cavesupplies, naar home"
+      aria-label="kunststof-gevel.nl, naar home"
     >
       {content}
     </Link>

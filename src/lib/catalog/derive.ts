@@ -1,4 +1,9 @@
 import { facadeOrder } from "@/lib/area";
+import {
+  extractPanelLength,
+  parseLengthMeters,
+  splitColorAndLength,
+} from "@/lib/catalog/text-rules";
 
 import type {
   ColorFamily,
@@ -9,6 +14,8 @@ import type {
   SampleColor,
   Spec,
 } from "./types";
+
+export { parseLengthMeters };
 
 export const THREE_M_PRICE_RATIO = 46.9 / 87.3;
 
@@ -57,12 +64,6 @@ export function colorFamilyFromName(colorName: string): ColorFamily {
   return "overig";
 }
 
-export function parseLengthMeters(length: string): number | undefined {
-  const match = length.trim().toLowerCase().match(/^(\d+(?:[.,]\d+)?)\s*(m|meter|mtr)\b/);
-  if (!match) return undefined;
-  return Number(match[1].replace(",", "."));
-}
-
 export function panelsPerM2(workingWidthMm: number, lengthMeters: number) {
   return 1 / ((workingWidthMm / 1000) * lengthMeters);
 }
@@ -71,10 +72,39 @@ export function roundMoney(value: number) {
   return Math.round(value * 100) / 100;
 }
 
+const CLADDING_PROFILES: ProfileType[] = ["sponning", "potdeksel", "rabat", "rondkant", "quattro"];
+
 export function isFacadePanel(product: Pick<Product, "category" | "name" | "workingWidthMm" | "profileType">) {
-  if (product.category !== "gevelbekleding" || !product.workingWidthMm) return false;
-  if (/hoekstuk|schroef|wildverband|steenstrip/i.test(product.name)) return false;
-  return ["sponning", "potdeksel", "rabat", "rondkant", "quattro"].includes(product.profileType);
+  if (!product.workingWidthMm) return false;
+  if (/hoekstuk|schroef|wildverband|steenstrip|profiel|clip|ventilatie|kit|verbinding|startpr/i.test(product.name)) {
+    return false;
+  }
+  if (!CLADDING_PROFILES.includes(product.profileType)) return false;
+  return product.category === "gevelbekleding" || product.profileType === "rabat" || /\brabat\b/i.test(product.name);
+}
+
+function variantLength(variant: ProductVariant, productName: string) {
+  const split = splitColorAndLength(variant.colorName);
+  let length = variant.length;
+  const colorName = split.colorName;
+
+  if (split.length && !parseLengthMeters(length)) length = split.length;
+  if (!parseLengthMeters(length)) {
+    const fromLength = extractPanelLength(variant.length);
+    if (fromLength) length = fromLength;
+  }
+  if (!parseLengthMeters(length)) {
+    const fromOptions = extractPanelLength(
+      (variant.options ?? []).map((option) => `${option.name} ${option.value}`).join(" "),
+    );
+    if (fromOptions) length = fromOptions;
+  }
+  if (!parseLengthMeters(length)) {
+    const fromName = extractPanelLength(productName);
+    if (fromName) length = fromName;
+  }
+
+  return { length, colorName };
 }
 
 function variantOptions(variant: ProductVariant): { name: string; value: string }[] {
@@ -90,24 +120,43 @@ function variantOptions(variant: ProductVariant): { name: string; value: string 
 
 export function enrichProduct(product: Product): Product {
   const workingWidthMm = product.workingWidthMm ?? parseWorkingWidthMm(product.name, product.specs);
-  const profileType = product.profileType || inferProfileType(product.name, product.productType);
-  const sampleable = isFacadePanel({
+  const profileType =
+    product.profileType && product.profileType !== "overig"
+      ? product.profileType
+      : inferProfileType(product.name, product.productType);
+  const facade = isFacadePanel({
     category: product.category,
     name: product.name,
     workingWidthMm,
     profileType,
   });
+  const sampleable = facade;
 
+  let anyAssumed = false;
   const variants: ProductVariant[] = product.variants.map((variant) => {
-    const meters = parseLengthMeters(variant.length);
-    const family = colorFamilyFromName(variant.colorName);
-    return {
+    const resolved = variantLength(variant, product.name);
+    let length = resolved.length;
+    let assumed = false;
+    if (!parseLengthMeters(length) && facade) {
+      length = "6 m";
+      assumed = true;
+      anyAssumed = true;
+    }
+    const meters = parseLengthMeters(length);
+    const family = colorFamilyFromName(resolved.colorName);
+    const next: ProductVariant = {
       ...variant,
+      colorName: resolved.colorName,
+      length,
+      lengthAssumed: assumed,
       colorFamily: family,
       panelsPerM2:
         workingWidthMm && meters ? Number(panelsPerM2(workingWidthMm, meters).toFixed(2)) : undefined,
-      sampleId: sampleId(product.brandSlug, variant.colorName),
-      options: variantOptions({ ...variant, colorFamily: family, sampleId: "" }),
+      sampleId: sampleId(product.brandSlug, resolved.colorName),
+    };
+    return {
+      ...next,
+      options: variantOptions(next),
     };
   });
 
@@ -141,6 +190,7 @@ export function enrichProduct(product: Product): Product {
     colors,
     palette: colors.map((color) => color.hex),
     panelsPerM2: defaultCoverage,
+    lengthAssumed: anyAssumed,
     length: lengthLabel,
     meta:
       uniqueColors.length > 1

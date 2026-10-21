@@ -3,34 +3,39 @@ export const site = {
   shortName: "kunststof-gevel.nl",
   tagline: "Nooit meer schilderen.",
   slogan: "Nooit meer schilderen. Vervang hout door kunststof.",
-  house: "Cavesupplies",
+  house: "kunststof-gevel.nl",
   description:
-    "Webshop voor kunststof gevelbekleding, dakranden en kozijnen. Op voorraad in Hedel, levering in vaste weken. Zelf zetten of een Caveman erbij. Onderdeel van Cavesupplies, Cavemen BV.",
-  phone: "085 401 2280",
-  phoneHref: "tel:+31854012280",
+    "Webshop van Pouw Online Group B.V. voor kunststof gevelbekleding, dakranden en kozijnen. Showroom op afspraak in Utrecht.",
+  phone: "030 227 1397",
+  phoneHref: "tel:+31302271397",
+  phoneE164: "+31302271397",
+  mobile: "06 13639368",
+  mobileDisplay: "+31 6 13639368",
+  mobileHref: "tel:+31613639368",
   email: "info@kunststof-gevel.nl",
   emailHref: "mailto:info@kunststof-gevel.nl",
-  whatsapp: "https://wa.me/31854012280",
-  hours: "Ma–vr 08:00–17:00",
-  address: "Binnenkamp 7a, 5321 KA Hedel",
-  company: "Cavemen BV",
+  whatsapp: "https://wa.me/31613639368",
+  hours: "ma t/m vr 08:00-17:00",
+  address: "Spinsterlaan 6A, 3454 WZ Utrecht",
+  street: "Spinsterlaan 6A",
+  postalCode: "3454 WZ",
+  city: "Utrecht",
+  addressNote: "Showroom, alleen op afspraak",
+  company: "Pouw Online Group B.V.",
   region: "Heel Nederland",
-  kvk: "In oprichting",
+  kvk: "66527376",
+  btw: "NL856594842B01",
   freeShippingFrom: 499,
-  googleScore: "9,3",
-  googleReviews: 312,
   instagram: "https://www.instagram.com/kunststofgevel",
   instagramHandle: "@kunststofgevel",
-  gevelsDelivered: "1.200+",
-  since: 2016,
-  articleCount: 214,
+  origin: "https://www.kunststof-gevel.nl",
 } as const;
 
 export const hero = {
   kicker: "Kunststof gevelbekleding · Keralit · VinyPlus · Eurotexx",
   title: "Nooit meer schilderen.",
   subtitle: "Vervang hout door kunststof.",
-  body: "Kunststof gevelbekleding, dakranden en kozijnafwerking. Op voorraad in Hedel, levering in vaste weken. Zelf zetten of een Caveman erbij.",
+  body: "Kunststof gevelbekleding, dakranden en kozijnafwerking. Showroom op afspraak in Utrecht. Zelf monteren of montage via een offerte.",
   cta: "Bekijk voorraad",
   samples: "Kies gratis kleurstalen",
   micro: "Altijd binnen 24 uur bericht",
@@ -41,8 +46,6 @@ export const heroStats = [
   { value: "10 jr", label: "kleurvast" },
   { value: "24 u", label: "bericht" },
 ] as const;
-
-export const paymentMethods = ["iDEAL", "Visa", "Mastercard", "PayPal", "Klarna"] as const;
 
 export const shopNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
@@ -74,14 +77,22 @@ export const footerColumns = [
     ],
   },
   {
-    title: "Cavesupplies",
+    title: "Bedrijf",
     links: [
-      { href: "/over-ons", label: "Over het huis" },
-      { href: "/montage", label: "Cavemen · plaats een klus" },
-      { href: "/zakelijk", label: "Word Caveman" },
+      { href: "/over-ons", label: "Over ons" },
       { href: "/projecten", label: "Projecten" },
+      { href: "/zakelijk", label: "Zakelijk" },
+      { href: "/montage", label: "Montage" },
     ],
   },
+] as const;
+
+export const legalNav = [
+  { href: "/privacy", label: "Privacy" },
+  { href: "/algemene-voorwaarden", label: "Algemene voorwaarden" },
+  { href: "/herroepingsrecht", label: "Herroepingsrecht" },
+  { href: "/verzenden-retour", label: "Verzenden en retour" },
+  { href: "/klachtenprocedure", label: "Klachten" },
 ] as const;
 
 export const footerNav: { href: string; label: string }[] = footerColumns.flatMap((column) => [
@@ -91,41 +102,23 @@ export const footerNav: { href: string; label: string }[] = footerColumns.flatMa
 export const nav = shopNav;
 
 export const facts = [
-  { k: "214", v: "artikelen op voorraad" },
-  { k: "Levering", v: "in vaste weken" },
-  { k: "10 jaar", v: "garantie" },
-  { k: "Cavemen", v: "per klus erbij" },
+  { k: "Showroom", v: "op afspraak in Utrecht" },
+  { k: "Levering", v: "in overleg" },
+  { k: "10 jaar", v: "garantie op kleur" },
+  { k: "Montage", v: "via offerte" },
 ] as const;
 
 export const uspItems = [
-  "214 artikelen op voorraad",
-  "Levering in vaste weken",
-  "10 jaar garantie",
-  "Cavemen per klus erbij",
+  "Showroom op afspraak in Utrecht",
+  "Levertijd bevestigen we per bestelling",
+  "10 jaar garantie op kleur",
+  "Montage via offerte",
 ] as const;
 
 export const businessPoints = [
   "Zelfde prijs voor aannemer en particulier",
   "Bestellen op rekening na eenmalige check",
   "Voorraad van de merken die we zelf plaatsen",
-] as const;
-
-export const reviews = [
-  {
-    quote: "Binnen een dag een heldere offerte. Bij aflevering klopte alles tot het laatste profiel.",
-    author: "Familie de Wit · Houten",
-    score: "10",
-  },
-  {
-    quote: "Zelf gemonteerd met het montageschema. Gevel staat strak, geen schilder meer nodig.",
-    author: "Mark B. · Amersfoort",
-    score: "9",
-  },
-  {
-    quote: "Kleurstalen vooraf gekregen. Scheelde ons een verkeerde keuze van 80 m².",
-    author: "Bouwbedrijf Kramer",
-    score: "10",
-  },
 ] as const;
 
 export type Project = {

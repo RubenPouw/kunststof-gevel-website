@@ -1,6 +1,7 @@
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { ProductVisual, visualVariantFor } from "@/components/brand/product-visual";
 import type { Product } from "@/lib/catalog/types";
+import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
 
 export function ProductMedia({
@@ -15,7 +16,7 @@ export function ProductMedia({
     return (
       <ProductPhoto
         image={image}
-        alt={product.name}
+        alt={productAlt(product)}
         sizes="(min-width: 1024px) 480px, 100vw"
         bevel={null}
         className={cn("aspect-[4/3]", className)}

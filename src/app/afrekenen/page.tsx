@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useEffect, useState } from "react";
+import { useActionState } from "react";
 
+import { beginCheckout } from "@/app/afrekenen/actions";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatPrice, roundMoney } from "@/lib/format";
@@ -11,28 +12,18 @@ import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export default function CheckoutPage() {
-  const router = useRouter();
-  const { lines, subtotal, remainingForFreeShipping, mountGevel, mountPrice, clear } = useCart();
+  const { lines, subtotal, remainingForFreeShipping, mountGevel, mountPrice } = useCart();
   const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
   const mount = mountGevel ? mountPrice : 0;
   const net = subtotal + mount + shipping;
   const vat = roundMoney(net * 0.21);
   const totalIncl = roundMoney(net + vat);
   const [customerType, setCustomerType] = useState<"particulier" | "zakelijk">("particulier");
-  const [error, setError] = useState<string | null>(null);
+  const [state, action, pending] = useActionState(beginCheckout, { error: null, checkoutUrl: null });
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const required = ["name", "email", "phone", "address", "city", "postcode"];
-    const missing = required.some((key) => String(data.get(key) ?? "").trim().length < 2);
-    if (missing || lines.length === 0) {
-      setError("Vul alle velden in. De winkelwagen mag niet leeg zijn.");
-      return;
-    }
-    clear();
-    router.push("/afrekenen/bedankt");
-  }
+  useEffect(() => {
+    if (state.checkoutUrl) window.location.assign(state.checkoutUrl);
+  }, [state.checkoutUrl]);
 
   if (lines.length === 0) {
     return (
@@ -54,7 +45,21 @@ export default function CheckoutPage() {
         Winkelwagen / Gegevens / Betalen
       </p>
 
-      <form onSubmit={onSubmit} className="mt-8 grid gap-8">
+      <form action={action} className="mt-8 grid gap-8">
+        <input
+          type="hidden"
+          name="lines"
+          value={JSON.stringify(
+            lines.map((line) => ({
+              productSlug: line.productSlug,
+              variantSku: line.variantSku,
+              quantity: line.qty,
+              shopifyVariantId: line.shopifyVariantId,
+              kind: line.kind,
+            })),
+          )}
+        />
+        <input type="hidden" name="montage" value={mountGevel ? "1" : "0"} />
         <div className="flex gap-2">
           {(["particulier", "zakelijk"] as const).map((type) => (
             <button
@@ -88,9 +93,9 @@ export default function CheckoutPage() {
           ) : null}
         </div>
 
-        {error ? (
+        {state.error ? (
           <p className="border border-kg-ink bg-surface px-4 py-3 text-[13px] text-kg-ink" role="alert">
-            {error}
+            {state.error}
           </p>
         ) : null}
 
@@ -121,13 +126,21 @@ export default function CheckoutPage() {
             <span>Totaal incl. btw</span>
             <span className="font-mono text-[28px] font-bold">{formatPrice(totalIncl)}</span>
           </div>
-          <button type="submit" className={cn(buttonVariants({ variant: "primary", block: true }), "mt-5")}>
-            Verder naar betalen
+          <button type="submit" disabled={pending} className={cn(buttonVariants({ variant: "primary", block: true }), "mt-5")}>
+            {pending ? "Checkout starten…" : "Naar de beveiligde checkout"}
           </button>
           <p className="mt-3 text-[13px] text-[var(--color-text-muted)]">
-            Altijd binnen 24 uur bericht · Vragen?{" "}
+            U betaalt bij Shopify. Er is pas een bestelling als die betaling lukt. Het bedrag daar is leidend, inclusief btw. Montage zit niet in deze betaling.
+          </p>
+          <p className="mt-3 text-[13px] text-[var(--color-text-muted)]">
+            <Link href="/algemene-voorwaarden">Voorwaarden</Link>
+            {" · "}
+            <Link href="/privacy">Privacy</Link>
+            {" · "}
+            <Link href="/herroepingsrecht">Herroepingsrecht</Link>
+            {" · "}
             <a href={site.whatsapp} target="_blank" rel="noreferrer">
-              WhatsApp
+              WhatsApp {site.mobileDisplay}
             </a>
           </p>
         </aside>

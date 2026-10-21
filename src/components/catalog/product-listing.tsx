@@ -18,12 +18,14 @@ export function ProductListing({
   basePath,
   filters,
   totalUnfiltered,
+  emptyMessage,
 }: {
   products: Product[];
   allProducts: Product[];
   basePath: string;
   filters: ListingFilters;
   totalUnfiltered: number;
+  emptyMessage?: string;
 }) {
   const [visible, setVisible] = useState(Math.min(PAGE_SIZE, products.length));
   const facets = listingFacets(allProducts);
@@ -109,13 +111,15 @@ export function ProductListing({
       <div>
         <p className="border-b border-kg-navy pb-2.5 font-mono text-[14px] text-kg-text-2">
           {products.length === 0
-            ? "Geen producten met deze filters."
+            ? allProducts.length === 0
+              ? "Geen artikelen"
+              : "Geen producten met deze filters."
             : `1 – ${shown.length} van ${products.length} · prijzen excl. btw`}
           {totalUnfiltered !== products.length ? ` (van ${totalUnfiltered})` : null}
         </p>
         {products.length === 0 ? (
           <p className="mt-8 border border-kg-lijn bg-white px-6 py-12 text-center text-kg-text-2">
-            Geen producten met deze filters.
+            {emptyMessage ?? "Geen producten met deze filters."}
           </p>
         ) : (
           <div className="mt-5 grid gap-4 lg:grid-cols-2">

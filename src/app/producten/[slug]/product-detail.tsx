@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AreaCalculator } from "@/components/catalog/area-calculator";
-import { CavemenMark } from "@/components/brand/marks";
 import { ProductCard } from "@/components/brand/product-card";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
@@ -14,9 +13,10 @@ import { useCart } from "@/lib/cart";
 import { findVariant, uniqueLengths } from "@/lib/catalog/derive";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product, ProductVariant } from "@/lib/catalog/types";
+import { productHasPrice } from "@/lib/catalog/helpers";
 import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
-import { paymentMethods } from "@/lib/site";
-import { weekNow, stockLabel } from "@/lib/week";
+import { productAlt } from "@/lib/seo/alt";
+import { stockLabel } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 const TABS = [
@@ -55,8 +55,7 @@ export function ProductDetail({
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("omschrijving");
-  const { add, setMountGevel } = useCart();
-  const week = weekNow();
+  const { add } = useCart();
 
   const selected: ProductVariant = useMemo(
     () => findVariant(product, colorName, length) ?? fallback,
@@ -72,12 +71,14 @@ export function ProductDetail({
   }
 
   const coverage = selected.panelsPerM2;
+  const canBuy = productHasPrice(product) && selected.price > 0;
   const unitExcl = exclVat(selected.price);
-  const priceM2 = coverage ? unitExcl * coverage : undefined;
-  const status = stockLabel(selected.inStock, week, selected.stockText);
+  const priceM2 = canBuy && coverage ? unitExcl * coverage : undefined;
+  const status = stockLabel(selected.inStock, selected.stockText);
   const skuShort = selected.sku.replace(/-3M$/, "");
 
   function onAdd(count = qty, goCart = true) {
+    if (!canBuy) return;
     add({
       productSlug: product.slug,
       variantSku: selected.sku,
@@ -86,6 +87,7 @@ export function ProductDetail({
       brand: product.brand,
       colorName: selected.colorName,
       price: selected.price,
+      shopifyVariantId: selected.shopifyVariantId,
       hex: selected.hex,
       image: (selected.image ?? product.images[0])?.url,
       length: selected.length,
@@ -97,16 +99,16 @@ export function ProductDetail({
   }
 
   const specs = [
-    ["Werkende breedte", product.workingWidthMm ? `${product.workingWidthMm} mm` : "—"],
-    ["Dikte", product.specs.find((spec) => /dikte/i.test(spec.label))?.value ?? "—"],
+    ["Werkende breedte", product.workingWidthMm ? `${product.workingWidthMm} mm` : "n.v.t."],
+    ["Dikte", product.specs.find((spec) => /dikte/i.test(spec.label))?.value ?? "n.v.t."],
     ["Lengte", formatLengthMm(selected.length)],
     ["Kleur", `${selected.colorName.toLowerCase()}${selected.ral ? ` ${selected.ral}` : ""}`],
-    ["Brandklasse", product.specs.find((spec) => /brand/i.test(spec.label))?.value ?? "B-s2, d0"],
+    ["Brandklasse", product.specs.find((spec) => /brand/i.test(spec.label))?.value ?? "zie merk"],
   ];
 
   return (
     <div className="container-kg py-8 sm:py-10">
-      <p className="font-mono text-[13px] text-kg-text-2">
+      <nav aria-label="Kruimelpad" className="font-mono text-[13px] text-kg-text-2">
         <Link href="/" className="no-underline hover:underline">
           Home
         </Link>
@@ -115,15 +117,17 @@ export function ProductDetail({
           {categoryName}
         </Link>
         {" / "}
-        {product.brand}
-      </p>
+        <Link href={`/merken/${product.brandSlug}`} className="no-underline hover:underline">
+          {product.brand}
+        </Link>
+      </nav>
 
       <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
         <div>
           <div className="relative">
             <ProductPhoto
               image={mainImage}
-              alt={product.name}
+              alt={productAlt(product, selected.colorName)}
               sizes="(min-width: 1024px) 600px, 100vw"
               fallback={selected.hex}
               bevel={24}
@@ -152,7 +156,7 @@ export function ProductDetail({
                   >
                     <ProductPhoto
                       image={image}
-                      alt={product.name}
+                      alt={productAlt(product, `foto ${index + 1}`)}
                       sizes="120px"
                       bevel={null}
                       className="aspect-square"
@@ -184,9 +188,7 @@ export function ProductDetail({
           <p className="font-mono text-[13px] text-kg-text-2">
             Art. {skuShort} · {product.brand}
           </p>
-          <h1 className="display-pdp">
-            {product.name}, {selected.colorName.toLowerCase()}, per paneel
-          </h1>
+          <h1 className="display-pdp">{product.name}</h1>
 
           <dl className="grid grid-cols-2 gap-x-4 border-y border-kg-lijn py-3 font-mono text-[14px]">
             {specs.map(([label, value]) => (
@@ -199,14 +201,15 @@ export function ProductDetail({
 
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="font-mono text-[32px] leading-none font-bold">{formatPrice(unitExcl)}</p>
+              <p className="font-mono text-[32px] leading-none font-bold">
+                {canBuy ? formatPrice(unitExcl) : "Prijs op aanvraag"}
+              </p>
               <p className="mt-1 text-[14px] text-kg-text-2">
-                /paneel excl. btw
-                {priceM2 ? ` · ${formatPrice(priceM2)} /m²` : ""}
+                {canBuy ? `/paneel excl. btw${priceM2 ? ` · ${formatPrice(priceM2)} /m²` : ""}` : "Niet online te bestellen"}
               </p>
             </div>
             <p className="font-mono text-[13px] whitespace-nowrap" style={{ color: status.color }}>
-              {selected.inStock ? `Op voorraad · levering week ${week}` : status.text}
+              {status.text}
             </p>
           </div>
 
@@ -279,21 +282,28 @@ export function ProductDetail({
             <AreaCalculator
               panelsPerM2={coverage}
               lengthLabel={formatLengthMm(selected.length)}
-              unitExcl={unitExcl}
+              unitExcl={canBuy ? unitExcl : 0}
+              assumedLength={Boolean(selected.lengthAssumed)}
               onTake={(panels) => setQty(panels)}
               onOrder={(panels) => onAdd(panels)}
             />
           ) : null}
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <button
-              type="button"
-              onClick={() => onAdd()}
-              disabled={!selected.inStock}
-              className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1")}
-            >
-              In bestelling · {formatPrice(unitExcl * qty)}
-            </button>
+            {canBuy ? (
+              <button
+                type="button"
+                onClick={() => onAdd()}
+                disabled={!selected.inStock}
+                className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1")}
+              >
+                In bestelling · {formatPrice(unitExcl * qty)}
+              </button>
+            ) : (
+              <Link href="/offerte" className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1 no-underline")}>
+                Vraag de prijs
+              </Link>
+            )}
             {product.sampleable ? (
               <SampleAddButton
                 sample={{
@@ -304,31 +314,20 @@ export function ProductDetail({
                   hex: selected.hex,
                   ral: selected.ral,
                 }}
-                label="Gratis staal"
+                label="Staal"
                 className="h-12"
               />
             ) : null}
-            <button
-              type="button"
-              onClick={() => {
-                onAdd(qty, false);
-                setMountGevel(true);
-                router.push("/winkelwagen");
-              }}
-              className="flex h-12 items-center gap-2 px-3 text-[15px] font-medium text-kg-text-2"
-            >
-              <CavemenMark size={14} mono fill="#4A5568" />
-              Caveman erbij
-            </button>
+            <Link href="/offerte" className="flex h-12 items-center px-3 text-[15px] font-medium text-kg-text-2">
+              Montage via offerte
+            </Link>
           </div>
           {added ? (
             <p className="font-mono text-[13px] text-kg-stock">
               Toegevoegd. <Link href="/winkelwagen">Naar winkelwagen</Link>
             </p>
           ) : (
-            <p className="font-mono text-[13px] text-kg-text-2">
-              10 jaar garantie · {paymentMethods.join(" · ")}
-            </p>
+            <p className="font-mono text-[13px] text-kg-text-2">10 jaar garantie op kleur, volgens het merkvoorschrift.</p>
           )}
         </div>
       </div>
@@ -356,7 +355,8 @@ export function ProductDetail({
           <div className="border border-kg-lijn bg-white p-5 font-mono text-[14px]">
             <p className="font-medium">Levering en retour</p>
             <p className="mt-2 text-kg-text-2">
-              Levering week {week} bij voorraad. Retour binnen 14 dagen, ongeopend. Panelen op maat uitgesloten.
+              Levertijd bevestigen we na bestelling. Retour binnen 14 dagen als het artikel ongewijzigd is. Panelen op maat zijn uitgesloten. Zie{" "}
+              <Link href="/verzenden-retour">verzenden en retour</Link>.
             </p>
           </div>
         </div>
@@ -376,11 +376,11 @@ export function ProductDetail({
       <div className="sticky bottom-0 z-30 -mx-6 mt-10 border-t border-kg-lijn bg-white px-6 py-3 lg:hidden">
         <button
           type="button"
-          onClick={() => onAdd()}
-          disabled={!selected.inStock}
+          onClick={() => (canBuy ? onAdd() : router.push("/offerte"))}
+          disabled={canBuy && !selected.inStock}
           className={cn(buttonVariants({ variant: "primary", block: true }))}
         >
-          In bestelling · {formatPrice(unitExcl * qty)}
+          {canBuy ? `In bestelling · ${formatPrice(unitExcl * qty)}` : "Vraag de prijs"}
         </button>
       </div>
     </div>

@@ -6,7 +6,8 @@ import { projects } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Projecten",
   description:
-    "Recent opgeleverde gevels: villa’s, aanbouwen, renovatie en recreatiewoningen in heel Nederland.",
+    "Voorbeelden van gevels. Vraag foto's van een vergelijkbare klus, we sturen ze mee met de offerte.",
+  alternates: { canonical: "/projecten" },
 };
 
 export default function ProjectenPage() {

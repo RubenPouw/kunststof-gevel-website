@@ -8,8 +8,10 @@ import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product } from "@/lib/catalog/types";
+import { productHasPrice } from "@/lib/catalog/helpers";
 import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
-import { weekNow, stockLabel } from "@/lib/week";
+import { productAlt } from "@/lib/seo/alt";
+import { stockLabel } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 export function ListingCard({ product }: { product: Product }) {
@@ -23,7 +25,7 @@ export function ListingCard({ product }: { product: Product }) {
     [colorName, fallback, product.variants],
   );
   const colors = product.colors.slice(0, 8);
-  const status = stockLabel(selected.inStock, weekNow(), selected.stockText);
+  const status = stockLabel(selected.inStock, selected.stockText);
   const sku = selected.sku.replace(/-3M$/, "");
 
   return (
@@ -31,7 +33,7 @@ export function ListingCard({ product }: { product: Product }) {
       <Link href={`/producten/${product.slug}`} className="relative block text-inherit no-underline hover:no-underline">
         <ProductPhoto
           image={selected.image ?? product.images[0]}
-          alt={product.name}
+          alt={productAlt(product, selected.colorName)}
           sizes="(min-width: 640px) 170px, 100vw"
           fallback={selected.hex}
           className="aspect-square"
@@ -72,14 +74,14 @@ export function ListingCard({ product }: { product: Product }) {
           <span className="whitespace-nowrap" style={{ color: status.color }}>
             {status.text}
           </span>
-          <span>{formatPrice(exclVat(selected.price))}</span>
+          <span>{productHasPrice(product) && selected.price > 0 ? formatPrice(exclVat(selected.price)) : "Prijs op aanvraag"}</span>
         </div>
         <div className="mt-auto flex flex-wrap gap-2 pt-3">
           <Link
             href={`/producten/${product.slug}`}
             className={cn(buttonVariants({ variant: "primary", size: "sm" }), "h-10 no-underline hover:no-underline")}
           >
-            In bestelling
+            {productHasPrice(product) && selected.price > 0 ? "In bestelling" : "Bekijk"}
           </Link>
           {product.sampleable ? (
             <SampleAddButton

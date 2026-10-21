@@ -1,13 +1,14 @@
 import { getShopifyConfig, type ShopifyConfig } from "./config";
 
 export class ShopifyStorefrontError extends Error {
-  constructor(
-    message: string,
-    readonly status?: number,
-    readonly graphqlErrors?: unknown,
-  ) {
+  readonly status?: number;
+  readonly graphqlErrors?: unknown;
+
+  constructor(message: string, status?: number, graphqlErrors?: unknown) {
     super(message);
     this.name = "ShopifyStorefrontError";
+    this.status = status;
+    this.graphqlErrors = graphqlErrors;
   }
 }
 
@@ -30,7 +31,7 @@ export async function storefrontFetch<T>(
       "X-Shopify-Storefront-Access-Token": config.storefrontAccessToken,
     },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 60, tags: ["shopify-catalog"] },
+    next: { revalidate: 3600, tags: ["shopify-catalog"] },
   });
 
   if (!response.ok) {

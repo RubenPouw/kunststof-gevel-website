@@ -7,7 +7,8 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Over ons",
   description:
-    "kunststof-gevel.nl is onderdeel van Cavemen BV. Advies, levering en plaatsing van kunststof gevelbekleding.",
+    `${site.company} levert kunststof gevelbekleding vanuit de showroom in Utrecht, op afspraak.`,
+  alternates: { canonical: "/over-ons" },
 };
 
 export default function OverOnsPage() {
@@ -18,7 +19,8 @@ export default function OverOnsPage() {
       <div className="mt-8 space-y-5 text-[var(--color-text-soft)]">
         <p>
           {site.name} is de webshop van {site.company} voor kunststof
-          gevelbekleding, dakranden en kozijnafwerking. U bestelt uit voorraad,
+          gevelbekleding, dakranden en kozijnafwerking. KvK {site.kvk}, BTW {site.btw}.
+          De showroom aan de {site.address} is alleen op afspraak. U bestelt online,
           of wij rekenen een vaste prijs voor plaatsing.
         </p>
         <p>

@@ -3,7 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { SeoArticle } from "@/components/seo/article";
+import { JsonLd } from "@/components/seo/json-ld";
 import { blogPosts, getBlogPost } from "@/data/blog/posts";
+import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo/schema";
+import { site } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -19,7 +22,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.title,
     description: post.description,
     alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: { title: post.title, description: post.description, type: "article" },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      url: `/blog/${post.slug}`,
+    },
   };
 }
 
@@ -33,14 +41,24 @@ export default async function BlogPostPage({ params }: Props) {
     "@type": "Article",
     headline: post.title,
     datePublished: post.date,
+    dateModified: post.date,
     description: post.description,
     inLanguage: "nl-NL",
-    mainEntityOfPage: `https://kunststof-gevel.nl/blog/${post.slug}`,
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    author: { "@type": "Organization", name: site.name, url: `${site.origin}/` },
+    publisher: { "@id": `${site.origin}/#organization` },
   };
 
   return (
     <article>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Kennis", path: "/blog" },
+          { name: post.title, path: `/blog/${post.slug}` },
+        ])}
+      />
       <header className="container-kg max-w-3xl pt-12 sm:pt-16">
         <p className="font-mono text-[13px] text-kg-text-2">
           <Link href="/blog" className="no-underline hover:underline">

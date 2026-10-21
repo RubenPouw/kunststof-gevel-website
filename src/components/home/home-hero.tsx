@@ -3,12 +3,9 @@ import Link from "next/link";
 import { Bevel } from "@/components/brand/section-head";
 import { buttonVariants } from "@/components/ui/button";
 import { hero } from "@/lib/site";
-import { weekNow } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 export function HomeHero() {
-  const week = weekNow();
-
   return (
     <section className="container-kg pt-10 pb-4 lg:pt-14">
       <div className="grid items-end gap-5 lg:grid-cols-[7fr_5fr]">
@@ -41,7 +38,7 @@ export function HomeHero() {
             VinyPlus rondkant 150 mm · antraciet
             <br />
             <span className="text-[22px] font-medium tracking-[-0.02em] sm:text-[26px]">
-              levering week {week}
+              levertijd in overleg
             </span>
           </div>
         </Bevel>

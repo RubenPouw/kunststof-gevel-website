@@ -1,5 +1,7 @@
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 
+import { migratedPosts } from "./migrated";
+
 export type BlogPost = {
   slug: string;
   title: string;
@@ -11,7 +13,7 @@ export type BlogPost = {
   links: SeoLink[];
 };
 
-export const blogPosts: BlogPost[] = [
+const corePosts: BlogPost[] = [
   {
     slug: "wat-kost-kunststof-gevelbekleding",
     title: "Wat kost kunststof gevelbekleding per m²?",
@@ -23,7 +25,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "De bandbreedte",
         paragraphs: [
-          "Materiaal voor een gangbaar gevelpaneel ligt tussen € 65 en € 120 per m² excl. btw. Inclusief montage door een Caveman ligt de eerste indicatie tussen € 95 en € 140 per m². Beide banden zijn een start, geen opdracht.",
+          "Materiaal voor een gangbaar gevelpaneel ligt tussen € 65 en € 120 per m² excl. btw. Inclusief montage ligt de eerste indicatie tussen € 95 en € 140 per m². Beide banden zijn een start, geen opdracht.",
           "Een rechte zijgevel zonder veel hoeken zit onderin. Een woning met topgevels, veel dagkanten en een dakrand erbij zit bovenin. Kleur en merk schuiven de paneelprijs; de achterconstructie schuift de montage.",
         ],
       },
@@ -132,7 +134,7 @@ export const blogPosts: BlogPost[] = [
     slug: "montage-kunststof-gevelbekleding",
     title: "Montage van kunststof gevelbekleding",
     description:
-      "Regels, ventilatiespouw, startprofiel en snijverlies. De vaste volgorde voor u zelf zet of een Caveman laat komen.",
+      "Regels, ventilatiespouw, startprofiel en snijverlies. De vaste volgorde als u zelf zet of montage via de offerte laat rekenen.",
     date: "2026-09-29",
     kicker: "Montage",
     sections: [
@@ -151,7 +153,7 @@ export const blogPosts: BlogPost[] = [
         ],
       },
       {
-        heading: "Zelf of een Caveman",
+        heading: "Zelf of laten zetten",
         paragraphs: [
           "Zelf zetten kan met deze volgorde en de handleiding van het merk, die wij met de order meesturen. Liever laten zetten: vink montage aan op de offerte. U krijgt één prijs na opname, materiaal en werk apart zichtbaar.",
         ],
@@ -203,6 +205,8 @@ export const blogPosts: BlogPost[] = [
     ],
   },
 ];
+
+export const blogPosts: BlogPost[] = [...corePosts, ...migratedPosts];
 
 export function getBlogPost(slug: string) {
   return blogPosts.find((post) => post.slug === slug);

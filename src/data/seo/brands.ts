@@ -267,6 +267,54 @@ export const brandStories: BrandStory[] = [
       { href: "/kozijnen", label: "Kunststof kozijnen" },
     ],
   },
+  {
+    slug: "unipanel",
+    metaTitle: "Unipanel bouwpanelen",
+    description: "Unipanel bouwpanelen en bijpassende afwerking voor overstek en wand.",
+    lead: "Unipanel is een bouwpaneel voor overstek en wand. De breedtes lopen uiteen, de kleur meestal wit of een folie.",
+    sections: [
+      {
+        heading: "Waar het past",
+        paragraphs: [
+          "Een overstek of een plafond vraagt een vlak paneel, geen rabat. Unipanel dekt die vlakken. Hulpstukken zoals sierlijst en schroeven bestelt u erbij, in dezelfde order.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is Unipanel een gevelpaneel?",
+        a: "Nee. Het is een bouwpaneel voor overstek en wand. Voor de gevel zelf kiest u Keralit, VinyPlus of een vergelijkbaar systeem.",
+      },
+    ],
+    links: [
+      { href: "/offerte", label: "Offerte voor overstek" },
+      { href: "/dakranden", label: "Dakranden" },
+    ],
+  },
+  {
+    slug: "florence",
+    metaTitle: "Florence plafondpanelen",
+    description: "Florence plafondpanelen voor binnen en buiten, met profielen en plinten.",
+    lead: "Florence is een plafondpaneel. Binnen of buiten, met een verbinding en een plint in dezelfde lijn.",
+    sections: [
+      {
+        heading: "Plafond, geen gevel",
+        paragraphs: [
+          "De panelen zijn licht en bedoeld voor een plafond of een overstek, niet voor een gevel die in de regen staat als rabat. Lengtes staan bij het artikel, vaak rond de 270 cm.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan ik Florence buiten gebruiken?",
+        a: "Er is een buitenplafondpaneel. Gebruik dat voor een overstek. Een binnenpaneel hoort binnen.",
+      },
+    ],
+    links: [
+      { href: "/offerte", label: "Plafond laten rekenen" },
+      { href: "/contact", label: "Contact" },
+    ],
+  },
 ];
 
 export function getBrandStory(slug: string) {

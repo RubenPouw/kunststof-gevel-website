@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { SectionHead } from "@/components/brand/section-head";
-import { faqs, reviews, site } from "@/lib/site";
+import { faqs, site } from "@/lib/site";
 
 export function FaqReviews() {
   const [open, setOpen] = useState<number | null>(0);
@@ -38,17 +38,15 @@ export function FaqReviews() {
         </div>
       </div>
       <div>
-        <SectionHead title="Klanten" aside={`${site.googleScore} · ${site.googleReviews} beoordelingen`} />
-        <div className="grid gap-3">
-          {reviews.map((review) => (
-            <figure key={review.author} className="border border-kg-lijn bg-white p-5">
-              <blockquote className="text-[15px] leading-[1.5]">“{review.quote}”</blockquote>
-              <figcaption className="mt-3 flex justify-between font-mono text-[13px] text-kg-text-2">
-                <span>{review.author}</span>
-                <span>{review.score}</span>
-              </figcaption>
-            </figure>
-          ))}
+        <SectionHead title="Showroom" aside="op afspraak" />
+        <div className="border border-kg-lijn bg-white p-5">
+          <p className="text-[17px] font-medium">{site.address}</p>
+          <p className="mt-2 text-[15px] leading-[1.5] text-kg-text-2">{site.addressNote}. {site.hours}.</p>
+          <p className="mt-4 font-mono text-[14px]">
+            <a href={site.phoneHref}>{site.phone}</a>
+            {" · "}
+            <a href={site.whatsapp}>WhatsApp {site.mobileDisplay}</a>
+          </p>
         </div>
       </div>
     </section>

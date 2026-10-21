@@ -38,7 +38,7 @@ export function validateQuote(input: QuoteInput): string | null {
   if (input.city.trim().length < 2) return "Vul uw plaats in.";
   const area = Number(input.areaM2.replace(",", "."));
   if (!Number.isFinite(area) || area < 1 || area > 2000) {
-    return "Vul het geveloppervlak in m² in (1–2000).";
+    return "Vul het geveloppervlak in m² in (1 tot 2000).";
   }
   if (!(quoteProfiles as readonly string[]).includes(input.profile)) {
     return "Kies een profiel.";

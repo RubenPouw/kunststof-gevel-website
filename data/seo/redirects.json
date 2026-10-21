@@ -1,0 +1,2918 @@
+[
+  {
+    "from": "/",
+    "to": "/",
+    "status": "200",
+    "reason": "same-url"
+  },
+  {
+    "from": "/algemene-voorwaarden",
+    "to": "/algemene-voorwaarden",
+    "status": "200",
+    "reason": "same-url"
+  },
+  {
+    "from": "/alles-over-kunststof-gevelbekleding-voordelen-toepassingen-en-onderhoud",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "keyword-stuffed-overview"
+  },
+  {
+    "from": "/betaalmethodes",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "betaling-staat-in-de-voorwaarden"
+  },
+  {
+    "from": "/category-sitemap.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/contact",
+    "to": "/contact",
+    "status": "200",
+    "reason": "same-url"
+  },
+  {
+    "from": "/eurotexx-gevelbekleding",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/eurotexx-montage",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "montage-brand"
+  },
+  {
+    "from": "/herroepingsrecht",
+    "to": "/herroepingsrecht",
+    "status": "200",
+    "reason": "same-url"
+  },
+  {
+    "from": "/hpl-gevelplaat-toepassingen-montage",
+    "to": "/blog/hpl-plaat",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/hpl-plaat",
+    "to": "/blog/hpl-plaat",
+    "status": "301",
+    "reason": "uitleg-in-plaats-van-dunne-landingspagina"
+  },
+  {
+    "from": "/keralit-dakranden",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "category-brand"
+  },
+  {
+    "from": "/keralit-montage",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "montage-brand"
+  },
+  {
+    "from": "/keralit-of-kunststof-gevelbekleding",
+    "to": "/blog/keralit-of-vinyplus",
+    "status": "301",
+    "reason": "duplicate-of-comparison"
+  },
+  {
+    "from": "/kerrafront-gevelbekleding",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/kerrafront-montage",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "montage-brand"
+  },
+  {
+    "from": "/klachtenprocedure",
+    "to": "/klachtenprocedure",
+    "status": "200",
+    "reason": "same-url"
+  },
+  {
+    "from": "/klantenservice-advies-ondersteuning-voor-kunststof-gevelbekleding",
+    "to": "/contact",
+    "status": "301",
+    "reason": "service-is-contact"
+  },
+  {
+    "from": "/kozijn-vensterbank-afwerking",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/kunststof-binnenplafonds",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "plafond-merk"
+  },
+  {
+    "from": "/kunststof-dakranden",
+    "to": "/dakranden",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/kunststof-gevelbekleding-in-houtlook-keralit-vinyplus-zijn-de-toppers",
+    "to": "/blog/keralit-of-vinyplus",
+    "status": "301",
+    "reason": "duplicate-of-comparison"
+  },
+  {
+    "from": "/kunststof-gevelbekleding-soorten-voordelen",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "keyword-stuffed-overview"
+  },
+  {
+    "from": "/kunststof-gevelbekleding-van-topkwaliteit-duurzaam-onderhoudsvrij-en-esthetisch",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "keyword-stuffed-overview"
+  },
+  {
+    "from": "/kunststof-kozijnen-op-maat-prijs-berekenen-snel-geleverd",
+    "to": "/kozijnen",
+    "status": "301",
+    "reason": "same-job"
+  },
+  {
+    "from": "/kunststof-nieuwtjes",
+    "to": "/blog",
+    "status": "301",
+    "reason": "blog-index"
+  },
+  {
+    "from": "/kunststof-rabatdelen",
+    "to": "/gevelbekleding?type=rabat",
+    "status": "301",
+    "reason": "category-profile"
+  },
+  {
+    "from": "/kunststof-rabatdelen-horizontaal-verticaal-onderhoud",
+    "to": "/blog/rabat-horizontaal-of-verticaal",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/kunststof-vensterbank",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/kunststof-vensterbank-binnen-condens-afwerking",
+    "to": "/blog/condens-op-vensterbank",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/laatste-nieuws/algemeen",
+    "to": "/blog",
+    "status": "301",
+    "reason": "blog-index"
+  },
+  {
+    "from": "/local-sitemap.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/locations.kml",
+    "to": "/contact",
+    "status": "301",
+    "reason": "locatiebestand"
+  },
+  {
+    "from": "/merk/eurotexx",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/merk/florence",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/merk/kerrafront",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/merk/milexx",
+    "to": "/merken/milexx",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/merk/profex",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/merk/unipanel",
+    "to": "/merken/unipanel",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/merk/vinyplus",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/milexx-dakranden",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "category-brand"
+  },
+  {
+    "from": "/milexx-montage",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "montage-brand"
+  },
+  {
+    "from": "/nieuw-paneel-keralit-167-mm-de-moderne-strakke-keuze-voor-elke-gevel",
+    "to": "/blog/keralit-sponningdeel-167",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/offerte-aanvragen",
+    "to": "/offerte",
+    "status": "301",
+    "reason": "same-job"
+  },
+  {
+    "from": "/overstek-en-plafondpanelen",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "plafond-merk"
+  },
+  {
+    "from": "/overzet-vensterbank-meten-monteren",
+    "to": "/blog/overzet-vensterbank-meten",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/page-sitemap.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/post-sitemap.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/privacy-policy",
+    "to": "/privacy",
+    "status": "301",
+    "reason": "same-job"
+  },
+  {
+    "from": "/product-categorie/binnenplafonds",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/buitenplafonds",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kozijn-afwerking-vensterbanken/kunststof-vensterbank",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kozijn-afwerking-vensterbanken/montage-materiaal-plaatwerk",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kozijn-afwerking-vensterbanken/plaatmateriaal",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/keralit-dakranden",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/milexx-dakranden",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/milexx-dakranden/dakrandpanelen-milexx",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/milexx-dakranden/montage-materialen-milexx",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/overstek-plafondpanelen",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/unipanel-bouwpaneel",
+    "to": "/dakranden?merk=unipanel",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/vinyplus",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/vinyplus/dakrandpanelen-vinyplus",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen/vinyplus/montage-materialen-vinyplus-kunststof-dakranden-boei-delen",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/eurotexx",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/eurotexx/eurotexx-panelen",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/eurotexx/montage-materialen-eurotexx",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding/keralit-panelen",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding/montage-materialen-keralit",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/kerrafront",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/kerrafront/kerrafront-panelen",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/kerrafront/montage-materialen-kerrafront",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding/profex-duafort-profielen",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/vinyplus-kunststof-gevelbekleding",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/vinyplus-kunststof-gevelbekleding/montage-materialen-vinyplus",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/vinyplus-kunststof-gevelbekleding/vinyplus-panelen-kunststofgevel-bekleding",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding/zierer-steenstrips",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-sitemap.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/product/afdichtingsprofiel-pvc-45-mm-breed-toepassing-horizontaal",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/aluminium-startprofiel-3m1",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/bevestigingsschroeven-3-x-40-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "category-family"
+  },
+  {
+    "from": "/product/bevestigingsschroeven-35-x-30-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "category-family"
+  },
+  {
+    "from": "/product/buitenhoek-300-mm",
+    "to": "/producten/buitenhoek-300-mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/duafort-rabat-125-mm-canexel-vervanger",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/eindkap-400-mm-overzet-vensterbank",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "vensterbank-family"
+  },
+  {
+    "from": "/product/eindkap-inwendig-hoekprofiel-uitwendig-hoekprofiel-smal",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eindkap-steenlook-vensterbank-500-mm",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "vensterbank-family"
+  },
+  {
+    "from": "/product/eindkap-vensterbank-type-b",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "vensterbank-family"
+  },
+  {
+    "from": "/product/eindprofiel-19-mm-inwendig-5m1-per-lengte",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-dubbel-rabat",
+    "to": "/producten/eurotexx-dubbel-rabat-332-mm-structuur",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/eurotexx-eindprofiel-2-delig-6m1-per-lengte",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-hoekprofiel-2-delig-6m1-per-lengte",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-potdeksel-180-mm",
+    "to": "/producten/eurotexx-potdeksel-180-mm-structuur",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/eurotexx-startprofiel-5m1",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-stootvoegverbinding-180-mm-voor-potdeksel",
+    "to": "/producten/eurotexx-stootvoeg-potdeksel-180-mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/eurotexx-stootvoegverbinding-332-mm-voor-dubbel-rabatdeel",
+    "to": "/producten/eurotexx-stootvoeg-dubbel-rabat-332-mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/eurotexx-ventilatie-afsluitprofiel-2-delig-17-mm-inwendig",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-ventilatie-afsluitprofiel-65-x-17-mm",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-ventilatieprofiel",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-ventilatieprofiel-30-x-50-x-20-mm",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/eurotexx-verbindingsprofiel-2-delig-6m1",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/florence-binnenplafond-paneel-250x10mm-verschillende-lengtes",
+    "to": "/producten/florence-binnenplafond-paneel-250x10mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/florence-buitenplafond-h-verbindingprofiel-165mm",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "plafond-family"
+  },
+  {
+    "from": "/product/florence-buitenplafond-paneel-250x165-mm",
+    "to": "/producten/florence-buitenplafond-paneel-250x16-5-mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/florence-knikhoekprofiel-10mm",
+    "to": "/producten/florence-knikhoekprofiel-10mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/florence-omrandingprofiel-10mm-2-delig",
+    "to": "/producten/florence-omrandingprofiel-10mm-2-delig",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/florence-plafondplint-35x6mm-2-delig",
+    "to": "/producten/florence-plafondplint-35x6mm-2-delig",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/florence-startprofiel-2-dl-buitenplafond",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "plafond-family"
+  },
+  {
+    "from": "/product/h-profiel-10x40x25x1-mm",
+    "to": "/producten/h-profiel-10x40x25x1-mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/h-verbindingprofiel-10mm-keralit-dakrand",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/hpl-reiniger-1000-ml",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-167-mm-sponning-kopen-onderhoudsarm-duurzaam",
+    "to": "/producten/keralit-sponningdeel-167mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/keralit-aluminium-inhaakstartprofiel",
+    "to": "/producten/inhaakstartprofiel-aluminium",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/keralit-basis-eindprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-basis-uitwendig-hoekprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-basis-verbindingsprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-dakrand-boeiboordmontageprofiel",
+    "to": "/producten/keralit-dakrand-boeiboordmontageprofiel",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-dakrand-eindprofiel-10-mm",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/keralit-dakrand-montage-profiel-10-mm",
+    "to": "/producten/keralit-dakrandmontageprofiel-10mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-dakrand-montage-profiel-17-mm-kopie",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/keralit-dakrand-paneel-200-mm",
+    "to": "/producten/keralit-dakrandpaneel-200mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-dakrand-paneel-250-mm",
+    "to": "/producten/keralit-dakrandpaneel-250mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-dakrand-paneel-300-mm",
+    "to": "/producten/keralit-dakrandpaneel-300mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-dakrand-paneel-350-mm-2",
+    "to": "/producten/keralit-dakrandpaneel-350mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/keralit-dakrand-trim-kraal-aansluitprofiel",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/keralit-dakrand-tussenstuk-350-mm",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/keralit-eindkap-connector-143-mm",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-eindkap-voor-uitwendig-hoekprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-eindprofiel-17-mm",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-geventileerd-platprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-hoekstuk-dakrand-klassiek",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/keralit-hoekstuk-sierlijst-modern",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-inwendig-hoekprofiel",
+    "to": "/producten/keralit-inwendig-hoekprofiel",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-kleurstift",
+    "to": "/producten/keralit-kleurstift",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-omrandingsprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-potdeksel-177-mm",
+    "to": "/producten/keralit-potdeksel-177mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/keralit-reiniger-1-ltr",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-schroef-30mm-rvs-200-stuks",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-sponning-143-mm",
+    "to": "/producten/keralit-sponningdeel-143mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/keralit-sponning-190-mm",
+    "to": "/producten/keralit-sponningdeel-190mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/keralit-startprofiel-horizontaal-22mm-ventilatie",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-startprofiel-horizontaal-50mm-ventilatie",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-trim-kraal-aansluiting-klassiek",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/keralit-trim-kraal-aansluitprofiel-17mm",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-trim-kraal-ventilatieprofiel-voor-de-gevel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-trim-sierlijst-modern",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/keralit-tussenstuk-sierlijst-klassiek",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/keralit-tweezijdig-ventilatieprofiel",
+    "to": "/producten/tweezijdig-ventilatieprofiel",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/keralit-uitwendig-hoekprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-uitwendig-hoekprofiel-smal",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-verbindingsprofiel",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/keralit-verbindstuk-voor-143-mm",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/keralit-verbindstuk-voor-potdeksel-177-mm-kopie",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/keralit-verbindstuk-voor-sponning-167-mm",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/keralit-verbindstuk-voor-sponning-190-mm",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/keralit-verlengd-eindprofiel-17x44mm",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kerrafront-dubbel-sponningdeel-332-mm",
+    "to": "/producten/kerrafront-modern-wood-dubbel-sponning-332-mm-struct",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/kerrafront-eindprofiel-2-delig-17-mm-inwendig",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kerrafront-gevelpaneel-trend",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/kerrafront-hoekprofiel-2-delig-17-mm-inwendig",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kerrafront-multi-sponningdeel-332mm",
+    "to": "/producten/kerrafront-multi-sponningdeel-332-mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/kerrafront-startprofiel-5m1",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kerrafront-ventilatie-afsluitprofiel-2-delig-17-mm-inwendig",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kerrafront-ventilatie-afsluitprofiel-65-x-17-mm",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kerrafront-ventilatieprofiel-30-x-50-x-20-mm",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kerrafront-verbindingsprofiel-2-delig-17-mm-inwendig",
+    "to": "/montage?merk=kerrafront",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/kunststof-plafondpaneel-250-mm-ideaal-voor-badkamer-en-binnengebruik",
+    "to": "/producten/florence-binnenplafond-paneel-250x10mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/kunststof-plafondpaneel-250-mm-voor-buiten-plafonds-of-carport",
+    "to": "/producten/florence-buitenplafond-paneel-250x16-5-mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/lamina-damp-open-folie",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milexx-big-board-dakrandpaneel",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/milexx-binnenhoek-400-mm",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milexx-buitenhoek-300-mm",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milexx-buitenhoek-400-mm",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milexx-ongelijkzijdig-u-profiel-10-mm-inwendig",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milexx-verbinding-300-mm",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milexx-verbinding-400-mm",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel",
+    "to": "/merken/milexx",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel-folie-structuur",
+    "to": "/montage?merk=milexx",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/milinboard-overzetvensterbank-380-mm",
+    "to": "/producten/milinboard-overzetvensterbank-380-mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/milinboard-steenlook-vensterbank",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "vensterbank-family"
+  },
+  {
+    "from": "/product/milinboard-vensterbank-type-b",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "vensterbank-family"
+  },
+  {
+    "from": "/product/milyt-hpl-plaat",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "plaat-family"
+  },
+  {
+    "from": "/product/msp-high-tack-lijm-290-ml",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/novaboard-eindkap",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "vensterbank-family"
+  },
+  {
+    "from": "/product/novaboard-kunststof-vensterbank",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "vensterbank-family"
+  },
+  {
+    "from": "/product/ongelijkzijdig-u-profiel-10-mm-omrandingsprofiel",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/pe-tape-3-x-12-mm-25-mtr-per-rol",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/primer-universeel-1000-ml",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/profex-duafort-hoekprofiel-2-delig",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/profex-duafort-velling-paneel",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/profex-dubbel-rabat-270-mm",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/profex-eindprofiel-2-delig",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/profex-start-profiel-300-cm",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/profex-ventilatieprofiel",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/profex-verbindingsprofiel-2-delig",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/reparatiestift",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/rvs-a4-schroef-alu-hout-zelfborend-42x23-100st",
+    "to": "/producten/rvs-a4-schroef-alu-hout-zelfborend-4-2x23-100st",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/startprofiel-horizontale-bekleding-6-meter-per-lengte",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/startprofiel-verticale-bekleding-40-x-18-mm-6-meter-lengte",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/stoelprofiel-16-mm-inwendig",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/torx-schroeven-in-ral-kleur",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "category-family"
+  },
+  {
+    "from": "/product/trim-kraal-vent-keralit-dakrand-600-cm",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/tussenstuk-sierlijst-modern-keralit",
+    "to": "/producten/tussenstuk-sierlijst-modern-keralit",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/uitwendig-hoekstuk-350mm-keralit-dakrand",
+    "to": "/producten/uitwendig-hoekstuk-350mm-keralit-dakrand",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/unipanel-bouwpaneel",
+    "to": "/merken/unipanel",
+    "status": "301",
+    "reason": "brand-family"
+  },
+  {
+    "from": "/product/unipanel-schroef",
+    "to": "/montage?merk=unipanel",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/unipanel-sealer-250ml",
+    "to": "/producten/unipanel-sealer-250ml",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/ventilatierooster-rond-70-mm",
+    "to": "/producten/ventilatierooster-rond-70-mm",
+    "status": "301",
+    "reason": "same-handle"
+  },
+  {
+    "from": "/product/vinyplus-afwateringsprofiel-6-meter-lengte",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-bevestigingsclip-35-x-32-mm-haaks",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-buitenhoekprofiel-in-kleur-lengte-6-mtr",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-dakrand-montageprofiel",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/vinyplus-dakrandpaneel-200-x-35-x-16-mm",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/vinyplus-dakrandpaneel-295-35-16mm",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/vinyplus-eindprofiel-in-kleur-6-meter-per-lengte",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-montage-buitenhoekprofiel-3m1",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-montage-eindprofiel-3m1",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-montage-verbindingsprofiel-3-meter-per-lengte",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-quattro",
+    "to": "/producten/vinyplus-quattro-299mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/vinyplus-rabat",
+    "to": "/producten/vinyplus-rabatdeel-150-mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/vinyplus-reparatiestift",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-rondkant-eindkap-180-mm",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-rondkantpaneel",
+    "to": "/producten/vinyplus-rondkantpaneel-150-mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/vinyplus-stoelprofiel-16-mm-inwendig",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-stootvoegverbinding-150-mm-rabatdelen",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-stootvoegverbinding-150-mm-tbv-rondkantpaneel",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-structuurfolie-reiniger-1000-ml",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-vario-299mm-gevelpaneel",
+    "to": "/producten/vinyplus-vario-299mm",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/vinyplus-ventilatieprofiel-50x25x20-mm",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-verbinding-300-mm-in-kleur",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-verbindingsprofiel-in-kleur-6-meter-per-lengte",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/voegband-epdm-verticale-toepassing",
+    "to": "/montage",
+    "status": "301",
+    "reason": "accessory-family"
+  },
+  {
+    "from": "/product/zierer-hoekstuk-50-x-50-x-345-mm-grof",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "steenstrip-family"
+  },
+  {
+    "from": "/product/zierer-hoekstuk-50-x-50-x-345-mm-wildverband",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "steenstrip-family"
+  },
+  {
+    "from": "/product/zierer-leisteen",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "steenstrip-family"
+  },
+  {
+    "from": "/product/zierer-startprofiel-51-x-14-x-1-mm",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "steenstrip-family"
+  },
+  {
+    "from": "/product/zierer-steenstrip-grof-34m2",
+    "to": "/producten/zierer-steenstrip-1096-x-359-mm-grof-3-4m2",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/zierer-steenstrips-wildverband",
+    "to": "/producten/zierer-steenstrip-1096-x-359-mm-wildverband-3-4m2",
+    "status": "301",
+    "reason": "same-article"
+  },
+  {
+    "from": "/product/zierer-ventilatie-afsluitprofiel-65-x-17-mm",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "steenstrip-family"
+  },
+  {
+    "from": "/product/zierer-ventilatieprofiel-50-25-x-20-mm",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "steenstrip-family"
+  },
+  {
+    "from": "/product_brand-sitemap.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/product_cat-sitemap.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/profex-gevelbekleding",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/projecten",
+    "to": "/projecten",
+    "status": "200",
+    "reason": "same-url"
+  },
+  {
+    "from": "/shop",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "shop-is-category"
+  },
+  {
+    "from": "/showroom-kunststof-gevel",
+    "to": "/contact",
+    "status": "301",
+    "reason": "showroom-staat-op-contact"
+  },
+  {
+    "from": "/sitemap_index.xml",
+    "to": "/sitemap.xml",
+    "status": "301",
+    "reason": "old-sitemap"
+  },
+  {
+    "from": "/staalaanvraag",
+    "to": "/stalen",
+    "status": "301",
+    "reason": "same-job"
+  },
+  {
+    "from": "/track-order",
+    "to": "/contact",
+    "status": "301",
+    "reason": "geen-losse-ordertracking"
+  },
+  {
+    "from": "/unipanel-bouwpaneel",
+    "to": "/merken/unipanel",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/unipanel-montage",
+    "to": "/montage?merk=unipanel",
+    "status": "301",
+    "reason": "montage-brand"
+  },
+  {
+    "from": "/verzenden-retourneren",
+    "to": "/verzenden-retour",
+    "status": "301",
+    "reason": "same-job"
+  },
+  {
+    "from": "/vinyplus-dakranden",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "category-brand"
+  },
+  {
+    "from": "/vinyplus-montage-materiaal",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "montage-brand"
+  },
+  {
+    "from": "/vinyplus-quattro-gevelbekleding-nu-al-de-hit-van-2025",
+    "to": "/blog/vinyplus-quattro",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/vinyplus-turners-eiken-mooi-op-ieder-project",
+    "to": "/blog/vinyplus-turners-eiken",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/webshop",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "shop-is-category"
+  },
+  {
+    "from": "/wp-content/uploads/2021/06/logo.png",
+    "to": "/dakranden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/07/473-dakrandpaneel.jpg",
+    "to": "/dakranden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/07/Schermafbeelding-2022-10-28-om-07.08.15.png",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/07/VinyPlus-dakrand-wit-scaled-scaled.jpg",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/07/Vinyplus-stoelprofiel-16-mm-inwendig.png",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/0368-bevestigingsclip-1.jpg",
+    "to": "/dakranden?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/400-rabatdeel.jpg",
+    "to": "/producten/vinyplus-rabatdeel-150-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/401-buitenhoek.jpg",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/480-rondkantpaneel.jpg",
+    "to": "/producten/vinyplus-rondkantpaneel-150-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/MG_8561.jpg",
+    "to": "/producten/vinyplus-rondkantpaneel-150-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/Schermafbeelding-2023-11-10-om-10.39.40.png",
+    "to": "/producten/vinyplus-rabatdeel-150-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/Schermafbeelding-2024-05-27-om-12.04.19.png",
+    "to": "/producten/vinyplus-rondkantpaneel-150-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/Vinyplus-Rabatdeel-150-mm-werkend-lengte-6-meter-e1683620954864.jpg",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/Vinyplus-structuurfolie-reiniger-1000-ml.png",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/project4.jpg",
+    "to": "/producten/vinyplus-rabatdeel-150-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/08/vinyplus-rabat-grijs-04004560-kunststof_1.jpeg",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/402-buitenhoekprofiel.jpg",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/403-406.jpg",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/404-406.jpg",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/406-eindprofiel.jpg",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/407-verbindingsprofiel.jpg",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/413-startprofiel-verticaal.jpg",
+    "to": "/montage",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/488-afwateringsprofiel.jpg",
+    "to": "/montage?merk=vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/09/961c70dfd477129aa157748537cf.jpg",
+    "to": "/montage",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/0440-gevelpaneel-dubbel-rabat.jpg",
+    "to": "/producten/eurotexx-dubbel-rabat-332-mm-structuur",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/423-ventilatieprofiel.jpg",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/424-ventilatie-afsluitprofiel.jpg",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/442-stootvoeg-dubbel-rabat.jpg",
+    "to": "/producten/eurotexx-stootvoeg-dubbel-rabat-332-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/444-2-delig-verbindingsprofiel.jpg",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/448-potdeksel-1.jpg",
+    "to": "/producten/eurotexx-potdeksel-180-mm-structuur",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/449-stootvoeg-potdeksel.jpg",
+    "to": "/producten/eurotexx-stootvoeg-potdeksel-180-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/498-ventilatie-afsluitprofiel.jpg",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/7-Eurotexx-potdeksel-detail-scaled-scaled.jpg",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/9b5527a59bfba8b5d8b4146a9a45.jpeg",
+    "to": "/montage",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/Eurotexx-potdeksel-antraciet.jpg",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/kerrafront.png",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/11/project10-scaled-scaled.jpg",
+    "to": "/producten/eurotexx-dubbel-rabat-332-mm-structuur",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/12/433-hoekprofiel-2-delig.jpg",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/12/438-ventilatieprofiel.jpg",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2021/12/441-startprofiel.jpg",
+    "to": "/montage?merk=eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/06/A09CA22F-3E26-4305-9B7F-03716CBE8DBF.jpg",
+    "to": "/producten/vinyplus-rondkantpaneel-150-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/06/Vinyplus-rondkant-turners-eiken-scaled-scaled.jpg",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/06/montage-overzicht.png",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/07/email.png",
+    "to": "/contact",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/07/locatie.png",
+    "to": "/contact",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/07/telefoon.png",
+    "to": "/contact",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/761-vensterbank-type-B.jpg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/Marmer-34-2-1.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/Milexx-volschuim-dakranden.jpg",
+    "to": "/merken/milexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/Type-B1.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/creme-1.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/eurotexx_website.png",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/milexx_website-1.png",
+    "to": "/merken/milexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/milexx_website.png",
+    "to": "/merken/milexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/project2.jpg",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/project4-scaled-scaled.jpg",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/project7-1-scaled-scaled.jpg",
+    "to": "/dakranden?merk=milexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/vinyplus_website.png",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/08/wit-1.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/09/755-overzetvensterbank.jpg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/09/Overzet-paneel-510x317.jpg",
+    "to": "/blog/overzet-vensterbank-meten",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/09/Overzet3-510x383.jpg",
+    "to": "/blog/overzet-vensterbank-meten",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/09/Overzet3.jpg",
+    "to": "/producten/milinboard-overzetvensterbank-380-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/752-steenlook-vensterbank.jpg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/Carrera-marmer.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/Freestone-light.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/Freestone-mat.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/Parelgrijs.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/Schermafbeelding-2022-10-31-om-12.52.15.png",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/Steenlook1-scaled-scaled.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/Type-B-scaled-scaled.jpg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/creme.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/10/wit.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/0320-gevelpaneel.jpg",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/0340-multi-sponningdeel.jpg",
+    "to": "/producten/kerrafront-multi-sponningdeel-332-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/310_1.png",
+    "to": "/producten/kerrafront-modern-wood-dubbel-sponning-332-mm-struct",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/FS-301_TREND_Anthracite_Mastic_medium.jpg",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/FS-304_malt_oak_medium-scaled.jpg",
+    "to": "/producten/kerrafront-multi-sponningdeel-332-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/Kerrafront-Modern-Wood-project-1-scaled-scaled.jpg",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/Kerrafront-eindprofiel-2-delig-17-mm.png",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/antraciet.jpg",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/creme.jpg",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/quarzgrijs.jpg",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2022/11/wit.jpg",
+    "to": "/merken/kerrafront",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/06/221-volschuim-platpaneel.jpg",
+    "to": "/merken/milexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/06/project2.jpg",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/06/project6-scaled-scaled.jpg",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/07/Zwart.jpg",
+    "to": "/kozijnafwerking?merk=milinboard",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/07/project10-scaled-scaled.jpg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/07/project2-scaled-scaled.jpg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/08/0384_Milyt_PE_tape_3x12mm_zwart_rol_a_25mtr_1024x1024@2x.jpg",
+    "to": "/montage",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/08/383-afdichtingsprofiel.jpg",
+    "to": "/montage",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2023/08/zierer.jpg",
+    "to": "/montage?merk=zierer",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/463.webp",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/464_hoekprofiel_grof_1024x1024@2x.webp",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/843393ec31900f8ff156dd81cf42.jpeg",
+    "to": "/producten/vinyplus-quattro-299mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/CT12BI5191_300_Keralit_sponningdeel_143_mm_IMD.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/Natuur-Eiken.jpeg",
+    "to": "/blog/keralit-of-vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/PR3062BI12569_2808_Inhaakstartprofiel_aluminium_SZ5.jpeg",
+    "to": "/producten/inhaakstartprofiel-aluminium",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/PR3066BI12574_2813_Keralit_verbindingstuk_voor_2814_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/PR3067BI12575_2814_Keralit_sponningdeel_143mm_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/dsc_7614.webp",
+    "to": "/producten/keralit-sponningdeel-143mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/01/villa-met-keralit-gevelbekleding-sponningdeel143-vke.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/016-eindkap-links-sponningdeel-143mm_1.webp",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/CT13BI5130_310_Keralit_sponningdeel_190_mm_IMD.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/IN3-TURQUOISE-BLUE-RGB.jpg",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3057BI12564_2803_Basis_aluminium_uitwendig_hoekprofiel_SZ5.jpeg",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3058BI12565_2804_Verbindingprofiel_Keralit_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3059BI12566_2805_Basis_aluminium_verbindingprofiel_SZ5.jpeg",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3060BI12567_2806_Eindprofiel_17mm_Keralit_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3061BI12568_2807_Basis_aluminium_eindprofiel_SZ5.jpeg",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3071BI12579_2819_Keralit_sponningdeel_190mm_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3074BI12581_2822_Eindkap_uitw_rechthoekverb_prof_Keralit_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3095BI12598_2860_Eindkap_connector_links_voor_2814_5st_SZ5.jpeg",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/PR3361BI12572_2811_Verlengd_eindprofiel_17x44mm_Keralit_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/02/keralit_gevel_sponningdeel-190_bedrijfsgebouw_antraciet.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/Basis-uitw.-hoekprofiel2803-en-uitw.-rechthoekprofiel2812.jpg",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/CT14BI4996_320_Keralit_potdeksel_177_mm_IMD.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/CT25BI5203_530_Novaboard_vensterbanken_IMD.jpeg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/PR3055BI12563_2801_Keralit_schroef_30mm_rvs_200_stuks_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/PR3063BI12570_2809_Omrandingprof_met_ontwatering_Keralit_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/PR3064BI12571_2810_Trim_kraal_aansluitprofiel_17mm_Keralit_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/PR3069BI12577_2817_Keralit_potdeksel_177mm_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/PR3076BI12583_2827_Keralit_inwendig_hoekprofiel_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/PR3077BI12584_2828_Keralit_uitwendig_hoekprofiel_32x32mm_SZ5.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/PR3236BI12712_7225_Novaboard_vensterbank_25cm_SZ5.jpeg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/keralit-inwendig-hoekprofiel-voorbeeld_27.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/03/keralit-uitwendig-hoekprofiel-32x32-mm_2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/05/CT8BI4990_100_Keralit_dakrandpanelen_IMD.jpeg",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/05/PR3073BI17022_2821_Keralit_dakrandpaneel_200mm_SZ2-1.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/05/PR3099BI17044_2867_Keralit_dakrandmontageprofiel_10mm_SZ2-1.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/06/PR3068BI17018_2816_Keralit_verbindingstuk_voor_2817_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/06/PR3070BI17020_2818_Keralit_verbindingstuk_voor_2819_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/06/PR3090BI17033_2848_Tussenstuk_350mm_Keralit_dakrand_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/06/PR3104BI17047_2877_Keralit_dakrandmontageprofiel_17mm_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/06/PR3108BI17050_2887_Keralit_dakrand_boeiboordmontageprofiel_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/07/PR3093BI17037_2853_Tussenstuk_sierlijst_klassiek_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/08/PR3086BI17031_2843_Trim_kraal_aansluitpr_10mm_Keralit_dakr_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/08/PR3091BI17034_2850_Trim_kraal_sierlijst_klassiek_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/10/Keralit.png",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/10/PR3083BI17030_2836_Eindprofiel_10mm_voor_Keralit_dakrand_SZ2-1.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/10/PR3092BI17036_2852_Hoekstuk_sierlijst_klassiek_SZ2.webp",
+    "to": "/dakranden?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/10/PR3362BI17035_2851_Trim_kraal_sierlijst_modern_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/12/Keralit_dakranden.png",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/12/Plaatmateriaal.jpeg",
+    "to": "/blog/hpl-plaat",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/12/Type-B-Paneel.jpg",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/12/Vinkje_Kunstof-gevel.png",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2024/12/Vinyplus_dakranden.png",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/Sofort-klarna-logo.webp",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/VISA-Logo-2014.png",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/WhatsApp-Image-2024-11-01-at-20.56.56.jpeg",
+    "to": "/producten/vinyplus-quattro-299mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/download-1.png",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/download-2.png",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/iDEAL-header.webp",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/images-1.png",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/images-4.jpeg",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/kbc.png",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/vinyplus-quatro.jpg",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/01/vinyplus-quattro-kunststof-gevel.nl_-600x512.jpg.webp",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/185.webp",
+    "to": "/merken/unipanel",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/1b-Vinyplus-rondkant-detail-scaled.jpg",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/Kunststof-Vensterbank.webp",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/Unipanel-dakrand.webp",
+    "to": "/merken/unipanel",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/gevelbekledingdetails-143-desktop.webp",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/images-2.png",
+    "to": "/algemene-voorwaarden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/milinboard-freestone-light-3.webp",
+    "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/project8-scaled.jpg",
+    "to": "/blog/hpl-plaat",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/project9-scaled.jpg",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/02/ventilatieprofiel-startprofiel-vinyplus.webp",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/03/03-softline-82-1724933681.jpeg",
+    "to": "/kozijnen",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/03/Contact-Details.png",
+    "to": "/contact",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/03/Home-1.png",
+    "to": "/contact",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/03/PHOTO-2023-10-11-10-25-08.jpg",
+    "to": "/kozijnen",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/03/gealan.jpeg",
+    "to": "/kozijnen",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/03/ideal7000-web.png",
+    "to": "/kozijnen",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/03/keralit_dakrand_close-up_wit.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/05/16345350-keralit-geventileerd-platprofiel.png",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/06/Profex-Dubbel-Rabat-800x500-1.jpeg",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/06/Profex-Gevelbekleding-Duafort.jpeg",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/06/Waaier_dubbel_Rabat-kopie-scaled-1.jpeg",
+    "to": "/blog/rabat-horizontaal-of-verticaal",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/07/6a9e2a72b417963d7e90b86bbb86b06d.jpeg",
+    "to": "/blog/keralit-of-vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/07/IMG-20210708-WA0014.jpeg",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/07/Vinyplus-turners-eiken-quattro-e1752230376479.webp",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/08/Profex_logo.png",
+    "to": "/merken/profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/08/Schermafbeelding-2025-08-13-om-17.51.06.png",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/09/746_IMG-20190628-WA0011.jpeg",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/09/797_IMG_0617.jpeg",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/09/binnen-buitenhoekprofiel.png",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/09/ongedierte-profiel_2.png",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/09/verbindingprofiel.png",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/10/Eurotexx-potdeksel-antraciet.jpg",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/10/Homepage_mobiel.jpg",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/10/kunststof-dakranden.webp",
+    "to": "/dakranden",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/11/PHOTO-2025-08-30-11-19-18.jpg",
+    "to": "/kozijnen",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/11/PR4075BI17345_2815_Keralit_sponningdeel_167_mm_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/11/keralit-sponningdeel-167-mm-vergrijsd-ceder.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2025/12/RVS-A41.webp",
+    "to": "/producten/rvs-a4-schroef-alu-hout-zelfborend-4-2x23-100st",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/01/Keralit-hoekstuk-sierlijst-modern-foto.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/02/Keralit-startprofiel-horizontaal-50mm.-ventilatie.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/02/Keralit-trimkraal-ventilatieprofiel-voor-de-gevel-tekening.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/02/Professioneel-portret-van-een-man.png",
+    "to": "/over-ons",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/02/Startprofiel-horizontaal-22mm.-ventilatie-tekening.webp",
+    "to": "/montage?merk=keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/02/Tweezijdig-ventilatieprofiel-tekening.webp",
+    "to": "/producten/tweezijdig-ventilatieprofiel",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/02/grok-image-afc1ebf5-1f92-46ae-aba6-e82ea51a8f0f.jpg",
+    "to": "/kozijnen",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/CT30BI4963_600_Florence_binnenplafonds_IMD.jpg",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/CT30BI4965_600_Florence_binnenplafonds_IMD.jpg",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/Florence-binnenplafond-paneel-250x10mm-verschillende-lengtes-tekening.webp",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/Florence-plafondpanelen-24.jpg",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/H-profiel-10x40x25x1-mm-afmeting.jpg",
+    "to": "/producten/h-profiel-10x40x25x1-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/PR4078BI17346_2823_Keralit_verbindingstuk_voor_2815_SZ2.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/Plafondpaneel-badkamer-afmetingen.jpg",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/Vario-tekening.jpg",
+    "to": "/producten/vinyplus-vario-299mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/Ventilatierooster-rond-70-mm-tek.jpg",
+    "to": "/producten/ventilatierooster-rond-70-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/04/vinyplus-vario-turners-eiken.webp",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/05/PR2690BI16683_0631_Florence_omrandingprofiel_10mm_2_delig_SZ2.webp",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/05/PR2692BI16685_0633_Florence_plafondplint_35x6mm_2_delig_SZ2.webp",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/05/eindprofiel_1.png",
+    "to": "/montage?merk=profex",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/05/https-www.kunststof-gevel.nlproductflorence-binnenplafond-paneel-250x10mm-verschillende-lengtes.webp",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/06/CT19BI4966_400_Florence_buitenplafond_IMD.jpg",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/06/Florence-startprofiel-2-dl-buitenplafond-tekening.webp",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/06/H-verbindingprofiel-10mm-Keralit-dakrand-tekening.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/06/Trimkraal-vent.-Keralit-dakrand-tekening.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/06/Tussenstuk-sierlijst-modern-Keralit-tekening.webp",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/06/verbinding.webp",
+    "to": "/merken/florence",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/wp-content/uploads/2026/08/Schermafbeelding-2026-08-03-om-14.33.39.png",
+    "to": "/producten/florence-buitenplafond-paneel-250x16-5-mm",
+    "status": "301",
+    "reason": "image-to-parent-page"
+  },
+  {
+    "from": "/zakelijke-klanten",
+    "to": "/zakelijk",
+    "status": "301",
+    "reason": "same-job"
+  },
+  {
+    "from": "/zierer-montage",
+    "to": "/montage?merk=zierer",
+    "status": "301",
+    "reason": "montage-brand"
+  }
+]

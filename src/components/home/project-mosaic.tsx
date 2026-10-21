@@ -31,12 +31,9 @@ export function ProjectMosaic() {
           </Link>
         ))}
         <div className="col-span-2 flex flex-col justify-end bg-kg-navy p-6 text-kg-kalk lg:col-span-3">
-          <p className="text-[56px] leading-none font-bold tracking-[-0.05em]">
-            {site.gevelsDelivered.replace("+", "")}
-            <span className="text-kg-signal">+</span>
-          </p>
-          <p className="mt-3 font-mono text-[13px] text-kg-grind">gevels geleverd sinds {site.since}</p>
-          <p className="mt-2 font-mono text-[13px] text-kg-grind">Bouwen verandert niet. Inkopen wel.</p>
+          <p className="text-[40px] leading-none font-bold tracking-[-0.05em]">Utrecht</p>
+          <p className="mt-3 font-mono text-[13px] text-kg-grind">showroom op afspraak</p>
+          <p className="mt-2 font-mono text-[13px] text-kg-grind">{site.street}</p>
         </div>
       </div>
     </section>

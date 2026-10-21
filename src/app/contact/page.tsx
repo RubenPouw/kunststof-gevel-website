@@ -7,7 +7,8 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Neem contact op met kunststof-gevel.nl voor advies, levering of montage.",
+  description: `Bel ${site.phone}, app ${site.mobileDisplay} of mail ${site.email}. Showroom op afspraak in Utrecht.`,
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {
@@ -28,6 +29,7 @@ export default function ContactPage() {
         >
           <p className="text-[13px] text-[var(--color-text-muted)]">Telefoon</p>
           <p className="mt-1 font-heading text-[22px] font-semibold">{site.phone}</p>
+          <p className="text-[13px] text-[var(--color-text-muted)]">WhatsApp {site.mobileDisplay}</p>
         </a>
         <a
           href={site.emailHref}
@@ -37,9 +39,15 @@ export default function ContactPage() {
           <p className="mt-1 font-heading text-[22px] font-semibold">{site.email}</p>
         </a>
         <div className="border border-[var(--color-border)] bg-surface p-5">
-          <p className="text-[13px] text-[var(--color-text-muted)]">Adres</p>
+          <p className="text-[13px] text-[var(--color-text-muted)]">Showroom</p>
           <p className="mt-1 font-heading text-[22px] font-semibold">{site.address}</p>
+          <p className="text-[13px] text-[var(--color-text-muted)]">{site.addressNote}</p>
           <p className="text-[13px] text-[var(--color-text-muted)]">{site.hours}</p>
+          <p className="mt-2 text-[13px] text-[var(--color-text-muted)]">
+            {site.company}
+            <br />
+            KvK {site.kvk} · BTW {site.btw}
+          </p>
         </div>
       </div>
 

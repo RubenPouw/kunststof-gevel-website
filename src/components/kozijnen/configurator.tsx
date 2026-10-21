@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Bevel, SectionHead } from "@/components/brand/section-head";
-import { CavemenMark } from "@/components/brand/marks";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import { formatNlNumber, formatPrice } from "@/lib/format";
@@ -18,20 +17,18 @@ import {
   KZ_GLASS,
   KZ_TYPES,
 } from "@/lib/kozijnen";
-import { weekNow } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 const STEPS = [
   { k: "01 · vandaag", n: "Samenstellen", d: "Type, maat, kleur, glas. Prijs direct in beeld, geen offerte nodig." },
-  { k: "02 · binnen 2 dagen", n: "Maatcontrole", d: "Wij controleren uw maten. Twijfel? Een Caveman meet in voor € 95." },
-  { k: "03 · 15 werkdagen", n: "Productie en levering", d: "Kömmerling 76 mm, gemaakt in Nederland. Bezorgd of afhalen in Hedel." },
-  { k: "04 · zelfde week", n: "Gezet door een Caveman", d: "Oud kozijn eruit, nieuw gesteld en afgekit. Eén factuur via uw account." },
+  { k: "02 · daarna", n: "Maatcontrole", d: "Wij controleren uw maten. Twijfel? Inmeten kan via de offerte." },
+  { k: "03 · productie", n: "Productie en levering", d: "Kömmerling 76 mm. Bezorgd, of afhalen in de showroom in Utrecht op afspraak." },
+  { k: "04 · plaatsing", n: "Montage via offerte", d: "Oud kozijn eruit, nieuw gesteld en afgekit. Materiaal en werk staan apart op de offerte." },
 ];
 
 export function KozijnenConfigurator() {
   const router = useRouter();
   const { add } = useCart();
-  const week = weekNow();
   const [typeIndex, setTypeIndex] = useState(1);
   const [width, setWidth] = useState(1200);
   const [height, setHeight] = useState(1400);
@@ -54,7 +51,7 @@ export function KozijnenConfigurator() {
   const prevW = Math.round(Math.min(100, 100 * Math.min(1, w / ratio)));
   const prevH = Math.round(Math.min(100, 100 * Math.min(1, h / ratio)));
 
-  const lead = hasMount ? `Levering en montage week ${week + 3}` : `Levering week ${week + 3}`;
+  const lead = "Levertijd bevestigen we na bestelling";
   const cta = hasMount ? "In bestelling · inclusief montage" : "In bestelling · alleen levering";
 
   const facts = useMemo(
@@ -99,7 +96,7 @@ export function KozijnenConfigurator() {
             Geleverd, of gezet.
           </h1>
           <p className="mt-4 max-w-xl text-kg-text-2">
-            Alleen levering vanaf 15 werkdagen. Een Caveman zet in dezelfde week. Binnen altijd wit.
+            Levertijd bevestigen we na bestelling. Montage loopt via de offerte. Binnen altijd wit.
           </p>
           <div className="mt-6 grid gap-3 border-y border-kg-lijn py-3 font-mono text-[14px] sm:grid-cols-3">
             {facts.map(([k, v]) => (
@@ -237,9 +234,9 @@ export function KozijnenConfigurator() {
           <Step n="05" title="Levering of montage">
             <div className="grid gap-2">
               {[
-                { n: "Alleen levering", d: "Afhalen Hedel of bezorgd op adres", p: "inbegrepen", i: 0 },
+                { n: "Alleen levering", d: "Afhalen in Utrecht op afspraak, of bezorgd", p: "inbegrepen", i: 0 },
                 {
-                  n: "Inclusief montage door Caveman",
+                  n: "Inclusief montage",
                   d: "Uitnemen oud kozijn, stellen, afkitten, afvoer",
                   p: formatPrice(mountPrice),
                   i: 1,
@@ -301,7 +298,7 @@ export function KozijnenConfigurator() {
               </div>
               {hasMount ? (
                 <div className="flex justify-between">
-                  <span>Montage door Caveman</span>
+                  <span>Montage</span>
                   <span>{formatPrice(mountPrice)}</span>
                 </div>
               ) : null}
@@ -325,10 +322,7 @@ export function KozijnenConfigurator() {
             </p>
           </div>
           <div className="bg-kg-navy p-5 text-kg-kalk">
-            <div className="flex items-center gap-2 text-[15px] font-bold">
-              <CavemenMark size={18} />
-              Caveman inmeten?
-            </div>
+            <p className="text-[15px] font-bold">Inmeten op locatie?</p>
             <p className="mt-3 font-mono text-[13px] text-kg-grind">
               Vóór bestelling, € 95, verrekend bij montage.
             </p>

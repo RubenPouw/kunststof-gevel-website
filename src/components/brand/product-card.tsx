@@ -4,7 +4,9 @@ import { ProductPhoto } from "@/components/brand/product-photo";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
+import { productHasPrice } from "@/lib/catalog/helpers";
 import { exclVat, formatPrice } from "@/lib/format";
+import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
 
 export function ProductCard({
@@ -22,7 +24,7 @@ export function ProductCard({
       <Link href={`/producten/${product.slug}`} className="relative block p-3 text-inherit no-underline hover:no-underline">
         <ProductPhoto
           image={product.images[0]}
-          alt={product.name}
+          alt={productAlt(product)}
           sizes="(min-width: 1024px) 280px, 50vw"
           fallback={color?.hex}
           className="aspect-[4/3]"
@@ -38,7 +40,7 @@ export function ProductCard({
         </h3>
         <p className="font-mono text-[13px] text-kg-text-2">{product.meta}</p>
         <div className="mt-1 font-mono text-[14px]">
-          {formatPrice(exclVat(variant?.price ?? product.price))} excl. btw
+          {productHasPrice(product) ? `${formatPrice(exclVat(variant?.price ?? product.price))} excl. btw` : "Prijs op aanvraag"}
         </div>
         <div className={cn("mt-2 flex gap-2", showSample && color ? "flex-col sm:flex-row" : "")}>
           <Link
@@ -49,7 +51,7 @@ export function ProductCard({
               !showSample && "w-full",
             )}
           >
-            Voeg toe
+            Bekijk
           </Link>
           {showSample && color ? (
             <SampleAddButton

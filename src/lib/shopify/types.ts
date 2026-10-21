@@ -27,6 +27,7 @@ export type ShopifyProduct = {
   handle: string;
   title: string;
   description: string;
+  updatedAt?: string;
   productType: string;
   vendor: string;
   tags: string[];
@@ -35,6 +36,7 @@ export type ShopifyProduct = {
   featuredImage: ShopifyImage | null;
   images: { nodes: ShopifyImage[] };
   variants: { nodes: ShopifyVariant[] };
+  collections?: { nodes: { handle: string }[] };
 };
 
 export type ShopifyCollection = {

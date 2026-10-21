@@ -14,12 +14,14 @@ export function AreaCalculator({
   panelsPerM2,
   lengthLabel,
   unitExcl,
+  assumedLength = false,
   onTake,
   onOrder,
 }: {
   panelsPerM2: number;
   lengthLabel: string;
   unitExcl: number;
+  assumedLength?: boolean;
   onTake: (panels: number) => void;
   onOrder: (panels: number) => void;
 }) {
@@ -85,7 +87,7 @@ export function AreaCalculator({
       {order.ok ? (
         <p className="mt-3 font-mono text-[14px]">
           {formatNlNumber(order.grossM2, 1)} m² bruto
-          {order.openingsM2 > 0 ? ` − ${formatNlNumber(order.openingsM2, 1)} m² openingen` : ""} ={" "}
+          {order.openingsM2 > 0 ? ` minus ${formatNlNumber(order.openingsM2, 1)} m² openingen` : ""} ={" "}
           {formatNlNumber(order.netM2, 1)} m². Met {wastePct}% snijverlies: {order.panels} panelen van{" "}
           {lengthLabel} · {formatPrice(order.panels * unitExcl)} excl. btw
         </p>
@@ -94,32 +96,40 @@ export function AreaCalculator({
           {order.error}
         </p>
       )}
-      <div className="mt-3 flex flex-wrap gap-2">
-        <button
-          type="button"
-          disabled={!order.ok}
-          onClick={() => order.ok && onOrder(order.panels)}
-          className={cn(buttonVariants({ variant: "primary", size: "sm" }))}
-        >
-          Zet {order.ok ? order.panels : ""} panelen in bestelling
-        </button>
-        <button
-          type="button"
-          disabled={!order.ok}
-          onClick={() => {
-            if (!order.ok) return;
-            onTake(order.panels);
-            setTaken(true);
-          }}
-          className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
-        >
-          Neem over
-        </button>
-      </div>
+      {unitExcl > 0 ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            disabled={!order.ok}
+            onClick={() => order.ok && onOrder(order.panels)}
+            className={cn(buttonVariants({ variant: "primary", size: "sm" }))}
+          >
+            Zet {order.ok ? order.panels : ""} panelen in bestelling
+          </button>
+          <button
+            type="button"
+            disabled={!order.ok}
+            onClick={() => {
+              if (!order.ok) return;
+              onTake(order.panels);
+              setTaken(true);
+            }}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+          >
+            Neem over
+          </button>
+        </div>
+      ) : (
+        <p className="mt-3 font-mono text-[13px] text-kg-text-2">
+          Dit artikel is prijs op aanvraag. Het aantal is een indicatie voor de offerte.
+        </p>
+      )}
       <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-        {taken
-          ? "Aantal staat bij de bestelling. Je past het nog aan voor je op de knop drukt."
-          : "Ramen en deuren trek je af. Snijverlies zit in het aantal panelen."}
+        {assumedLength
+          ? "Lengte 6 m aangehouden, omdat de artikeldata geen paneellengte geeft. Controleer het aantal voor je bestelt."
+          : taken
+            ? "Aantal staat bij de bestelling. Je past het nog aan voor je op de knop drukt."
+            : "Ramen en deuren trek je af. Snijverlies zit in het aantal panelen."}
       </p>
     </div>
   );

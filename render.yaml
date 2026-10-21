@@ -2,7 +2,9 @@ services:
   - type: web
     name: kunststofgevel-website
     runtime: node
-    plan: free
+    # Paid plan so the shop does not spin down. Region is Frankfurt.
+    # Changing region on an existing Render service may require a new service. This file is config only.
+    plan: starter
     region: frankfurt
     buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
@@ -23,4 +25,28 @@ services:
       - key: ACTIVECAMPAIGN_API_KEY
         sync: false
       - key: ACTIVECAMPAIGN_LIST_ID
+        sync: false
+      - key: SHOPIFY_ADMIN_ACCESS_TOKEN
+        sync: false
+      - key: LEAD_EMAIL_TO
+        value: info@kunststof-gevel.nl
+      - key: LEAD_EMAIL_FROM
+        sync: false
+      - key: LEAD_EMAIL_PROVIDER
+        value: auto
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAILERSEND_API_KEY
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: NEXT_PUBLIC_GTM_ID
+        value: GTM-N3DQ6G5
+      - key: NOINDEX
         sync: false

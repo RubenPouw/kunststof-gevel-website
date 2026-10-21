@@ -5,6 +5,7 @@ import { SampleRequestForm } from "@/app/stalen/sample-form";
 export const metadata: Metadata = {
   title: "Kleurstalen",
   description: "Vraag tot vier gratis kleurstalen aan. Binnen twee werkdagen thuis, zonder verplichting.",
+  alternates: { canonical: "/stalen" },
 };
 
 export default function StalenPage() {

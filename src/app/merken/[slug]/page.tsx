@@ -6,6 +6,7 @@ import { GuaranteeBand } from "@/components/catalog/guarantee-band";
 import { ProductListing } from "@/components/catalog/product-listing";
 import { SeoArticle } from "@/components/seo/article";
 import { getBrandStory } from "@/data/seo/brands";
+import { site } from "@/lib/site";
 import {
   applyListingFilters,
   getBrand,
@@ -49,6 +50,11 @@ export default async function BrandPage({ params, searchParams }: Props) {
           basePath={`/merken/${brand.slug}`}
           filters={filters}
           totalUnfiltered={all.length}
+          emptyMessage={
+            all.length === 0
+              ? `${brand.name} staat nu niet in de webshopvoorraad. Bel ${site.phone} of vraag een offerte, dan kijken we of we het kunnen leveren.`
+              : undefined
+          }
         />
       </div>
       {story ? <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} /> : null}

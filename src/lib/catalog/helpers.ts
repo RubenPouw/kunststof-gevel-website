@@ -21,7 +21,15 @@ export function getVariantBySku(products: Product[], sku: string) {
 }
 
 export function getDefaultVariant(product: Product): ProductVariant {
-  return product.variants.find((variant) => variant.popular) ?? product.variants[0];
+  return (
+    product.variants.find((variant) => variant.popular && variant.price > 0) ??
+    product.variants.find((variant) => variant.price > 0) ??
+    product.variants[0]
+  );
+}
+
+export function productHasPrice(product: Product) {
+  return product.variants.some((variant) => variant.price > 0) && product.price > 0;
 }
 
 export function applyListingFilters(list: Product[], filters: ListingFilters) {
