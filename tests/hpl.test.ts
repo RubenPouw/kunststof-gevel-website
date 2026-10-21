@@ -52,6 +52,10 @@ test("HPL lines and colours come from the title, without the unsold laminate nam
   const color = extractHplColor("HPL Compact Exterieur Antraciet RAL 7016 3050x1300x6 mm");
   assert.equal(color.colorName, "Antraciet");
   assert.equal(color.ral, "RAL 7016");
+  assert.equal(
+    extractHplColor("HPL Compact Exterieur Wijnrood RAL 3005 3050 x 1300 x 6 mm Default Title").colorName,
+    "Wijnrood",
+  );
 });
 
 test("product type and collection land on the HPL category", () => {

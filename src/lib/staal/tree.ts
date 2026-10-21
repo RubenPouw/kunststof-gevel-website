@@ -1,4 +1,6 @@
 import { slugKey } from "@/lib/catalog/derive";
+import { normalizeProductName } from "@/lib/catalog/text-rules";
+import { correctVariantImages } from "@/lib/catalog/variant-images";
 import type { Product } from "@/lib/catalog/types";
 
 export const STAAL_GROUP_QUESTION = "Kiest u eerst voor wat er nodig is, dakrand of een geveldeel?";
@@ -89,6 +91,29 @@ function productImage(product: Product) {
   );
 }
 
+function isPaleColor(name: string) {
+  return /\b(wit|witte|white|snowwhite|creme|crème|ivoor|alaska)\b/i.test(name);
+}
+
+/** A colour photo you can actually see on a white card. Pale swatches look like an empty block. */
+function visibleImage(products: Product[]) {
+  for (const product of products) {
+    for (const variant of product.variants) {
+      if (variant.image?.url && !isPaleColor(variant.colorName)) return variant.image.url;
+    }
+  }
+  return products.map(productImage).find(Boolean);
+}
+
+function brandPhoto(items: Product[], all: Product[], brandSlug: string) {
+  const siblings = all.filter((product) => product.brandSlug === brandSlug && !isHardware(product.name));
+  return (
+    visibleImage(items) ??
+    visibleImage(siblings.filter((product) => product.category === "gevelbekleding")) ??
+    visibleImage(siblings)
+  );
+}
+
 function thicknessMm(text: string) {
   const values = [...text.matchAll(/(\d+(?:[.,]\d+)?)\s*mm/g)].map((match) =>
     Number(match[1].replace(",", ".")),
@@ -157,12 +182,20 @@ function isGenericColor(name: string) {
   return /^(default title|default|standaard)$/i.test(name.trim());
 }
 
+function isSampleColor(name: string | undefined) {
+  const value = name?.trim() ?? "";
+  if (!value || isGenericColor(value)) return false;
+  if (/default title/i.test(value)) return false;
+  if (/^(milyt|flexinplex|hpl|hpl plaat)(\s+mm)*$/i.test(value)) return false;
+  return true;
+}
+
 export function collectColors(products: Product[]): StaalColor[] {
   const map = new Map<string, StaalColor>();
   for (const product of products) {
     for (const variant of product.variants) {
       const name = variant.colorName?.trim();
-      if (!name || isGenericColor(name)) continue;
+      if (!isSampleColor(name)) continue;
       const id = slugKey(name);
       if (!id) continue;
       const image = variant.image?.url;
@@ -175,7 +208,7 @@ export function collectColors(products: Product[]): StaalColor[] {
     }
     for (const color of product.colors) {
       const name = color.name?.trim();
-      if (!name || isGenericColor(name)) continue;
+      if (!isSampleColor(name)) continue;
       const id = slugKey(name);
       if (!id || map.has(id)) continue;
       map.set(id, { id, name, hex: color.hex || undefined });
@@ -243,12 +276,15 @@ function gevelGroup(products: Product[]): StaalNode {
         .map(([slug, items]) => {
           const sorted = [...items].sort(byProduct);
           const brand = sorted[0]?.brand ?? slug;
-          return leaf(
+          const node = leaf(
             `merk:${slug}`,
             brand,
             sorted,
             sorted.length === 1 ? `Kleur ${sorted[0].name}` : `Kleur ${brand}`,
           );
+          const photo = brandPhoto(sorted, products, slug);
+          if (photo) node.image = photo;
+          return node;
         });
       children.push(parent(kind, meta.label, meta.question, nodes));
     } else {
@@ -311,10 +347,43 @@ function isVensterbank(product: Product) {
 
 function isHplSample(product: Product) {
   if (product.category !== "hpl-platen" || isHardware(product.name)) return false;
-  const text = blob(product);
-  if (!text.includes("flexinplex")) return false;
+  const text = `${blob(product)} ${product.description ?? ""}`.toLowerCase();
+  if (/sandwich|reiniger|compact|renolit|\babet\b|brandvertragend/.test(text)) return false;
+  if (/\b(?:2|24)\s*mm\b/.test(text)) return false;
+  if (/\bhpl[-\s]?fr\b/.test(text)) return false;
+  const flex =
+    /flexinplex|milyt/.test(text) || product.variants.some((variant) => /^mpf/i.test(variant.sku.trim()));
+  if (!flex) return false;
   const thickness = thicknessMm(text);
-  return thickness === undefined || thickness === 6;
+  if (thickness !== undefined && thickness !== 6) return false;
+  return product.variants.some((variant) => isSampleColor(variant.colorName));
+}
+
+function hplGroup(products: Product[]): StaalNode {
+  const samples = products.filter(isHplSample);
+  const buckets = new Map<string, Product[]>();
+  for (const product of samples) {
+    const key = normalizeProductName(product.name);
+    const list = buckets.get(key) ?? [];
+    list.push(product);
+    buckets.set(key, list);
+  }
+  const fallback = products
+    .filter((product) => product.category === "hpl-platen" && !isHardware(product.name))
+    .map(productImage)
+    .find(Boolean);
+  const children = [...buckets.values()]
+    .sort((a, b) => byProduct(a[0], b[0]))
+    .map((items) => {
+      const label = items[0]?.name ?? "HPL plaat";
+      const node = leaf(items[0].slug, label, items, `Kleur ${label}`);
+      if (!node.image && fallback) node.image = fallback;
+      return node;
+    });
+  if (!children.length) return emptyGroup("hpl", "HPL platen", "Kies de HPL plaat");
+  const node = parent("hpl", "HPL platen", "Kies de HPL plaat", children);
+  if (!node.image && fallback) node.image = fallback;
+  return node;
 }
 
 export function categoryStaalGroup(category: string): StaalGroupId | null {
@@ -322,17 +391,18 @@ export function categoryStaalGroup(category: string): StaalGroupId | null {
 }
 
 export function buildStaalTree(products: Product[]): StaalTree {
+  const ready = products.map(correctVariantImages);
   return {
     groups: [
-      gevelGroup(products),
-      dakrandGroup(products),
+      gevelGroup(ready),
+      dakrandGroup(ready),
       namedGroup(
         "vensterbank",
         "Vensterbanken",
         "Kies de vensterbank",
-        products.filter(isVensterbank),
+        ready.filter(isVensterbank),
       ),
-      namedGroup("hpl", "HPL platen", "Kies de HPL plaat", products.filter(isHplSample)),
+      hplGroup(ready),
     ],
   };
 }

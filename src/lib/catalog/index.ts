@@ -1,6 +1,7 @@
 import { cache } from "react";
 
 import { findListedProduct } from "@/lib/catalog/dedupe";
+import { correctVariantImages } from "@/lib/catalog/variant-images";
 import { databaseUrl } from "@/lib/db/client";
 import { readStoredProducts } from "@/lib/db/store";
 import { isShopifyConfigured } from "@/lib/shopify/config";
@@ -93,7 +94,8 @@ function staticCatalog(): CatalogData {
 async function loadCatalog(): Promise<CatalogData> {
   if (databaseUrl()) {
     try {
-      const products = await readStoredProducts();
+      const stored = await readStoredProducts();
+      const products = stored?.map(correctVariantImages);
       if (products && products.length) {
         const brands = brandsFromProducts(products);
         return {
@@ -117,7 +119,7 @@ async function loadCatalog(): Promise<CatalogData> {
       return staticCatalog();
     }
     return {
-      products: shopify.products,
+      products: shopify.products.map(correctVariantImages),
       brands: shopify.brands.length ? shopify.brands : staticBrands,
       categories: shopify.categories,
       source: "shopify",

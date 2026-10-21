@@ -24,6 +24,7 @@ export function ConsentAndGtm() {
   function choose(next: Choice) {
     window.localStorage.setItem(STORAGE_KEY, next);
     setChoice(next);
+    window.dispatchEvent(new Event("kg-consent"));
   }
 
   return (
@@ -49,16 +50,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </>
       ) : null}
       {ready && choice === null ? (
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-kg-navy bg-white p-4 sm:p-5">
-          <div className="container-kg flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <p className="max-w-2xl text-[15px] leading-[1.5]">
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-kg-navy bg-white px-4 py-3">
+          <div className="container-kg flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p className="max-w-2xl text-[14px] leading-snug">
               Statistiek laden we via Google Tag Manager ({GTM_ID}), alleen nadat u toestemt. De site werkt ook zonder.
             </p>
-            <div className="flex gap-2">
-              <button type="button" className="h-11 border border-kg-navy px-4 text-[14px] font-medium" onClick={() => choose("denied")}>
+            <div className="flex shrink-0 gap-2">
+              <button type="button" className="h-10 border border-kg-navy px-3 text-[14px] font-medium" onClick={() => choose("denied")}>
                 Weigeren
               </button>
-              <button type="button" className="h-11 bg-kg-navy px-4 text-[14px] font-medium text-white" onClick={() => choose("granted")}>
+              <button type="button" className="h-10 bg-kg-navy px-3 text-[14px] font-medium text-white" onClick={() => choose("granted")}>
                 Accepteren
               </button>
             </div>

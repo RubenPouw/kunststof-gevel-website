@@ -134,7 +134,7 @@ test("vensterbank uses the overzetbank and skips a single product step", () => {
   assert.doesNotMatch(text, /Eindkap/);
 });
 
-test("hpl samples are only Flexinplex around 6 mm", () => {
+test("hpl samples are 6 mm Milyt and Flexinplex, with decors as colours", () => {
   assert.deepEqual(tree.groups.find((group) => group.id === "hpl")?.productSlugs, []);
   const sheet = product({
     slug: "flex-6",
@@ -159,12 +159,133 @@ test("hpl samples are only Flexinplex around 6 mm", () => {
     brand: "HPL Compact Exterieur",
     vendor: "HPL",
     category: "hpl-platen",
+    images: [{ url: "https://cdn.shopify.com/s/files/1/1/files/compact.jpg", alt: "HPL" }],
     variants: [variant("Eiken"), variant("Wit")],
   });
-  const built = buildStaalTree([sheet, thin, compact]);
-  assert.deepEqual(built.groups.find((group) => group.id === "hpl")?.productSlugs, ["flex-6"]);
+  const shell = product({
+    slug: "milyt-hpl-plaat",
+    name: "Milyt HPL plaat 3050 x 1300 x 6 mm",
+    brand: "HPL",
+    vendor: "HPL",
+    category: "hpl-platen",
+    variants: [variant("Milyt mm Default Title")],
+  });
+  const decorsA = product({
+    slug: "milyt-hpl-plaat-1",
+    name: "Milyt HPL plaat 3050 x 1300 x 6 mm",
+    brand: "HPL",
+    vendor: "Milin",
+    category: "hpl-platen",
+    variants: [
+      { ...variant("F39"), sku: "mpf04101" },
+      { ...variant("B42"), sku: "mpf04201" },
+    ],
+  });
+  const decorsB = product({
+    slug: "milyt-hpl-plaat-2",
+    name: "Milyt HPL plaat 3050 x 1300 x 6 mm",
+    brand: "HPL",
+    vendor: "Milin",
+    category: "hpl-platen",
+    variants: [variant("F10"), variant("A33")],
+  });
+  const built = buildStaalTree([sheet, thin, compact, shell, decorsA, decorsB]);
+  const hpl = built.groups.find((group) => group.id === "hpl");
+  assert.ok(hpl);
+  assert.deepEqual(hpl.productSlugs.sort(), ["flex-6", "milyt-hpl-plaat-1", "milyt-hpl-plaat-2"]);
+  assert.equal(hpl.image, "https://cdn.shopify.com/s/files/1/1/files/compact.jpg");
+  const milyt = hpl.children?.find((child) => child.productSlugs.includes("milyt-hpl-plaat-1"));
+  assert.deepEqual(milyt?.colors.map((color) => color.name), ["A33", "B42", "F10", "F39"]);
+  assert.equal(milyt?.image, hpl.image);
   assert.equal(staalTarget(sheet)?.groupId, "hpl");
+  assert.equal(staalTarget(decorsA)?.groupId, "hpl");
   assert.equal(staalTarget(compact), null);
+  assert.equal(staalTarget(shell), null);
+  assert.equal(staalTarget(thin), null);
+});
+
+test("brand cards use a visible Heering photo and ignore a pale swatch", () => {
+  const pale = "https://cdn.shopify.com/s/files/1/1/files/alaska.jpg";
+  const visible = "https://cdn.shopify.com/s/files/1/1/files/eifel.jpg";
+  const borrowed = "https://cdn.shopify.com/s/files/1/1/files/heering-sponning.jpg";
+  const palePanel = product({
+    slug: "novicell-potdeksel",
+    name: "Novicell potdeksel 167 mm",
+    brand: "Heering",
+    brandSlug: "heering",
+    images: [{ url: pale, alt: "Alaska Wit" }],
+    variants: [
+      { ...variant("Alaska Wit"), image: { url: pale, alt: "" } },
+      { ...variant("Eifel grijs"), image: { url: visible, alt: "" } },
+    ],
+  });
+  const bare = product({
+    slug: "heering-potdeksel-kaal",
+    name: "Heering potdeksel 177 mm",
+    brand: "Heering",
+    brandSlug: "heering",
+    images: [],
+    variants: [variant("Antraciet")],
+  });
+  const sibling = product({
+    slug: "heering-sponning",
+    name: "Heering sponningdeel 143 mm",
+    brand: "Heering",
+    brandSlug: "heering",
+    images: [{ url: borrowed, alt: "paneel" }],
+    variants: [variant("Antraciet")],
+  });
+  const withPhoto = buildStaalTree([palePanel]);
+  const heering = withPhoto.groups
+    .find((group) => group.id === "gevel")
+    ?.children?.find((child) => child.id === "potdeksel")
+    ?.children?.find((child) => child.id === "merk:heering");
+  assert.equal(heering?.image, visible);
+
+  const borrowedTree = buildStaalTree([bare, sibling]);
+  const borrowedBrand = borrowedTree.groups
+    .find((group) => group.id === "gevel")
+    ?.children?.find((child) => child.id === "potdeksel")
+    ?.children?.find((child) => child.id === "merk:heering");
+  assert.equal(borrowedBrand?.image, borrowed);
+});
+
+test("variant photos match the sku in the filename, not the array index", () => {
+  const bruin = "https://cdn.shopify.com/s/files/1/1/files/FM1771BI3612_28170360_SZ1.jpg?v=1";
+  const graf = "https://cdn.shopify.com/s/files/1/1/files/FM1790BI3699_28171160_SZ1.jpg?v=1";
+  const matched = product({
+    slug: "keralit-potdeksel-177",
+    name: "Keralit potdeksel 177 mm",
+    brand: "Keralit",
+    brandSlug: "keralit",
+    images: [
+      { url: bruin, alt: "" },
+      { url: graf, alt: "" },
+    ],
+    variants: [
+      { ...variant("Bruingrijs classic nerf"), sku: "28170360", image: { url: bruin, alt: "" } },
+      { ...variant("Grafietzwart classic nerf"), sku: "28171160", image: { url: bruin, alt: "" } },
+    ],
+  });
+  const wrongOnly = product({
+    ...matched,
+    slug: "keralit-potdeksel-177-fout",
+    images: [{ url: bruin, alt: "" }],
+    variants: matched.variants.map((item) => ({ ...item, image: { url: bruin, alt: "" } })),
+  });
+
+  function colorImage(source: Product, name: string) {
+    const node = buildStaalTree([source]).groups
+      .find((group) => group.id === "gevel")
+      ?.children?.find((child) => child.id === "potdeksel")
+      ?.children?.find((child) => child.id === "merk:keralit");
+    return node?.colors.find((color) => color.name === name)?.image;
+  }
+
+  assert.equal(colorImage(matched, "Grafietzwart classic nerf"), graf);
+  assert.equal(colorImage(matched, "Bruingrijs classic nerf"), bruin);
+  assert.equal(colorImage(wrongOnly, "Grafietzwart classic nerf"), undefined);
+  assert.equal(colorImage(wrongOnly, "Bruingrijs classic nerf"), bruin);
 });
 
 test("zierer leisteen skips the colour step only when there is no real choice", () => {

@@ -101,6 +101,8 @@ export function extractHplColor(text: string): { colorName?: string; ral?: strin
     .replace(/\b(kleur|color|colour|ral)\b/gi, " ")
     .replace(/\d+\s*[x×]\s*\d+(?:\s*[x×]\s*\d+)?/gi, " ")
     .replace(/\d+(?:[.,]\d+)?\s*mm\b/gi, " ")
+    .replace(/\bmm\b/gi, " ")
+    .replace(/\bdefault\s+title\b/gi, " ")
     .replace(/\bRAL\s*[0-9]{4}\b/gi, " ")
     .replace(/[^A-Za-zÀ-ÿ -]/g, " ")
     .replace(/\s{2,}/g, " ")

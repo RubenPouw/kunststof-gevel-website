@@ -1,4 +1,5 @@
 import { enrichProduct, inferProfileType } from "@/lib/catalog/derive";
+import { correctVariantImages } from "@/lib/catalog/variant-images";
 import {
   DISTRIBUTOR_BRAND_SLUGS,
   isHplSheetText,
@@ -332,7 +333,7 @@ export function mapShopifyProduct(
     return Boolean(image) && list.findIndex((item) => item?.url === image?.url) === index;
   });
 
-  return enrichProduct({
+  return correctVariantImages(enrichProduct({
     slug: product.handle,
     name: withoutTrespa(product.title),
     vendor: product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
@@ -361,7 +362,7 @@ export function mapShopifyProduct(
     profileType,
     sampleable: false,
     updatedAt: product.updatedAt,
-  });
+  }));
 }
 
 export function brandsFromProducts(products: Product[], extras: Brand[] = []): Brand[] {

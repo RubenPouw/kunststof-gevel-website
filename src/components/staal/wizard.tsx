@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
+import { shopifyThumb } from "@/lib/shopify/image";
 import { site } from "@/lib/site";
 import {
   STAAL_BOTH_NOTE,
@@ -23,6 +24,25 @@ import { staalContactErrors, type StaalContactKey, type StaalLine } from "@/lib/
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "kg-staalaanvraag";
+const CONSENT_KEY = "kg-consent";
+
+function consentBannerOpen() {
+  try {
+    const stored = window.localStorage.getItem(CONSENT_KEY);
+    return stored !== "granted" && stored !== "denied";
+  } catch {
+    return true;
+  }
+}
+
+function subscribeConsent(onStoreChange: () => void) {
+  window.addEventListener("kg-consent", onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    window.removeEventListener("kg-consent", onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
 
 type Contact = Record<StaalContactKey, string>;
 
@@ -118,15 +138,31 @@ function toPayload(tree: StaalTree, line: SavedLine): StaalLine | null {
   return { path: built.expandedPath, colorIds: built.leaf.skipColor ? [] : line.colorIds };
 }
 
-function Picture({ src, hex }: { src?: string; hex?: string }) {
+const EAGER_THUMBS = 6;
+
+function Picture({ src, hex, priority = false }: { src?: string; hex?: string; priority?: boolean }) {
   const [failed, setFailed] = useState(false);
-  if (!src || failed) {
-    return <span className="block h-28 w-full" style={{ background: hex || "var(--kg-kalk)" }} aria-hidden="true" />;
-  }
+  const show = Boolean(src) && !failed;
   return (
-    // Catalog photos come from Shopify and are not on the image allowlist.
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt="" className="h-28 w-full object-contain" onError={() => setFailed(true)} />
+    <span
+      className="relative block aspect-[4/3] w-full bg-kg-kalk"
+      style={show ? undefined : { background: hex || "var(--kg-kalk)" }}
+      aria-hidden="true"
+    >
+      {show ? (
+        // Catalog photos come from Shopify and are not on the image allowlist.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={shopifyThumb(src as string, 320)}
+          alt=""
+          className="absolute inset-0 h-full w-full object-contain"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "low"}
+          decoding="async"
+          onError={() => setFailed(true)}
+        />
+      ) : null}
+    </span>
   );
 }
 
@@ -143,7 +179,7 @@ function ChoiceGrid({
 }) {
   return (
     <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-      {options.map((option) => {
+      {options.map((option, index) => {
         const selected = value === option.id;
         return (
           <label
@@ -153,7 +189,7 @@ function ChoiceGrid({
               selected ? "border-kg-navy" : "border-kg-lijn",
             )}
           >
-            <Picture src={option.image} />
+            <Picture src={option.image} priority={index < EAGER_THUMBS} />
             <span className="mt-3 flex items-start gap-2 text-[15px] leading-snug">
               <input
                 type="radio"
@@ -183,6 +219,7 @@ export function StaalWizard({
 }) {
   const initial = useMemo(() => freshDraft(tree, groep, product), [tree, groep, product]);
   const stored = useSyncExternalStore(ignoreStore, readStoredDraft, noStoredDraft);
+  const bannerOpen = useSyncExternalStore(subscribeConsent, consentBannerOpen, () => true);
   const [draft, setDraft] = useState<Draft>(initial);
   const [resumeChoice, setResumeChoice] = useState<"continue" | "restart" | null>(null);
   const [error, setError] = useState("");
@@ -369,7 +406,7 @@ export function StaalWizard({
 
   if (done) {
     return (
-      <div className="mx-auto w-full max-w-xl">
+      <div className={cn("mx-auto w-full max-w-xl", bannerOpen && "pb-40 sm:pb-28")}>
         <div
           className="mb-6 h-1 bg-kg-kalk"
           role="progressbar"
@@ -394,7 +431,7 @@ export function StaalWizard({
   }
 
   return (
-    <div className="mx-auto w-full max-w-xl">
+    <div className={cn("mx-auto w-full max-w-xl", bannerOpen && "pb-40 sm:pb-28")}>
       <div
         className="mb-6 h-1 bg-kg-kalk"
         role="progressbar"
@@ -408,8 +445,18 @@ export function StaalWizard({
 
       {askResume ? (
         <div className="border border-kg-navy bg-white p-4">
-          <p>U hebt een inzending in behandeling. Wilt u doorgaan?</p>
+          <p>Je was al bezig met een aanvraag. Verder gaan of opnieuw beginnen?</p>
           <div className="mt-4 flex flex-wrap gap-3">
+            <button
+              type="button"
+              className={buttonVariants({ variant: "primary" })}
+              onClick={() => {
+                if (stored) setDraft(stored);
+                setResumeChoice("continue");
+              }}
+            >
+              Verder gaan
+            </button>
             <button
               type="button"
               className={buttonVariants({ variant: "secondary" })}
@@ -419,16 +466,6 @@ export function StaalWizard({
               }}
             >
               Opnieuw beginnen
-            </button>
-            <button
-              type="button"
-              className={buttonVariants({ variant: "primary" })}
-              onClick={() => {
-                if (stored) setDraft(stored);
-                setResumeChoice("continue");
-              }}
-            >
-              Doorgaan
             </button>
           </div>
         </div>
@@ -498,7 +535,7 @@ export function StaalWizard({
             <fieldset className="mt-6">
               <legend className="text-[18px] leading-snug font-medium">{current.question}</legend>
               <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {built.leaf.colors.map((color) => {
+                {built.leaf.colors.map((color, index) => {
                   const selected = draft.colorIds.includes(color.id);
                   return (
                     <label
@@ -508,7 +545,7 @@ export function StaalWizard({
                         selected ? "border-kg-navy" : "border-kg-lijn",
                       )}
                     >
-                      <Picture src={color.image} hex={color.hex} />
+                      <Picture src={color.image} hex={color.hex} priority={index < EAGER_THUMBS} />
                       <span className="mt-3 flex items-start gap-2 text-[15px] leading-snug">
                         <input
                           type="checkbox"
@@ -645,7 +682,7 @@ export function StaalWizard({
             </p>
           ) : null}
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex scroll-mb-40 flex-wrap items-center gap-3 sm:scroll-mb-28">
             {stepIndex > 0 ? (
               <button type="button" onClick={back} className={buttonVariants({ variant: "secondary" })}>
                 ← Terug
