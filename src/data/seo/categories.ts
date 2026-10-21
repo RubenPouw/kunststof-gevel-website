@@ -105,7 +105,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
     ],
     links: [
       { href: "/merken/milinboard", label: "Milinboard banken" },
-      { href: "/kozijnen", label: "Kozijnen configureren" },
+      { href: "/kunststof-kozijnen", label: "Kozijnen configureren" },
     ],
   },
   montage: {

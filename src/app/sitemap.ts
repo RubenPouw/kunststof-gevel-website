@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 
 import { blogPosts } from "@/data/blog/posts";
 import { projects } from "@/data/projects";
+import { articles } from "@/lib/kozijnen/kennis";
+import { allLayouts, GROUPS, layoutPath } from "@/lib/kozijnen/layouts";
 import { staticBrands } from "@/lib/catalog/static";
 import { getCatalog } from "@/lib/catalog";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
@@ -19,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/hpl-platen",
     "/dakranden",
     "/kozijnafwerking",
-    "/kozijnen",
+    "/kunststof-kozijnen",
     "/montage",
     "/merken",
     "/stalen",
@@ -69,5 +71,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${base}/projecten/${project.slug}`,
       lastModified: new Date(project.date),
     })),
+    ...GROUPS.map((group) => ({
+      url: `${base}${group.href}`,
+      lastModified: contentDate,
+    })),
+    ...allLayouts().map((layout) => ({
+      url: `${base}${layoutPath(layout)}`,
+      lastModified: contentDate,
+    })),
+    {
+      url: `${base}/kunststof-kozijnen/kennisbank`,
+      lastModified: contentDate,
+    },
+    ...articles.map((article) => ({
+      url: `${base}/kunststof-kozijnen/kennisbank/${article.slug}`,
+      lastModified: contentDate,
+    })),
+    {
+      url: `${base}/kunststof-kozijnen/kennisbank/hoe-moet-je-meten/formulier`,
+      lastModified: contentDate,
+    },
   ];
 }

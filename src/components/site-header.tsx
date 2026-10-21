@@ -55,7 +55,7 @@ export function SiteHeader() {
   const trayDots = Array.from({ length: SAMPLE_LIMIT }, (_, index) => items[index]?.hex ?? "#DDD9D0");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy">
+    <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
       <div className="container-kg flex h-[72px] items-center gap-4 lg:gap-6">
         <Logo size={20} tone="dark" />
 

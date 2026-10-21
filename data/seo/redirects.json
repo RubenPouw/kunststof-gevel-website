@@ -145,7 +145,7 @@
   },
   {
     "from": "/kunststof-kozijnen-op-maat-prijs-berekenen-snel-geleverd",
-    "to": "/kozijnen",
+    "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "same-job"
   },
@@ -4375,7 +4375,7 @@
   },
   {
     "from": "/wp-content/uploads/2025/03/03-softline-82-1724933681.jpeg",
-    "to": "/kozijnen",
+    "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4393,19 +4393,19 @@
   },
   {
     "from": "/wp-content/uploads/2025/03/PHOTO-2023-10-11-10-25-08.jpg",
-    "to": "/kozijnen",
+    "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2025/03/gealan.jpeg",
-    "to": "/kozijnen",
+    "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2025/03/ideal7000-web.png",
-    "to": "/kozijnen",
+    "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4519,7 +4519,7 @@
   },
   {
     "from": "/wp-content/uploads/2025/11/PHOTO-2025-08-30-11-19-18.jpg",
-    "to": "/kozijnen",
+    "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4579,7 +4579,7 @@
   },
   {
     "from": "/wp-content/uploads/2026/02/grok-image-afc1ebf5-1f92-46ae-aba6-e82ea51a8f0f.jpg",
-    "to": "/kozijnen",
+    "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4720,5 +4720,11 @@
     "to": "/montage?merk=zierer",
     "status": "301",
     "reason": "montage-brand"
+  },
+  {
+    "from": "/kozijnen",
+    "to": "/kunststof-kozijnen",
+    "status": "301",
+    "reason": "kozijnen-hub"
   }
 ]

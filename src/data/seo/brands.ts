@@ -264,7 +264,7 @@ export const brandStories: BrandStory[] = [
     ],
     links: [
       { href: "/kozijnafwerking", label: "Kozijnafwerking" },
-      { href: "/kozijnen", label: "Kunststof kozijnen" },
+      { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
     ],
   },
   {

@@ -1,402 +1,681 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import { Bevel, SectionHead } from "@/components/brand/section-head";
+import { KozijnDrawing } from "@/components/kozijnen/drawing";
 import { buttonVariants } from "@/components/ui/button";
-import { useCart } from "@/lib/cart";
-import { formatNlNumber, formatPrice } from "@/lib/format";
 import {
-  clampKozijnMm,
-  kozijnBasePrice,
-  kozijnM2,
-  kozijnMountPrice,
-  KZ_COLORS,
-  KZ_GLASS,
-  KZ_TYPES,
-} from "@/lib/kozijnen";
+  FRAME_COLORS,
+  GLASS_TYPES,
+  LAMINATED,
+  LOW_GLASS,
+  colorById,
+} from "@/lib/kozijnen/config";
+import { layoutPath, type Layout } from "@/lib/kozijnen/layouts";
+import { formatPrice } from "@/lib/format";
+import {
+  KOZIJN_STORAGE_KEY,
+  STEPS,
+  applyLaminatedDefault,
+  defaultConfig,
+  hasConfigParams,
+  parseConfig,
+  serializeConfig,
+  sizeInRange,
+  type KozijnConfig,
+  type StepId,
+} from "@/lib/kozijnen/model";
+import { summaryLines } from "@/lib/kozijnen/text";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-const STEPS = [
-  { k: "01 · vandaag", n: "Samenstellen", d: "Type, maat, kleur, glas. Prijs direct in beeld, geen offerte nodig." },
-  { k: "02 · daarna", n: "Maatcontrole", d: "Wij controleren uw maten. Twijfel? Inmeten kan via de offerte." },
-  { k: "03 · productie", n: "Productie en levering", d: "Kömmerling 76 mm. Bezorgd, of afhalen in de showroom in Utrecht op afspraak." },
-  { k: "04 · plaatsing", n: "Montage via offerte", d: "Oud kozijn eruit, nieuw gesteld en afgekit. Materiaal en werk staan apart op de offerte." },
-];
+type PriceResponse =
+  | { pricesActive: false }
+  | { pricesActive: true; lines: { id: string; label: string; amountExcl: number }[]; totalExcl: number; totalIncl: number };
 
-export function KozijnenConfigurator() {
-  const router = useRouter();
-  const { add } = useCart();
-  const [typeIndex, setTypeIndex] = useState(1);
-  const [width, setWidth] = useState(1200);
-  const [height, setHeight] = useState(1400);
-  const [colorIndex, setColorIndex] = useState(2);
-  const [glassIndex, setGlassIndex] = useState(0);
-  const [mount, setMount] = useState(1);
+export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; pricesActive: boolean }) {
+  const init = useRef<string | null>(null);
+  const [config, setConfig] = useState<KozijnConfig>(() => defaultConfig(layout));
+  const [ready, setReady] = useState(false);
+  const [askResume, setAskResume] = useState(false);
+  const [pending, setPending] = useState<string | null>(null);
+  const [price, setPrice] = useState<PriceResponse | null>(null);
+  const [sent, setSent] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
 
-  const w = clampKozijnMm(width);
-  const h = clampKozijnMm(height);
-  const m2 = kozijnM2(w, h);
-  const type = KZ_TYPES[typeIndex];
-  const color = KZ_COLORS[colorIndex];
-  const glass = KZ_GLASS[glassIndex];
-  const base = kozijnBasePrice(m2, typeIndex, colorIndex, glassIndex);
-  const mountPrice = kozijnMountPrice(m2);
-  const hasMount = mount === 1;
-  const total = base + (hasMount ? mountPrice : 0);
-  const title = `${type.name}, ${color.name.toLowerCase()}, ${w} × ${h}`;
-  const ratio = Math.max(w, h);
-  const prevW = Math.round(Math.min(100, 100 * Math.min(1, w / ratio)));
-  const prevH = Math.round(Math.min(100, 100 * Math.min(1, h / ratio)));
-
-  const lead = "Levertijd bevestigen we na bestelling";
-  const cta = hasMount ? "In bestelling · inclusief montage" : "In bestelling · alleen levering";
-
-  const facts = useMemo(
-    () => [
-      ["Kömmerling 76", "kunststof profiel"],
-      ["HR++ of triple", "naar keuze"],
-      ["15 werkdagen", "productie"],
-    ],
-    [],
-  );
-
-  function onAdd() {
-    add({
-      productSlug: "kozijn",
-      variantSku: `KZ-${Date.now()}`,
-      qty: 1,
-      kind: "kozijn",
-      name: title,
-      brand: "Kömmerling 76",
-      colorName: color.name,
-      price: total,
-      hex: color.hex,
-      mount: hasMount,
-      skuLabel: `Kömmerling 76 · ${glass.name}${hasMount ? " · incl. montage" : ""}`,
+  useEffect(() => {
+    if (init.current === layout.slug) return;
+    init.current = layout.slug;
+    const query = new URLSearchParams(window.location.search);
+    queueMicrotask(() => {
+      if (hasConfigParams(query)) {
+        setConfig(parseConfig(query, layout));
+        setAskResume(false);
+        setReady(true);
+        return;
+      }
+      try {
+        const raw = window.localStorage.getItem(KOZIJN_STORAGE_KEY);
+        if (raw) {
+          const stored = JSON.parse(raw) as { layout?: string; query?: string };
+          if (stored.layout === layout.slug && stored.query) {
+            setPending(stored.query);
+            setAskResume(true);
+          }
+        }
+      } catch {
+        window.localStorage.removeItem(KOZIJN_STORAGE_KEY);
+      }
+      setReady(true);
     });
-    router.push("/winkelwagen");
+  }, [layout]);
+
+  useEffect(() => {
+    if (!ready || askResume) return;
+    const query = serializeConfig(config);
+    window.localStorage.setItem(KOZIJN_STORAGE_KEY, JSON.stringify({ layout: layout.slug, query }));
+    const next = `${layoutPath(layout)}?${query}`;
+    if (`${window.location.pathname}${window.location.search}` !== next) {
+      window.history.replaceState(null, "", next);
+    }
+  }, [askResume, config, layout, ready]);
+
+  useEffect(() => {
+    if (!pricesActive || config.step !== "overzicht") return;
+    const controller = new AbortController();
+    const query = serializeConfig(config);
+    void fetch("/api/kozijnen/prijs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ layout: layout.slug, query }),
+      signal: controller.signal,
+    })
+      .then((response) => (response.ok ? response.json() : { pricesActive: false }))
+      .then((body: PriceResponse) => setPrice(body))
+      .catch(() => setPrice({ pricesActive: false }));
+    return () => controller.abort();
+  }, [config, layout.slug, pricesActive]);
+
+  const stepIndex = Math.max(0, STEPS.findIndex((step) => step.id === config.step));
+  const step = STEPS[stepIndex] ?? STEPS[0];
+  const inRange = sizeInRange(layout, config.width, config.height);
+  const lines = useMemo(() => summaryLines(config), [config]);
+  const pdfHref = `/api/kozijnen/pdf?layout=${encodeURIComponent(layout.slug)}&${serializeConfig(config)}`;
+
+  function patch(partial: Partial<KozijnConfig>) {
+    setConfig((current) => applyLaminatedDefault({ ...current, ...partial }, layout));
   }
 
+  function go(next: StepId) {
+    patch({ step: next });
+  }
+
+  function resume(continueDraft: boolean) {
+    if (continueDraft && pending) setConfig(parseConfig(new URLSearchParams(pending), layout));
+    else {
+      window.localStorage.removeItem(KOZIJN_STORAGE_KEY);
+      setConfig(defaultConfig(layout));
+    }
+    setAskResume(false);
+  }
+
+  async function onQuote(form: FormData) {
+    setFormError(null);
+    setSending(true);
+    try {
+      const response = await fetch("/api/kozijnen/offerte", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          layout: layout.slug,
+          query: serializeConfig(config),
+          name: String(form.get("name") ?? ""),
+          email: String(form.get("email") ?? ""),
+          phone: String(form.get("phone") ?? ""),
+          postcode: String(form.get("postcode") ?? ""),
+          note: String(form.get("note") ?? ""),
+          companyWebsite: String(form.get("companyWebsite") ?? ""),
+        }),
+      });
+      const body = (await response.json()) as { ok?: boolean; reference?: string; error?: string };
+      if (!response.ok || !body.ok || !body.reference) {
+        setFormError(body.error || "De aanvraag is niet verstuurd.");
+        return;
+      }
+      setSent(body.reference);
+    } catch {
+      setFormError("De aanvraag is niet verstuurd. Probeer het opnieuw.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  const share = `${site.origin}${layoutPath(layout)}?${serializeConfig(config)}`;
+
   return (
-    <div className="container-kg py-10">
-      <div className="grid items-end gap-5 lg:grid-cols-[7fr_5fr]">
-        <div>
-          <p className="font-mono text-[13px] text-kg-text-2">
-            <Link href="/" className="no-underline hover:underline">
-              Home
-            </Link>
-            {" / Kozijnen"}
-          </p>
-          <h1 className="display-plp mt-3">
-            Kunststof kozijnen op maat.
-            <br />
-            Geleverd, of gezet.
-          </h1>
-          <p className="mt-4 max-w-xl text-kg-text-2">
-            Levertijd bevestigen we na bestelling. Montage loopt via de offerte. Binnen altijd wit.
-          </p>
-          <div className="mt-6 grid gap-3 border-y border-kg-lijn py-3 font-mono text-[14px] sm:grid-cols-3">
-            {facts.map(([k, v]) => (
-              <div key={k}>
-                <div className="font-medium">{k}</div>
-                <div className="text-kg-text-2">{v}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <Bevel size={24} className="relative h-[220px] lg:h-[300px]" style={{ background: "#d9d5cb" }}>
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "repeating-linear-gradient(90deg,#C9C4B8 0 8px,#D9D5CB 8px 16px)",
-            }}
-          />
-        </Bevel>
-      </div>
-
-      <div className="mt-12 grid items-start gap-5 lg:grid-cols-[7fr_5fr]">
-        <div className="flex flex-col gap-10">
-          <Step n="01" title="Type">
-            <div className="grid gap-3 sm:grid-cols-2">
-              {KZ_TYPES.map((item, index) => {
-                const active = typeIndex === index;
-                return (
-                  <button
-                    key={item.name}
-                    type="button"
-                    onClick={() => setTypeIndex(index)}
-                    className={cn(
-                      "border p-4 text-left",
-                      active ? "border-kg-navy bg-white" : "border-kg-lijn bg-transparent",
-                    )}
-                  >
-                    <KozijnSchema cols={item.cols} panes={item.panes} frame="#1B2838" height={64} />
-                    <div className="mt-3 text-[15px] font-medium">{item.name}</div>
-                    <div className="font-mono text-[13px] text-kg-text-2">{item.detail}</div>
-                  </button>
-                );
-              })}
-            </div>
-          </Step>
-
-          <Step n="02" title="Maat">
-            <div className="grid grid-cols-3 gap-3">
-              <label className="font-mono text-[13px] text-kg-text-2">
-                Breedte (mm)
-                <input
-                  type="number"
-                  min={400}
-                  max={3000}
-                  step={10}
-                  value={width}
-                  onChange={(event) => setWidth(Number(event.target.value))}
-                  onBlur={() => setWidth(w)}
-                  className="mt-1 h-10 w-full bg-kg-kalk px-3 font-mono text-[14px] text-kg-navy outline-none"
-                />
-              </label>
-              <label className="font-mono text-[13px] text-kg-text-2">
-                Hoogte (mm)
-                <input
-                  type="number"
-                  min={400}
-                  max={3000}
-                  step={10}
-                  value={height}
-                  onChange={(event) => setHeight(Number(event.target.value))}
-                  onBlur={() => setHeight(h)}
-                  className="mt-1 h-10 w-full bg-kg-kalk px-3 font-mono text-[14px] text-kg-navy outline-none"
-                />
-              </label>
-              <div className="font-mono text-[13px] text-kg-text-2">
-                Oppervlak
-                <div className="mt-1 flex h-10 items-center font-mono text-[14px] text-kg-navy">
-                  {formatNlNumber(m2, 2)} m²
-                </div>
-              </div>
-            </div>
-          </Step>
-
-          <Step n="03" title="Kleur">
-            <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-              {KZ_COLORS.map((item, index) => {
-                const active = colorIndex === index;
-                return (
-                  <button
-                    key={item.name}
-                    type="button"
-                    onClick={() => setColorIndex(index)}
-                    className="text-left"
-                  >
-                    <span
-                      className={cn("block h-12", active && "outline outline-2 outline-offset-2 outline-kg-navy")}
-                      style={{ background: item.hex }}
-                    />
-                    <span className="mt-2 block text-[15px] font-medium">{item.name}</span>
-                    <span className="font-mono text-[12px] text-kg-text-2">{item.code}</span>
-                  </button>
-                );
-              })}
-            </div>
-            <p className="mt-3 font-mono text-[13px] text-kg-text-2">Binnen altijd wit.</p>
-          </Step>
-
-          <Step n="04" title="Glas">
-            <div className="grid gap-2">
-              {KZ_GLASS.map((item, index) => {
-                const active = glassIndex === index;
-                return (
-                  <button
-                    key={item.name}
-                    type="button"
-                    onClick={() => setGlassIndex(index)}
-                    className={cn(
-                      "flex items-center gap-3 border px-4 py-3 text-left",
-                      active ? "border-kg-navy bg-white" : "border-kg-lijn",
-                    )}
-                  >
-                    <span
-                      className={cn("size-3 border border-kg-navy", active ? "bg-kg-navy" : "bg-white")}
-                    />
-                    <span className="flex-1 text-[15px] font-medium">{item.name}</span>
-                    <span className="font-mono text-[13px] text-kg-text-2">
-                      {item.detail}
-                      {item.extra ? ` · +${formatPrice(item.extra)} /m²` : ""}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </Step>
-
-          <Step n="05" title="Levering of montage">
-            <div className="grid gap-2">
-              {[
-                { n: "Alleen levering", d: "Afhalen in Utrecht op afspraak, of bezorgd", p: "inbegrepen", i: 0 },
-                {
-                  n: "Inclusief montage",
-                  d: "Uitnemen oud kozijn, stellen, afkitten, afvoer",
-                  p: formatPrice(mountPrice),
-                  i: 1,
-                },
-              ].map((item) => {
-                const active = mount === item.i;
-                const caveman = active && item.i === 1;
-                return (
-                  <button
-                    key={item.n}
-                    type="button"
-                    onClick={() => setMount(item.i)}
-                    className={cn(
-                      "flex items-start gap-3 border px-4 py-3 text-left",
-                      active ? "border-kg-navy" : "border-kg-lijn",
-                      caveman ? "bg-kg-navy text-kg-kalk" : "bg-white",
-                    )}
-                  >
-                    <span
-                      className="mt-1 size-3 border"
-                      style={{
-                        background: active ? (caveman ? "#FFD400" : "#1B2838") : "#fff",
-                        borderColor: caveman ? "#FFD400" : "#1B2838",
-                      }}
-                    />
-                    <span className="flex-1">
-                      <span className="block text-[15px] font-medium">{item.n}</span>
-                      <span className={cn("font-mono text-[13px]", caveman ? "text-kg-grind" : "text-kg-text-2")}>
-                        {item.d}
-                      </span>
-                    </span>
-                    <span className={cn("font-mono text-[13px]", caveman ? "text-kg-signal" : "")}>{item.p}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </Step>
-        </div>
-
-        <aside className="flex flex-col gap-5 lg:sticky lg:top-[130px]">
-          <div className="border border-kg-lijn bg-white p-5">
-            <Bevel size={16} className="relative flex aspect-[4/3] items-center justify-center bg-kg-kalk">
-              <div style={{ width: `${prevW}%`, height: `${prevH}%` }}>
-                <KozijnSchema cols={type.cols} panes={type.panes} frame={color.hex} height="100%" />
-              </div>
-            </Bevel>
-            <h2 className="mt-4 text-[20px] font-bold tracking-[-0.03em]">{title}</h2>
-            <dl className="mt-3 grid grid-cols-2 gap-x-3 border-y border-kg-lijn py-3 font-mono text-[13px]">
-              <Row k="Maat" v={`${w} × ${h} mm`} />
-              <Row k="Profiel" v="Kömmerling 76" />
-              <Row k="Kleur buiten" v={`${color.name} ${color.code}`} />
-              <Row k="Glas" v={glass.name} />
-              <Row k="Uitvoering" v={hasMount ? "geleverd en gezet" : "alleen levering"} />
-            </dl>
-            <div className="mt-3 space-y-1 font-mono text-[13px]">
-              <div className="flex justify-between">
-                <span>Kozijn</span>
-                <span>{formatPrice(base)}</span>
-              </div>
-              {hasMount ? (
-                <div className="flex justify-between">
-                  <span>Montage</span>
-                  <span>{formatPrice(mountPrice)}</span>
-                </div>
-              ) : null}
-            </div>
-            <div className="mt-3 flex items-baseline justify-between">
-              <span className="font-mono text-[30px] font-bold">{formatPrice(total)}</span>
-              <span className="font-mono text-[13px] text-kg-text-2">excl. btw</span>
-            </div>
-            <p className="mt-1 font-mono text-[13px] text-kg-text-2">{lead}</p>
-            <button type="button" onClick={onAdd} className={cn(buttonVariants({ variant: "primary", block: true }), "mt-4")}>
-              {cta}
+    <div className="container-kg pb-16">
+      {askResume ? (
+        <div className="mb-6 border border-kg-navy bg-white p-4">
+          <p className="font-medium">Je was al bezig met een kozijn. Verder gaan of opnieuw beginnen?</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => resume(true)}>
+              Verder gaan
             </button>
-            <Link
-              href="/offerte"
-              className={cn(buttonVariants({ variant: "outline", block: true }), "mt-2 no-underline hover:no-underline")}
-            >
-              Vraag offerte aan voor meerdere kozijnen
-            </Link>
-            <p className="mt-3 font-mono text-[13px] text-kg-text-2">
-              Prijs indicatief. Maatcontrole vóór productie. Altijd binnen 24 uur bericht.
-            </p>
+            <button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} onClick={() => resume(false)}>
+              Opnieuw beginnen
+            </button>
           </div>
-          <div className="bg-kg-navy p-5 text-kg-kalk">
-            <p className="text-[15px] font-bold">Inmeten op locatie?</p>
-            <p className="mt-3 font-mono text-[13px] text-kg-grind">
-              Vóór bestelling, € 95, verrekend bij montage.
-            </p>
-            <Link
-              href="/contact"
-              className={cn(buttonVariants({ variant: "signal" }), "mt-4 inline-flex no-underline hover:no-underline")}
-            >
-              Plan inmeten
-            </Link>
+        </div>
+      ) : null}
+
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,380px)]">
+        <div className="order-2 lg:order-1">
+          <p className="font-mono text-[13px] text-kg-text-2">
+            {String(stepIndex + 1).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")} · {step.label}
+          </p>
+          <ol className="mt-3 flex flex-wrap gap-1">
+            {STEPS.map((item, index) => (
+              <li key={item.id}>
+                <button
+                  type="button"
+                  onClick={() => go(item.id)}
+                  className={cn(
+                    "h-11 min-w-11 px-2 font-mono text-[12px]",
+                    item.id === step.id ? "bg-kg-navy text-white" : "text-kg-text-2",
+                  )}
+                  aria-current={item.id === step.id ? "step" : undefined}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ol>
+          <StepHint step={step} />
+
+          <div className="mt-6">
+            {step.id === "maten" ? <SizeStep layout={layout} config={config} inRange={inRange} onChange={patch} /> : null}
+            {step.id === "indeling" ? <LayoutStep layout={layout} config={config} onChange={patch} /> : null}
+            {step.id === "kleur" ? <ColorStep layout={layout} config={config} onChange={patch} /> : null}
+            {step.id === "glas" ? <GlassStep config={config} onChange={patch} /> : null}
+            {step.id === "ventilatie" ? <ChoiceStep label="Ventilatie" value={config.vent} options={[{ id: "geen", label: "Geen rooster" }, { id: "rooster", label: "Zelfregulerend rooster" }]} onPick={(vent) => patch({ vent: vent as KozijnConfig["vent"] })} /> : null}
+            {step.id === "dorpel" ? <SillStep config={config} onChange={patch} /> : null}
+            {step.id === "beslag" ? <HardwareStep config={config} onChange={patch} /> : null}
+            {step.id === "extra" ? <ExtraStep layout={layout} config={config} onChange={patch} /> : null}
+            {step.id === "overzicht" ? (
+              <Overview
+                lines={lines}
+                pdfHref={pdfHref}
+                share={share}
+                price={pricesActive ? price : { pricesActive: false }}
+                sent={sent}
+                error={formError}
+                sending={sending}
+                onQuote={onQuote}
+              />
+            ) : null}
           </div>
+
+          {step.id !== "overzicht" ? (
+            <div className="mt-8 flex flex-wrap gap-2">
+              <button
+                type="button"
+                className={buttonVariants({ variant: "secondary" })}
+                disabled={stepIndex === 0}
+                onClick={() => go(STEPS[stepIndex - 1].id)}
+              >
+                Terug
+              </button>
+              <button type="button" className={buttonVariants()} onClick={() => go(STEPS[stepIndex + 1].id)}>
+                Volgende
+              </button>
+            </div>
+          ) : null}
+          <p className="mt-3 text-[13px] text-kg-text-2">Je stappen blijven in de link op dit apparaat.</p>
+        </div>
+
+        <aside className="order-1 border border-kg-lijn bg-kg-kalk p-4 lg:sticky lg:top-24 lg:order-2">
+          <KozijnDrawing layout={layout} config={config} />
+          <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-3 font-mono text-[13px]">
+            <div className="flex justify-between gap-3">
+              <dt className="text-kg-text-2">Profiel</dt>
+              <dd>EKO NL</dd>
+            </div>
+            <div className="flex justify-between gap-3">
+              <dt className="text-kg-text-2">Maat</dt>
+              <dd>
+                {config.width} × {config.height}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-3">
+              <dt className="text-kg-text-2">Buiten</dt>
+              <dd>{colorById(config.frameOut).name}</dd>
+            </div>
+          </dl>
+          <p className="mt-3 text-[14px] leading-snug text-kg-text-2">Geen prijs op het scherm. De offerte is vrijblijvend.</p>
         </aside>
       </div>
-
-      <section className="section-kg">
-        <SectionHead title="Zo gaat het" />
-        <div className="grid gap-6 border-t border-kg-lijn pt-5 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((step) => (
-            <div key={step.n}>
-              <p className="font-mono text-[13px] text-kg-text-2">{step.k}</p>
-              <h3 className="mt-2 text-[17px] font-medium">{step.n}</h3>
-              <p className="mt-2 text-[15px] text-kg-text-2">{step.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
 
-function Step({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
+function StepHint({ step }: { step: (typeof STEPS)[number] }) {
   return (
-    <section>
-      <div className="mb-4 flex items-baseline gap-3 border-b border-kg-navy pb-2">
-        <span className="font-mono text-[13px]">{n}</span>
-        <h2 className="text-[17px] font-medium">{title}</h2>
-      </div>
-      {children}
-    </section>
+    <p className="mt-4 flex items-start gap-3 text-[14px] leading-snug text-kg-text-2">
+      <Link
+        href={`/kunststof-kozijnen/kennisbank/${step.article}`}
+        className="inline-flex size-11 shrink-0 items-center justify-center border border-kg-lijn bg-white text-kg-navy no-underline"
+        aria-label={`Uitleg over ${step.label}`}
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 11v6" />
+          <path d="M12 7.5h.01" />
+        </svg>
+      </Link>
+      <span className="pt-2.5">{step.hint}</span>
+    </p>
   );
 }
 
-function Row({ k, v }: { k: string; v: string }) {
-  return (
-    <>
-      <dt className="text-kg-text-2">{k}</dt>
-      <dd className="text-right">{v}</dd>
-    </>
-  );
-}
-
-function KozijnSchema({
-  cols,
-  panes,
-  frame,
-  height,
+function SizeStep({
+  layout,
+  config,
+  inRange,
+  onChange,
 }: {
-  cols: string;
-  panes: readonly { open: boolean }[];
-  frame: string;
-  height: number | string;
+  layout: Layout;
+  config: KozijnConfig;
+  inRange: boolean;
+  onChange: (partial: Partial<KozijnConfig>) => void;
+}) {
+  const box = layout.limits;
+  return (
+    <div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Breedte (mm)" value={config.width} onChange={(width) => onChange({ width })} />
+        <Field label="Hoogte (mm)" value={config.height} onChange={(height) => onChange({ height })} />
+      </div>
+      <p className={cn("mt-3 text-[14px]", inRange ? "text-kg-text-2" : "text-kg-navy")}>
+        {inRange
+          ? `Online aanvragen tussen ${box.minWidth} en ${box.maxWidth} mm breed, en ${box.minHeight} en ${box.maxHeight} mm hoog.`
+          : `Deze maat valt buiten ${box.minWidth} tot ${box.maxWidth} mm breed en ${box.minHeight} tot ${box.maxHeight} mm hoog. U kunt de aanvraag wel versturen. We beoordelen hem handmatig.`}
+      </p>
+      <p className="mt-2 text-[14px]">
+        <Link href="/kunststof-kozijnen/kennisbank/hoe-moet-je-meten">Zo meet u de buitenwerkse maat</Link>
+      </p>
+    </div>
+  );
+}
+
+function Field({ label, value, onChange }: { label: string; value: number; onChange: (value: number) => void }) {
+  return (
+    <label className="block text-[14px]">
+      {label}
+      <input
+        inputMode="numeric"
+        className="mt-1 h-12 w-full border border-kg-lijn bg-white px-3 font-mono text-[16px]"
+        value={Number.isFinite(value) ? value : ""}
+        onChange={(event) => {
+        const next = Number(event.target.value);
+        onChange(Number.isFinite(next) ? next : 0);
+      }}
+      />
+    </label>
+  );
+}
+
+function LayoutStep({
+  layout,
+  config,
+  onChange,
+}: {
+  layout: Layout;
+  config: KozijnConfig;
+  onChange: (partial: Partial<KozijnConfig>) => void;
+}) {
+  if (!layout.chooseSide && !layout.chooseDirection && !layout.chooseActive && layout.fillings.length === 0) {
+    return <p className="text-[16px] text-kg-text-2">Dit vak draait niet. Er is geen scharnierzijde. Glas en kleur kiest u in de volgende stappen.</p>;
+  }
+  return (
+    <div className="space-y-6">
+      {layout.chooseSide ? (
+        <ChoiceStep
+          label="Scharnierzijde, van buiten"
+          value={config.side}
+          options={[
+            { id: "links", label: "Links" },
+            { id: "rechts", label: "Rechts" },
+          ]}
+          onPick={(side) => onChange({ side: side as KozijnConfig["side"] })}
+        />
+      ) : null}
+      {layout.chooseDirection ? (
+        <ChoiceStep
+          label="Draairichting"
+          value={config.direction}
+          options={[
+            { id: "binnen", label: "Naar binnen" },
+            { id: "buiten", label: "Naar buiten" },
+          ]}
+          onPick={(direction) => onChange({ direction: direction as KozijnConfig["direction"] })}
+        />
+      ) : null}
+      {layout.chooseActive ? (
+        <ChoiceStep
+          label={layout.group === "schuifpuien" ? "Schuivend deel" : "Loopdeur"}
+          value={config.active}
+          options={[
+            { id: "links", label: "Links" },
+            { id: "rechts", label: "Rechts" },
+          ]}
+          onPick={(active) => onChange({ active: active as KozijnConfig["active"] })}
+        />
+      ) : null}
+      {layout.fillings.length ? (
+        <ChoiceStep
+          label="Vulling"
+          value={config.filling}
+          options={layout.fillings.map((id) => ({
+            id,
+            label: id === "paneel" ? "Paneel" : id === "half" ? "Half glas" : "Vol glas",
+          }))}
+          onPick={(filling) => onChange({ filling: filling as KozijnConfig["filling"] })}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+function ColorStep({
+  layout,
+  config,
+  onChange,
+}: {
+  layout: Layout;
+  config: KozijnConfig;
+  onChange: (partial: Partial<KozijnConfig>) => void;
+}) {
+  const sash = layout.panes.some((pane) => pane.kind !== "vast");
+  return (
+    <div className="space-y-6">
+      <p className="text-[14px] text-kg-text-2">Kies je kleur. De folie bevestigen we op de offerte. Dit is nog geen gesloten kaart van EKO.</p>
+      <Swatches label="Kozijn buiten" value={config.frameOut} onPick={(frameOut) => onChange({ frameOut: frameOut as KozijnConfig["frameOut"] })} />
+      <Swatches label="Kozijn binnen" value={config.frameIn} onPick={(frameIn) => onChange({ frameIn: frameIn as KozijnConfig["frameIn"] })} />
+      {sash ? (
+        <>
+          <Swatches label="Vleugel buiten" value={config.sashOut} onPick={(sashOut) => onChange({ sashOut: sashOut as KozijnConfig["sashOut"] })} />
+          <Swatches label="Vleugel binnen" value={config.sashIn} onPick={(sashIn) => onChange({ sashIn: sashIn as KozijnConfig["sashIn"] })} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function Swatches({ label, value, onPick }: { label: string; value: string; onPick: (id: string) => void }) {
+  return (
+    <fieldset>
+      <legend className="text-[14px] font-medium">{label}</legend>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {FRAME_COLORS.map((color) => {
+          const active = color.id === value;
+          return (
+            <button
+              key={color.id}
+              type="button"
+              onClick={() => onPick(color.id)}
+              className={cn("flex h-12 items-center gap-2 border px-2", active ? "border-kg-navy" : "border-kg-lijn")}
+              aria-pressed={active}
+            >
+              <span className="size-6 border border-kg-lijn" style={{ background: color.hex }} />
+              <span className="text-[13px]">{color.name}</span>
+            </button>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
+function GlassStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
+  return (
+    <div className="space-y-6">
+      <ChoiceStep
+        label="Isolatie"
+        value={config.glass}
+        options={GLASS_TYPES.map((item) => ({ id: item.id, label: item.label }))}
+        onPick={(glass) => onChange({ glass: glass as KozijnConfig["glass"] })}
+      />
+      <ChoiceStep
+        label="Onderkant van het glas"
+        value={config.lowGlass}
+        options={LOW_GLASS.map((item) => ({ id: item.id, label: item.label }))}
+        onPick={(lowGlass) => onChange({ lowGlass: lowGlass as KozijnConfig["lowGlass"] })}
+      />
+      <ChoiceStep
+        label="Gelaagd"
+        value={config.laminated}
+        options={LAMINATED.map((item) => ({ id: item.id, label: item.label }))}
+        onPick={(laminated) => onChange({ laminated: laminated as KozijnConfig["laminated"], laminatedTouched: true })}
+      />
+      <p className="text-[14px] text-kg-text-2">
+        Onder 85 cm, en bij deuren en schuifpuien, zetten we gelaagd glas klaar. U kunt dat wijzigen. De uitleg staat bij het glasartikel.
+      </p>
+    </div>
+  );
+}
+
+function SillStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
+  return (
+    <div className="space-y-6">
+      <ChoiceStep
+        label="Aansluiting"
+        value={config.rebate}
+        options={[
+          { id: "stomp", label: "Stomp" },
+          { id: "aanslag", label: "Met aanslag" },
+        ]}
+        onPick={(rebate) => onChange({ rebate: rebate as KozijnConfig["rebate"] })}
+      />
+      <ChoiceStep
+        label="Onderdorpel"
+        value={config.sill}
+        options={[
+          { id: "doorlopend", label: "Doorlopend kunststof" },
+          { id: "laag", label: "Lage dorpel" },
+        ]}
+        onPick={(sill) => onChange({ sill: sill as KozijnConfig["sill"] })}
+      />
+    </div>
+  );
+}
+
+function HardwareStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
+  return (
+    <div className="space-y-6">
+      <ChoiceStep
+        label="Hang- en sluitwerk"
+        value={config.hardware}
+        options={[
+          { id: "rc2", label: "Zwaarder, richting RC2" },
+          { id: "basis", label: "Basis" },
+        ]}
+        onPick={(hardware) => onChange({ hardware: hardware as KozijnConfig["hardware"] })}
+      />
+      <p className="text-[14px] text-kg-text-2">
+        We vragen het zwaardere beslag aan. Een PKVW- of SKG-certificaat voor dit profiel staat nog niet vast en zetten we niet als keurmerk op de pagina.
+      </p>
+      <ChoiceStep
+        label="Kruk"
+        value={config.handle}
+        options={[
+          { id: "standaard", label: "Standaard" },
+          { id: "afsluitbaar", label: "Afsluitbaar" },
+        ]}
+        onPick={(handle) => onChange({ handle: handle as KozijnConfig["handle"] })}
+      />
+    </div>
+  );
+}
+
+function ExtraStep({
+  layout,
+  config,
+  onChange,
+}: {
+  layout: Layout;
+  config: KozijnConfig;
+  onChange: (partial: Partial<KozijnConfig>) => void;
+}) {
+  const door = layout.group !== "ramen";
+  return (
+    <div className="space-y-4">
+      <ChoiceStep
+        label="Hor"
+        value={config.screen}
+        options={[
+          { id: "geen", label: "Geen hor" },
+          { id: "inzet", label: "Inzethor" },
+          ...(door ? [{ id: "plisse", label: "Plisséhor" }] : []),
+        ]}
+        onPick={(screen) => onChange({ screen: screen as KozijnConfig["screen"] })}
+      />
+      <p className="text-[14px] text-kg-text-2">
+        Plaatsen en het oude kozijn afvoeren vraagt u in de offerte, niet als bedrag in deze stap.
+      </p>
+    </div>
+  );
+}
+
+function ChoiceStep({
+  label,
+  value,
+  options,
+  onPick,
+}: {
+  label: string;
+  value: string;
+  options: { id: string; label: string }[];
+  onPick: (id: string) => void;
 }) {
   return (
-    <div
-      className="grid gap-px p-1"
-      style={{
-        gridTemplateColumns: cols,
-        height,
-        background: frame,
-        border: `2px solid ${frame}`,
-      }}
-    >
-      {panes.map((pane, index) => (
-        <div key={index} className="relative bg-[#DDE4EA]" style={{ boxShadow: pane.open ? `inset 3px 3px 0 ${frame}` : undefined }} />
-      ))}
+    <fieldset>
+      <legend className="text-[14px] font-medium">{label}</legend>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {options.map((option) => {
+          const active = option.id === value;
+          return (
+            <button
+              key={option.id}
+              type="button"
+              aria-pressed={active}
+              onClick={() => onPick(option.id)}
+              className={cn("h-12 border px-3 text-[14px]", active ? "border-kg-navy bg-white" : "border-kg-lijn")}
+            >
+              {option.label}
+            </button>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
+function Overview({
+  lines,
+  pdfHref,
+  share,
+  price,
+  sent,
+  error,
+  sending,
+  onQuote,
+}: {
+  lines: { label: string; value: string }[];
+  pdfHref: string;
+  share: string;
+  price: PriceResponse | null;
+  sent: string | null;
+  error: string | null;
+  sending: boolean;
+  onQuote: (form: FormData) => void;
+}) {
+  const wa = `${site.whatsapp}?text=${encodeURIComponent(`Kozijn samengesteld: ${share}`)}`;
+  return (
+    <div className="space-y-6">
+      <dl className="divide-y divide-kg-lijn border-y border-kg-lijn">
+        {lines.map((line) => (
+          <div key={line.label} className="grid gap-1 py-2 sm:grid-cols-[10rem_1fr] sm:gap-4">
+            <dt className="font-mono text-[13px] text-kg-text-2">{line.label}</dt>
+            <dd>{line.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {price?.pricesActive ? (
+        <p className="font-mono text-[18px]">
+          {formatPrice(price.totalIncl)} incl. btw
+          <span className="ml-3 text-[14px] text-kg-text-2">{formatPrice(price.totalExcl)} excl.</span>
+        </p>
+      ) : (
+        <p className="text-[16px]">Vrijblijvende offerte aanvragen. Er staat geen bedrag op deze samenstelling.</p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        <a className={buttonVariants({ variant: "secondary", size: "sm" })} href={pdfHref}>
+          Aanvraag als PDF
+        </a>
+        <a className={buttonVariants({ variant: "secondary", size: "sm" })} href={wa}>
+          WhatsApp deze link
+        </a>
+        <button
+          type="button"
+          className={buttonVariants({ variant: "secondary", size: "sm" })}
+          onClick={() => void navigator.clipboard.writeText(share)}
+        >
+          Kopieer de link
+        </button>
+      </div>
+      {sent ? (
+        <p className="border border-kg-navy bg-white p-4">Aanvraag {sent} is verstuurd. U hoort op een werkdag van ons.</p>
+      ) : (
+        <form
+          className="grid gap-3 sm:grid-cols-2"
+          onSubmit={(event) => {
+            event.preventDefault();
+            onQuote(new FormData(event.currentTarget));
+          }}
+        >
+          <label className="text-[14px] sm:col-span-2">
+            Naam
+            <input name="name" required autoComplete="name" className="mt-1 h-12 w-full border border-kg-lijn px-3" />
+          </label>
+          <label className="text-[14px]">
+            E-mail
+            <input name="email" type="email" required autoComplete="email" className="mt-1 h-12 w-full border border-kg-lijn px-3" />
+          </label>
+          <label className="text-[14px]">
+            Telefoon
+            <input name="phone" required autoComplete="tel" className="mt-1 h-12 w-full border border-kg-lijn px-3" />
+          </label>
+          <label className="text-[14px]">
+            Postcode
+            <input name="postcode" required autoComplete="postal-code" className="mt-1 h-12 w-full border border-kg-lijn px-3" />
+          </label>
+          <label className="text-[14px] sm:col-span-2">
+            Opmerking
+            <textarea name="note" rows={3} className="mt-1 w-full border border-kg-lijn px-3 py-2" />
+          </label>
+          <label className="hidden">
+            Website
+            <input name="companyWebsite" tabIndex={-1} autoComplete="off" />
+          </label>
+          {error ? <p className="text-[14px] text-kg-navy sm:col-span-2">{error}</p> : null}
+          <button type="submit" className={cn(buttonVariants(), "sm:col-span-2")} disabled={sending}>
+            {sending ? "Versturen" : "Vrijblijvende offerte aanvragen"}
+          </button>
+          <p className="text-[13px] text-kg-text-2 sm:col-span-2">Je gegevens gebruiken we alleen voor deze aanvraag.</p>
+        </form>
+      )}
     </div>
   );
 }

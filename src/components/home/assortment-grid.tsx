@@ -27,9 +27,9 @@ const APPS = [
     bg: "#C9C4B8",
   },
   {
-    href: "/kozijnen",
+    href: "/kunststof-kozijnen",
     name: "Kunststof kozijnen",
-    detail: "op maat · geleverd of gezet",
+    detail: "op maat · vrijblijvende offerte",
     slug: null,
     count: "configurator",
     bg: "repeating-linear-gradient(90deg,#C9C4B8 0 8px,#D9D5CB 8px 16px)",

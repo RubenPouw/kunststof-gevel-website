@@ -23,7 +23,7 @@ from,to,status,reason
 /kunststof-gevelbekleding-in-houtlook-keralit-vinyplus-zijn-de-toppers,/blog/keralit-of-vinyplus,301,duplicate-of-comparison
 /kunststof-gevelbekleding-soorten-voordelen,/gevelbekleding,301,keyword-stuffed-overview
 /kunststof-gevelbekleding-van-topkwaliteit-duurzaam-onderhoudsvrij-en-esthetisch,/gevelbekleding,301,keyword-stuffed-overview
-/kunststof-kozijnen-op-maat-prijs-berekenen-snel-geleverd,/kozijnen,301,same-job
+/kunststof-kozijnen-op-maat-prijs-berekenen-snel-geleverd,/kunststof-kozijnen,301,same-job
 /kunststof-nieuwtjes,/blog,301,blog-index
 /kunststof-rabatdelen,/gevelbekleding?type=rabat,301,category-profile
 /kunststof-rabatdelen-horizontaal-verticaal-onderhoud,/blog/rabat-horizontaal-of-verticaal,301,rewritten-article
@@ -728,12 +728,12 @@ from,to,status,reason
 /wp-content/uploads/2025/02/project8-scaled.jpg,/hpl-platen,301,image-to-parent-page
 /wp-content/uploads/2025/02/project9-scaled.jpg,/merken/eurotexx,301,image-to-parent-page
 /wp-content/uploads/2025/02/ventilatieprofiel-startprofiel-vinyplus.webp,/merken/vinyplus,301,image-to-parent-page
-/wp-content/uploads/2025/03/03-softline-82-1724933681.jpeg,/kozijnen,301,image-to-parent-page
+/wp-content/uploads/2025/03/03-softline-82-1724933681.jpeg,/kunststof-kozijnen,301,image-to-parent-page
 /wp-content/uploads/2025/03/Contact-Details.png,/contact,301,image-to-parent-page
 /wp-content/uploads/2025/03/Home-1.png,/contact,301,image-to-parent-page
-/wp-content/uploads/2025/03/PHOTO-2023-10-11-10-25-08.jpg,/kozijnen,301,image-to-parent-page
-/wp-content/uploads/2025/03/gealan.jpeg,/kozijnen,301,image-to-parent-page
-/wp-content/uploads/2025/03/ideal7000-web.png,/kozijnen,301,image-to-parent-page
+/wp-content/uploads/2025/03/PHOTO-2023-10-11-10-25-08.jpg,/kunststof-kozijnen,301,image-to-parent-page
+/wp-content/uploads/2025/03/gealan.jpeg,/kunststof-kozijnen,301,image-to-parent-page
+/wp-content/uploads/2025/03/ideal7000-web.png,/kunststof-kozijnen,301,image-to-parent-page
 /wp-content/uploads/2025/03/keralit_dakrand_close-up_wit.webp,/merken/keralit,301,image-to-parent-page
 /wp-content/uploads/2025/05/16345350-keralit-geventileerd-platprofiel.png,/merken/keralit,301,image-to-parent-page
 /wp-content/uploads/2025/06/Profex-Dubbel-Rabat-800x500-1.jpeg,/merken/profex,301,image-to-parent-page
@@ -752,7 +752,7 @@ from,to,status,reason
 /wp-content/uploads/2025/10/Eurotexx-potdeksel-antraciet.jpg,/merken/eurotexx,301,image-to-parent-page
 /wp-content/uploads/2025/10/Homepage_mobiel.jpg,/gevelbekleding,301,image-to-parent-page
 /wp-content/uploads/2025/10/kunststof-dakranden.webp,/dakranden,301,image-to-parent-page
-/wp-content/uploads/2025/11/PHOTO-2025-08-30-11-19-18.jpg,/kozijnen,301,image-to-parent-page
+/wp-content/uploads/2025/11/PHOTO-2025-08-30-11-19-18.jpg,/kunststof-kozijnen,301,image-to-parent-page
 /wp-content/uploads/2025/11/PR4075BI17345_2815_Keralit_sponningdeel_167_mm_SZ2.webp,/merken/keralit,301,image-to-parent-page
 /wp-content/uploads/2025/11/keralit-sponningdeel-167-mm-vergrijsd-ceder.webp,/merken/keralit,301,image-to-parent-page
 /wp-content/uploads/2025/12/RVS-A41.webp,/producten/rvs-a4-schroef-alu-hout-zelfborend-4-2x23-100st,301,image-to-parent-page
@@ -762,7 +762,7 @@ from,to,status,reason
 /wp-content/uploads/2026/02/Professioneel-portret-van-een-man.png,/over-ons,301,image-to-parent-page
 /wp-content/uploads/2026/02/Startprofiel-horizontaal-22mm.-ventilatie-tekening.webp,/montage?merk=keralit,301,image-to-parent-page
 /wp-content/uploads/2026/02/Tweezijdig-ventilatieprofiel-tekening.webp,/producten/tweezijdig-ventilatieprofiel,301,image-to-parent-page
-/wp-content/uploads/2026/02/grok-image-afc1ebf5-1f92-46ae-aba6-e82ea51a8f0f.jpg,/kozijnen,301,image-to-parent-page
+/wp-content/uploads/2026/02/grok-image-afc1ebf5-1f92-46ae-aba6-e82ea51a8f0f.jpg,/kunststof-kozijnen,301,image-to-parent-page
 /wp-content/uploads/2026/04/CT30BI4963_600_Florence_binnenplafonds_IMD.jpg,/merken/florence,301,image-to-parent-page
 /wp-content/uploads/2026/04/CT30BI4965_600_Florence_binnenplafonds_IMD.jpg,/merken/florence,301,image-to-parent-page
 /wp-content/uploads/2026/04/Florence-binnenplafond-paneel-250x10mm-verschillende-lengtes-tekening.webp,/merken/florence,301,image-to-parent-page
@@ -786,3 +786,4 @@ from,to,status,reason
 /wp-content/uploads/2026/08/Schermafbeelding-2026-08-03-om-14.33.39.png,/producten/florence-buitenplafond-paneel-250x16-5-mm,301,image-to-parent-page
 /zakelijke-klanten,/zakelijk,301,same-job
 /zierer-montage,/montage?merk=zierer,301,montage-brand
+/kozijnen,/kunststof-kozijnen,301,kozijnen-hub

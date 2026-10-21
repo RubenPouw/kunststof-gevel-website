@@ -5,7 +5,7 @@ import { footerColumns, legalNav, site } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto bg-kg-navy text-kg-grind">
+    <footer className="mt-auto bg-kg-navy text-kg-grind print:hidden">
       <div className="h-1.5" style={{ background: "var(--gradient-signal)" }} />
       <div className="container-kg grid gap-10 py-14 lg:grid-cols-[5fr_2fr_2fr_3fr] lg:gap-5">
         <div>
