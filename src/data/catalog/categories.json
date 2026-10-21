@@ -18,5 +18,10 @@
     "slug": "montage",
     "name": "Montage",
     "summary": "Start- en eindprofielen, verbindingen, schroeven en reiniger."
+  },
+  {
+    "slug": "hpl-platen",
+    "name": "HPL platen",
+    "summary": "Compacte platen van 3050 × 1300 × 6 mm. Hele plaat, 3,965 m², geen zaagwerk."
   }
 ]

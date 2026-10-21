@@ -48,5 +48,30 @@
     "slug": "florence",
     "name": "Florence",
     "summary": "Plafondpanelen voor binnen en buiten, met bijpassende profielen."
+  },
+  {
+    "slug": "hpl",
+    "name": "HPL",
+    "summary": "Compacte HPL plaat van 6 mm, geleverd als hele plaat van 3050 × 1300 mm."
+  },
+  {
+    "slug": "hpl-compact-exterieur",
+    "name": "HPL Compact Exterieur",
+    "summary": "HPL plaat voor buiten. Hele plaat, 3050 × 1300 × 6 mm."
+  },
+  {
+    "slug": "hpl-fr",
+    "name": "FR brandvertragend",
+    "summary": "Brandvertragende HPL plaat in dezelfde plaatmaat van 3050 × 1300 × 6 mm."
+  },
+  {
+    "slug": "renolit",
+    "name": "Renolit eenzijdig",
+    "summary": "HPL plaat met een decorlaag aan één kant. Hele plaat van 3,965 m²."
+  },
+  {
+    "slug": "abet",
+    "name": "Abet",
+    "summary": "HPL decorlijn. Hele plaat van 3050 × 1300 × 6 mm, te filteren op kleur en RAL."
   }
 ]

@@ -55,15 +55,15 @@
   },
   {
     "from": "/hpl-gevelplaat-toepassingen-montage",
-    "to": "/blog/hpl-plaat",
+    "to": "/hpl-platen",
     "status": "301",
-    "reason": "rewritten-article"
+    "reason": "hpl-categorie"
   },
   {
     "from": "/hpl-plaat",
-    "to": "/blog/hpl-plaat",
+    "to": "/hpl-platen",
     "status": "301",
-    "reason": "uitleg-in-plaats-van-dunne-landingspagina"
+    "reason": "hpl-categorie"
   },
   {
     "from": "/keralit-dakranden",
@@ -1099,9 +1099,9 @@
   },
   {
     "from": "/product/milyt-hpl-plaat",
-    "to": "/kozijnafwerking",
+    "to": "/hpl-platen",
     "status": "301",
-    "reason": "plaat-family"
+    "reason": "hpl-sheet"
   },
   {
     "from": "/product/msp-high-tack-lijm-290-ml",
@@ -2083,13 +2083,13 @@
   },
   {
     "from": "/wp-content/uploads/2023/07/project10-scaled-scaled.jpg",
-    "to": "/kozijnafwerking",
+    "to": "/hpl-platen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2023/07/project2-scaled-scaled.jpg",
-    "to": "/kozijnafwerking",
+    "to": "/hpl-platen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -2419,7 +2419,7 @@
   },
   {
     "from": "/wp-content/uploads/2024/12/Plaatmateriaal.jpeg",
-    "to": "/blog/hpl-plaat",
+    "to": "/hpl-platen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -2551,7 +2551,7 @@
   },
   {
     "from": "/wp-content/uploads/2025/02/project8-scaled.jpg",
-    "to": "/blog/hpl-plaat",
+    "to": "/hpl-platen",
     "status": "301",
     "reason": "image-to-parent-page"
   },

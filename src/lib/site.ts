@@ -49,6 +49,7 @@ export const heroStats = [
 
 export const shopNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
+  { href: "/hpl-platen", label: "HPL platen" },
   { href: "/dakranden", label: "Dakranden" },
   { href: "/kozijnen", label: "Kozijnen" },
   { href: "/merken", label: "Merken" },
@@ -60,6 +61,7 @@ export const footerColumns = [
     title: "Assortiment",
     links: [
       { href: "/gevelbekleding", label: "Gevelbekleding" },
+      { href: "/hpl-platen", label: "HPL platen" },
       { href: "/dakranden", label: "Dakranden" },
       { href: "/kozijnen", label: "Kunststof kozijnen" },
       { href: "/montage", label: "Bevestiging" },

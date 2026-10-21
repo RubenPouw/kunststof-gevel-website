@@ -83,6 +83,52 @@ export function ProductListing({
             })}
           </FilterSection>
         ) : null}
+        {facets.sheetColors.length > 1 ? (
+          <FilterSection title="Kleur">
+            <div className="max-h-64 space-y-1 overflow-auto">
+              {facets.sheetColors.map((item) => {
+                const active = filters.colorSlug === item.slug;
+                return (
+                  <Link
+                    key={item.slug}
+                    href={listingHref(basePath, filters, { colorSlug: active ? "" : item.slug })}
+                    className="flex min-h-11 items-center gap-3 text-[15px] text-kg-navy no-underline hover:no-underline"
+                  >
+                    <span
+                      className={cn("size-4 shrink-0", active && "outline outline-2 outline-offset-1 outline-kg-navy")}
+                      style={{ background: item.hex }}
+                    />
+                    <span className="min-w-0 flex-1">{item.name}</span>
+                    <span className="font-mono text-[12px] text-kg-text-2">{item.count}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </FilterSection>
+        ) : null}
+        {facets.rals.length > 1 ? (
+          <FilterSection title="RAL">
+            <div className="flex max-h-64 flex-wrap gap-2 overflow-auto">
+              {facets.rals.map((item) => {
+                const active = filters.ral === item.code;
+                return (
+                  <Link
+                    key={item.code}
+                    href={listingHref(basePath, filters, { ral: active ? "" : item.code })}
+                    className={cn(
+                      "inline-flex h-10 min-h-10 items-center border px-3 font-mono text-[13px] no-underline hover:no-underline",
+                      active
+                        ? "border-kg-navy bg-kg-navy text-kg-kalk"
+                        : "border-kg-lijn bg-white text-kg-navy hover:bg-kg-kalk",
+                    )}
+                  >
+                    RAL {item.code}
+                  </Link>
+                );
+              })}
+            </div>
+          </FilterSection>
+        ) : null}
         {facets.widths.length > 1 ? (
           <FilterSection title="Werkende breedte">
             <div className="flex flex-wrap gap-2">

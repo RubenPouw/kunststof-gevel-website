@@ -11,6 +11,7 @@ import {
   applyListingFilters,
   getBrand,
   getProductsByBrand,
+  hasActiveFilters,
   parseListingSearchParams,
 } from "@/lib/catalog";
 
@@ -19,15 +20,17 @@ type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
   const brand = await getBrand(slug);
   if (!brand) return { title: "Merk" };
   const story = getBrandStory(brand.slug);
+  const filters = parseListingSearchParams(await searchParams);
   return {
     title: story?.metaTitle ?? brand.name,
     description: story?.description ?? brand.summary,
     alternates: { canonical: `/merken/${brand.slug}` },
+    robots: hasActiveFilters(filters) ? { index: false, follow: true } : undefined,
   };
 }
 

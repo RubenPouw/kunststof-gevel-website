@@ -13,6 +13,13 @@ const APPS = [
     bg: "#D9D5CB",
   },
   {
+    href: "/hpl-platen",
+    name: "HPL platen",
+    detail: "3050 × 1300 · hele plaat",
+    slug: "hpl-platen",
+    bg: "#B7B1A4",
+  },
+  {
     href: "/dakranden",
     name: "Dakranden",
     detail: "boeidelen · hoeken",

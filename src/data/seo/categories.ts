@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { hasActiveFilters, parseListingSearchParams } from "@/lib/catalog/helpers";
 import type { CategorySlug } from "@/lib/catalog/types";
 
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
@@ -130,7 +131,81 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       { href: "/offerte", label: "Montage laten uitvoeren" },
     ],
   },
+  "hpl-platen": {
+    slug: "hpl-platen",
+    metaTitle: "HPL platen",
+    description:
+      "HPL platen van 3050 × 1300 × 6 mm. Hele plaat, 3,965 m². Compact exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur en RAL.",
+    sections: [
+      {
+        heading: "HPL platen kopen",
+        paragraphs: [
+          "HPL is een compacte plaat: lagen papier en hars, geperst onder hoge druk. Het oppervlak is hard en bestand tegen vocht. U bestelt de plaat heel. Wij zagen niet op maat.",
+          "De lijnen in deze categorie zijn HPL Compact Exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur of op RAL. Een staal legt u buiten tegen de gevel, niet alleen op een scherm.",
+        ],
+      },
+      {
+        heading: "Maat van de plaat",
+        paragraphs: [
+          "Elke plaat is 3050 × 1300 mm en 6 mm dik. Dat is 3,965 m². De teller deelt uw vlak door die maat en rondt naar boven af op hele platen. Een reststuk blijft van u.",
+          "Een gevelpaneel rekent anders. Daar telt de werkende breedte, plus 10% snijverlies. Die calculator staat op rabat en sponning, niet op deze plaat.",
+        ],
+      },
+      {
+        heading: "Welke lijn",
+        paragraphs: [
+          "HPL Compact Exterieur is de plaat voor buiten, op een geventileerde achterconstructie. FR brandvertragend kiest u als het bestek een brandvertragende plaat vraagt. Op het artikel staat geen brandklasse die wij er zelf bij verzinnen.",
+          "Renolit eenzijdig heeft de decorlaag aan één kant. Abet is een decorlijn in vaste kleuren. De plaatmaat is bij alle vier gelijk.",
+        ],
+      },
+      {
+        heading: "Waar de plaat past",
+        paragraphs: [
+          "Een vlakke gevel, een boeideel, een dagkant of een binnenwand. Geen rabatnaad. Voor een gevel die het naadbeeld van een sponning of rabat moet hebben, neemt u een gevelpaneel.",
+          "Buiten houdt u een spouw aan en kit u die niet dicht. Bevestig volgens het voorschrift van de lijn.",
+        ],
+      },
+      {
+        heading: "Onderhoud",
+        paragraphs: [
+          "Niet schilderen. Afspoelen met water en een mild middel is genoeg. Geen schuurmiddel en geen hogedruk op korte afstand.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Zagen jullie de plaat op maat?",
+        a: "Nee. U bestelt hele platen van 3050 × 1300 mm. Zaagwerk op de bouw is van u.",
+      },
+      {
+        q: "Hoeveel m² is één plaat?",
+        a: "3,965 m². De teller Platen nodig deelt het netto vlak door die maat en rondt naar boven af.",
+      },
+      {
+        q: "Welke lijn gebruik ik buiten?",
+        a: "HPL Compact Exterieur, op een geventileerde achterconstructie. FR als het bestek brandvertragend vraagt. Renolit eenzijdig en Abet kiest u op de afwerking die op de plaat staat.",
+      },
+    ],
+    links: [
+      { href: "/merken/hpl-compact-exterieur", label: "HPL Compact Exterieur" },
+      { href: "/merken/hpl-fr", label: "FR brandvertragend" },
+      { href: "/merken/renolit", label: "Renolit eenzijdig" },
+      { href: "/merken/abet", label: "Abet" },
+      { href: "/blog/hpl-plaat", label: "Plaat of gevelpaneel" },
+      { href: "/gevelbekleding", label: "Gevelpanelen" },
+    ],
+  },
 };
+
+export async function categoryPageMetadata(
+  slug: CategorySlug,
+  searchParams: Promise<Record<string, string | string[] | undefined>>,
+): Promise<Metadata> {
+  const base = categoryMetadata(slug);
+  const filters = parseListingSearchParams(await searchParams);
+  if (!hasActiveFilters(filters)) return base;
+  return { ...base, robots: { index: false, follow: true } };
+}
 
 export function getCategoryStory(slug: string) {
   if (slug in categoryStories) return categoryStories[slug as CategorySlug];

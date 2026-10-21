@@ -78,7 +78,7 @@ export const migratedPosts: BlogPost[] = [
         heading: "Plaat, geen rabat",
         paragraphs: [
           "HPL is een vlakke plaat. U gebruikt die voor een dagkant, een boeideel, een binnenwand of een vlak dat geen naadbeeld van een rabat moet hebben. Een gevel die in de regen staat als rabat of sponning dekt u met een gevelpaneel, niet met een losse plaat zonder het bijbehorende systeem.",
-          "De plaat zaagt u op maat of bestelt u als plaatmaat. Een gezaagde plaat is maatwerk en valt buiten het herroepingsrecht.",
+          "De plaat in de shop is 3050 × 1300 × 6 mm, 3,965 m², en gaat heel de deur uit. Wij zagen niet op maat. Zaagt u zelf, dan is dat uw werk op de bouw.",
         ],
       },
       {
@@ -91,12 +91,12 @@ export const migratedPosts: BlogPost[] = [
     faqs: [
       {
         q: "Zit HPL in de m²-prijs van gevelbekleding?",
-        a: "Nee. Een plaat rekent u per stuk of per plaatmaat. De m²-indicatie op deze site geldt voor gevelpanelen.",
+        a: "Nee. Een plaat rekent u per hele plaat van 3,965 m². De m²-calculator met 10% snijverlies geldt voor gevelpanelen.",
       },
     ],
     links: [
-      { href: "/kozijnafwerking", label: "Kozijnafwerking en plaat" },
-      { href: "/offerte", label: "Plaat laten rekenen" },
+      { href: "/hpl-platen", label: "HPL platen" },
+      { href: "/gevelbekleding", label: "Gevelpanelen" },
     ],
   },
   {

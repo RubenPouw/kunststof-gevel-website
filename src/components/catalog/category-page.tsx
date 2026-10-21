@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { ProductListing } from "@/components/catalog/product-listing";
+import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { listingHref } from "@/lib/catalog/helpers";
 import type { Brand, ListingFilters, Product } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,8 @@ export function CategoryPage({
   brandOptions = [],
   basePath,
   filters,
+  sheetCalculator = false,
+  emptyMessage,
 }: {
   kicker: string;
   title: string;
@@ -23,6 +26,8 @@ export function CategoryPage({
   brandOptions?: Brand[];
   basePath?: string;
   filters: ListingFilters;
+  sheetCalculator?: boolean;
+  emptyMessage?: string;
 }) {
   const path = basePath ?? ".";
 
@@ -31,6 +36,12 @@ export function CategoryPage({
       <p className="font-mono text-[13px] text-kg-text-2">{kicker}</p>
       <h1 className="display-plp mt-2 max-w-3xl">{title}</h1>
       <p className="mt-4 max-w-2xl text-kg-text-2">{intro}</p>
+
+      {sheetCalculator ? (
+        <div className="mt-8 max-w-3xl">
+          <SheetCalculator />
+        </div>
+      ) : null}
 
       {brandOptions.length > 1 ? (
         <div className="mt-8 flex flex-wrap gap-2">
@@ -66,6 +77,7 @@ export function CategoryPage({
         basePath={path}
         filters={filters}
         totalUnfiltered={allProducts.length}
+        emptyMessage={emptyMessage}
       />
     </div>
   );

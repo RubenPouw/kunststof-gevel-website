@@ -1,8 +1,11 @@
 import { enrichProduct, inferProfileType } from "@/lib/catalog/derive";
 import {
   DISTRIBUTOR_BRAND_SLUGS,
+  isHplSheetText,
+  matchHplLine,
   matchProductLine,
   sanitizeDescription,
+  withoutTrespa,
 } from "@/lib/catalog/text-rules";
 import type {
   Brand,
@@ -26,6 +29,7 @@ export const CATEGORY_COLLECTION_HANDLES: Record<CategorySlug, string[]> = {
   dakranden: ["dakranden", "dakrand"],
   kozijnafwerking: ["kozijnafwerking"],
   montage: ["montage", "kunststof-profielen", "kunststof-profiel"],
+  "hpl-platen": ["hpl-platen", "hpl-plaat", "hpl platen"],
 };
 
 export const PRODUCT_TYPE_TO_CATEGORY: Record<string, CategorySlug> = {
@@ -42,6 +46,9 @@ export const PRODUCT_TYPE_TO_CATEGORY: Record<string, CategorySlug> = {
   "kunststof profielen": "montage",
   "kunststof profiel": "montage",
   montage: "montage",
+  "hpl plaat": "hpl-platen",
+  "hpl platen": "hpl-platen",
+  "hpl-plaat": "hpl-platen",
 };
 
 const KNOWN_BRANDS: Brand[] = [
@@ -63,6 +70,23 @@ const KNOWN_BRANDS: Brand[] = [
   { slug: "multitexx", name: "Multitexx", summary: "Gevelpanelen voor renovatie en nieuwbouw." },
   { slug: "unipanel", name: "Unipanel", summary: "Bouwpanelen en afwerking voor overstek en wand." },
   { slug: "florence", name: "Florence", summary: "Plafondpanelen voor binnen en buiten, met bijpassende profielen." },
+  { slug: "hpl", name: "HPL", summary: "Compacte HPL plaat van 6 mm, geleverd als hele plaat van 3050 × 1300 mm." },
+  {
+    slug: "hpl-compact-exterieur",
+    name: "HPL Compact Exterieur",
+    summary: "HPL plaat voor buiten. Hele plaat, 3050 × 1300 × 6 mm.",
+  },
+  {
+    slug: "hpl-fr",
+    name: "FR brandvertragend",
+    summary: "Brandvertragende HPL plaat in dezelfde plaatmaat van 3050 × 1300 × 6 mm.",
+  },
+  {
+    slug: "renolit",
+    name: "Renolit eenzijdig",
+    summary: "HPL plaat met een decorlaag aan één kant. Hele plaat van 3,965 m².",
+  },
+  { slug: "abet", name: "Abet", summary: "HPL decorlijn. Hele plaat van 3050 × 1300 × 6 mm, te filteren op kleur en RAL." },
 ];
 
 const COLOR_HEX: Record<string, string> = {
@@ -108,6 +132,7 @@ export function categoryFromCollectionHandle(handle: string): CategorySlug | und
 
 export function categoryFromTitle(title: string): CategorySlug | undefined {
   const t = title.toLowerCase();
+  if (isHplSheetText(t)) return "hpl-platen";
   if (/(vensterbank|overzetbank|overzetvensterbank)/.test(t)) return "kozijnafwerking";
   if (/(dakrand|boeideel)/.test(t)) return "dakranden";
   if (
@@ -156,8 +181,15 @@ function brandBySlug(slug: string) {
 }
 
 export function inferBrand(
-  product: Pick<ShopifyProduct, "vendor" | "title" | "tags" | "handle">,
+  product: Pick<ShopifyProduct, "vendor" | "title" | "tags" | "handle" | "productType">,
 ): Brand {
+  const blob = `${product.title} ${product.handle.replace(/-/g, " ")} ${product.productType ?? ""} ${product.tags.join(" ")}`;
+  if (/\bhpl\b/i.test(blob) && !/sandwich|reiniger/i.test(blob)) {
+    const line = matchHplLine(blob);
+    const hplBrand = brandBySlug(line ?? "hpl");
+    if (hplBrand) return hplBrand;
+  }
+
   const fromTitle = matchProductLine(`${product.title} ${product.handle.replace(/-/g, " ")}`);
   if (fromTitle && !DISTRIBUTOR_BRAND_SLUGS.has(fromTitle)) {
     const brand = brandBySlug(fromTitle);
@@ -178,7 +210,7 @@ export function inferBrand(
   const matched = brandBySlug(matchProductLine(product.vendor) ?? "");
   if (matched) return matched;
 
-  const vendor = product.vendor.trim();
+  const vendor = withoutTrespa(product.vendor.trim());
   if (vendor && !GENERIC_VENDORS.has(vendor.toLowerCase())) {
     return {
       slug: slugify(vendor),
@@ -224,7 +256,7 @@ function usableAlt(alt: string | null | undefined, fallback: string) {
   if (value.length < 3) return fallback;
   if (/^(img|image|foto|screenshot|schermafbeelding|dsc|img_)/i.test(value)) return fallback;
   if (/\.(jpe?g|png|webp|gif)$/i.test(value)) return fallback;
-  return value;
+  return withoutTrespa(value);
 }
 
 function mapImage(image: ShopifyImage | null | undefined, fallbackAlt: string): ProductImage | undefined {
@@ -291,7 +323,7 @@ export function mapShopifyProduct(
   const inStock = variants.some((variant) => variant.inStock);
   const uniqueLengths = [...new Set(variants.map((variant) => variant.length))];
   const length = uniqueLengths.length === 1 ? uniqueLengths[0] : uniqueLengths.join(" / ");
-  const alt = `${brand.name} ${product.title}`;
+  const alt = withoutTrespa(`${brand.name} ${product.title}`);
   const images = [
     mapImage(product.featuredImage, alt),
     ...product.images.nodes.map((image) => mapImage(image, alt)),
@@ -302,7 +334,7 @@ export function mapShopifyProduct(
 
   return enrichProduct({
     slug: product.handle,
-    name: product.title,
+    name: withoutTrespa(product.title),
     vendor: product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
       ? product.vendor
       : brand.name,

@@ -48,8 +48,9 @@ export function ListingCard({ product }: { product: Product }) {
           </Link>
         </h3>
         <p className="mt-1 font-mono text-[13px] text-kg-text-2">
-          {formatLengthMm(selected.length)}
-          {product.workingWidthMm ? ` · ${product.workingWidthMm} mm werkend` : ""}
+          {product.saleUnit === "sheet"
+            ? `3050 × 1300 mm · hele plaat${selected.ral ? ` · ${selected.ral}` : ""}`
+            : `${formatLengthMm(selected.length)}${product.workingWidthMm ? ` · ${product.workingWidthMm} mm werkend` : ""}`}
         </p>
         {colors.length > 1 ? (
           <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -74,7 +75,11 @@ export function ListingCard({ product }: { product: Product }) {
           <span className="whitespace-nowrap" style={{ color: status.color }}>
             {status.text}
           </span>
-          <span>{productHasPrice(product) && selected.price > 0 ? formatPrice(exclVat(selected.price)) : "Prijs op aanvraag"}</span>
+          <span>
+            {productHasPrice(product) && selected.price > 0
+              ? `${formatPrice(exclVat(selected.price))}${product.saleUnit === "sheet" ? " /plaat" : ""} excl. btw`
+              : "Prijs op aanvraag"}
+          </span>
         </div>
         <div className="mt-auto flex flex-wrap gap-2 pt-3">
           <Link

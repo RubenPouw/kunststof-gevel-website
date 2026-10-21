@@ -13,6 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const paths = [
     "",
     "/gevelbekleding",
+    "/hpl-platen",
     "/dakranden",
     "/kozijnafwerking",
     "/kozijnen",
@@ -32,9 +33,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/klachtenprocedure",
   ];
 
+  const stocked = new Set(catalog.products.map((product) => product.brandSlug));
   const brands = new Map<string, { slug: string }>();
   for (const brand of [...staticBrands, ...catalog.brands]) {
-    if (brand.slug !== "overig") brands.set(brand.slug, brand);
+    if (brand.slug === "overig") continue;
+    // New lines stay out of the sitemap until a product exists. Empty legacy brands stay.
+    if (!stocked.has(brand.slug) && brand.slug.startsWith("hpl")) continue;
+    if (!stocked.has(brand.slug) && (brand.slug === "renolit" || brand.slug === "abet")) continue;
+    brands.set(brand.slug, brand);
   }
 
   return [

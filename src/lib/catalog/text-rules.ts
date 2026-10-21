@@ -48,8 +48,68 @@ export function normalizeProductName(name: string) {
 }
 
 /** Strip supplier boilerplate. The shop brand stays, the groothandel not. */
+/** Remove a laminate brand we do not sell. Customer-facing text must not keep the name. */
+export function withoutTrespa(text: string) {
+  return text
+    .replace(/\btrespa\b/gi, "HPL")
+    .replace(/\bHPL(?:\s+HPL)+\b/g, "HPL")
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([.,;:])/g, "$1")
+    .trim();
+}
+
+const HPL_LINES: { slug: string; re: RegExp }[] = [
+  { slug: "hpl-compact-exterieur", re: /compact\s+exterieur/i },
+  { slug: "renolit", re: /renolit/i },
+  { slug: "abet", re: /\babet\b/i },
+  { slug: "hpl-fr", re: /brandvertragend|\bhpl[-\s]?fr\b|\bfr\b/i },
+];
+
+export function matchHplLine(text: string): string | undefined {
+  for (const line of HPL_LINES) {
+    if (line.re.test(text)) return line.slug;
+  }
+  return undefined;
+}
+
+/** Compact sheet, not a sandwich panel, a cleaner, or a thinner offcut. */
+export function isHplSheetText(text: string) {
+  const value = text.toLowerCase();
+  if (/sandwich|reiniger/.test(value)) return false;
+  if (/1150|2\s*mm|24\s*mm/.test(value)) return false;
+  return /\bhpl\b/.test(value) && /plaat/.test(value);
+}
+
+export function extractRal(text: string): string | undefined {
+  const match = text.match(/\bRAL\s*([0-9]{4})\b/i);
+  return match ? `RAL ${match[1]}` : undefined;
+}
+
+/** Colour name and RAL from an HPL title, with the line name and the sheet size removed. */
+export function extractHplColor(text: string): { colorName?: string; ral?: string } {
+  const ral = extractRal(text);
+  const colorName = text
+    .replace(/\bHPL\b/gi, " ")
+    .replace(/compact\s+exterieur/gi, " ")
+    .replace(/brandvertragend/gi, " ")
+    .replace(/\brenolit\b/gi, " ")
+    .replace(/eenzijdig/gi, " ")
+    .replace(/\babet\b/gi, " ")
+    .replace(/\bfr\b/gi, " ")
+    .replace(/\bplaat(?:en)?\b/gi, " ")
+    .replace(/\b(kleur|color|colour|ral)\b/gi, " ")
+    .replace(/\d+\s*[x×]\s*\d+(?:\s*[x×]\s*\d+)?/gi, " ")
+    .replace(/\d+(?:[.,]\d+)?\s*mm\b/gi, " ")
+    .replace(/\bRAL\s*[0-9]{4}\b/gi, " ")
+    .replace(/[^A-Za-zÀ-ÿ -]/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  const unique = [...new Set(colorName.split(" ").filter(Boolean))];
+  return { colorName: unique.join(" ") || undefined, ral };
+}
+
 export function sanitizeDescription(description: string, title: string) {
-  let text = description.replace(/\s+/g, " ").trim();
+  let text = withoutTrespa(description).replace(/\s+/g, " ").trim();
   text = text
     .replace(/onderdeel van het heering-assortiment bij aj fust\.?/gi, "")
     .replace(/leverbaar via aj fust\.?/gi, "")
@@ -60,8 +120,8 @@ export function sanitizeDescription(description: string, title: string) {
     .replace(/^[,.\s]+|[,.\s]+$/g, "")
     .trim();
 
-  if (text.length < 24) return `${title}.`;
-  return text;
+  if (text.length < 24) return withoutTrespa(`${title}.`);
+  return withoutTrespa(text);
 }
 
 export function parseLengthMeters(length: string): number | undefined {

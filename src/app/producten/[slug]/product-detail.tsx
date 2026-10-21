@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AreaCalculator } from "@/components/catalog/area-calculator";
+import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { ProductCard } from "@/components/brand/product-card";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
@@ -26,15 +27,25 @@ const TABS = [
   { id: "downloads", label: "Downloads" },
 ] as const;
 
-const TAB_COPY: Record<(typeof TABS)[number]["id"], string> = {
-  omschrijving: "",
-  montage:
-    "Regels min. 21 × 32 mm, hart op hart 300 mm, ventilatiespouw min. 20 mm. Start met het aluminium startprofiel, plaats de panelen in het profiel en schroef met rvs 4,5 × 40. Boor 1 mm ruimer zodat het materiaal kan werken.",
-  garantie:
-    "10 jaar fabrieksgarantie op kleur- en vormvastheid bij montage volgens voorschrift. Wij regelen het contact met de fabrikant.",
-  downloads:
-    "Montagehandleiding (PDF) · kleurenkaart · technische tekening · onderhoudsvoorschrift. Sturen we mee met de orderbevestiging, of op verzoek via chat.",
-};
+function tabCopy(sheet: boolean, id: (typeof TABS)[number]["id"]) {
+  if (id === "omschrijving") return "";
+  if (sheet) {
+    if (id === "montage") {
+      return "Buiten komt de plaat op een geventileerde achterconstructie. Kit de spouw niet dicht. Bevestig volgens het voorschrift van de lijn. Wij leveren de plaat heel, 3050 × 1300 × 6 mm, en zagen niet op maat.";
+    }
+    if (id === "garantie") {
+      return "Garantie volgt het voorschrift van de productlijn. Wij noemen geen termijn die niet op het artikel staat.";
+    }
+    return "Een montageblad sturen we op verzoek, als de lijn dat document heeft. Vraag het via de telefoon of de mail, dan kijken we welk blad bij deze plaat hoort.";
+  }
+  if (id === "montage") {
+    return "Regels min. 21 × 32 mm, hart op hart 300 mm, ventilatiespouw min. 20 mm. Start met het aluminium startprofiel, plaats de panelen in het profiel en schroef met rvs 4,5 × 40. Boor 1 mm ruimer zodat het materiaal kan werken.";
+  }
+  if (id === "garantie") {
+    return "10 jaar fabrieksgarantie op kleur- en vormvastheid bij montage volgens voorschrift. Wij regelen het contact met de fabrikant.";
+  }
+  return "Een montageblad sturen we op verzoek. Vraag het via de telefoon of de mail.";
+}
 
 export function ProductDetail({
   product,
@@ -70,10 +81,12 @@ export function ProductDetail({
     setImageUrl(null);
   }
 
-  const coverage = selected.panelsPerM2;
+  const sheet = product.saleUnit === "sheet";
+  const coverage = sheet ? undefined : selected.panelsPerM2;
   const canBuy = productHasPrice(product) && selected.price > 0;
   const unitExcl = exclVat(selected.price);
   const priceM2 = canBuy && coverage ? unitExcl * coverage : undefined;
+  const sheetM2Price = canBuy && sheet && product.sheetM2 ? unitExcl / product.sheetM2 : undefined;
   const status = stockLabel(selected.inStock, selected.stockText);
   const skuShort = selected.sku.replace(/-3M$/, "");
 
@@ -98,13 +111,23 @@ export function ProductDetail({
     if (goCart) router.push("/winkelwagen");
   }
 
-  const specs = [
-    ["Werkende breedte", product.workingWidthMm ? `${product.workingWidthMm} mm` : "n.v.t."],
-    ["Dikte", product.specs.find((spec) => /dikte/i.test(spec.label))?.value ?? "n.v.t."],
-    ["Lengte", formatLengthMm(selected.length)],
-    ["Kleur", `${selected.colorName.toLowerCase()}${selected.ral ? ` ${selected.ral}` : ""}`],
-    ["Brandklasse", product.specs.find((spec) => /brand/i.test(spec.label))?.value ?? "zie merk"],
-  ];
+  const specs = sheet
+    ? [
+        ["Afmeting", "3050 × 1300 mm"],
+        ["Dikte", "6 mm"],
+        ["Per plaat", "3,965 m²"],
+        ["Zaagwerk", "Nee, hele plaat"],
+        ["Lijn", product.brand],
+        ["Kleur", selected.colorName],
+        ["RAL", selected.ral ?? ""],
+      ].filter((row): row is [string, string] => Boolean(row[1]))
+    : [
+        ["Werkende breedte", product.workingWidthMm ? `${product.workingWidthMm} mm` : ""],
+        ["Dikte", product.specs.find((spec) => /dikte/i.test(spec.label))?.value ?? ""],
+        ["Lengte", formatLengthMm(selected.length)],
+        ["Kleur", `${selected.colorName.toLowerCase()}${selected.ral ? ` ${selected.ral}` : ""}`],
+        ["Brandklasse", product.specs.find((spec) => /brand/i.test(spec.label))?.value ?? ""],
+      ].filter((row): row is [string, string] => Boolean(row[1]));
 
   return (
     <div className="container-kg py-8 sm:py-10">
@@ -205,7 +228,11 @@ export function ProductDetail({
                 {canBuy ? formatPrice(unitExcl) : "Prijs op aanvraag"}
               </p>
               <p className="mt-1 text-[14px] text-kg-text-2">
-                {canBuy ? `/paneel excl. btw${priceM2 ? ` · ${formatPrice(priceM2)} /m²` : ""}` : "Niet online te bestellen"}
+                {canBuy
+                  ? sheet
+                    ? `/plaat excl. btw${sheetM2Price ? ` · ${formatPrice(sheetM2Price)} /m² op de hele plaat` : ""}`
+                    : `/paneel excl. btw${priceM2 ? ` · ${formatPrice(priceM2)} /m²` : ""}`
+                  : "Niet online te bestellen"}
               </p>
             </div>
             <p className="font-mono text-[13px] whitespace-nowrap" style={{ color: status.color }}>
@@ -278,7 +305,14 @@ export function ProductDetail({
             </fieldset>
           </div>
 
-          {coverage ? (
+          {sheet ? (
+            <SheetCalculator
+              sheetM2={product.sheetM2}
+              unitExcl={canBuy ? unitExcl : 0}
+              onTake={(count) => setQty(count)}
+              onOrder={(count) => onAdd(count)}
+            />
+          ) : coverage ? (
             <AreaCalculator
               panelsPerM2={coverage}
               lengthLabel={formatLengthMm(selected.length)}
@@ -327,7 +361,9 @@ export function ProductDetail({
               Toegevoegd. <Link href="/winkelwagen">Naar winkelwagen</Link>
             </p>
           ) : (
-            <p className="font-mono text-[13px] text-kg-text-2">10 jaar garantie op kleur, volgens het merkvoorschrift.</p>
+            <p className="font-mono text-[13px] text-kg-text-2">
+              {sheet ? "Hele plaat. Je zaagwerk doen wij niet." : "10 jaar garantie op kleur, volgens het merkvoorschrift."}
+            </p>
           )}
         </div>
       </div>
@@ -350,12 +386,14 @@ export function ProductDetail({
         </div>
         <div className="mt-6 grid gap-8 lg:grid-cols-2">
           <p className="text-[15px] leading-[1.5] text-kg-text-2">
-            {tab === "omschrijving" ? product.description : TAB_COPY[tab]}
+            {tab === "omschrijving" ? product.description : tabCopy(sheet, tab)}
           </p>
           <div className="border border-kg-lijn bg-white p-5 font-mono text-[14px]">
             <p className="font-medium">Levering en retour</p>
             <p className="mt-2 text-kg-text-2">
-              Levertijd bevestigen we na bestelling. Retour binnen 14 dagen als het artikel ongewijzigd is. Panelen op maat zijn uitgesloten. Zie{" "}
+              Levertijd bevestigen we na bestelling. Retour binnen 14 dagen als het artikel ongewijzigd is.{" "}
+              {sheet ? "Wij zagen de plaat niet. " : "Panelen op maat zijn uitgesloten. "}
+              Zie{" "}
               <Link href="/verzenden-retour">verzenden en retour</Link>.
             </p>
           </div>

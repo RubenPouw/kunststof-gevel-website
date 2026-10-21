@@ -3,6 +3,7 @@ export const categorySlugs = [
   "dakranden",
   "kozijnafwerking",
   "montage",
+  "hpl-platen",
 ] as const;
 
 export type CategorySlug = (typeof categorySlugs)[number];
@@ -126,6 +127,10 @@ export type Product = {
   workingWidthMm?: number;
   profileType: ProfileType;
   sampleable: boolean;
+  /** Whole HPL sheet. The gevel calculator does not apply. */
+  saleUnit?: "sheet";
+  /** Square metres of one whole sheet. */
+  sheetM2?: number;
   panelsPerM2?: number;
   /** Other Shopify handles that are the same article. Not written back to Shopify. */
   aliasSlugs?: string[];
@@ -149,4 +154,8 @@ export type ListingFilters = {
   profileType?: ProfileType;
   colorFamily?: ColorFamily;
   workingWidthMm?: number;
+  /** Exact colour name, slugified. Used for HPL sheets. */
+  colorSlug?: string;
+  /** RAL digits, for example 7016. */
+  ral?: string;
 };

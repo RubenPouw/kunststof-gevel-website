@@ -93,7 +93,7 @@ PAGES = {
     "/profex-gevelbekleding": ("/merken/profex", "brand", 301),
     "/kerrafront-gevelbekleding": ("/merken/kerrafront", "brand", 301),
     "/eurotexx-gevelbekleding": ("/merken/eurotexx", "brand", 301),
-    "/hpl-plaat": ("/blog/hpl-plaat", "uitleg-in-plaats-van-dunne-landingspagina", 301),
+    "/hpl-plaat": ("/hpl-platen", "hpl-categorie", 301),
     "/kunststof-kozijnen-op-maat-prijs-berekenen-snel-geleverd": ("/kozijnen", "same-job", 301),
     "/keralit-montage": ("/montage?merk=keralit", "montage-brand", 301),
     "/kerrafront-montage": ("/montage?merk=kerrafront", "montage-brand", 301),
@@ -114,7 +114,7 @@ PAGES = {
     "/laatste-nieuws/algemeen": ("/blog", "blog-index", 301),
     "/vinyplus-turners-eiken-mooi-op-ieder-project": ("/blog/vinyplus-turners-eiken", "rewritten-article", 301),
     "/nieuw-paneel-keralit-167-mm-de-moderne-strakke-keuze-voor-elke-gevel": ("/blog/keralit-sponningdeel-167", "rewritten-article", 301),
-    "/hpl-gevelplaat-toepassingen-montage": ("/blog/hpl-plaat", "rewritten-article", 301),
+    "/hpl-gevelplaat-toepassingen-montage": ("/hpl-platen", "hpl-categorie", 301),
     "/kunststof-vensterbank-binnen-condens-afwerking": ("/blog/condens-op-vensterbank", "rewritten-article", 301),
     "/overzet-vensterbank-meten-monteren": ("/blog/overzet-vensterbank-meten", "rewritten-article", 301),
     "/kunststof-rabatdelen-horizontaal-verticaal-onderhoud": ("/blog/rabat-horizontaal-of-verticaal", "rewritten-article", 301),
@@ -177,7 +177,9 @@ def family_target(slug: str) -> tuple[str, str]:
         if brand:
             return f"/montage?merk={brand}", "accessory-family"
         return "/montage", "accessory-family"
-    if "hpl" in text or "plaat" in text:
+    if "hpl" in text and "reiniger" not in text:
+        return "/hpl-platen", "hpl-sheet"
+    if "plaat" in text:
         return "/kozijnafwerking", "plaat-family"
     if brand:
         return f"/merken/{brand}", "brand-family"
@@ -228,6 +230,8 @@ def category_target(path: str) -> tuple[str, str]:
         return "/merken/florence", "category"
     if "buitenplafond" in text or "overstek" in text or "plafond" in text:
         return "/merken/florence", "category"
+    if "hpl" in text and "reiniger" not in text:
+        return "/hpl-platen", "hpl-sheet"
     if "vensterbank" in text or "plaat" in text:
         return "/kozijnafwerking", "category"
     if "dakrand" in text or "boei" in text:

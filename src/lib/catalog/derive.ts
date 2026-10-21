@@ -1,8 +1,10 @@
-import { facadeOrder } from "@/lib/area";
+import { facadeOrder, HPL_SHEET_M2 } from "@/lib/area";
 import {
+  extractHplColor,
   extractPanelLength,
   parseLengthMeters,
   splitColorAndLength,
+  withoutTrespa,
 } from "@/lib/catalog/text-rules";
 
 import type {
@@ -118,41 +120,60 @@ function variantOptions(variant: ProductVariant): { name: string; value: string 
   return options;
 }
 
+export const HPL_SHEET_SIZE = "3050 × 1300 mm";
+
 export function enrichProduct(product: Product): Product {
-  const workingWidthMm = product.workingWidthMm ?? parseWorkingWidthMm(product.name, product.specs);
-  const profileType =
-    product.profileType && product.profileType !== "overig"
+  const sheet = product.category === "hpl-platen" || product.saleUnit === "sheet";
+  const name = withoutTrespa(product.name);
+  const workingWidthMm = sheet ? undefined : (product.workingWidthMm ?? parseWorkingWidthMm(name, product.specs));
+  const profileType = sheet
+    ? "overig"
+    : product.profileType && product.profileType !== "overig"
       ? product.profileType
-      : inferProfileType(product.name, product.productType);
-  const facade = isFacadePanel({
-    category: product.category,
-    name: product.name,
-    workingWidthMm,
-    profileType,
-  });
-  const sampleable = facade;
+      : inferProfileType(name, product.productType);
+  const facade = sheet
+    ? false
+    : isFacadePanel({
+        category: product.category,
+        name,
+        workingWidthMm,
+        profileType,
+      });
+  const sampleable = sheet ? true : facade;
 
   let anyAssumed = false;
   const variants: ProductVariant[] = product.variants.map((variant) => {
-    const resolved = variantLength(variant, product.name);
+    const resolved = variantLength(variant, name);
     let length = resolved.length;
+    let colorName = withoutTrespa(resolved.colorName);
+    let ral = variant.ral;
     let assumed = false;
-    if (!parseLengthMeters(length) && facade) {
+    if (sheet) {
+      const genericColor = /^(standaard|default title|hpl plaat)$/i.test(colorName);
+      const parsed = extractHplColor(
+        `${name} ${genericColor ? "" : colorName} ${(variant.options ?? []).map((option) => option.value).join(" ")}`,
+      );
+      if (!ral && parsed.ral) ral = parsed.ral;
+      if (genericColor) {
+        colorName = parsed.colorName || parsed.ral || colorName;
+      }
+      length = HPL_SHEET_SIZE;
+    } else if (!parseLengthMeters(length) && facade) {
       length = "6 m";
       assumed = true;
       anyAssumed = true;
     }
-    const meters = parseLengthMeters(length);
-    const family = colorFamilyFromName(resolved.colorName);
+    const meters = sheet ? undefined : parseLengthMeters(length);
+    const family = colorFamilyFromName(colorName);
     const next: ProductVariant = {
       ...variant,
-      colorName: resolved.colorName,
+      colorName,
+      ral,
       length,
       lengthAssumed: assumed,
       colorFamily: family,
-      panelsPerM2:
-        workingWidthMm && meters ? Number(panelsPerM2(workingWidthMm, meters).toFixed(2)) : undefined,
-      sampleId: sampleId(product.brandSlug, resolved.colorName),
+      panelsPerM2: sheet || !workingWidthMm || !meters ? undefined : Number(panelsPerM2(workingWidthMm, meters).toFixed(2)),
+      sampleId: sampleId(product.brandSlug, colorName),
     };
     return {
       ...next,
@@ -173,9 +194,10 @@ export function enrichProduct(product: Product): Product {
     });
   }
 
-  const defaultCoverage =
-    variants.find((variant) => parseLengthMeters(variant.length) === 6)?.panelsPerM2 ??
-    variants.find((variant) => variant.panelsPerM2)?.panelsPerM2;
+  const defaultCoverage = sheet
+    ? undefined
+    : (variants.find((variant) => parseLengthMeters(variant.length) === 6)?.panelsPerM2 ??
+      variants.find((variant) => variant.panelsPerM2)?.panelsPerM2);
 
   const uniqueLengths = [...new Set(variants.map((variant) => variant.length))];
   const uniqueColors = [...new Set(variants.map((variant) => variant.colorName))];
@@ -183,14 +205,18 @@ export function enrichProduct(product: Product): Product {
 
   return {
     ...product,
+    name,
+    description: withoutTrespa(product.description),
     workingWidthMm,
     profileType,
     sampleable,
+    saleUnit: sheet ? "sheet" : product.saleUnit,
+    sheetM2: sheet ? HPL_SHEET_M2 : undefined,
     variants,
     colors,
     palette: colors.map((color) => color.hex),
     panelsPerM2: defaultCoverage,
-    lengthAssumed: anyAssumed,
+    lengthAssumed: sheet ? false : anyAssumed,
     length: lengthLabel,
     meta:
       uniqueColors.length > 1

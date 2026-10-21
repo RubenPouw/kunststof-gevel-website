@@ -1,3 +1,4 @@
+import { slugKey } from "./derive";
 import type {
   Brand,
   ColorFamily,
@@ -41,6 +42,12 @@ export function applyListingFilters(list: Product[], filters: ListingFilters) {
     if (filters.colorFamily && !product.colors.some((color) => color.family === filters.colorFamily)) {
       return false;
     }
+    if (filters.colorSlug && !product.colors.some((color) => slugKey(color.name) === filters.colorSlug)) {
+      return false;
+    }
+    if (filters.ral && !product.colors.some((color) => color.ral?.replace(/\D/g, "") === filters.ral)) {
+      return false;
+    }
     return true;
   });
 }
@@ -64,9 +71,12 @@ export function parseListingSearchParams(
   const typeRaw = firstParam(searchParams.type);
   const kleurRaw = firstParam(searchParams.kleur);
   const breedteRaw = firstParam(searchParams.breedte);
+  const colorSlug = firstParam(searchParams.kleurnaam);
+  const ralRaw = firstParam(searchParams.ral);
   const profileType = profileTypes.find((item) => item === typeRaw);
   const colorFamily = colorFamilies.find((item) => item === kleurRaw);
   const workingWidthMm = breedteRaw && /^\d+$/.test(breedteRaw) ? Number(breedteRaw) : undefined;
+  const ral = ralRaw && /^\d{4}$/.test(ralRaw) ? ralRaw : undefined;
 
   return {
     brandSlug: brandSlug || undefined,
@@ -74,7 +84,21 @@ export function parseListingSearchParams(
     profileType,
     colorFamily,
     workingWidthMm,
+    colorSlug: colorSlug || undefined,
+    ral,
   };
+}
+
+export function hasActiveFilters(filters: ListingFilters) {
+  return Boolean(
+    filters.brandSlug ||
+      filters.inStockOnly ||
+      filters.profileType ||
+      filters.colorFamily ||
+      filters.workingWidthMm ||
+      filters.colorSlug ||
+      filters.ral,
+  );
 }
 
 export function listingHref(
@@ -86,12 +110,14 @@ export function listingHref(
   const params = new URLSearchParams(existing);
   const next: ListingFilters = { ...current, ...patch };
   const brand = patch.brandSlug === "" ? undefined : next.brandSlug;
-  ["merk", "voorraad", "type", "kleur", "breedte"].forEach((key) => params.delete(key));
+  ["merk", "voorraad", "type", "kleur", "breedte", "kleurnaam", "ral"].forEach((key) => params.delete(key));
   if (brand) params.set("merk", brand);
   if (next.inStockOnly) params.set("voorraad", "1");
   if (next.profileType) params.set("type", next.profileType);
   if (next.colorFamily) params.set("kleur", next.colorFamily);
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
+  if (next.colorSlug) params.set("kleurnaam", next.colorSlug);
+  if (next.ral) params.set("ral", next.ral);
   const query = params.toString();
   return query ? `${path}?${query}` : path;
 }
@@ -100,6 +126,8 @@ export function listingFacets(list: Product[]) {
   const types = new Map<ProfileType, number>();
   const families = new Map<ColorFamily, { count: number; hex: string }>();
   const widths = new Map<number, number>();
+  const sheetColors = new Map<string, { name: string; count: number; hex: string }>();
+  const rals = new Map<string, number>();
 
   for (const product of list) {
     types.set(product.profileType, (types.get(product.profileType) ?? 0) + 1);
@@ -116,6 +144,19 @@ export function listingFacets(list: Product[]) {
         hex: current?.hex ?? color.hex,
       });
     }
+    if (product.saleUnit === "sheet" || product.category === "hpl-platen") {
+      for (const color of product.colors) {
+        const key = slugKey(color.name);
+        const current = sheetColors.get(key);
+        sheetColors.set(key, {
+          name: current?.name ?? color.name,
+          count: (current?.count ?? 0) + 1,
+          hex: current?.hex ?? color.hex,
+        });
+        const ral = color.ral?.replace(/\D/g, "");
+        if (ral && /^\d{4}$/.test(ral)) rals.set(ral, (rals.get(ral) ?? 0) + 1);
+      }
+    }
   }
 
   return {
@@ -130,6 +171,12 @@ export function listingFacets(list: Product[]) {
     widths: [...widths.entries()]
       .map(([mm, count]) => ({ mm, count }))
       .sort((a, b) => a.mm - b.mm),
+    sheetColors: [...sheetColors.entries()]
+      .map(([slug, value]) => ({ slug, ...value }))
+      .sort((a, b) => a.name.localeCompare(b.name, "nl")),
+    rals: [...rals.entries()]
+      .map(([code, count]) => ({ code, count }))
+      .sort((a, b) => a.code.localeCompare(b.code, "nl", { numeric: true })),
   };
 }
 

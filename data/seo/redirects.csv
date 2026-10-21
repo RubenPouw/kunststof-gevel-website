@@ -8,8 +8,8 @@ from,to,status,reason
 /eurotexx-gevelbekleding,/merken/eurotexx,301,brand
 /eurotexx-montage,/montage?merk=eurotexx,301,montage-brand
 /herroepingsrecht,/herroepingsrecht,200,same-url
-/hpl-gevelplaat-toepassingen-montage,/blog/hpl-plaat,301,rewritten-article
-/hpl-plaat,/blog/hpl-plaat,301,uitleg-in-plaats-van-dunne-landingspagina
+/hpl-gevelplaat-toepassingen-montage,/hpl-platen,301,hpl-categorie
+/hpl-plaat,/hpl-platen,301,hpl-categorie
 /keralit-dakranden,/dakranden?merk=keralit,301,category-brand
 /keralit-montage,/montage?merk=keralit,301,montage-brand
 /keralit-of-kunststof-gevelbekleding,/blog/keralit-of-vinyplus,301,duplicate-of-comparison
@@ -182,7 +182,7 @@ from,to,status,reason
 /product/milinboard-overzetvensterbank-380-mm,/producten/milinboard-overzetvensterbank-380-mm,301,same-handle
 /product/milinboard-steenlook-vensterbank,/kozijnafwerking?merk=milinboard,301,vensterbank-family
 /product/milinboard-vensterbank-type-b,/kozijnafwerking?merk=milinboard,301,vensterbank-family
-/product/milyt-hpl-plaat,/kozijnafwerking,301,plaat-family
+/product/milyt-hpl-plaat,/hpl-platen,301,hpl-sheet
 /product/msp-high-tack-lijm-290-ml,/montage,301,accessory-family
 /product/novaboard-eindkap,/kozijnafwerking,301,vensterbank-family
 /product/novaboard-kunststof-vensterbank,/kozijnafwerking,301,vensterbank-family
@@ -346,8 +346,8 @@ from,to,status,reason
 /wp-content/uploads/2023/06/project2.jpg,/merken/florence,301,image-to-parent-page
 /wp-content/uploads/2023/06/project6-scaled-scaled.jpg,/gevelbekleding,301,image-to-parent-page
 /wp-content/uploads/2023/07/Zwart.jpg,/kozijnafwerking?merk=milinboard,301,image-to-parent-page
-/wp-content/uploads/2023/07/project10-scaled-scaled.jpg,/kozijnafwerking,301,image-to-parent-page
-/wp-content/uploads/2023/07/project2-scaled-scaled.jpg,/kozijnafwerking,301,image-to-parent-page
+/wp-content/uploads/2023/07/project10-scaled-scaled.jpg,/hpl-platen,301,image-to-parent-page
+/wp-content/uploads/2023/07/project2-scaled-scaled.jpg,/hpl-platen,301,image-to-parent-page
 /wp-content/uploads/2023/08/0384_Milyt_PE_tape_3x12mm_zwart_rol_a_25mtr_1024x1024@2x.jpg,/montage,301,image-to-parent-page
 /wp-content/uploads/2023/08/383-afdichtingsprofiel.jpg,/montage,301,image-to-parent-page
 /wp-content/uploads/2023/08/zierer.jpg,/montage?merk=zierer,301,image-to-parent-page
@@ -402,7 +402,7 @@ from,to,status,reason
 /wp-content/uploads/2024/10/PR3092BI17036_2852_Hoekstuk_sierlijst_klassiek_SZ2.webp,/dakranden?merk=keralit,301,image-to-parent-page
 /wp-content/uploads/2024/10/PR3362BI17035_2851_Trim_kraal_sierlijst_modern_SZ2.webp,/merken/keralit,301,image-to-parent-page
 /wp-content/uploads/2024/12/Keralit_dakranden.png,/merken/keralit,301,image-to-parent-page
-/wp-content/uploads/2024/12/Plaatmateriaal.jpeg,/blog/hpl-plaat,301,image-to-parent-page
+/wp-content/uploads/2024/12/Plaatmateriaal.jpeg,/hpl-platen,301,image-to-parent-page
 /wp-content/uploads/2024/12/Type-B-Paneel.jpg,/kozijnafwerking,301,image-to-parent-page
 /wp-content/uploads/2024/12/Vinkje_Kunstof-gevel.png,/gevelbekleding,301,image-to-parent-page
 /wp-content/uploads/2024/12/Vinyplus_dakranden.png,/merken/vinyplus,301,image-to-parent-page
@@ -424,7 +424,7 @@ from,to,status,reason
 /wp-content/uploads/2025/02/gevelbekledingdetails-143-desktop.webp,/montage?merk=keralit,301,image-to-parent-page
 /wp-content/uploads/2025/02/images-2.png,/algemene-voorwaarden,301,image-to-parent-page
 /wp-content/uploads/2025/02/milinboard-freestone-light-3.webp,/kozijnafwerking,301,image-to-parent-page
-/wp-content/uploads/2025/02/project8-scaled.jpg,/blog/hpl-plaat,301,image-to-parent-page
+/wp-content/uploads/2025/02/project8-scaled.jpg,/hpl-platen,301,image-to-parent-page
 /wp-content/uploads/2025/02/project9-scaled.jpg,/merken/eurotexx,301,image-to-parent-page
 /wp-content/uploads/2025/02/ventilatieprofiel-startprofiel-vinyplus.webp,/merken/vinyplus,301,image-to-parent-page
 /wp-content/uploads/2025/03/03-softline-82-1724933681.jpeg,/kozijnen,301,image-to-parent-page

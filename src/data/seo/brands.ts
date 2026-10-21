@@ -315,6 +315,96 @@ export const brandStories: BrandStory[] = [
       { href: "/contact", label: "Contact" },
     ],
   },
+  {
+    slug: "hpl-compact-exterieur",
+    metaTitle: "HPL Compact Exterieur",
+    description: "HPL Compact Exterieur, 3050 × 1300 × 6 mm, hele plaat voor buiten.",
+    lead: "HPL Compact Exterieur is de plaat voor buiten. U krijgt hem heel: 3050 × 1300 mm, 6 mm dik, 3,965 m².",
+    sections: [
+      {
+        heading: "Buiten, met een spouw",
+        paragraphs: [
+          "Zet de plaat op een geventileerde achterconstructie. Kit de spouw niet dicht. De kleur kiest u in de filter, of via een staal buiten.",
+          "Wij zagen de plaat niet. Reststukken blijven van u.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is dit een gevelpaneel met sponning?",
+        a: "Nee. Het is een vlakke plaat. Voor een rabatnaad neemt u een gevelpaneel.",
+      },
+    ],
+    links: [
+      { href: "/hpl-platen", label: "Alle HPL platen" },
+      { href: "/stalen", label: "Staal aanvragen" },
+    ],
+  },
+  {
+    slug: "hpl-fr",
+    metaTitle: "FR brandvertragend",
+    description: "Brandvertragende HPL plaat, 3050 × 1300 × 6 mm, hele plaat.",
+    lead: "FR brandvertragend is dezelfde plaatmaat, gekozen als het bestek een brandvertragende plaat vraagt.",
+    sections: [
+      {
+        heading: "Geen verzonnen klasse",
+        paragraphs: [
+          "Op deze pagina staat geen brandklasse. Die hoort op het artikel of in het document van de lijn, niet als een losse belofte.",
+          "De plaat is 3,965 m² en gaat heel de deur uit.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is FR hetzelfde formaat als Compact Exterieur?",
+        a: "Ja. 3050 × 1300 × 6 mm. Het verschil zit in de brandvertragende opbouw, niet in de rekenmaat.",
+      },
+    ],
+    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+  },
+  {
+    slug: "renolit",
+    metaTitle: "Renolit eenzijdig",
+    description: "Renolit eenzijdig, HPL plaat met decor aan één kant. Hele plaat van 3,965 m².",
+    lead: "Renolit eenzijdig heeft de decorlaag aan één kant. De plaatmaat is 3050 × 1300 × 6 mm.",
+    sections: [
+      {
+        heading: "Eén zichtzijde",
+        paragraphs: [
+          "Reken ermee dat de decorlaag aan één kant zit. De achterkant is geen tweede zichtzijde.",
+          "Filter op kleur of RAL. Wij zagen de plaat niet op maat.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan ik beide kanten als zichtzijde gebruiken?",
+        a: "Nee. Eenzijdig betekent één decorzijde.",
+      },
+    ],
+    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+  },
+  {
+    slug: "abet",
+    metaTitle: "Abet HPL",
+    description: "Abet HPL platen, 3050 × 1300 × 6 mm, hele plaat, filter op kleur en RAL.",
+    lead: "Abet is een decorlijn in de HPL platen. U kiest de kleur of de RAL. De plaat wordt heel geleverd.",
+    sections: [
+      {
+        heading: "Kleur, dan het aantal",
+        paragraphs: [
+          "Filter de lijst op kleur of op RAL. Daarna telt Platen nodig het vlak om naar hele platen van 3,965 m².",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Zit zaagwerk bij de prijs?",
+        a: "Nee. U bestelt de hele plaat.",
+      },
+    ],
+    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+  },
 ];
 
 export function getBrandStory(slug: string) {

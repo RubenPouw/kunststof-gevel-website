@@ -82,6 +82,14 @@ export function productJsonLd(product: Product, categoryName: string) {
     category: categoryName,
   };
   if (images.length) data.image = images;
+  if (product.saleUnit === "sheet") {
+    data.additionalProperty = [
+      { "@type": "PropertyValue", name: "Afmeting", value: "3050 × 1300 mm" },
+      { "@type": "PropertyValue", name: "Dikte", value: "6 mm" },
+      { "@type": "PropertyValue", name: "Oppervlak per plaat", value: "3,965 m²" },
+      { "@type": "PropertyValue", name: "Zaagwerk", value: "Hele plaat" },
+    ];
+  }
   if (variant.price > 0) {
     data.offers = {
       "@type": "Offer",

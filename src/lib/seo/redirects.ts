@@ -47,6 +47,7 @@ export function fallbackTarget(path: string) {
   if (path.startsWith("/product/")) {
     const slug = path.slice("/product/".length);
     const brand = brandOf(slug);
+    if (slug.includes("hpl") && !slug.includes("reiniger")) return "/hpl-platen";
     if (slug.includes("dakrand") || slug.includes("boei")) {
       return brand ? `/dakranden?merk=${brand}` : "/dakranden";
     }
@@ -57,6 +58,7 @@ export function fallbackTarget(path: string) {
   }
   if (path.startsWith("/product-categorie/")) {
     const brand = brandOf(path);
+    if (path.includes("hpl") && !path.includes("reiniger")) return "/hpl-platen";
     if (path.includes("dakrand") || path.includes("boei")) {
       return brand ? `/dakranden?merk=${brand}` : "/dakranden";
     }
