@@ -13,6 +13,9 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const products = await listProducts();
+  // A full Shopify copy is cached on the first request (revalidate). Baking
+  // every product into the Render build kept that build from finishing.
+  if (products.length > 80) return [];
   return products.map((product) => ({ slug: product.slug }));
 }
 
