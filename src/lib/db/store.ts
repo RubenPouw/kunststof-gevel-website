@@ -133,7 +133,7 @@ export async function deleteCollection(sql: Sql, id: string, handle?: string) {
 }
 
 export async function replacePublicProducts(sql: Sql, products: Product[]) {
-  await sql.begin(async (tx) => {
+  await withTransaction(sql, async (tx) => {
     await tx`delete from catalog_product`;
     for (const product of products) {
       await tx`
@@ -148,6 +148,23 @@ export async function replacePublicProducts(sql: Sql, products: Product[]) {
       `;
     }
   });
+}
+
+// sql.reserve() is one connection and has no begin(). A manual transaction
+// stays on that connection, which also holds the advisory lock.
+async function withTransaction(sql: Sql, run: (tx: Sql) => Promise<void>) {
+  if (typeof sql.begin === "function") {
+    await sql.begin(run);
+    return;
+  }
+  await sql.unsafe("begin");
+  try {
+    await run(sql);
+    await sql.unsafe("commit");
+  } catch (error) {
+    await sql.unsafe("rollback").catch(() => undefined);
+    throw error;
+  }
 }
 
 export async function markFullSync(sql: Sql, at = new Date().toISOString()) {
