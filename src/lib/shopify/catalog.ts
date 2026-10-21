@@ -60,17 +60,21 @@ async function paginateProducts(query: string, fresh: boolean) {
   const nodes: ShopifyProduct[] = [];
   let cursor: string | null = null;
   let hasNextPage = true;
+  let pages = 0;
 
-  while (hasNextPage) {
+  while (hasNextPage && pages < 30) {
     const data: ProductsPageData = await storefrontFetch<ProductsPageData>(
       query,
       { cursor },
       undefined,
       fresh,
     );
+    pages += 1;
     nodes.push(...data.products.nodes);
-    hasNextPage = data.products.pageInfo.hasNextPage;
-    cursor = data.products.pageInfo.endCursor;
+    const next = data.products.pageInfo.endCursor;
+    hasNextPage = data.products.pageInfo.hasNextPage && Boolean(next) && next !== cursor;
+    cursor = next;
+    console.log(`[catalog] producten pagina ${pages}: ${nodes.length}`);
   }
 
   return nodes;
@@ -80,17 +84,20 @@ async function paginateCollections(fresh: boolean) {
   const nodes: ShopifyCollectionNode[] = [];
   let cursor: string | null = null;
   let hasNextPage = true;
+  let pages = 0;
 
-  while (hasNextPage) {
+  while (hasNextPage && pages < 10) {
     const data: CollectionsData = await storefrontFetch<CollectionsData>(
       COLLECTIONS_QUERY,
       { cursor },
       undefined,
       fresh,
     );
+    pages += 1;
     nodes.push(...data.collections.nodes);
-    hasNextPage = data.collections.pageInfo.hasNextPage;
-    cursor = data.collections.pageInfo.endCursor;
+    const next = data.collections.pageInfo.endCursor;
+    hasNextPage = data.collections.pageInfo.hasNextPage && Boolean(next) && next !== cursor;
+    cursor = next;
   }
 
   return nodes;
@@ -198,13 +205,15 @@ export async function fetchShopifyCollection(handle: string) {
   let hasNextPage = true;
   let collection: ShopifyCollectionNode | null = null;
 
-  while (hasNextPage) {
+  let pages = 0;
+  while (hasNextPage && pages < 30) {
     const data: CollectionByHandleData = await storefrontFetch<CollectionByHandleData>(
       COLLECTION_BY_HANDLE_QUERY,
       { handle, cursor },
       undefined,
       true,
     );
+    pages += 1;
     if (!data.collection) return null;
     collection = {
       id: data.collection.id,
@@ -213,8 +222,9 @@ export async function fetchShopifyCollection(handle: string) {
       description: data.collection.description,
     };
     products.push(...data.collection.products.nodes);
-    hasNextPage = data.collection.products.pageInfo.hasNextPage;
-    cursor = data.collection.products.pageInfo.endCursor;
+    const next = data.collection.products.pageInfo.endCursor;
+    hasNextPage = data.collection.products.pageInfo.hasNextPage && Boolean(next) && next !== cursor;
+    cursor = next;
   }
 
   if (!collection) return null;

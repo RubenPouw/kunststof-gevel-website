@@ -32,6 +32,7 @@ export async function storefrontFetch<T>(
       "X-Shopify-Storefront-Access-Token": config.storefrontAccessToken,
     },
     body: JSON.stringify({ query, variables }),
+    signal: AbortSignal.timeout(60_000),
     ...(fresh
       ? { cache: "no-store" as const }
       : { next: { revalidate: 3600, tags: ["shopify-catalog"] } }),

@@ -10,6 +10,14 @@ export function databaseUrl() {
   return url || null;
 }
 
+export async function endSql() {
+  if (!client) return;
+  const current = client;
+  client = null;
+  clientUrl = null;
+  await current.end({ timeout: 2 }).catch(() => undefined);
+}
+
 export function getSql() {
   const url = databaseUrl();
   if (!url) return null;

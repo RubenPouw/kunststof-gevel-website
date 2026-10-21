@@ -19,7 +19,7 @@ export async function generateStaticParams() {
   const params: { kind: string; slug: string; state: string[] }[] = [];
   for (const slug of categorySlugs) {
     const products = await getProductsByCategory(slug);
-    const pages = Math.ceil(products.length / PAGE_SIZE);
+    const pages = Math.min(Math.ceil(products.length / PAGE_SIZE), 4);
     for (let page = 2; page <= pages; page += 1) {
       params.push({ kind: "categorie", slug, state: ["p", String(page)] });
     }
@@ -27,7 +27,7 @@ export async function generateStaticParams() {
   const brands = await listBrands();
   for (const brand of brands) {
     const products = await getProductsByBrand(brand.slug);
-    const pages = Math.ceil(products.length / PAGE_SIZE);
+    const pages = Math.min(Math.ceil(products.length / PAGE_SIZE), 3);
     for (let page = 2; page <= pages; page += 1) {
       params.push({ kind: "merk", slug: brand.slug, state: ["p", String(page)] });
     }
