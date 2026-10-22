@@ -8,7 +8,7 @@ import { PROFILE, SIZE_LIMITS, SLIDING_NAME, publicProfileName } from "../src/li
 import { getLayoutBySlug } from "../src/lib/kozijnen/layouts.ts";
 import { defaultConfig, defaultLaminated, parseConfig, resumeVisible, serializeConfig, sizeInRange } from "../src/lib/kozijnen/model.ts";
 import { buildPdf, quotePdfLines } from "../src/lib/kozijnen/pdf.ts";
-import { calculatePrice, optionIdsFor, priceBook, pricesFlagActive, publicPrice, type PriceBook, type PriceInput } from "../src/lib/kozijnen/prices.ts";
+import { calculatePrice, optionIdsFor, optionNet, priceBook, pricesFlagActive, publicPrice, type PriceBook, type PriceInput } from "../src/lib/kozijnen/prices.ts";
 import { CLAIMS, SUPPLIER } from "../src/lib/kozijnen/supplier.ts";
 import { lookupRedirect } from "../src/lib/seo/redirects.ts";
 import { summaryText } from "../src/lib/kozijnen/text.ts";
@@ -99,13 +99,11 @@ test("selling price is purchase times the markup and the flag stays off", () => 
   assert.equal(pricesFlagActive({}), false);
   assert.equal(pricesFlagActive({ KOZIJNEN_PRIJZEN_ACTIEF: "true" }), true);
   assert.equal(priceBook.options.find((option) => option.id === "ventilatie.rooster")?.marginPercent, 50);
+  assert.equal(priceBook.options.find((option) => option.id === "ventilatie.rooster")?.amount, 211);
   assert.equal(priceBook.options.find((option) => option.id === "ventilatie.duco")?.marginPercent, 50);
-  assert.equal(priceBook.options.find((option) => option.id === "ventilatie.duco")?.amount, null);
-  for (const id of ["afstandhouder.zwart", "roeden.met", "kleur.ral", "kruk.kleur"]) {
-    const option = priceBook.options.find((item) => item.id === id);
-    assert.equal(option?.amount, null, id);
-    assert.equal(option?.marginPercent, undefined, id);
-  }
+  assert.equal(priceBook.options.find((option) => option.id === "ventilatie.duco")?.amount, 188.81);
+  assert.equal(priceBook.options.find((option) => option.id === "kleur.ral")?.amount, null);
+  assert.equal(priceBook.options.find((option) => option.id === "roeden.met")?.quoteOnly, true);
   const quiet = calculatePrice(plain("draaikiepraam", 1000, 1200, [{ kind: "draaikiep", flex: 1 }]), priceBook, false);
   assert.deepEqual(quiet, { pricesActive: false });
   const quoteOnly = calculatePrice(plain("schuifpui-4-delig", 4000, 2100, []), priceBook, true);
@@ -147,7 +145,7 @@ test("selling price is purchase times the markup and the flag stays off", () => 
   );
   assert.equal(corner.pricesActive, true);
   if (!corner.pricesActive) return;
-  assert.equal(corner.totalExcl, 552.68);
+  assert.equal(corner.totalExcl, 549.54);
 
   const book: PriceBook = {
     marginPercent: 80,
@@ -185,11 +183,11 @@ test("new Fillout options stay out of the price until a purchase amount exists",
   config.frameOut = "ral";
   config.ralCode = "RAL 7016";
   const ids = optionIdsFor({ ...config, hasSash: true });
-  for (const id of ["ventilatie.duco", "afstandhouder.zwart", "roeden.met", "kruk.kleur", "kleur.ral"]) {
+  for (const id of ["ventilatie.duco", "afstandhouder.zwart", "roeden.met", "kruk.zwart", "kleur.ral"]) {
     assert.equal(ids.includes(id), true, id);
   }
   assert.equal(ids.includes("ventilatie.rooster"), false);
-  assert.equal(ids.includes("kleur.buiten"), false);
+  assert.equal(ids.includes("kleur.antraciet.buiten"), false);
   const priced = calculatePrice(
     {
       layout: layout.slug,
@@ -214,6 +212,86 @@ test("new Fillout options stay out of the price until a purchase amount exists",
   assert.equal(again.bars, "met");
   assert.equal(again.handleColor, "zwart");
   assert.equal(again.ralCode, "RAL 7016");
+});
+
+test("reference option surcharges sell at the measured extra times the markup", () => {
+  const ref = plain("draaikiepraam", 1000, 1200, [{ kind: "draaikiep", flex: 1 }]);
+  const sell = (net: number, margin = 80) => Math.round(net * (1 + margin / 100) * 100) / 100;
+  const cases: { id: string; net: number; margin?: number }[] = [
+    { id: "glas.triple", net: 19.37 },
+    { id: "afstandhouder.zwart", net: 6.04 },
+    { id: "hoek.hvl", net: 49.04 },
+    { id: "ventilatie.duco", net: 188.81, margin: 50 },
+    { id: "ventilatie.rooster", net: 211, margin: 50 },
+    { id: "kruk.aluminium", net: 0.51 },
+    { id: "kruk.zwart", net: 0.04 },
+    { id: "kruk.afsluitbaar", net: 4.24 },
+    { id: "kleur.creme", net: 22.56 },
+    { id: "kleur.antraciet.buiten", net: 43.02 },
+    { id: "kleur.antraciet.binnen", net: 53.95 },
+    { id: "kleur.antraciet.beide", net: 77.97 },
+  ];
+  for (const row of cases) {
+    assert.equal(optionNet(row.id, ref), row.net, row.id);
+    const priced = calculatePrice({ ...ref, optionIds: [row.id] }, priceBook, true);
+    assert.equal(priced.pricesActive, true, row.id);
+    if (!priced.pricesActive) continue;
+    const line = priced.lines.find((item) => item.id === row.id)?.amountExcl;
+    assert.equal(line, sell(row.net, row.margin), row.id);
+    const shown = publicPrice(priced);
+    assert.equal("lines" in shown, false, row.id);
+    assert.equal(JSON.stringify(shown).includes(String(row.net)), false, row.id);
+  }
+
+  assert.equal(optionNet("roeden.met", ref), 71.58);
+  const bars = calculatePrice({ ...ref, optionIds: ["roeden.met"] }, priceBook, true);
+  assert.equal(bars.pricesActive, false);
+  const ral = calculatePrice({ ...ref, optionIds: ["kleur.ral"] }, priceBook, true);
+  assert.equal(ral.pricesActive, false);
+  const plainWindow = calculatePrice(ref, priceBook, true);
+  assert.equal(plainWindow.pricesActive && plainWindow.totalExcl, 461.27);
+
+  const wide = plain("draaikiepraam", 2000, 1200, [{ kind: "draaikiep", flex: 1 }]);
+  const two = plain("stolpraam", 1400, 1400, [
+    { kind: "draaikiep", flex: 1 },
+    { kind: "draaikiep", flex: 1 },
+  ]);
+  assert.equal(optionNet("ventilatie.duco", wide), 188.81 * 2);
+  assert.equal(optionNet("ventilatie.rooster", wide), 211);
+  assert.equal(optionNet("hoek.hvl", two), 49.04 * 2);
+  assert.equal(optionNet("kruk.aluminium", two), 0.51 * 2);
+  assert.equal(optionNet("roeden.met", two), 71.58 * 2);
+  assert.equal(
+    optionNet("kleur.antraciet.buiten", wide),
+    43.02 * ((2 * (2000 + 1200)) / (2 * (1000 + 1200))),
+  );
+  const opening = (width: number, height: number) => (width - 128) * (height - 128);
+  const tall = plain("draaikiepraam", 1000, 2400, [{ kind: "draaikiep", flex: 1 }]);
+  assert.equal(optionNet("glas.triple", tall), 19.37 * (opening(1000, 2400) / opening(1000, 1200)));
+  assert.equal(optionNet("afstandhouder.zwart", tall), 6.04 * ((2 * (872 + 2272)) / (2 * (872 + 1072))));
+
+  const layout = getLayoutBySlug("draaikiepraam");
+  assert.ok(layout);
+  const base = defaultConfig(layout);
+  const colour = (patch: Partial<typeof base>) => optionIdsFor({ ...base, ...patch, hasSash: true });
+  assert.equal(colour({ frameOut: "7016", sashOut: "7016" }).includes("kleur.antraciet.buiten"), true);
+  assert.equal(colour({ frameOut: "7016", sashOut: "7016" }).includes("kleur.vleugel"), false);
+  assert.equal(colour({ frameIn: "7016", sashIn: "7016" }).includes("kleur.antraciet.binnen"), true);
+  assert.deepEqual(
+    colour({ frameOut: "7016", frameIn: "7016", sashOut: "7016", sashIn: "7016" }).filter((id) => id.startsWith("kleur.")),
+    ["kleur.antraciet.beide"],
+  );
+  assert.equal(colour({ frameOut: "7016-nerf", sashOut: "7016-nerf" }).includes("kleur.antraciet.buiten"), true);
+  assert.equal(colour({ frameOut: "9001", frameIn: "9001", sashOut: "9001", sashIn: "9001" }).includes("kleur.creme"), true);
+  assert.equal(colour({ frameOut: "9001" }).includes("kleur.ontbreekt"), true);
+  assert.equal(colour({ frameOut: "9005", sashOut: "9005" }).includes("kleur.ontbreekt"), true);
+  assert.equal(colour({ sashOut: "7016" }).includes("kleur.vleugel"), true);
+  assert.equal(colour({ frameOut: "ral" }).includes("kleur.ral"), true);
+  assert.equal(colour({ handleColor: "wit" }).some((id) => id.startsWith("kruk.")), false);
+  assert.equal(colour({ handleColor: "aluminium" }).includes("kruk.aluminium"), true);
+  assert.equal(colour({ handleColor: "zwart" }).includes("kruk.zwart"), true);
+  assert.equal(colour({ handle: "afsluitbaar" }).includes("kruk.afsluitbaar"), true);
+  assert.equal((optionNet("kleur.antraciet.buiten", ref) ?? 0) + (optionNet("kleur.antraciet.binnen", ref) ?? 0), 96.97);
 });
 
 test("draft order checkout does not call Shopify while the flags are off", async () => {
@@ -287,7 +365,7 @@ test("kozijn pages do not ship review markup, the price module, or hidden suppli
     assert.equal(source.includes("Kömmerling"), false, file);
   }
 
-  const banned = /\bEKO\b|eko4u|eko-nl|\bRC2\b|\bPKVW\b|\bKOMO\b|\bSKG\b|hefschuif|brievenbus|bovenlicht|\bvoordeur\b|Politiekeurmerk|1,80|marginPercent|V-Super|\bHFL\b|75\.67|22\.97|66\.27|38\.54|14\.52|67\.64|139\.81|111\.61|967\.83|283\.77|43\.02|34\.31|50\.78|61\.49|211\.01/i;
+  const banned = /\bEKO\b|eko4u|eko-nl|\bRC2\b|\bPKVW\b|\bKOMO\b|\bSKG\b|hefschuif|brievenbus|bovenlicht|\bvoordeur\b|Politiekeurmerk|1,80|marginPercent|V-Super|\bHFL\b|75\.67|22\.97|66\.27|38\.54|14\.52|67\.64|139\.81|111\.61|967\.83|283\.77|43\.02|34\.31|50\.78|61\.49|211\.01|19\.37|6\.04|49\.04|188\.81|71\.58|22\.56|53\.95|77\.97|4\.24|0\.51/i;
   const roots = ["../src/components/kozijnen", "../src/app/kunststof-kozijnen", "../src/lib/kozijnen"];
   const skip = new Set(["supplier.ts", "prices.ts", "checkout.ts"]);
   for (const root of roots) {
