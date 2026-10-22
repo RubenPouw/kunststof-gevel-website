@@ -4,6 +4,7 @@ import { KozijnDrawing } from "@/components/kozijnen/drawing";
 import { KozijnFaqs, KozijnLinks } from "@/components/kozijnen/links";
 import { JsonLd } from "@/components/seo/json-ld";
 import { hubCopy } from "@/lib/kozijnen/content";
+import { PROFILE } from "@/lib/kozijnen/config";
 import { GROUPS, allLayouts, layoutPath } from "@/lib/kozijnen/layouts";
 import { defaultConfig } from "@/lib/kozijnen/model";
 import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo/schema";
@@ -33,7 +34,7 @@ export default function KozijnenHubPage() {
           </Link>
           {" / Kozijnen"}
         </p>
-        <p className="kicker mt-6">EKO NL Profiel</p>
+        <p className="kicker mt-6">{PROFILE.name}</p>
         <h1 className="display-plp mt-2 max-w-3xl">Kunststof kozijnen, in één profiel.</h1>
         <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-text-2">{hubCopy.lead}</p>
       </header>

@@ -1,6 +1,12 @@
 /**
  * Prijzen blijven op de server. De client importeert dit bestand niet.
- * Alle bedragen zijn null tot de EKO-lijst er is. Geen enkel bedrag verzinnen.
+ * Inkoopbedragen zijn null tot de leverancier ze levert. Geen enkel bedrag verzinnen.
+ *
+ * Inkoop is excl. btw: basis plus toeslagen.
+ * Verkoop excl. btw = inkoop × (1 + marginPercent / 100).
+ * Bij 80 is dat × 1,80, ook over opties en toeslagen.
+ * Incl. btw = verkoop excl. × 1,21.
+ * Percentages van opties rekenen op de inkoopbasis, niet op elkaar.
  */
 
 export type PriceMode = "fixed" | "per_m2" | "percent";
@@ -21,8 +27,11 @@ export type TypePrice = {
 };
 
 export type PriceBook = {
-  /** TODO(EKO): marge in procenten op de som van basis en opties. */
-  marginPercent: number | null;
+  /**
+   * Opslag in procenten op de hele inkoop (basis en opties).
+   * 80 betekent verkoop = inkoop × 1,80.
+   */
+  marginPercent: number;
   types: Record<string, TypePrice>;
   options: PriceSlot[];
 };
@@ -51,9 +60,9 @@ function slot(id: string, label: string, mode: PriceMode): PriceSlot {
   return { id, label, mode, amount: null };
 }
 
-/** Productieboek. Bedragen blijven null tot EKO ze levert. */
+/** Productieboek. Opslag staat vast. Inkoopbedragen blijven null tot ze gevuld zijn. */
 export const priceBook: PriceBook = {
-  marginPercent: null,
+  marginPercent: 80,
   types: emptyTypes(),
   options: [
     slot("glas.triple", "Triple glas", "per_m2"),
@@ -66,7 +75,8 @@ export const priceBook: PriceBook = {
     slot("ventilatie.rooster", "Ventilatierooster", "fixed"),
     slot("dorpel.laag", "Lage dorpel", "fixed"),
     slot("aanslag", "Aanslag", "percent"),
-    slot("beslag.rc2", "Zwaarder beslag", "fixed"),
+    slot("beslag.zwaar", "Zwaarder beslag", "fixed"),
+    slot("hoek.hvl", "HVL-hoek", "fixed"),
     slot("kruk.afsluitbaar", "Afsluitbare kruk", "fixed"),
     slot("hor.inzet", "Inzethor", "fixed"),
     slot("hor.plisse", "Plisséhor", "fixed"),
@@ -103,13 +113,13 @@ export function pricesFlagActive(env: NodeJS.ProcessEnv = process.env) {
 export function calculatePrice(input: PriceInput, book: PriceBook, active: boolean): PriceResult {
   if (!active) return { pricesActive: false };
   const type = book.types[input.layout];
-  if (!type || type.base == null || type.perM2 == null || book.marginPercent == null) {
+  if (!type || type.base == null || type.perM2 == null) {
     return { pricesActive: false };
   }
   const area = input.areaM2;
   if (!Number.isFinite(area) || area <= 0) return { pricesActive: false };
   const base = type.base + area * type.perM2;
-  const lines: PriceLine[] = [{ id: "basis", label: "Basis", amountExcl: round2(base) }];
+  const purchase: PriceLine[] = [{ id: "basis", label: "Basis", amountExcl: base }];
   let extra = 0;
   for (const id of input.optionIds) {
     const option = book.options.find((item) => item.id === id);
@@ -118,14 +128,11 @@ export function calculatePrice(input: PriceInput, book: PriceBook, active: boole
     const amount =
       option.mode === "percent" ? (base * option.amount) / 100 : option.mode === "per_m2" ? option.amount * area : option.amount;
     extra += amount;
-    lines.push({ id, label: option.label, amountExcl: round2(amount) });
+    purchase.push({ id, label: option.label, amountExcl: amount });
   }
-  const beforeMargin = base + extra;
-  const margin = (beforeMargin * book.marginPercent) / 100;
-  if (book.marginPercent !== 0) {
-    lines.push({ id: "marge", label: "Marge", amountExcl: round2(margin) });
-  }
-  const totalExcl = round2(beforeMargin + margin);
+  const factor = 1 + book.marginPercent / 100;
+  const lines = purchase.map((line) => ({ ...line, amountExcl: round2(line.amountExcl * factor) }));
+  const totalExcl = round2((base + extra) * factor);
   return {
     pricesActive: true,
     lines,
@@ -152,6 +159,7 @@ export function optionIdsFor(config: {
   hardware: string;
   handle: string;
   screen: string;
+  corner: string;
   hasSash: boolean;
 }) {
   const ids: string[] = [];
@@ -165,7 +173,8 @@ export function optionIdsFor(config: {
   if (config.vent === "rooster") ids.push("ventilatie.rooster");
   if (config.sill === "laag") ids.push("dorpel.laag");
   if (config.rebate === "aanslag") ids.push("aanslag");
-  if (config.hardware === "rc2") ids.push("beslag.rc2");
+  if (config.hardware === "zwaar") ids.push("beslag.zwaar");
+  if (config.corner === "hvl") ids.push("hoek.hvl");
   if (config.handle === "afsluitbaar") ids.push("kruk.afsluitbaar");
   if (config.screen === "inzet") ids.push("hor.inzet");
   if (config.screen === "plisse") ids.push("hor.plisse");

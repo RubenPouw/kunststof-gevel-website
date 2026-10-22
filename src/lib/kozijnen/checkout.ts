@@ -71,8 +71,8 @@ export async function createKozijnDraftOrder(
   return { ok: true as const, checkoutUrl: url };
 }
 
+/** True zolang geen enkel inkoopbedrag is ingevuld. De opslag mag wel vaststaan. */
 export function productionBookHasNoPrices() {
-  if (priceBook.marginPercent != null) return false;
   for (const type of Object.values(priceBook.types)) {
     if (type.base != null || type.perM2 != null) return false;
   }

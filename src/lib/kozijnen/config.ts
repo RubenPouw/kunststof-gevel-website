@@ -1,44 +1,42 @@
 /**
- * EKO NL Profiel. Eén profiel, leverancier EKO.
+ * Aluplast Ideal 7000 NL. Eén profiel.
  * Onbevestigde cijfers blijven null en worden niet op de site getoond.
  * Maatgrenzen zijn voorlopige online aanvraaggrenzen, geen fabriekscertificaat.
+ * Leveranciersnaam en keurmerkvlaggen staan in supplier.ts (alleen server).
  */
 
 export const PROFILE = {
-  id: "eko-nl",
-  name: "EKO NL Profiel",
-  supplier: "EKO",
-  /** TODO(EKO): publieke leverancierspagina. Nog niet als bron op de site gebruiken. */
-  supplierSite: "https://eko4u.com",
-  /** TODO(EKO): exacte systeemnaam. */
-  systemName: null as string | null,
-  /** TODO(EKO): Uw van het complete raam bij HR++, in W/m²K. */
+  id: "ideal-7000-nl",
+  /** Klantzichtbare naam. */
+  name: "Aluplast Ideal 7000 NL",
+  /** Officiële systeemnaam. Niet los als specificatie publiceren. */
+  systemName: "Aluplast Ideal 7000 NL 64 mm",
+  /** TODO(leverancier): Uw van het complete raam bij HR++, in W/m²K. */
   uwHrpp: null as number | null,
-  /** TODO(EKO): Uw van het complete raam bij triple, in W/m²K. */
+  /** TODO(leverancier): Uw van het complete raam bij triple, in W/m²K. */
   uwTriple: null as number | null,
-  /** TODO(EKO): Ug van het glas, HR++ en triple apart. */
+  /** TODO(leverancier): Ug van het glas, HR++ en triple apart. */
   ugHrpp: null as number | null,
   ugTriple: null as number | null,
-  /** TODO(EKO): aantal kamers in het profiel. */
+  /** TODO(leverancier): aantal kamers in het profiel. */
   chambers: null as number | null,
-  /** TODO(EKO): inbouwdiepte in mm. */
+  /** TODO(leverancier): inbouwdiepte als los cijfer, pas tonen als de data het bevestigt. */
   depthMm: null as number | null,
-  /** TODO(EKO): sponning en maximale glasdikte in mm. */
+  /** TODO(leverancier): sponning en maximale glasdikte in mm. */
   rebateMm: null as number | null,
   glassThicknessMm: null as string | null,
-  /** TODO(EKO): alleen vullen als KOMO, SKG of PKVW voor dit NL-profiel gelden. */
+  /** TODO(leverancier): pas vullen als een keurmerk voor dit profiel vaststaat. */
   certificates: [] as string[],
-  /** TODO(EKO): productietijd in werkdagen, en de extra dagen per folie. */
+  /** TODO(leverancier): productietijd in werkdagen, en de extra dagen per folie. */
   leadTimeWorkdays: null as number | null,
   colorExtraWorkdays: null as number | null,
-  /** TODO(EKO): garantie in jaren, per onderdeel. */
+  /** TODO(leverancier): garantie in jaren, per onderdeel. */
   warranty: null as {
     profileYears: number;
     glassYears: number;
     hardwareYears: number;
   } | null,
-  /** TODO(EKO): of HVL-hoekverbinding leverbaar is, en of vlak/verdiept een keuze is. */
-  cornerVariants: [] as string[],
+  cornerVariants: ["verstek", "hvl"] as const,
 } as const;
 
 export type SizeBox = {
@@ -50,7 +48,7 @@ export type SizeBox = {
 
 /**
  * Veilige defaults om een aanvraag te begrenzen.
- * TODO(EKO): vervangen door de productietabel. De max hoogte kan daar
+ * TODO(leverancier): vervangen door de productietabel. De max hoogte kan daar
  * meelopen met de breedte. Die koppeling verzinnen we niet.
  * Herkomst van de getallen: openbare categoriegrenzen van vergelijkbare
  * indelingen, afgerond naar een band waarin een offerte nog zinvol is.
@@ -71,7 +69,7 @@ export const SIZE_LIMITS: Record<string, SizeBox> = {
   "openslaande-tuindeuren": { minWidth: 1272, maxWidth: 2312, minHeight: 1960, maxHeight: 2774 },
 };
 
-/** TODO(EKO): foliecodes. Dit is een voorlopige keuze, geen officiële kaart. */
+/** Snelle keuzes, akkoord naast de AP-lijst. TODO(leverancier): foliecodes en de volledige AP-lijst. */
 export const FRAME_COLORS = [
   { id: "9016", name: "Wit", code: "RAL 9016", hex: "#F4F4F1", foilCode: null as string | null },
   { id: "9001", name: "Crème", code: "RAL 9001", hex: "#E7DDC8", foilCode: null },
@@ -106,6 +104,13 @@ export const LOW_GLASS = [
 ] as const;
 
 export type LowGlassId = (typeof LOW_GLASS)[number]["id"];
+
+export const CORNERS = [
+  { id: "verstek", label: "Verstek" },
+  { id: "hvl", label: "HVL" },
+] as const;
+
+export type CornerId = (typeof CORNERS)[number]["id"];
 
 export function colorById(id: string) {
   return FRAME_COLORS.find((color) => color.id === id) ?? FRAME_COLORS[0];

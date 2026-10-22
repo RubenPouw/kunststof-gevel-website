@@ -1,18 +1,21 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
-
+import { fileURLToPath } from "node:url";
 import { createKozijnDraftOrder, productionBookHasNoPrices } from "../src/lib/kozijnen/checkout.ts";
 import { PROFILE, SIZE_LIMITS } from "../src/lib/kozijnen/config.ts";
 import { getLayoutBySlug } from "../src/lib/kozijnen/layouts.ts";
-import { defaultConfig, defaultLaminated, parseConfig, serializeConfig, sizeInRange } from "../src/lib/kozijnen/model.ts";
+import { defaultConfig, defaultLaminated, parseConfig, resumeVisible, serializeConfig, sizeInRange } from "../src/lib/kozijnen/model.ts";
 import { buildPdf, quotePdfLines } from "../src/lib/kozijnen/pdf.ts";
 import { calculatePrice, priceBook, type PriceBook } from "../src/lib/kozijnen/prices.ts";
+import { CLAIMS, SUPPLIER } from "../src/lib/kozijnen/supplier.ts";
 import { lookupRedirect } from "../src/lib/seo/redirects.ts";
 import { summaryText } from "../src/lib/kozijnen/text.ts";
 
-test("EKO profile keeps unconfirmed numbers empty", () => {
-  assert.equal(PROFILE.name, "EKO NL Profiel");
+test("Aluplast profile keeps unconfirmed numbers empty", () => {
+  assert.equal(PROFILE.name, "Aluplast Ideal 7000 NL");
+  assert.equal(PROFILE.systemName, "Aluplast Ideal 7000 NL 64 mm");
   assert.equal(PROFILE.uwHrpp, null);
   assert.equal(PROFILE.uwTriple, null);
   assert.equal(PROFILE.chambers, null);
@@ -20,10 +23,17 @@ test("EKO profile keeps unconfirmed numbers empty", () => {
   assert.equal(PROFILE.leadTimeWorkdays, null);
   assert.equal(PROFILE.warranty, null);
   assert.deepEqual(PROFILE.certificates, []);
+  assert.deepEqual(PROFILE.cornerVariants, ["verstek", "hvl"]);
+  assert.equal(CLAIMS.rc2, false);
+  assert.equal(CLAIMS.pkvw, false);
+  assert.equal(CLAIMS.skg, false);
+  assert.equal(CLAIMS.komo, false);
+  assert.equal(SUPPLIER.name, "EKO");
   const source = readFileSync(new URL("../src/lib/kozijnen/config.ts", import.meta.url), "utf8");
-  assert.match(source, /TODO\(EKO\): Uw/);
-  assert.match(source, /TODO\(EKO\): aantal kamers/);
-  assert.match(source, /TODO\(EKO\): inbouwdiepte/);
+  assert.match(source, /TODO\(leverancier\): Uw/);
+  assert.match(source, /TODO\(leverancier\): aantal kamers/);
+  assert.match(source, /TODO\(leverancier\): inbouwdiepte/);
+  assert.equal(/EKO|eko4u/i.test(source), false);
 });
 
 test("online size defaults come from the config, not a client price", () => {
@@ -66,23 +76,27 @@ test("a shared url roundtrips without a price", () => {
   assert.equal(summaryText(again).includes("€"), false);
 });
 
-test("price engine stays quiet until the book and the flag are filled", () => {
+test("selling price is purchase times 1.80 and stays hidden without purchase amounts", () => {
+  assert.equal(priceBook.marginPercent, 80);
   assert.equal(productionBookHasNoPrices(), true);
-  const quiet = calculatePrice({ layout: "draaikiepraam", areaM2: 1.2, optionIds: ["beslag.rc2"] }, priceBook, false);
+  const quiet = calculatePrice({ layout: "draaikiepraam", areaM2: 1.2, optionIds: ["beslag.zwaar"] }, priceBook, false);
   assert.deepEqual(quiet, { pricesActive: false });
   const incomplete = calculatePrice({ layout: "draaikiepraam", areaM2: 1.2, optionIds: [] }, priceBook, true);
   assert.equal(incomplete.pricesActive, false);
 
   const book: PriceBook = {
-    marginPercent: 10,
+    marginPercent: 80,
     types: { "draaikiepraam": { base: 100, perM2: 50 } },
     options: [{ id: "kleur.buiten", label: "Folie buiten", mode: "percent", amount: 20 }],
   };
   const priced = calculatePrice({ layout: "draaikiepraam", areaM2: 2, optionIds: ["kleur.buiten"] }, book, true);
   assert.equal(priced.pricesActive, true);
   if (!priced.pricesActive) return;
-  assert.equal(priced.totalExcl, 264);
-  assert.equal(priced.lines.some((line) => line.id === "kleur.buiten"), true);
+  assert.equal(priced.totalExcl, 432);
+  assert.equal(priced.totalIncl, 522.72);
+  assert.equal(priced.lines.some((line) => line.id === "marge"), false);
+  const colour = priced.lines.find((line) => line.id === "kleur.buiten");
+  assert.equal(colour?.amountExcl, 72);
 });
 
 test("draft order checkout does not call Shopify while the flags are off", async () => {
@@ -106,11 +120,30 @@ test("draft order checkout does not call Shopify while the flags are off", async
   assert.equal(called, false);
 });
 
-test("quote pdf has no amount", () => {
-  const bytes = buildPdf(quotePdfLines({ title: "Draaikiepraam", lines: [{ label: "Profiel", value: "EKO NL Profiel" }] }));
+test("windows open inward and doors keep a direction choice", () => {
+  const raam = getLayoutBySlug("draaikiepraam");
+  const deur = getLayoutBySlug("tuindeur");
+  assert.ok(raam && deur);
+  assert.equal(raam.chooseDirection, false);
+  assert.equal(raam.defaultDirection, "binnen");
+  assert.equal(deur.chooseDirection, true);
+  const forced = parseConfig(new URLSearchParams("draai=buiten"), raam);
+  assert.equal(forced.direction, "binnen");
+  const chosen = parseConfig(new URLSearchParams("draai=binnen&hoek=hvl"), deur);
+  assert.equal(chosen.direction, "binnen");
+  assert.equal(chosen.corner, "hvl");
+  assert.equal(resumeVisible("maten", true), true);
+  assert.equal(resumeVisible("hoek", true), false);
+  assert.equal(resumeVisible("overzicht", true), false);
+});
+
+test("quote pdf has no amount and names the public profile", () => {
+  const bytes = buildPdf(quotePdfLines({ title: "Draaikiepraam", lines: [{ label: "Profiel", value: PROFILE.name }] }));
   const text = Buffer.from(bytes).toString("latin1");
   assert.match(text, /Vrijblijvende offerteaanvraag/);
+  assert.match(text, /Aluplast Ideal 7000 NL/);
   assert.equal(text.includes("€"), false);
+  assert.equal(/EKO/i.test(text), false);
   assert.match(text, /Er staat geen prijs op/);
 });
 
@@ -122,7 +155,7 @@ test("/kozijnen redirects in one hop to the new hub", () => {
   assert.equal(legacy.to, "/kunststof-kozijnen");
 });
 
-test("kozijn pages do not ship review markup or the price module to the client", () => {
+test("kozijn pages do not ship review markup, the price module, or hidden supplier names", () => {
   const files = [
     "../src/components/kozijnen/configurator.tsx",
     "../src/app/kunststof-kozijnen/page.tsx",
@@ -133,6 +166,26 @@ test("kozijn pages do not ship review markup or the price module to the client",
     const source = readFileSync(new URL(file, import.meta.url), "utf8");
     assert.equal(source.includes("AggregateRating"), false, file);
     assert.equal(source.includes("kozijnen/prices"), false, file);
+    assert.equal(source.includes("kozijnen/supplier"), false, file);
     assert.equal(source.includes("Kömmerling"), false, file);
   }
+
+  const banned = /\bEKO\b|eko4u|eko-nl|\bRC2\b|\bPKVW\b|\bKOMO\b|\bSKG\b|hefschuif|brievenbus|bovenlicht|\bvoordeur\b|Politiekeurmerk|1,80|marginPercent/i;
+  const roots = ["../src/components/kozijnen", "../src/app/kunststof-kozijnen", "../src/lib/kozijnen"];
+  const skip = new Set(["supplier.ts", "prices.ts", "checkout.ts"]);
+  for (const root of roots) {
+    for (const file of walk(fileURLToPath(new URL(root, import.meta.url)))) {
+      if (skip.has(file.split("/").pop() ?? "")) continue;
+      const source = readFileSync(file, "utf8");
+      assert.equal(banned.test(source), false, file);
+    }
+  }
 });
+
+function walk(dir: string): string[] {
+  return readdirSync(dir).flatMap((entry) => {
+    const path = join(dir, entry);
+    if (statSync(path).isDirectory()) return walk(path);
+    return path.endsWith(".ts") || path.endsWith(".tsx") ? [path] : [];
+  });
+}

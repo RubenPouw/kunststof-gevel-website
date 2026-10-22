@@ -6,6 +6,7 @@ import { KozijnConfigurator } from "@/components/kozijnen/configurator";
 import { KozijnFaqs, KozijnLinks } from "@/components/kozijnen/links";
 import { JsonLd } from "@/components/seo/json-ld";
 import { layoutCopy } from "@/lib/kozijnen/content";
+import { PROFILE } from "@/lib/kozijnen/config";
 import { GROUPS, allLayouts, getLayout, layoutPath } from "@/lib/kozijnen/layouts";
 import { kozijnProductJsonLd } from "@/lib/kozijnen/schema";
 import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo/schema";
@@ -64,7 +65,7 @@ export default async function KozijnLayoutPage({ params }: Props) {
           {` / ${layout.title}`}
         </p>
         <h1 className="display-pdp mt-4 max-w-3xl">{layout.title} op maat</h1>
-        <p className="mt-3 max-w-2xl text-[16px] leading-normal text-kg-text-2">{layout.summary} EKO NL Profiel. Geen merkkeuze.</p>
+        <p className="mt-3 max-w-2xl text-[16px] leading-normal text-kg-text-2">{layout.summary} {PROFILE.name}. Geen merkkeuze.</p>
       </header>
       <KozijnConfigurator layout={layout} pricesActive={pricesActive} />
       <section className="container-kg grid gap-10 border-t border-kg-lijn py-14 lg:grid-cols-[minmax(0,40rem)_minmax(0,22rem)]">

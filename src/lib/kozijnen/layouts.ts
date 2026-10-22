@@ -280,6 +280,13 @@ const layouts: Layout[] = [
   },
 ];
 
+for (const layout of layouts) {
+  if (layout.group === "ramen") {
+    layout.chooseDirection = false;
+    layout.defaultDirection = "binnen";
+  }
+}
+
 export const GROUPS: { id: KozijnGroup; title: string; href: string; lead: string }[] = [
   {
     id: "ramen",

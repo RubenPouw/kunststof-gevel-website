@@ -1,10 +1,12 @@
 import {
   colorById,
+  CORNERS,
   FRAME_COLORS,
   GLASS_TYPES,
   LAMINATED,
   LOW_GLASS,
   type ColorId,
+  type CornerId,
   type GlassId,
   type LaminatedId,
   type LowGlassId,
@@ -19,13 +21,14 @@ export type Filling = "paneel" | "half" | "glas";
 export type Vent = "geen" | "rooster";
 export type Sill = "doorlopend" | "laag";
 export type Rebate = "stomp" | "aanslag";
-export type Hardware = "basis" | "rc2";
+export type Hardware = "basis" | "zwaar";
 export type Handle = "standaard" | "afsluitbaar";
 export type Screen = "geen" | "inzet" | "plisse";
 
 export type StepId =
   | "maten"
   | "indeling"
+  | "hoek"
   | "kleur"
   | "glas"
   | "ventilatie"
@@ -45,7 +48,13 @@ export const STEPS: { id: StepId; label: string; article: string; hint: string }
     id: "indeling",
     label: "Indeling",
     article: "draairichting-en-aanslag",
-    hint: "U kijkt van buiten naar het kozijn.",
+    hint: "U staat buiten, met het gezicht naar de gevel. Links is dan links.",
+  },
+  {
+    id: "hoek",
+    label: "Hoek",
+    article: "profielen-en-kleuren#hoekuitvoering",
+    hint: "Verstek of HVL. De naad ziet u in de tekening.",
   },
   {
     id: "kleur",
@@ -113,6 +122,7 @@ export type KozijnConfig = {
   hardware: Hardware;
   handle: Handle;
   screen: Screen;
+  corner: CornerId;
   step: StepId;
 };
 
@@ -122,7 +132,8 @@ const FILLINGS = new Set<Filling>(["paneel", "half", "glas"]);
 const VENTS = new Set<Vent>(["geen", "rooster"]);
 const SILLS = new Set<Sill>(["doorlopend", "laag"]);
 const REBATES = new Set<Rebate>(["stomp", "aanslag"]);
-const HARDWARE = new Set<Hardware>(["basis", "rc2"]);
+const HARDWARE = new Set<Hardware>(["basis", "zwaar"]);
+const CORNER_IDS = new Set(CORNERS.map((item) => item.id));
 const HANDLES = new Set<Handle>(["standaard", "afsluitbaar"]);
 const SCREENS = new Set<Screen>(["geen", "inzet", "plisse"]);
 const COLOR_IDS = new Set(FRAME_COLORS.map((color) => color.id));
@@ -175,10 +186,11 @@ export function defaultConfig(layout: Layout): KozijnConfig {
     vent: "geen",
     sill: layout.group === "ramen" ? "doorlopend" : "laag",
     rebate: "stomp",
-    hardware: "rc2",
+    hardware: "zwaar",
     handle: "standaard",
     screen: "geen",
-    step: "maten",
+    corner: "verstek",
+    step: STEPS[0].id,
   };
 }
 
@@ -217,10 +229,12 @@ export function parseConfig(params: URLSearchParams, layout: Layout): KozijnConf
     hardware: oneOf(params.get("beslag"), HARDWARE, base.hardware),
     handle: oneOf(params.get("kruk"), HANDLES, base.handle),
     screen: oneOf(params.get("hor"), SCREENS, base.screen),
-    step: oneOf(params.get("stap"), STEP_IDS, "maten"),
+    corner: oneOf(params.get("hoek"), CORNER_IDS, base.corner),
+    step: oneOf(params.get("stap"), STEP_IDS, STEPS[0].id),
   };
   if (!laminatedTouched) next.laminated = defaultLaminated(layout, next.lowGlass);
   if (!layout.fillings.includes(next.filling)) next.filling = base.filling;
+  if (!layout.chooseDirection) next.direction = layout.defaultDirection;
   return next;
 }
 
@@ -250,6 +264,7 @@ export function serializeConfig(config: KozijnConfig) {
   params.set("beslag", config.hardware);
   params.set("kruk", config.handle);
   params.set("hor", config.screen);
+  params.set("hoek", config.corner);
   params.set("stap", config.step);
   return params.toString();
 }
@@ -292,6 +307,11 @@ export function panesFor(layout: Layout, config: KozijnConfig) {
     ];
   }
   return panes;
+}
+
+/** Het herstelblok hoort alleen op de eerste stap, zolang de bezoeker het niet sluit. */
+export function resumeVisible(step: StepId, pending: boolean) {
+  return pending && step === STEPS[0].id;
 }
 
 export function colorLabel(id: string) {

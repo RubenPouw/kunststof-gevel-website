@@ -52,7 +52,7 @@ export async function deliverKozijnQuote(config: KozijnConfig, contact: QuoteCon
     "",
     spec,
     "",
-    "Geen prijs in deze aanvraag. Prijzen staan uit tot de EKO-lijst er is.",
+    "Geen prijs in deze aanvraag. Inkoopbedragen zijn nog niet ingevuld.",
   ]
     .filter((line) => line !== "")
     .join("\n");

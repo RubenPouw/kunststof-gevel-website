@@ -4,12 +4,15 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { KozijnDrawing } from "@/components/kozijnen/drawing";
+import { CornerFigures } from "@/components/kozijnen/figures";
 import { buttonVariants } from "@/components/ui/button";
 import {
+  CORNERS,
   FRAME_COLORS,
   GLASS_TYPES,
   LAMINATED,
   LOW_GLASS,
+  PROFILE,
   colorById,
 } from "@/lib/kozijnen/config";
 import { layoutPath, type Layout } from "@/lib/kozijnen/layouts";
@@ -21,6 +24,7 @@ import {
   defaultConfig,
   hasConfigParams,
   parseConfig,
+  resumeVisible,
   serializeConfig,
   sizeInRange,
   type KozijnConfig,
@@ -109,6 +113,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   }
 
   function go(next: StepId) {
+    if (next !== STEPS[0].id) setAskResume(false);
     patch({ step: next });
   }
 
@@ -156,9 +161,14 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
 
   return (
     <div className="container-kg pb-16">
-      {askResume ? (
+      {resumeVisible(config.step, askResume) ? (
         <div className="mb-6 border border-kg-navy bg-white p-4">
-          <p className="font-medium">Je was al bezig met een kozijn. Verder gaan of opnieuw beginnen?</p>
+          <div className="flex items-start justify-between gap-3">
+            <p className="font-medium">Je was al bezig met een kozijn. Verder gaan of opnieuw beginnen?</p>
+            <button type="button" className="grid size-11 shrink-0 place-items-center" onClick={() => setAskResume(false)} aria-label="Melding sluiten">
+              ×
+            </button>
+          </div>
           <div className="mt-3 flex flex-wrap gap-2">
             <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => resume(true)}>
               Verder gaan
@@ -197,6 +207,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
           <div className="mt-6">
             {step.id === "maten" ? <SizeStep layout={layout} config={config} inRange={inRange} onChange={patch} /> : null}
             {step.id === "indeling" ? <LayoutStep layout={layout} config={config} onChange={patch} /> : null}
+            {step.id === "hoek" ? <CornerStep config={config} onChange={patch} /> : null}
             {step.id === "kleur" ? <ColorStep layout={layout} config={config} onChange={patch} /> : null}
             {step.id === "glas" ? <GlassStep config={config} onChange={patch} /> : null}
             {step.id === "ventilatie" ? <ChoiceStep label="Ventilatie" value={config.vent} options={[{ id: "geen", label: "Geen rooster" }, { id: "rooster", label: "Zelfregulerend rooster" }]} onPick={(vent) => patch({ vent: vent as KozijnConfig["vent"] })} /> : null}
@@ -240,7 +251,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
           <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-3 font-mono text-[13px]">
             <div className="flex justify-between gap-3">
               <dt className="text-kg-text-2">Profiel</dt>
-              <dd>EKO NL</dd>
+              <dd className="text-right">{PROFILE.name}</dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-kg-text-2">Maat</dt>
@@ -335,11 +346,21 @@ function LayoutStep({
   config: KozijnConfig;
   onChange: (partial: Partial<KozijnConfig>) => void;
 }) {
-  if (!layout.chooseSide && !layout.chooseDirection && !layout.chooseActive && layout.fillings.length === 0) {
+  const opens = layout.panes.some((pane) => pane.kind !== "vast" && pane.kind !== "schuif");
+  if (!layout.chooseSide && !layout.chooseDirection && !layout.chooseActive && layout.fillings.length === 0 && !opens) {
     return <p className="text-[16px] text-kg-text-2">Dit vak draait niet. Er is geen scharnierzijde. Glas en kleur kiest u in de volgende stappen.</p>;
   }
   return (
     <div className="space-y-6">
+      <p className="text-[14px] text-kg-text-2">
+        U staat buiten, met het gezicht naar de gevel. Links is de linkerkant vanaf die plek.
+        {layout.chooseSide ? " De scharnieren zitten aan de kant die u kiest." : ""}
+        {layout.chooseActive && layout.group === "schuifpuien" ? " Het schuivende deel zit aan de kant die u kiest." : ""}
+        {layout.chooseActive && layout.group !== "schuifpuien" ? " De loopdeur zit aan de kant die u kiest." : ""}
+      </p>
+      {layout.group === "ramen" && opens ? (
+        <p className="text-[14px] text-kg-text-2">Dit raam draait naar binnen.</p>
+      ) : null}
       {layout.chooseSide ? (
         <ChoiceStep
           label="Scharnierzijde, van buiten"
@@ -352,8 +373,10 @@ function LayoutStep({
         />
       ) : null}
       {layout.chooseDirection ? (
+        <>
+        <p className="text-[14px] text-kg-text-2">Bij een deur kiest u of de vleugel naar binnen of naar buiten draait.</p>
         <ChoiceStep
-          label="Draairichting"
+          label="Draairichting, van buiten gezien"
           value={config.direction}
           options={[
             { id: "binnen", label: "Naar binnen" },
@@ -361,6 +384,7 @@ function LayoutStep({
           ]}
           onPick={(direction) => onChange({ direction: direction as KozijnConfig["direction"] })}
         />
+        </>
       ) : null}
       {layout.chooseActive ? (
         <ChoiceStep
@@ -388,6 +412,23 @@ function LayoutStep({
   );
 }
 
+function CornerStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
+  return (
+    <div className="space-y-6">
+      <CornerFigures />
+      <ChoiceStep
+        label="Hoekuitvoering"
+        value={config.corner}
+        options={CORNERS.map((item) => ({ id: item.id, label: item.label }))}
+        onPick={(corner) => onChange({ corner: corner as KozijnConfig["corner"] })}
+      />
+      <p className="text-[14px] text-kg-text-2">
+        Verstek: de naad loopt schuin over de hoek. HVL: de profielen komen haaks samen en de naad staat recht. Een isolatieverschil publiceren we niet.
+      </p>
+    </div>
+  );
+}
+
 function ColorStep({
   layout,
   config,
@@ -400,7 +441,7 @@ function ColorStep({
   const sash = layout.panes.some((pane) => pane.kind !== "vast");
   return (
     <div className="space-y-6">
-      <p className="text-[14px] text-kg-text-2">Kies je kleur. De folie bevestigen we op de offerte. Dit is nog geen gesloten kaart van EKO.</p>
+      <p className="text-[14px] text-kg-text-2">Kies je kleur. Dit zijn de snelle keuzes. De volledige AP-lijst volgt. De folie bevestigen we op de offerte.</p>
       <Swatches label="Kozijn buiten" value={config.frameOut} onPick={(frameOut) => onChange({ frameOut: frameOut as KozijnConfig["frameOut"] })} />
       <Swatches label="Kozijn binnen" value={config.frameIn} onPick={(frameIn) => onChange({ frameIn: frameIn as KozijnConfig["frameIn"] })} />
       {sash ? (
@@ -498,13 +539,13 @@ function HardwareStep({ config, onChange }: { config: KozijnConfig; onChange: (p
         label="Hang- en sluitwerk"
         value={config.hardware}
         options={[
-          { id: "rc2", label: "Zwaarder, richting RC2" },
+          { id: "zwaar", label: "Zwaarder beslag" },
           { id: "basis", label: "Basis" },
         ]}
         onPick={(hardware) => onChange({ hardware: hardware as KozijnConfig["hardware"] })}
       />
       <p className="text-[14px] text-kg-text-2">
-        We vragen het zwaardere beslag aan. Een PKVW- of SKG-certificaat voor dit profiel staat nog niet vast en zetten we niet als keurmerk op de pagina.
+        We vragen het zwaardere beslag aan. Een keurmerk zetten we er pas bij als de leverancier dat voor dit profiel bevestigt.
       </p>
       <ChoiceStep
         label="Kruk"
@@ -613,9 +654,9 @@ function Overview({
         ))}
       </dl>
       {price?.pricesActive ? (
-        <p className="font-mono text-[18px]">
-          {formatPrice(price.totalIncl)} incl. btw
-          <span className="ml-3 text-[14px] text-kg-text-2">{formatPrice(price.totalExcl)} excl.</span>
+        <p>
+          <span className="font-mono text-[18px]">{formatPrice(price.totalExcl)} excl. btw</span>
+          <span className="mt-1 block font-mono text-[14px] text-kg-text-2">{formatPrice(price.totalIncl)} incl. 21% btw</span>
         </p>
       ) : (
         <p className="text-[16px]">Vrijblijvende offerte aanvragen. Er staat geen bedrag op deze samenstelling.</p>

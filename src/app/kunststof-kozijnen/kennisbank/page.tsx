@@ -32,7 +32,7 @@ export default function KennisbankPage() {
         </p>
         <h1 className="mt-4">Kennisbank kozijnen</h1>
         <p className="mt-4 text-[17px] leading-normal text-kg-text-2">
-          Meten, draairichting, glas en plaatsing. Geschreven voor deze configurator, zonder cijfers die EKO nog niet bevestigd heeft.
+          Meten, draairichting, glas en plaatsing. Geschreven voor deze configurator, zonder cijfers die de leverancier nog niet bevestigd heeft.
         </p>
       </header>
       <ul className="container-kg grid max-w-3xl gap-3 pb-16">

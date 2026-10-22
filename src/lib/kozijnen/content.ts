@@ -1,3 +1,4 @@
+import { PROFILE } from "./config";
 import type { KozijnGroup, Layout } from "./layouts";
 
 export type CopyBlock = { heading: string; paragraphs: string[] };
@@ -6,14 +7,14 @@ export type CopyFaq = { q: string; a: string };
 export const hubCopy = {
   title: "Kunststof kozijnen op maat",
   description:
-    "Kunststof ramen, schuifpuien en deuren in EKO NL Profiel. Zelf samenstellen en een vrijblijvende offerte aanvragen, zonder account.",
-  lead: "Eén profiel, van EKO. U stelt het kozijn samen op buitenwerkse maat. Een prijs tonen we pas als de lijst van EKO er is. Tot die tijd eindigt de configurator in een vrijblijvende offerte.",
+    `Kunststof ramen, schuifpuien en deuren in ${PROFILE.name}. Zelf samenstellen en een vrijblijvende offerte aanvragen, zonder account.`,
+  lead: `Eén profiel: ${PROFILE.name}. U stelt het kozijn samen op buitenwerkse maat. Een prijs tonen we pas als de inkoopbedragen er zijn. Tot die tijd eindigt de configurator in een vrijblijvende offerte.`,
   sections: [
     {
       heading: "Waarom één profiel",
       paragraphs: [
-        "Een kozijn kiezen begint bij de opening, niet bij een lijst merken. EKO NL Profiel is het kader dat we hier voeren. Daarmee blijven glas, beslag en kleur vergelijkbaar tussen een draaikiepraam en een schuifpui.",
-        "Technische cijfers zoals inbouwdiepte, kamers en Uw-waarde zetten we op deze pagina zodra EKO ze bevestigt. Een getal dat we nog niet hebben, laten we weg.",
+        `Een kozijn kiezen begint bij de opening, niet bij een lijst merken. ${PROFILE.name} is het kader dat we hier voeren. Daarmee blijven glas, beslag en kleur vergelijkbaar tussen een draaikiepraam en een schuifpui.`,
+        "Technische cijfers zoals inbouwdiepte, kamers en Uw-waarde zetten we op deze pagina zodra de leverancier ze bevestigt. Een getal dat we nog niet hebben, laten we weg.",
       ],
     },
     {
@@ -27,7 +28,7 @@ export const hubCopy = {
       heading: "Van maat tot offerte",
       paragraphs: [
         "U vult de buitenwerkse breedte en hoogte in. De configurator zegt meteen of die maat binnen de online grenzen valt. Daarbuiten versturen we de aanvraag nog steeds, en beoordelen we hem handmatig.",
-        "Daarna draairichting, kleur binnen en buiten, glas, ventilatie, dorpel en beslag. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
+        "Daarna indeling, hoek, kleur binnen en buiten, glas, ventilatie, dorpel en beslag. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
       ],
     },
   ] as CopyBlock[],
@@ -46,7 +47,7 @@ export const hubCopy = {
     },
     {
       q: "Staat er hang- en sluitwerk op?",
-      a: "Ja. We vragen standaard het zwaardere beslag aan. Certificaten zoals PKVW bevestigen we pas als ze voor dit profiel vaststaan.",
+      a: "Ja. We vragen standaard het zwaardere beslag aan. Een keurmerk zetten we er pas bij als de leverancier dat voor dit profiel bevestigt.",
     },
   ] as CopyFaq[],
 };
@@ -54,8 +55,8 @@ export const hubCopy = {
 export const groupCopy: Record<KozijnGroup, { title: string; description: string; lead: string; sections: CopyBlock[]; faqs: CopyFaq[] }> = {
   ramen: {
     title: "Kunststof ramen op maat",
-    description: "Vaste ramen, draairamen, draaikiepramen en combinaties in EKO NL Profiel. Links of rechts is een keuze, geen aparte pagina.",
-    lead: "Een raam is een vak of een reeks vakken in één kader. U kiest de indeling, daarna de maat. De scharnierzijde zit in de configurator.",
+    description: `Vaste ramen, draairamen, draaikiepramen en combinaties in ${PROFILE.name}. Links of rechts is een keuze, geen aparte pagina.`,
+    lead: "Een raam is een vak of een reeks vakken in één kader. U kiest de indeling, daarna de maat. U kijkt van buiten: links is de scharnierzijde links. Het raam draait naar binnen.",
     sections: [
       {
         heading: "Vast, draai of draaikiep",
@@ -84,20 +85,19 @@ export const groupCopy: Record<KozijnGroup, { title: string; description: string
   },
   schuifpuien: {
     title: "Kunststof schuifpuien",
-    description: "Schuifpuien in twee of vier delen, in EKO NL Profiel. Gelaagd glas staat standaard aan.",
+    description: `Schuifpuien in twee of vier delen, in ${PROFILE.name}. Gelaagd glas staat standaard aan.`,
     lead: "Een schuifpui schuift opzij in plaats van de kamer in. Twee delen voor een gewone pui, vier delen als de opening breed is.",
     sections: [
       {
         heading: "Twee of vier",
         paragraphs: [
           "Bij twee delen schuift één vleugel voor de andere. Bij vier delen verdeelt u de breedte. Welk deel beweegt, kiest u in de configurator. De tekening toont dat van buiten.",
-          "Een hefschuifpui, waarbij de vleugel eerst heft en dan rijdt, zit niet in deze versie. Wilt u die, zet het in de opmerking. We kijken dan of EKO dat systeem in dit profiel voert.",
         ],
       },
       {
         heading: "Glas en dorpel",
         paragraphs: [
-          "Een pui is een deur die mensen raken. Daarom staat gelaagd glas aan beide kanten als voorstel. De onderdorpel is laag, zodat de stap naar buiten klein blijft. De exacte dorpelhoogte bevestigt EKO.",
+          "Een pui is een deur die mensen raken. Daarom staat gelaagd glas aan beide kanten als voorstel. De onderdorpel is laag, zodat de stap naar buiten klein blijft. De exacte dorpelhoogte publiceren we pas als de leverancier die bevestigt.",
         ],
       },
     ],
@@ -114,14 +114,13 @@ export const groupCopy: Record<KozijnGroup, { title: string; description: string
   },
   deuren: {
     title: "Kunststof achterdeuren en tuindeuren",
-    description: "Enkele en dubbele achterdeuren en tuindeuren in EKO NL Profiel. Paneel, half glas of vol glas.",
+    description: `Enkele en dubbele achterdeuren en tuindeuren in ${PROFILE.name}. Paneel, half glas of vol glas.`,
     lead: "Een deur in hetzelfde profiel als het raam ernaast. Enkel of dubbel, met een vulling die u kiest.",
     sections: [
       {
         heading: "Achterdeur en tuindeur",
         paragraphs: [
-          "De achterdeur is de dagelijkse deur, vaak met een paneel of een glasstrook. De tuindeur is de deur naar het terras, meestal met meer glas. Beide kunnen enkel of als paar.",
-          "Een voordeur met briefplaat en een model uit een deurencatalogus zit niet in deze versie. Die vraagt u via het offerteformulier.",
+          "De achterdeur is de dagelijkse deur, vaak met een paneel of een glasstrook. De tuindeur is de deur naar het terras, meestal met meer glas. Beide kunnen enkel of als paar. Of de vleugel naar binnen of naar buiten draait, kiest u zelf.",
         ],
       },
       {
@@ -232,7 +231,7 @@ const layoutBody: Record<string, { paragraphs: string[]; faqs: CopyFaq[] }> = {
       "Vier delen zijn zwaar en vragen een rechte dorpel. Meet de volle breedte, niet de breedte van één vak. De meetinstructie zet het verschil met een deur.",
     ],
     faqs: [
-      { q: "Is dit een hefschuifpui?", a: "Nee. Dit is een schuivende pui. Heffen en dan rijden is een ander systeem. Vraag het apart als u dat zoekt." },
+      { q: "Schuift de pui de kamer in?", a: "Nee. Het vlak blijft in de gevel en rijdt opzij. U kiest welk deel beweegt, van buiten gezien." },
       { q: "Hoe meet ik vier delen?", a: "Eén breedte en één hoogte voor het hele kader. Drie breedtes, drie hoogtes, de kleinste aanhouden." },
     ],
   },
@@ -242,7 +241,7 @@ const layoutBody: Record<string, { paragraphs: string[]; faqs: CopyFaq[] }> = {
       "Standaard draait hij naar binnen. Naar buiten kan, als de stoep of het pad dat toelaat. Gelaagd glas staat aan, omdat een deur in de loop zit.",
     ],
     faqs: [
-      { q: "Kan ik een briefplaat?", a: "Niet in deze deur. Een briefplaat hoort bij een voordeur, en die zit nog niet in de configurator." },
+      { q: "Kan de deur naar buiten?", a: "Ja. Een achterdeur staat standaard naar binnen. U zet de richting om in de configurator." },
       { q: "Welke dorpel?", a: "Een lage dorpel als vertrekpunt. Een doorlopend kader kan ook, als de waterkering dat vraagt." },
     ],
   },
@@ -263,7 +262,7 @@ const layoutBody: Record<string, { paragraphs: string[]; faqs: CopyFaq[] }> = {
     ],
     faqs: [
       { q: "Is een tuindeur een achterdeur?", a: "Zelfde profiel, andere gewoonte. De tuindeur heeft hier vol glas als eerste vulling en draait standaard naar buiten. U wijzigt beide." },
-      { q: "Hoe laag is de dorpel?", a: "Laag, als voorstel. De millimeterhoogte bevestigt EKO. We publiceren die nog niet." },
+      { q: "Hoe laag is de dorpel?", a: "Laag, als voorstel. De millimeterhoogte publiceren we pas als de leverancier die bevestigt." },
     ],
   },
   "openslaande-tuindeuren": {

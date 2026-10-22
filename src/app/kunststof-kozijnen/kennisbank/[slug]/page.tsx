@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { DirectionFigures, MeasureFigures } from "@/components/kozijnen/figures";
+import { CornerFigures, DirectionFigures, MeasureFigures } from "@/components/kozijnen/figures";
 import { JsonLd } from "@/components/seo/json-ld";
 import { articles, getArticle } from "@/lib/kozijnen/kennis";
 import { howToJsonLd } from "@/lib/kozijnen/schema";
@@ -68,8 +68,13 @@ export default async function KennisArticlePage({ params }: Props) {
         {article.slug === "hoe-moet-je-meten" ? <MeasureFigures /> : null}
         {article.slug === "draairichting-en-aanslag" ? <DirectionFigures /> : null}
         {article.sections.map((section) => (
-          <section key={section.heading}>
+          <section key={section.heading} id={section.heading === "Hoekuitvoering" ? "hoekuitvoering" : undefined}>
             <h2 className="text-[22px] font-bold tracking-[-0.03em]">{section.heading}</h2>
+            {section.heading === "Hoekuitvoering" ? (
+              <div className="mt-4">
+                <CornerFigures />
+              </div>
+            ) : null}
             {section.paragraphs.map((paragraph) => (
               <p key={paragraph} className="mt-3 text-[16px] leading-normal text-kg-text-2">
                 {paragraph}

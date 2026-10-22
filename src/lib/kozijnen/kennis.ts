@@ -1,3 +1,5 @@
+import { PROFILE } from "./config";
+
 export type Block = { heading: string; paragraphs: string[] };
 export type Faq = { q: string; a: string };
 export type LinkItem = { href: string; label: string };
@@ -120,15 +122,15 @@ export const articles: Article[] = [
       {
         heading: "U kijkt van buiten",
         paragraphs: [
-          "In deze configurator staat u buiten, met het gezicht naar de gevel. Links is links vanaf die plek. De scharnieren zitten aan de kant die u kiest.",
-          "Dat is bewust één afspraak. Een tekening van binnen geeft dezelfde deur de andere hand. Daarom staat het erbij op de tekening.",
+          "U staat buiten, met het gezicht naar de gevel. Links betekent dat de scharnieren links zitten, aan uw linkerhand. Rechts is de andere kant.",
+          "Dat is bewust één afspraak. Een tekening van binnen geeft dezelfde deur de andere hand. De configurator en de tekening gebruiken daarom alleen het buitenaanzicht.",
         ],
       },
       {
         heading: "Naar binnen of naar buiten",
         paragraphs: [
-          "Een raam draait in huis meestal naar binnen, zodat u het vanaf de ladder niet hoeft te wassen aan de buitenkant van de vleugel. Een tuindeur slaat vaak naar buiten, zodat de vleugel niet in de kamer staat.",
-          "Beide kan. De keuze zit in de configurator en verandert de tekening. De scharnieren en de dichting volgen die keuze.",
+          "Een raam in deze configurator draait naar binnen. U kiest daar geen andere richting. Zo blijft de vleugel aan de binnenkant te wassen.",
+          "Bij een deur kiest u zelf of de vleugel naar binnen of naar buiten draait. Een achterdeur staat standaard naar binnen, een tuindeur standaard naar buiten. U zet dat om in de configurator. De tekening volgt de keuze.",
         ],
       },
       {
@@ -152,7 +154,7 @@ export const articles: Article[] = [
       },
       {
         q: "Wat is een aanslag waard in de maat?",
-        a: "De aanslag hoort bij de buitenwerkse maat. Hoe diep het profiel is, publiceren we pas als EKO dat cijfer bevestigt.",
+        a: "De aanslag hoort bij de buitenwerkse maat. Hoe diep het profiel is, publiceren we pas als de leverancier dat cijfer bevestigt.",
       },
     ],
     links: [
@@ -170,7 +172,7 @@ export const articles: Article[] = [
         heading: "HR++ en triple",
         paragraphs: [
           "HR++ is dubbel isolatieglas met een coating en een gasvulling. Triple heeft drie ruiten. Triple isoleert verder en dempt meer geluid, en het pakket is dikker en zwaarder.",
-          "Of het EKO NL Profiel elk pakket pakt, bevestigen we bij de offerte. We zetten hier geen Ug-waarde neer zolang die niet vaststaat.",
+          `Of ${PROFILE.name} elk pakket pakt, bevestigen we bij de offerte. We zetten hier geen Ug-waarde neer zolang die niet vaststaat.`,
         ],
       },
       {
@@ -232,21 +234,21 @@ export const articles: Article[] = [
   {
     slug: "hang-en-sluitwerk",
     title: "Hang- en sluitwerk en inbraakwerendheid",
-    description: "Wat RC2 en het Politiekeurmerk betekenen, en wat we standaard aanvragen.",
+    description: "Scharnieren, sluiting en kruk, en wat we standaard aanvragen.",
     kicker: "Beslag",
     sections: [
       {
         heading: "Wat erop zit",
         paragraphs: [
           "Een draaiend deel heeft scharnieren, een sluiting en een kruk. Een deur heeft daar een cilinder bij. Meerpuntsluiting trekt de vleugel op meerdere hoogtes in het kader.",
-          "In de configurator staat het zwaardere beslag als vertrekpunt, richting weerstandsklasse RC2. RC2 komt uit NEN-EN 1627 en zegt iets over hoe lang een opportunistische inbraak wordt vertraagd. Het is een klasse van het element, niet een sticker die u los koopt.",
+          "In de configurator staat het zwaardere beslag als vertrekpunt. Dat zijn extra sluitpunten, geen naam van een klasse. Welke klasse daarbij hoort, zetten we pas op de offerte als de leverancier dat voor dit profiel bevestigt.",
         ],
       },
       {
-        heading: "PKVW en SKG",
+        heading: "Keurmerk",
         paragraphs: [
-          "Het Politiekeurmerk Veilig Wonen kijkt naar de hele woning, niet alleen naar één raam. SKG-sterren horen bij cilinders en beslag. Een ster op een cilinder maakt het kozijn nog niet vanzelf een PKVW-element.",
-          "Of het EKO NL Profiel een KOMO-, SKG- of PKVW-certificaat heeft, staat nog niet vast. We vragen het zwaardere beslag aan en zetten op de offerte wat er geleverd wordt. We tonen geen keurmerk dat we niet kunnen laten zien.",
+          "Een keurmerk hoort bij een getest element, niet bij een losse sticker. Zolang de leverancier dat voor dit profiel niet bevestigt, zetten we geen klasse en geen keurmerk op de pagina of in de aanvraag.",
+          "We vragen het zwaardere beslag aan en zetten op de offerte wat er geleverd wordt.",
         ],
       },
     ],
@@ -256,8 +258,8 @@ export const articles: Article[] = [
         a: "Ja, de aanvraag bevat een kruk. Afsluitbaar is een keuze. De kleur van de kruk bevestigen we met het beslag.",
       },
       {
-        q: "Is RC2 verplicht op de begane grond?",
-        a: "Een verzekeraar of het Politiekeurmerk kan het eisen. De configurator zet het zwaardere beslag klaar. De certificaten bevestigen we per offerte.",
+        q: "Kan een verzekeraar zwaarder beslag eisen?",
+        a: "Ja. De configurator zet het zwaardere beslag klaar. Welke klasse daarbij hoort, bevestigen we per offerte, pas als de leverancier dat voor dit profiel vastlegt.",
       },
     ],
     links: sharedLinks,
@@ -271,15 +273,23 @@ export const articles: Article[] = [
       {
         heading: "Eén profiel",
         paragraphs: [
-          "U kiest geen merk. Elk kozijn in deze sectie is EKO NL Profiel. Dat houdt de tekening, het beslag en de offerte vergelijkbaar.",
-          "Inbouwdiepte, aantal kamers en de Uw-waarde publiceren we pas als EKO die cijfers bevestigt. Tot die tijd staan ze niet op de pagina, ook niet als een richtgetal.",
+          `U kiest geen merk. Elk kozijn in deze sectie is ${PROFILE.name}. Dat houdt de tekening, het beslag en de offerte vergelijkbaar.`,
+          "Inbouwdiepte, aantal kamers en de Uw-waarde publiceren we pas als de leverancier die cijfers bevestigt. Tot die tijd staan ze niet op de pagina, ook niet als een richtgetal.",
         ],
       },
       {
         heading: "Kleur en folie",
         paragraphs: [
-          "Wit is door-en-door of folie, afhankelijk van de uitvoering. Antraciet, zwart en houtlook zijn folie op het profiel. Binnen en buiten kunnen verschillen, en de vleugel kan anders zijn dan het kader.",
-          "De lijst in de configurator is een richting, geen gesloten kleurenkaart. De foliecode bevestigen we op de offerte. Een staal van de gevelbekleding legt u ernaast. Zo ziet u of antraciet op de gevel dezelfde indruk geeft als antraciet op het kozijn.",
+          "Wit, crème, antraciet, zwart en de nerfvarianten in de configurator zijn de snelle keuzes. De volledige AP-lijst volgt. Binnen en buiten kunnen verschillen, en de vleugel kan anders zijn dan het kader.",
+          "De foliecode bevestigen we op de offerte. Een staal van de gevelbekleding legt u ernaast. Zo ziet u of antraciet op de gevel dezelfde indruk geeft als antraciet op het kozijn.",
+        ],
+      },
+      {
+        heading: "Hoekuitvoering",
+        paragraphs: [
+          "Bij verstek worden de profielen onder 45 graden afgezaagd. De naad loopt schuin over de hoek, van de buitenkant naar de binnenhoek.",
+          "Bij HVL komen de profielen haaks samen. Het ene profiel loopt door tot de buitenkant, het andere stopt ertegenaan. De naad staat recht.",
+          "U kiest dit in de configurator. We publiceren geen verschil in isolatiewaarde tot de leverancier dat cijfer geeft.",
         ],
       },
       {
@@ -294,6 +304,10 @@ export const articles: Article[] = [
       {
         q: "Kan de binnenkant wit blijven?",
         a: "Ja. Buiten een folie en binnen wit is een gewone combinatie. U zet beide kleuren apart.",
+      },
+      {
+        q: "Wat is het verschil tussen verstek en HVL?",
+        a: "Bij verstek loopt de naad schuin over de hoek. Bij HVL staat de naad recht, omdat één profiel doorloopt. U kiest dit in de configurator.",
       },
     ],
     links: [
@@ -350,7 +364,7 @@ export const articles: Article[] = [
       {
         heading: "Wat isolatie hier betekent",
         paragraphs: [
-          "Een kozijn verliest warmte via het glas en via het profiel. HR++ of triple verlaagt het verlies via het glas. Hoe ver, hangt af van het pakket en van het kader. De Uw-waarde van dit profiel publiceren we pas als EKO hem bevestigt.",
+          "Een kozijn verliest warmte via het glas en via het profiel. HR++ of triple verlaagt het verlies via het glas. Hoe ver, hangt af van het pakket en van het kader. De Uw-waarde van dit profiel publiceren we pas als de leverancier hem bevestigt.",
           "Kieren rond het oude hout zijn vaak een groter verlies dan de keuze tussen twee coatings. Stellen en afdichten hoort bij de winst.",
         ],
       },
@@ -379,14 +393,14 @@ export const articles: Article[] = [
       {
         heading: "Wat we nu kunnen zeggen",
         paragraphs: [
-          "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn bevestigen we per offerte. Een kleur in folie kan langer duren dan wit. Hoeveel langer, zetten we er pas bij als EKO dat aantal dagen geeft.",
+          "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn bevestigen we per offerte. Een kleur in folie kan langer duren dan wit. Hoeveel langer, zetten we er pas bij als de leverancier dat aantal dagen geeft.",
           "Levering is in overleg, in heel Nederland. Afhalen kan in de showroom in Utrecht, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
         ],
       },
       {
         heading: "Garantie",
         paragraphs: [
-          "De garantie op het kozijn, het glas en het beslag komt op de offerte te staan. We publiceren geen jaren zolang EKO die niet per onderdeel bevestigt.",
+          "De garantie op het kozijn, het glas en het beslag komt op de offerte te staan. We publiceren geen jaren zolang de leverancier die niet per onderdeel bevestigt.",
           "Op kleur van gevelbekleding geldt op deze site 10 jaar. Dat is een andere productgroep. Die termijn plakken we niet op het kozijn.",
         ],
       },
@@ -419,11 +433,11 @@ export const articles: Article[] = [
     faqs: [
       {
         q: "Welk profiel leveren jullie?",
-        a: "Alleen EKO NL Profiel. Er is geen merkmenu.",
+        a: `Alleen ${PROFILE.name}. Er is geen merkmenu.`,
       },
       {
         q: "Waarom zie ik geen prijs?",
-        a: "De prijslijst van EKO is er nog niet. De configurator eindigt in een vrijblijvende offerte. We verzinnen geen bedrag.",
+        a: "De inkoopbedragen zijn er nog niet. De configurator eindigt in een vrijblijvende offerte. We verzinnen geen bedrag.",
       },
       {
         q: "Moet ik een account aanmaken?",
@@ -436,10 +450,6 @@ export const articles: Article[] = [
       {
         q: "Kan ik binnen en buiten een andere kleur?",
         a: "Ja. Kozijn en vleugel ook apart. De folie bevestigen we op de offerte.",
-      },
-      {
-        q: "Leveren jullie voordeuren met briefplaat?",
-        a: "Nog niet in deze versie. Wel achterdeuren, tuindeuren en schuifpuien. Een voordeur vragen we via de gewone offerte.",
       },
       {
         q: "Plaatsen jullie ook?",

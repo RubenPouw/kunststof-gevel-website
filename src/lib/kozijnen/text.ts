@@ -17,7 +17,11 @@ const SILL: Record<string, string> = { doorlopend: "doorlopend kunststof", laag:
 const REBATE: Record<string, string> = { stomp: "stomp", aanslag: "met aanslag" };
 const HARDWARE: Record<string, string> = {
   basis: "basisbeslag",
-  rc2: "zwaarder beslag, richting RC2",
+  zwaar: "zwaarder beslag",
+};
+const CORNER: Record<string, string> = {
+  verstek: "verstek, naad schuin over de hoek",
+  hvl: "HVL, naad recht",
 };
 const HANDLE: Record<string, string> = { standaard: "standaard kruk", afsluitbaar: "afsluitbare kruk" };
 const SCREEN: Record<string, string> = { geen: "geen hor", inzet: "inzethor", plisse: "plisséhor" };
@@ -59,6 +63,7 @@ export function summaryLines(config: KozijnConfig): SummaryLine[] {
     { label: "Ventilatie", value: VENT[config.vent] },
     { label: "Aanslag", value: REBATE[config.rebate] },
     { label: "Onderdorpel", value: SILL[config.sill] },
+    { label: "Hoek", value: CORNER[config.corner] ?? config.corner },
     { label: "Beslag", value: HARDWARE[config.hardware] },
     { label: "Kruk", value: HANDLE[config.handle] },
     { label: "Hor", value: SCREEN[config.screen] },
