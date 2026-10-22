@@ -3,6 +3,7 @@ import { submitStaalAanvraag } from "@/lib/leads";
 import { rateLimitStaal } from "@/lib/staal/rate-limit";
 import { buildStaalTree } from "@/lib/staal/tree";
 import { parseStaalRequest, validateStaalRequest } from "@/lib/staal/validate";
+import { settleStaal } from "@/lib/tracking/business";
 
 export const runtime = "nodejs";
 
@@ -40,5 +41,8 @@ export async function POST(request: Request) {
   if (error) return Response.json({ ok: false, error }, { status: 400 });
 
   const result = await submitStaalAanvraag(parsed, tree);
+  if (result.ok) {
+    await settleStaal({ request, count: parsed.lines.length, email: parsed.email, phone: parsed.phone });
+  }
   return Response.json(result, { status: result.ok ? 200 : 502 });
 }

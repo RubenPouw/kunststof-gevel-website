@@ -1,5 +1,7 @@
 import rows from "../../../data/seo/redirects.json" with { type: "json" };
 
+import { preserveClickSearch } from "../tracking/clicks";
+
 export type RedirectRow = {
   from: string;
   to: string;
@@ -115,7 +117,7 @@ export function resolveNavigation(
   return {
     action: "redirect",
     pathname: target.pathname,
-    search: target.search || (pathChanged ? "" : input.search),
+    search: preserveClickSearch(target.search || (pathChanged ? "" : input.search), input.search),
     host: apex ? "www.kunststof-gevel.nl" : null,
     noindex,
   };

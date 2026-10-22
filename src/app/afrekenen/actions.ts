@@ -1,6 +1,9 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 import { createShopifyCheckout, type CheckoutLineInput } from "@/lib/shopify/checkout";
+import { decodeAdsState } from "@/lib/tracking/identity";
 
 export type CheckoutActionState = { error: string | null; checkoutUrl: string | null };
 
@@ -21,9 +24,14 @@ export async function beginCheckout(_prev: CheckoutActionState, formData: FormDa
     return { error: "De winkelwagen is onleesbaar. Vernieuw de pagina.", checkoutUrl: null };
   }
 
+  const jar = await cookies();
+  const granted = jar.get("kg_consent")?.value === "granted";
+  const ads = granted ? decodeAdsState(jar.get("kg_ads")?.value) : null;
+
   const result = await createShopifyCheckout({
     lines,
     montage: String(formData.get("montage") ?? "") === "1",
+    ads,
     customer: {
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),

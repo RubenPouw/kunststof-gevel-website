@@ -48,7 +48,7 @@ export default function PrivacyPage() {
       <section>
         <h2>Met wie we delen</h2>
         <p className="mt-3">
-          Shopify verwerkt de catalogus en de betaling. Als e-mail of ActiveCampaign is ingesteld, gaat een aanvraag naar {site.email} of naar dat systeem. We verkopen geen adressen. Verwerkers zitten in de EU of werken met een passende doorgifte.
+          Shopify verwerkt de catalogus en de betaling. Als e-mail of ActiveCampaign is ingesteld, gaat een aanvraag naar {site.email} of naar dat systeem. Na toestemming in de cookiebanner kan onze server een gebeurtenis doorsturen naar Google, voor statistiek en advertentiemeting. Zonder die toestemming gebeurt dat niet. We verkopen geen adressen. Verwerkers zitten in de EU of werken met een passende doorgifte.
         </p>
       </section>
       <section>
@@ -60,7 +60,10 @@ export default function PrivacyPage() {
       <section>
         <h2>Cookies</h2>
         <p className="mt-3">
-          De winkelwagen en een eventueel account staan in uw browser. Er is geen advertentie- of analysecookie. Komt die er later bij, dan vragen we daar apart toestemming voor.
+          De winkelwagen en een eventueel account staan in uw browser. We laden geen script van Google of een andere meetpartij.
+        </p>
+        <p className="mt-3">
+          Kiest u in de cookiebanner voor accepteren, dan zetten we een eigen cookie voor ongeveer negentig dagen. Daarin staat een willekeurig kenmerk van deze browser en, als u via een advertentie binnenkwam, de klikcode uit het adres. Onze server kan daarna een gebeurtenis doorsturen, zoals een geopende configurator, een verstuurde offerte, een staalaanvraag of een bestelling. Bij een aanvraag of bestelling gaat een gehasht e-mailadres of telefoonnummer mee, zodat Google de klik aan de inzending kan koppelen. Weigeren betekent: geen meetcookie en geen doorstuur. Tot u kiest, blijft een klikcode alleen in dit tabblad en gaat die niet naar Google. De site werkt zonder toestemming.
         </p>
       </section>
       <section>

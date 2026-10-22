@@ -4,6 +4,9 @@ import { hasPurchasePrice } from "@/lib/catalog/text-rules";
 import type { ProductVariant } from "@/lib/catalog/types";
 import { site } from "@/lib/site";
 
+import { adsCheckoutAttributes } from "@/lib/tracking/checkout-attrs";
+import type { AdsState } from "@/lib/tracking/identity";
+
 import { storefrontFetch } from "./client";
 import { getShopifyConfig } from "./config";
 
@@ -95,6 +98,7 @@ async function createStorefrontCart(input: {
   lines: { merchandiseId: string; quantity: number }[];
   customer: CheckoutCustomer;
   note: string;
+  ads?: AdsState | null;
 }) {
   const phone = toE164(input.customer.phone);
   const data = await storefrontFetch<CartCreateData>(CART_CREATE, {
@@ -119,6 +123,7 @@ async function createStorefrontCart(input: {
           ? [{ key: "Bedrijf", value: input.customer.company.trim() }]
           : []),
         { key: "Bron", value: "kunststof-gevel.nl" },
+        ...adsCheckoutAttributes(input.ads),
       ],
     },
   });
@@ -140,6 +145,7 @@ async function createAdminDraft(input: {
   lines: { merchandiseId: string; quantity: number; name: string }[];
   customer: CheckoutCustomer;
   note: string;
+  ads?: AdsState | null;
 }) {
   const config = getShopifyConfig();
   const token = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN?.trim();
@@ -162,6 +168,7 @@ async function createAdminDraft(input: {
         email: input.customer.email.trim(),
         phone,
         note: input.note,
+        note_attributes: adsCheckoutAttributes(input.ads).map((item) => ({ name: item.key, value: item.value })),
         tags: "kunststof-gevel.nl",
         shipping_address: {
           first_name: firstName,
@@ -193,6 +200,7 @@ export async function createShopifyCheckout(input: {
   lines: CheckoutLineInput[];
   customer: CheckoutCustomer;
   montage: boolean;
+  ads?: AdsState | null;
 }): Promise<CheckoutResult> {
   if (!input.lines.length) {
     return failure("De winkelwagen is leeg.");
@@ -234,7 +242,7 @@ export async function createShopifyCheckout(input: {
     .join("\n");
 
   try {
-    const cart = await createStorefrontCart({ lines, customer: input.customer, note });
+    const cart = await createStorefrontCart({ lines, customer: input.customer, note, ads: input.ads });
     if (cart.ok) return cart;
     console.error("[checkout] Storefront", cart.error);
   } catch (error) {
@@ -243,7 +251,7 @@ export async function createShopifyCheckout(input: {
 
   if (process.env.SHOPIFY_ADMIN_ACCESS_TOKEN?.trim()) {
     try {
-      const draft = await createAdminDraft({ lines, customer: input.customer, note });
+      const draft = await createAdminDraft({ lines, customer: input.customer, note, ads: input.ads });
       if (draft.ok) return draft;
       console.error("[checkout] Admin draft", draft.error);
     } catch (error) {

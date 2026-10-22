@@ -13,6 +13,7 @@ import { CartProvider } from "@/lib/cart";
 import { SampleTrayProvider } from "@/lib/samples";
 import { organizationJsonLd } from "@/lib/seo/schema";
 import { site } from "@/lib/site";
+import { CLICK_CAPTURE_SCRIPT } from "@/lib/tracking/capture-script";
 
 import "./globals.css";
 
@@ -59,6 +60,7 @@ export default function RootLayout({
       className={`${plexSans.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <script dangerouslySetInnerHTML={{ __html: CLICK_CAPTURE_SCRIPT }} />
         <svg width="0" height="0" className="absolute" aria-hidden>
           <defs>
             <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1">

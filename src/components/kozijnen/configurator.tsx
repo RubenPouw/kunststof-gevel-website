@@ -32,6 +32,7 @@ import {
 } from "@/lib/kozijnen/model";
 import { summaryLines } from "@/lib/kozijnen/text";
 import { site } from "@/lib/site";
+import { browserConsent, trackBrowserEvent } from "@/lib/tracking/browser";
 import { cn } from "@/lib/utils";
 
 type PriceResponse =
@@ -101,6 +102,41 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
       .catch(() => setPrice({ pricesActive: false }));
     return () => controller.abort();
   }, [config, layout.slug, pricesActive]);
+
+  useEffect(() => {
+    if (!ready) return;
+    function once(key: string) {
+      try {
+        if (window.sessionStorage.getItem(key)) return false;
+        window.sessionStorage.setItem(key, "1");
+        return true;
+      } catch {
+        return true;
+      }
+    }
+    function sendStart() {
+      if (browserConsent() !== "granted" || !once(`kg-track-start:${layout.slug}`)) return;
+      trackBrowserEvent("configurator_gestart", { type: layout.slug });
+    }
+    function sendDone() {
+      if (config.step !== "overzicht" || browserConsent() !== "granted") return;
+      if (pricesActive && price === null) return;
+      if (!once(`kg-track-done:${layout.slug}`)) return;
+      const waarde = price && "totalExcl" in price ? price.totalExcl : undefined;
+      trackBrowserEvent("configurator_afgerond", {
+        type: layout.slug,
+        ...(waarde == null ? {} : { waarde_excl: waarde }),
+      });
+    }
+    sendStart();
+    sendDone();
+    window.addEventListener("kg-consent", sendStart);
+    window.addEventListener("kg-consent", sendDone);
+    return () => {
+      window.removeEventListener("kg-consent", sendStart);
+      window.removeEventListener("kg-consent", sendDone);
+    };
+  }, [config.step, layout.slug, price, pricesActive, ready]);
 
   const stepIndex = Math.max(0, STEPS.findIndex((step) => step.id === config.step));
   const step = STEPS[stepIndex] ?? STEPS[0];

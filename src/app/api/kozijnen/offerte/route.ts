@@ -2,6 +2,7 @@ import { deliverKozijnQuote, parseQuoteContact } from "@/lib/kozijnen/quote";
 import { getLayoutBySlug, layoutPath } from "@/lib/kozijnen/layouts";
 import { parseConfig } from "@/lib/kozijnen/model";
 import { clientIp, rateLimitKozijn } from "@/lib/kozijnen/rate-limit";
+import { settleOfferte } from "@/lib/tracking/business";
 
 export const runtime = "nodejs";
 
@@ -31,5 +32,6 @@ export async function POST(request: Request) {
   const config = parseConfig(new URLSearchParams(raw.query), layout);
   const result = await deliverKozijnQuote(config, contact, `${layoutPath(layout)}?${raw.query}`);
   if (!result.ok) return Response.json({ ok: false, error: result.error }, { status: 400 });
+  await settleOfferte({ request, config, email: contact.email, phone: contact.phone, layout: layout.slug });
   return Response.json({ ok: true, reference: result.reference });
 }

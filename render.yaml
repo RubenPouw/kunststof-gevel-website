@@ -46,8 +46,6 @@ services:
         value: info@kunststof-gevel.nl
       - key: SMTP_PASS
         sync: false
-      - key: NEXT_PUBLIC_GTM_ID
-        value: GTM-N3DQ6G5
       - key: NOINDEX
         sync: false
       - key: DATABASE_URL
@@ -55,6 +53,32 @@ services:
       - key: SHOPIFY_WEBHOOK_SECRET
         sync: false
       - key: SYNC_SECRET
+        sync: false
+      - key: TRACKING_GA4_ACTIEF
+        value: "false"
+      - key: GA4_MEASUREMENT_ID
+        sync: false
+      - key: GA4_API_SECRET
+        sync: false
+      - key: TRACKING_ADS_ACTIEF
+        value: "false"
+      - key: GOOGLE_ADS_DEVELOPER_TOKEN
+        sync: false
+      - key: GOOGLE_ADS_CUSTOMER_ID
+        sync: false
+      - key: GOOGLE_ADS_LOGIN_CUSTOMER_ID
+        sync: false
+      - key: GOOGLE_ADS_CLIENT_ID
+        sync: false
+      - key: GOOGLE_ADS_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_ADS_REFRESH_TOKEN
+        sync: false
+      - key: GOOGLE_ADS_CONVERSION_OFFERTE
+        sync: false
+      - key: GOOGLE_ADS_CONVERSION_STAAL
+        sync: false
+      - key: GOOGLE_ADS_CONVERSION_BESTELLING
         sync: false
   - type: cron
     name: kunststofgevel-catalogus-controle
