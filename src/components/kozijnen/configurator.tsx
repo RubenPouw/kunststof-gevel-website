@@ -222,9 +222,9 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
       ) : null}
 
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(300px,400px)] lg:gap-12">
-        <div>
-          <nav aria-label="Stappen" className="overflow-x-auto lg:overflow-visible">
-            <ol className="flex min-w-max gap-2 lg:min-w-0 lg:flex-wrap">
+        <div className="min-w-0">
+          <nav aria-label="Stappen" className="max-w-full overflow-x-auto lg:overflow-visible">
+            <ol className="flex w-max gap-2 lg:w-auto lg:flex-wrap">
               {FLOW.map((item, index) => {
                 const current = item.id === flow.id;
                 const done = index < flowIndex;
