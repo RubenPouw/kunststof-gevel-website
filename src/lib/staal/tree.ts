@@ -1,3 +1,4 @@
+import { labelColour } from "@/lib/catalog/colours";
 import { slugKey } from "@/lib/catalog/derive";
 import { normalizeProductName } from "@/lib/catalog/text-rules";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
@@ -194,7 +195,7 @@ export function collectColors(products: Product[]): StaalColor[] {
   const map = new Map<string, StaalColor>();
   for (const product of products) {
     for (const variant of product.variants) {
-      const name = variant.colorName?.trim();
+      const name = labelColour(variant.colorName?.trim() ?? "");
       if (!isSampleColor(name)) continue;
       const id = slugKey(name);
       if (!id) continue;
@@ -207,7 +208,7 @@ export function collectColors(products: Product[]): StaalColor[] {
       }
     }
     for (const color of product.colors) {
-      const name = color.name?.trim();
+      const name = labelColour(color.name?.trim() ?? "");
       if (!isSampleColor(name)) continue;
       const id = slugKey(name);
       if (!id || map.has(id)) continue;

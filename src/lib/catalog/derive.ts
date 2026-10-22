@@ -1,5 +1,5 @@
 import { facadeOrder, HPL_SHEET_M2 } from "@/lib/area";
-import { resolveColour } from "@/lib/catalog/colours";
+import { labelColour, resolveColour, UNKNOWN_COLOUR_HEX } from "@/lib/catalog/colours";
 import {
   extractHplColor,
   extractPanelLength,
@@ -107,14 +107,74 @@ function variantLength(variant: ProductVariant, productName: string) {
 }
 
 function variantOptions(variant: ProductVariant): { name: string; value: string }[] {
-  if (variant.options?.some((option) => option.name.toLowerCase() !== "title")) {
-    return variant.options;
+  const source = variant.options?.some((option) => option.name.toLowerCase() !== "title")
+    ? variant.options
+    : [
+        { name: "Kleur", value: variant.colorName },
+        ...(parseLengthMeters(variant.length) ? [{ name: "Lengte", value: variant.length }] : []),
+      ];
+  return source.map((option) =>
+    /kleur|color|colour/i.test(option.name) ? { ...option, value: labelColour(option.value) } : option,
+  );
+}
+
+/** Rewrite stored colour codes to "Name (CODE)" without a catalog resync. */
+export function applyColourLabels(product: Product): Product {
+  let changed = false;
+  const variants = product.variants.map((variant) => {
+    const colorName = labelColour(variant.colorName);
+    let options = variant.options;
+    if (options?.length) {
+      let optionsChanged = false;
+      const nextOptions = options.map((option) => {
+        if (!/kleur|color|colour/i.test(option.name)) return option;
+        const value = labelColour(option.value);
+        if (value === option.value) return option;
+        optionsChanged = true;
+        return { ...option, value };
+      });
+      if (optionsChanged) options = nextOptions;
+    }
+    const colour = resolveColour(colorName, product.name);
+    const family = colour.family;
+    const hex =
+      (variant.colorFamily === "overig" && family !== "overig") ||
+      variant.hex.toLowerCase() === UNKNOWN_COLOUR_HEX.toLowerCase()
+        ? colour.hex
+        : variant.hex;
+    if (colorName === variant.colorName && options === variant.options && family === variant.colorFamily && hex === variant.hex) {
+      return variant;
+    }
+    changed = true;
+    return {
+      ...variant,
+      colorName,
+      options,
+      colorFamily: family,
+      hex,
+      sampleId: sampleId(product.brandSlug, colorName),
+    };
+  });
+  if (!changed) return product;
+
+  const colors: ProductColor[] = [];
+  for (const variant of variants) {
+    if (colors.some((color) => color.name === variant.colorName)) continue;
+    colors.push({
+      name: variant.colorName,
+      hex: variant.hex,
+      ral: variant.ral,
+      popular: variant.popular,
+      family: variant.colorFamily,
+      sampleId: variant.sampleId,
+    });
   }
-  const options = [{ name: "Kleur", value: variant.colorName }];
-  if (parseLengthMeters(variant.length)) {
-    options.push({ name: "Lengte", value: variant.length });
-  }
-  return options;
+  return {
+    ...product,
+    variants,
+    colors,
+    palette: colors.map((color) => color.hex),
+  };
 }
 
 export const HPL_SHEET_SIZE = "3050 × 1300 mm";
@@ -161,7 +221,7 @@ export function enrichProduct(product: Product): Product {
       anyAssumed = true;
     }
     const meters = sheet ? undefined : parseLengthMeters(length);
-    const colour = resolveColour(colorName, name, { codes: product.category !== "hpl-platen" });
+    const colour = resolveColour(colorName, name);
     const family = colour.family;
     if (colour.name !== colorName) colorName = colour.name;
     const hex = product.source === "shopify" || colour.name !== variant.colorName ? colour.hex : variant.hex;
@@ -204,7 +264,7 @@ export function enrichProduct(product: Product): Product {
   const uniqueColors = [...new Set(variants.map((variant) => variant.colorName))];
   const lengthLabel = uniqueLengths.length === 1 ? uniqueLengths[0] : uniqueLengths.join(" / ");
 
-  return {
+  return applyColourLabels({
     ...product,
     name,
     description: withoutTrespa(product.description),
@@ -223,7 +283,7 @@ export function enrichProduct(product: Product): Product {
       uniqueColors.length > 1
         ? `${lengthLabel} · ${uniqueColors.length} kleuren`
         : `${lengthLabel} · ${variants.length} ${variants.length === 1 ? "variant" : "varianten"}`,
-  };
+  });
 }
 
 export function listSampleColors(products: Product[]): SampleColor[] {

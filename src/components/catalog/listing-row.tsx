@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import { compareColourLabels, colourOptionText } from "@/components/catalog/colour-name";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
@@ -99,11 +100,13 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
             onChange={(event) => onColour(event.target.value)}
             className="h-11 w-full border border-kg-navy bg-white px-2 text-[14px] text-kg-navy"
           >
-            {card.swatches.map((item) => (
-              <option key={item.sampleId || item.name} value={item.name}>
-                {item.name}
-              </option>
-            ))}
+            {[...card.swatches]
+              .sort((a, b) => compareColourLabels(a.name, b.name))
+              .map((item) => (
+                <option key={item.sampleId || item.name} value={item.name}>
+                  {colourOptionText(item.name)}
+                </option>
+              ))}
           </select>
         </label>
       ) : null}

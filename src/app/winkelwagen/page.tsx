@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { ColourName } from "@/components/catalog/colour-name";
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
@@ -74,6 +75,11 @@ export default function CartPage() {
                         />
                         <div>
                           <p className="text-[15px] font-medium">{resolved.name}</p>
+                          {resolved.colorName ? (
+                            <p className="text-[14px] text-kg-navy">
+                              <ColourName value={resolved.colorName} />
+                            </p>
+                          ) : null}
                           <p className="font-mono text-[13px] text-kg-text-2">
                             {resolved.skuLabel}
                             {resolved.length && resolved.kind === "product"

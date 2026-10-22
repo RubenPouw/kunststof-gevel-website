@@ -49,9 +49,9 @@ function product(partial: Partial<Product> & Pick<Product, "slug" | "name" | "ca
   };
 }
 
-test("A24 is antraciet and not a brown chip, HPL decor codes stay codes", () => {
-  const a24 = resolveColour("A24", "", { codes: true });
-  assert.equal(a24.name, "Antraciet");
+test("A24 is antraciet and not a brown chip, and the code stays after the name", () => {
+  const a24 = resolveColour("A24");
+  assert.equal(a24.name, "Antraciet (A24)");
   assert.equal(a24.hex, "#3A3D41");
   assert.equal(a24.family, "donker");
   assert.notEqual(a24.hex.toLowerCase(), "#7a4e2e");
@@ -68,7 +68,7 @@ test("A24 is antraciet and not a brown chip, HPL decor codes stay codes", () => 
       variants: [variant("F39", "mpf04101")],
     }),
   );
-  assert.equal(sheet.variants[0]?.colorName, "F39");
+  assert.equal(sheet.variants[0]?.colorName, "Wit (folie) (F39)");
 
   const panel = enrichProduct(
     product({
@@ -78,14 +78,14 @@ test("A24 is antraciet and not a brown chip, HPL decor codes stay codes", () => 
       variants: [variant("B42", "04014260"), variant("A24", "03200460")],
     }),
   );
-  assert.equal(panel.variants.find((item) => item.sku === "04014260")?.colorName, "Creme");
+  assert.equal(panel.variants.find((item) => item.sku === "04014260")?.colorName, "Creme (folie) (B42)");
   assert.equal(panel.variants.find((item) => item.sku === "04014260")?.colorFamily, "licht");
-  assert.equal(panel.variants.find((item) => item.sku === "03200460")?.colorName, "Antraciet");
+  assert.equal(panel.variants.find((item) => item.sku === "03200460")?.colorName, "Antraciet (A24)");
   assert.equal(panel.colors.some((color) => color.family === "overig"), false);
 
   assert.equal(resolveColour("Verkeerswit").family, "licht");
   assert.equal(resolveColour("Verkeerswit").hex, "#F4F1EA");
-  const unknown = resolveColour("ZX9", "", { codes: true });
+  const unknown = resolveColour("ZX9");
   assert.equal(unknown.name, "ZX9");
   assert.equal(unknown.hex, UNKNOWN_COLOUR_HEX);
 

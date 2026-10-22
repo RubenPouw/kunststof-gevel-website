@@ -9,12 +9,77 @@ export type ColourHit = {
 };
 
 /**
- * Milin article codes, confirmed on the supplier shop (same code, same name, no conflicts).
- * Applied only outside HPL sheets. HPL decor codes such as F39 stay the code.
+ * Milin article codes from the supplier shop (milin.nl variant names, one name per code).
+ * A known code is shown as the supplier name with the code after it: "Antraciet (A24)".
+ * Codes with no entry stay as the code and are listed in UNVERIFIED_COLOUR_CODES.
  */
 const CODES: Record<string, string> = Object.fromEntries(
   Object.entries(colourCodes).map(([code, name]) => [code.toLowerCase(), name]),
 );
+
+/** Catalogue codes we could not verify. Empty: every bare code in the shop has a Milin name. */
+export const UNVERIFIED_COLOUR_CODES: readonly string[] = [];
+
+const BARE_CODE = /^(?:[A-G]\d{2}|\d{3})$/i;
+const CODE_WITH_SKU = /^([A-G]\d{2}|\d{3})\s+\(\d+\)$/i;
+const LABELED_CODE = /^(.*)\s+\(([A-G]\d{2}|\d{3})\)$/i;
+
+export function supplierColourName(code: string): string | undefined {
+  return CODES[code.trim().toLowerCase()];
+}
+
+/** The Milin code inside a bare value, a "CODE (sku)" value, or an already labeled name. */
+export function colourCodeIn(value: string): string | null {
+  const trimmed = value.trim();
+  const labeled = trimmed.match(LABELED_CODE);
+  if (labeled) {
+    const code = labeled[2].toUpperCase();
+    if (CODES[code.toLowerCase()]) return code;
+  }
+  const bare = trimmed.match(BARE_CODE);
+  if (bare) {
+    const code = bare[0].toUpperCase();
+    if (CODES[code.toLowerCase()]) return code;
+  }
+  const withSku = trimmed.match(CODE_WITH_SKU);
+  if (withSku) {
+    const code = withSku[1].toUpperCase();
+    if (CODES[code.toLowerCase()]) return code;
+  }
+  return null;
+}
+
+/** "Antraciet (A24)". Unknown values, including unverified codes, stay unchanged. */
+export function labelColour(value: string): string {
+  const code = colourCodeIn(value);
+  const name = code ? supplierColourName(code) : undefined;
+  if (!code || !name) return value.trim();
+  return `${name} (${code})`;
+}
+
+export function colourParts(value: string): { name: string; code?: string } {
+  const label = labelColour(value);
+  const code = colourCodeIn(label);
+  if (!code) return { name: label };
+  return { name: supplierColourName(code) ?? label, code };
+}
+
+export function colourOptionText(value: string) {
+  const parts = colourParts(value);
+  return parts.code ? `${parts.name} (${parts.code})` : parts.name;
+}
+
+export function compareColourLabels(a: string, b: string) {
+  return colourOptionText(a).localeCompare(colourOptionText(b), "nl", { sensitivity: "base" });
+}
+
+export function colourSearchTokens(value: string): string[] {
+  const label = labelColour(value);
+  const code = colourCodeIn(label);
+  if (!code) return [label];
+  const name = supplierColourName(code);
+  return [label, code, name ?? ""].filter(Boolean);
+}
 
 /** Neutral chip when the hue is not published. Not a guessed wood tone. */
 export const UNKNOWN_COLOUR_HEX = "#C5C1B8";
@@ -60,18 +125,16 @@ function matchWords(text: string) {
   return RULES.find((rule) => rule.test.test(key)) ?? null;
 }
 
-export function resolveColour(name: string, context = "", options?: { codes?: boolean }): ColourHit {
-  const key = norm(name);
-  if (options?.codes) {
-    const label = CODES[key.replace(/\s+/g, "")];
-    if (label) {
-      const words = matchWords(label);
-      return {
-        name: label,
-        hex: words?.hex ?? UNKNOWN_COLOUR_HEX,
-        family: words?.family ?? "overig",
-      };
-    }
+export function resolveColour(name: string, context = ""): ColourHit {
+  const display = labelColour(name);
+  const key = norm(display);
+  if (colourCodeIn(name)) {
+    const words = matchWords(display);
+    return {
+      name: display,
+      hex: words?.hex ?? UNKNOWN_COLOUR_HEX,
+      family: words?.family ?? "overig",
+    };
   }
 
   const direct = matchWords(name);

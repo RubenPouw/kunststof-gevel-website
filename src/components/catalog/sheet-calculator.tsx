@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { ColourName } from "@/components/catalog/colour-name";
 import { buttonVariants } from "@/components/ui/button";
 import { HPL_SHEET_M2, parseMeters, sheetOrder } from "@/lib/area";
 import { VatPrice } from "@/components/brand/vat-price";
@@ -13,11 +14,13 @@ const fieldClass =
 
 export function SheetCalculator({
   sheetM2 = HPL_SHEET_M2,
+  colourLabel,
   unitExcl = 0,
   onTake,
   onOrder,
 }: {
   sheetM2?: number;
+  colourLabel?: string;
   unitExcl?: number;
   onTake?: (sheets: number) => void;
   onOrder?: (sheets: number) => void;
@@ -40,6 +43,11 @@ export function SheetCalculator({
   return (
     <div className="border border-kg-lijn bg-white p-4">
       <p className="font-medium">Platen nodig</p>
+      {colourLabel ? (
+        <p className="mt-1 text-[14px] text-kg-navy">
+          Kleur: <ColourName value={colourLabel} />
+        </p>
+      ) : null}
       <p className="mt-1 text-[14px] leading-[1.5] text-kg-text-2">
         Een plaat is 3050 × 1300 mm, {formatNlNumber(sheetM2, 3)} m². U bestelt hele platen. Wij zagen niet op maat.
       </p>

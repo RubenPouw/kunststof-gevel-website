@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { VatPrice } from "@/components/brand/vat-price";
+import { ColourName } from "@/components/catalog/colour-name";
 import { buttonVariants } from "@/components/ui/button";
 import { facadeOrder, FACADE_WASTE, parseMeters } from "@/lib/area";
 import { formatNlNumber, inclVat } from "@/lib/format";
@@ -14,6 +15,7 @@ const fieldClass =
 export function AreaCalculator({
   panelsPerM2,
   lengthLabel,
+  colourLabel,
   unitExcl,
   assumedLength = false,
   onTake,
@@ -21,6 +23,7 @@ export function AreaCalculator({
 }: {
   panelsPerM2: number;
   lengthLabel: string;
+  colourLabel?: string;
   unitExcl: number;
   assumedLength?: boolean;
   onTake: (panels: number) => void;
@@ -47,6 +50,11 @@ export function AreaCalculator({
   return (
     <div className="border border-kg-lijn bg-white p-4">
       <p className="font-medium">Reken uw gevel om</p>
+      {colourLabel ? (
+        <p className="mt-1 text-[14px] text-kg-navy">
+          Kleur: <ColourName value={colourLabel} />
+        </p>
+      ) : null}
       <div className="mt-3 grid gap-3 sm:grid-cols-3">
         <label className="font-mono text-[13px] text-kg-text-2">
           Breedte (m)

@@ -1,5 +1,6 @@
 import { cache } from "react";
 
+import { applyColourLabels } from "@/lib/catalog/derive";
 import { findListedProduct } from "@/lib/catalog/dedupe";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
 import { databaseUrl } from "@/lib/db/client";
@@ -130,9 +131,13 @@ async function loadCatalog(): Promise<CatalogData> {
   }
 }
 
+function withColourLabels(data: CatalogData): CatalogData {
+  return { ...data, products: data.products.map(applyColourLabels) };
+}
+
 export const getCatalog = cache(async (): Promise<CatalogData> => {
   if (catalogMemory && Date.now() - catalogMemory.at < CATALOG_MEMORY_MS) return catalogMemory.data;
-  const data = await loadCatalog();
+  const data = withColourLabels(await loadCatalog());
   catalogMemory = { at: Date.now(), data };
   return data;
 });

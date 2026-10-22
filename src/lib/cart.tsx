@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { labelColour } from "@/lib/catalog/colours";
 import { getVariant } from "@/lib/catalog/helpers";
 import { getStaticProduct } from "@/lib/catalog/static";
 import { isFacadePanel } from "@/lib/catalog/derive";
@@ -115,7 +116,7 @@ function resolveLine(line: CartLine): ResolvedLine | undefined {
     return {
       name: line.name,
       brand: line.brand ?? "Kömmerling 76",
-      colorName: line.colorName ?? "",
+      colorName: labelColour(line.colorName ?? ""),
       unitExcl: line.price,
       hex: line.hex ?? "#3b3f42",
       length: line.length ?? "",
@@ -140,7 +141,7 @@ function resolveLine(line: CartLine): ResolvedLine | undefined {
   return {
     name,
     brand: line.brand ?? product?.brand ?? "",
-    colorName: line.colorName ?? variant?.colorName ?? "",
+    colorName: labelColour(line.colorName ?? variant?.colorName ?? ""),
     unitExcl: exclVat(priceIncl),
     hex: line.hex ?? variant?.hex ?? "#c9c4b8",
     image: line.image ?? product?.images[0]?.url,

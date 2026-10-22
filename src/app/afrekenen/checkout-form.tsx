@@ -6,6 +6,7 @@ import { useActionState } from "react";
 
 import { beginCheckout } from "@/app/afrekenen/actions";
 import { shippingEstimateBothCopy, VatBoth } from "@/components/brand/vat-price";
+import { ColourName } from "@/components/catalog/colour-name";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatPrice, inclVat, roundMoney } from "@/lib/format";
@@ -140,7 +141,7 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
                   return (
                     <li key={line.variantSku} className="flex items-start justify-between gap-4">
                       <span>
-                        {resolved.name} · {resolved.colorName} · {line.variantSku} × {line.qty}
+                        {resolved.name} · <ColourName value={resolved.colorName} /> · {line.variantSku} × {line.qty}
                       </span>
                       <VatBoth incl={inclVat(lineExcl)} excl={lineExcl} className="text-[14px] font-bold" />
                     </li>

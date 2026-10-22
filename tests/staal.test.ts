@@ -195,7 +195,12 @@ test("hpl samples are 6 mm Milyt and Flexinplex, with decors as colours", () => 
   assert.deepEqual(hpl.productSlugs.sort(), ["flex-6", "milyt-hpl-plaat-1", "milyt-hpl-plaat-2"]);
   assert.equal(hpl.image, "https://cdn.shopify.com/s/files/1/1/files/compact.jpg");
   const milyt = hpl.children?.find((child) => child.productSlugs.includes("milyt-hpl-plaat-1"));
-  assert.deepEqual(milyt?.colors.map((color) => color.name), ["A33", "B42", "F10", "F39"]);
+  assert.deepEqual(milyt?.colors.map((color) => color.name), [
+    "Antraciet (A33)",
+    "Creme (folie) (B42)",
+    "Wit (F10)",
+    "Wit (folie) (F39)",
+  ]);
   assert.equal(milyt?.image, hpl.image);
   assert.equal(staalTarget(sheet)?.groupId, "hpl");
   assert.equal(staalTarget(decorsA)?.groupId, "hpl");

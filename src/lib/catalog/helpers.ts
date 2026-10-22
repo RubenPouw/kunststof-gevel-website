@@ -1,3 +1,4 @@
+import { colourCodeIn, colourSearchTokens, labelColour, supplierColourName } from "./colours";
 import type { ListingPresentation, ListingSort, ListingView } from "./listing";
 import { slugKey } from "./derive";
 import type {
@@ -50,6 +51,17 @@ export function productHasPrice(product: Product) {
   return product.variants.some((variant) => variant.price > 0) && product.price > 0;
 }
 
+/** A Kleurnaam slug matches the full label, the supplier name, or the code. */
+export function colourMatchesSlug(colorName: string, slug: string) {
+  const label = labelColour(colorName);
+  if (slugKey(label) === slug) return true;
+  const code = colourCodeIn(label);
+  if (!code) return false;
+  if (slugKey(code) === slug) return true;
+  const name = supplierColourName(code);
+  return Boolean(name && slugKey(name) === slug);
+}
+
 export function applyListingFilters(list: Product[], filters: ListingFilters) {
   return list.filter((product) => {
     if (filters.brandSlug && product.brandSlug !== filters.brandSlug) return false;
@@ -59,7 +71,7 @@ export function applyListingFilters(list: Product[], filters: ListingFilters) {
     if (filters.colorFamily && !product.colors.some((color) => color.family === filters.colorFamily)) {
       return false;
     }
-    if (filters.colorSlug && !product.colors.some((color) => slugKey(color.name) === filters.colorSlug)) {
+    if (filters.colorSlug && !product.colors.some((color) => colourMatchesSlug(color.name, filters.colorSlug ?? ""))) {
       return false;
     }
     if (filters.ral && !product.colors.some((color) => color.ral?.replace(/\D/g, "") === filters.ral)) {
@@ -217,7 +229,7 @@ export function filterProductsByQuery(products: Product[], query: string) {
       product.productType ?? "",
       product.profileType,
       product.slug,
-      ...product.variants.flatMap((variant) => [variant.sku, variant.ean, variant.colorName]),
+      ...product.variants.flatMap((variant) => [variant.sku, variant.ean, ...colourSearchTokens(variant.colorName)]),
     ]
       .join(" ")
       .toLowerCase();

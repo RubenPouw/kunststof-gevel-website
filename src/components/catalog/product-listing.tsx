@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { ColourName } from "@/components/catalog/colour-name";
 import { ListingCard } from "@/components/catalog/listing-card";
 import { ListingRow } from "@/components/catalog/listing-row";
 import { buttonVariants } from "@/components/ui/button";
@@ -418,7 +419,7 @@ function ColourLink({
         className={cn("size-4 shrink-0 border border-kg-lijn", active && "outline outline-2 outline-offset-1 outline-kg-navy")}
         style={{ background: item.hex }}
       />
-      <span className="min-w-0 flex-1">{item.name}</span>
+      <ColourName value={item.name} className="min-w-0 flex-1" />
       <span className="font-mono text-[12px] text-kg-text-2">{item.count}</span>
     </a>
   );

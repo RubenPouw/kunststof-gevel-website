@@ -4,6 +4,7 @@ import { useActionState, useState, type ReactNode } from "react";
 import Link from "next/link";
 
 import { submitSamples } from "@/app/stalen/actions";
+import { colourOptionText } from "@/components/catalog/colour-name";
 import { SampleTrayCard } from "@/components/samples/sample-tray-card";
 import { buttonVariants } from "@/components/ui/button";
 import { useLeadDefaults } from "@/lib/account";
@@ -36,7 +37,7 @@ export function SampleRequestForm() {
       key={defaults.email || "gast"}
       defaults={defaults}
       payload={items
-        .map((item) => `${item.colorName}${item.ral ? ` ${item.ral}` : ""} (${item.brandName})`)
+        .map((item) => `${colourOptionText(item.colorName)}${item.ral ? ` ${item.ral}` : ""} (${item.brandName})`)
         .join("|")}
     />
   );

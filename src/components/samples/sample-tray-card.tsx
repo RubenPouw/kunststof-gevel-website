@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { ColourName, colourOptionText } from "@/components/catalog/colour-name";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
@@ -42,7 +43,11 @@ export function SampleTrayCard({ className }: { className?: string }) {
             >
               <span className="size-[30px]" style={{ background: item.hex }} />
               <span className="min-w-0 flex-1">
-                <span className="block text-[14px] font-medium text-kg-kalk">{item.colorName}</span>
+                <ColourName
+                  value={item.colorName}
+                  className="block text-[14px] font-medium text-kg-kalk"
+                  codeClassName="font-mono text-[0.85em] text-kg-grind"
+                />
                 <span className="block font-mono text-[12px] text-kg-grind">
                   {item.ral ?? item.brandName}
                 </span>
@@ -51,7 +56,7 @@ export function SampleTrayCard({ className }: { className?: string }) {
                 type="button"
                 onClick={() => remove(item.id)}
                 className="grid size-11 place-items-center text-[18px] leading-none text-kg-kalk"
-                aria-label={`${item.colorName} verwijderen`}
+                aria-label={`${colourOptionText(item.colorName)} verwijderen`}
               >
                 ×
               </button>

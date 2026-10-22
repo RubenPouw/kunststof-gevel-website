@@ -9,6 +9,7 @@ import { AreaCalculator } from "@/components/catalog/area-calculator";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { ProductCard } from "@/components/brand/product-card";
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { ColourName } from "@/components/catalog/colour-name";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
@@ -165,7 +166,7 @@ export function ProductDetail({
               imageClassName="p-4"
             />
             <span className="absolute top-4 left-4 bg-kg-kalk px-2 py-1 font-mono text-[13px]">
-              {selected.colorName}
+              <ColourName value={selected.colorName} />
               {selected.ral ? ` · ${selected.ral}` : ""}
             </span>
           </div>
@@ -223,7 +224,7 @@ export function ProductDetail({
             {specs.map(([label, value]) => (
               <div key={label} className="flex justify-between gap-3 py-1">
                 <dt className="text-kg-text-2">{label}</dt>
-                <dd>{value}</dd>
+                <dd>{label === "Kleur" ? <ColourName value={value} /> : value}</dd>
               </div>
             ))}
           </dl>
@@ -339,6 +340,7 @@ export function ProductDetail({
           {sheet ? (
             <SheetCalculator
               sheetM2={product.sheetM2}
+              colourLabel={selected.colorName}
               unitExcl={canBuy ? unitExcl : 0}
               onTake={(count) => setQty(count)}
               onOrder={(count) => onAdd(count)}
@@ -347,6 +349,7 @@ export function ProductDetail({
             <AreaCalculator
               panelsPerM2={coverage}
               lengthLabel={formatLengthMm(selected.length)}
+              colourLabel={selected.colorName}
               unitExcl={canBuy ? unitExcl : 0}
               assumedLength={Boolean(selected.lengthAssumed)}
               onTake={(panels) => setQty(panels)}

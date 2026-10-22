@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import { ColourName } from "@/components/catalog/colour-name";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { VatPrice } from "@/components/brand/vat-price";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
@@ -71,7 +72,7 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
                 />
               );
             })}
-            <span className="font-mono text-[12px] text-kg-text-2">{selected?.name}</span>
+            <ColourName value={selected?.name ?? ""} className="font-mono text-[12px] text-kg-text-2" />
           </div>
         ) : null}
         <div className="mt-3 flex items-baseline justify-between border-t border-kg-lijn pt-2.5 font-mono text-[14px]">
