@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 import { DETAIL_PHOTOS } from "../src/lib/kozijnen/detail-photos.ts";
@@ -154,11 +154,22 @@ test("the working drawing follows size, hinge side and opening", () => {
   assert.equal(/three|@react-three|drei/i.test(pkg), false);
 });
 
-test("detail cards stay empty until a real photo is allowed", () => {
+test("detail cards use only matching Fillout photos", () => {
+  const filled = ["hvl", "folie"] as const;
   for (const photo of Object.values(DETAIL_PHOTOS)) {
-    assert.equal(photo.src, null, photo.id);
-    assert.equal(photo.sourceUrl, null, photo.id);
-    assert.equal(photo.width, 640);
-    assert.equal(photo.height, 480);
+    assert.equal(photo.width, 960, photo.id);
+    assert.equal(photo.height, 720, photo.id);
+    assert.equal(/EKO/i.test(`${photo.src ?? ""} ${photo.alt} ${photo.sourceUrl ?? ""}`), false, photo.id);
+    if (filled.includes(photo.id as (typeof filled)[number])) {
+      assert.ok(photo.src?.startsWith("/kozijnen/") && photo.src.endsWith(".webp"), photo.id);
+      assert.match(photo.sourceUrl ?? "", /images\.fillout\.com\/orgid-276098\/flowpublicid-skf34nbCp4us\//);
+      assert.equal(existsSync(new URL(`../public${photo.src}`, import.meta.url)), true, photo.src);
+    } else {
+      assert.equal(photo.src, null, photo.id);
+      assert.equal(photo.sourceUrl, null, photo.id);
+    }
   }
+  assert.match(DETAIL_PHOTOS.hvl.sourceUrl ?? "", /Schermafbeelding-2025-10-06-om-22\.21\.39\.png/);
+  assert.match(DETAIL_PHOTOS.folie.sourceUrl ?? "", /Wit\.jpg/);
+  assert.match(DETAIL_PHOTOS.folie.sourceUrl ?? "", /Antraciet\.jpg/);
 });

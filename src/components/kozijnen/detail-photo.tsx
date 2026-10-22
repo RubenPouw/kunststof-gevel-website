@@ -13,20 +13,23 @@ export function DetailPhotoCard({
   onPick?: () => void;
 }) {
   const title = label ?? photo.title;
+  const frame = "aspect-[4/3] w-full overflow-hidden bg-kg-kalk bevel-16";
   const body = (
     <>
       {photo.src ? (
-        <img
-          src={photo.src}
-          alt={photo.alt}
-          width={photo.width}
-          height={photo.height}
-          loading="lazy"
-          decoding="async"
-          className="aspect-[4/3] w-full bg-kg-kalk object-cover"
-        />
+        <span className={`relative block ${frame}`}>
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </span>
       ) : (
-        <span className="grid aspect-[4/3] place-items-center bg-kg-kalk px-3 text-center" role="img" aria-label={photo.alt}>
+        <span className={`grid place-items-center px-3 text-center ${frame}`} role="img" aria-label={photo.alt}>
           <span className="text-[13px] text-kg-text-2">Foto volgt</span>
         </span>
       )}
