@@ -13,7 +13,24 @@ const FILLING: Record<string, string> = {
   half: "half glas",
   glas: "vol glas",
 };
-const VENT: Record<string, string> = { geen: "geen rooster", rooster: "ventilatierooster" };
+const VENT: Record<string, string> = {
+  geen: "geen rooster",
+  rooster: "ventilatierooster",
+  duco: "Duco-klep",
+};
+const SPACER: Record<string, string> = {
+  standaard: "standaard, alu of grijs",
+  zwart: "zwart, warm edge",
+};
+const BARS: Record<string, string> = {
+  geen: "zonder roede",
+  met: "met roede, contact per mail",
+};
+const HANDLE_COLOR: Record<string, string> = {
+  wit: "wit",
+  aluminium: "aluminium (F9)",
+  zwart: "zwart",
+};
 const SILL: Record<string, string> = { doorlopend: "doorlopend kunststof", laag: "lage dorpel" };
 const REBATE: Record<string, string> = { stomp: "stomp", aanslag: "met aanslag" };
 const HARDWARE: Record<string, string> = {
@@ -48,28 +65,37 @@ export function summaryLines(config: KozijnConfig): SummaryLine[] {
   if (layout?.chooseActive) lines.push({ label: "Actief deel", value: SIDE[config.active] });
   if (layout && layout.fillings.length) lines.push({ label: "Vulling", value: FILLING[config.filling] });
   lines.push(
-    { label: "Kozijn buiten", value: colorLabel(config.frameOut) },
-    { label: "Kozijn binnen", value: colorLabel(config.frameIn) },
+    { label: "Kozijn buiten", value: paint(config.frameOut, config) },
+    { label: "Kozijn binnen", value: paint(config.frameIn, config) },
   );
   if (layout && panesFor(layout, config).some((pane) => pane.kind !== "vast")) {
     lines.push(
-      { label: "Vleugel buiten", value: colorLabel(config.sashOut) },
-      { label: "Vleugel binnen", value: colorLabel(config.sashIn) },
+      { label: "Vleugel buiten", value: paint(config.sashOut, config) },
+      { label: "Vleugel binnen", value: paint(config.sashIn, config) },
     );
   }
   lines.push(
     { label: "Glas", value: glass },
     { label: "Gelaagd", value: laminated },
     { label: "Onderkant glas", value: low },
+    { label: "Afstandhouder", value: SPACER[config.spacer] },
+    { label: "Roeden", value: BARS[config.bars] },
     { label: "Ventilatie", value: VENT[config.vent] },
     { label: "Aanslag", value: REBATE[config.rebate] },
     { label: "Onderdorpel", value: SILL[config.sill] },
     { label: "Hoek", value: CORNER[config.corner] ?? config.corner },
     { label: "Beslag", value: HARDWARE[config.hardware] },
     { label: "Kruk", value: HANDLE[config.handle] },
+    { label: "Krukkleur", value: HANDLE_COLOR[config.handleColor] },
     { label: "Hor", value: SCREEN[config.screen] },
   );
   return lines;
+}
+
+function paint(id: string, config: KozijnConfig) {
+  if (id !== "ral") return colorLabel(id);
+  const code = config.ralCode.trim();
+  return code ? `RAL naar keuze, op aanvraag (${code})` : "RAL naar keuze, op aanvraag";
 }
 
 function vakken(layout: NonNullable<ReturnType<typeof getLayoutBySlug>>, config: KozijnConfig) {

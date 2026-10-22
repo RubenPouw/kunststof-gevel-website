@@ -8,7 +8,7 @@ import { PROFILE, SIZE_LIMITS, SLIDING_NAME, publicProfileName } from "../src/li
 import { getLayoutBySlug } from "../src/lib/kozijnen/layouts.ts";
 import { defaultConfig, defaultLaminated, parseConfig, resumeVisible, serializeConfig, sizeInRange } from "../src/lib/kozijnen/model.ts";
 import { buildPdf, quotePdfLines } from "../src/lib/kozijnen/pdf.ts";
-import { calculatePrice, priceBook, pricesFlagActive, publicPrice, type PriceBook, type PriceInput } from "../src/lib/kozijnen/prices.ts";
+import { calculatePrice, optionIdsFor, priceBook, pricesFlagActive, publicPrice, type PriceBook, type PriceInput } from "../src/lib/kozijnen/prices.ts";
 import { CLAIMS, SUPPLIER } from "../src/lib/kozijnen/supplier.ts";
 import { lookupRedirect } from "../src/lib/seo/redirects.ts";
 import { summaryText } from "../src/lib/kozijnen/text.ts";
@@ -98,7 +98,14 @@ test("selling price is purchase times the markup and the flag stays off", () => 
   assert.equal(priceBook.marginPercent, 80);
   assert.equal(pricesFlagActive({}), false);
   assert.equal(pricesFlagActive({ KOZIJNEN_PRIJZEN_ACTIEF: "true" }), true);
-  assert.equal(priceBook.options.every((option) => option.marginPercent == null), true);
+  assert.equal(priceBook.options.find((option) => option.id === "ventilatie.rooster")?.marginPercent, 50);
+  assert.equal(priceBook.options.find((option) => option.id === "ventilatie.duco")?.marginPercent, 50);
+  assert.equal(priceBook.options.find((option) => option.id === "ventilatie.duco")?.amount, null);
+  for (const id of ["afstandhouder.zwart", "roeden.met", "kleur.ral", "kruk.kleur"]) {
+    const option = priceBook.options.find((item) => item.id === id);
+    assert.equal(option?.amount, null, id);
+    assert.equal(option?.marginPercent, undefined, id);
+  }
   const quiet = calculatePrice(plain("draaikiepraam", 1000, 1200, [{ kind: "draaikiep", flex: 1 }]), priceBook, false);
   assert.deepEqual(quiet, { pricesActive: false });
   const quoteOnly = calculatePrice(plain("schuifpui-4-delig", 4000, 2100, []), priceBook, true);
@@ -165,6 +172,48 @@ test("selling price is purchase times the markup and the flag stays off", () => 
   assert.equal(priced.totalExcl, 582);
   assert.equal(priced.totalIncl, 704.22);
   assert.equal(priced.lines.some((line) => line.id === "marge"), false);
+});
+
+test("new Fillout options stay out of the price until a purchase amount exists", () => {
+  const layout = getLayoutBySlug("draaikiepraam");
+  assert.ok(layout);
+  const config = defaultConfig(layout);
+  config.vent = "duco";
+  config.spacer = "zwart";
+  config.bars = "met";
+  config.handleColor = "zwart";
+  config.frameOut = "ral";
+  config.ralCode = "RAL 7016";
+  const ids = optionIdsFor({ ...config, hasSash: true });
+  for (const id of ["ventilatie.duco", "afstandhouder.zwart", "roeden.met", "kruk.kleur", "kleur.ral"]) {
+    assert.equal(ids.includes(id), true, id);
+  }
+  assert.equal(ids.includes("ventilatie.rooster"), false);
+  assert.equal(ids.includes("kleur.buiten"), false);
+  const priced = calculatePrice(
+    {
+      layout: layout.slug,
+      widthMm: config.width,
+      heightMm: config.height,
+      panes: layout.panes,
+      optionIds: ids,
+    },
+    priceBook,
+    true,
+  );
+  assert.equal(priced.pricesActive, false);
+  const text = summaryText(config);
+  assert.match(text, /Duco-klep/);
+  assert.match(text, /zwart, warm edge/);
+  assert.match(text, /met roede, contact per mail/);
+  assert.match(text, /RAL naar keuze, op aanvraag \(RAL 7016\)/);
+  assert.equal(text.includes("€"), false);
+  const again = parseConfig(new URLSearchParams(serializeConfig(config)), layout);
+  assert.equal(again.vent, "duco");
+  assert.equal(again.spacer, "zwart");
+  assert.equal(again.bars, "met");
+  assert.equal(again.handleColor, "zwart");
+  assert.equal(again.ralCode, "RAL 7016");
 });
 
 test("draft order checkout does not call Shopify while the flags are off", async () => {

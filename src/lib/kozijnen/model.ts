@@ -18,7 +18,10 @@ export const KOZIJN_STORAGE_KEY = "kg-kozijn-concept";
 export type Side = "links" | "rechts";
 export type Direction = "binnen" | "buiten";
 export type Filling = "paneel" | "half" | "glas";
-export type Vent = "geen" | "rooster";
+export type Vent = "geen" | "rooster" | "duco";
+export type Spacer = "standaard" | "zwart";
+export type HandleColor = "wit" | "aluminium" | "zwart";
+export type Bars = "geen" | "met";
 export type Sill = "doorlopend" | "laag";
 export type Rebate = "stomp" | "aanslag";
 export type Hardware = "basis" | "zwaar";
@@ -66,13 +69,13 @@ export const STEPS: { id: StepId; label: string; article: string; hint: string }
     id: "glas",
     label: "Glas",
     article: "glas",
-    hint: "Laag glas zetten we standaard gelaagd.",
+    hint: "Laag glas zetten we standaard gelaagd. Daaronder de afstandhouder en de roeden.",
   },
   {
     id: "ventilatie",
     label: "Ventilatie",
     article: "ventilatie",
-    hint: "Een rooster in het kozijn, of geen.",
+    hint: "Geen rooster, een ventilatierooster, of een Duco-klep.",
   },
   {
     id: "dorpel",
@@ -84,7 +87,7 @@ export const STEPS: { id: StepId; label: string; article: string; hint: string }
     id: "beslag",
     label: "Beslag",
     article: "hang-en-sluitwerk",
-    hint: "Standaard het zwaardere hang- en sluitwerk.",
+    hint: "Standaard het zwaardere hang- en sluitwerk. De kleur van de kruk kiest u apart.",
   },
   {
     id: "extra",
@@ -117,10 +120,14 @@ export type KozijnConfig = {
   laminated: LaminatedId;
   laminatedTouched: boolean;
   vent: Vent;
+  spacer: Spacer;
+  bars: Bars;
+  ralCode: string;
   sill: Sill;
   rebate: Rebate;
   hardware: Hardware;
   handle: Handle;
+  handleColor: HandleColor;
   screen: Screen;
   corner: CornerId;
   step: StepId;
@@ -129,7 +136,10 @@ export type KozijnConfig = {
 const SIDES = new Set<Side>(["links", "rechts"]);
 const DIRECTIONS = new Set<Direction>(["binnen", "buiten"]);
 const FILLINGS = new Set<Filling>(["paneel", "half", "glas"]);
-const VENTS = new Set<Vent>(["geen", "rooster"]);
+const VENTS = new Set<Vent>(["geen", "rooster", "duco"]);
+const SPACERS = new Set<Spacer>(["standaard", "zwart"]);
+const HANDLE_COLORS = new Set<HandleColor>(["wit", "aluminium", "zwart"]);
+const BARS = new Set<Bars>(["geen", "met"]);
 const SILLS = new Set<Sill>(["doorlopend", "laag"]);
 const REBATES = new Set<Rebate>(["stomp", "aanslag"]);
 const HARDWARE = new Set<Hardware>(["basis", "zwaar"]);
@@ -150,6 +160,11 @@ function oneOf<T extends string>(value: string | null, allowed: Set<T>, fallback
 function colorOf(value: string | null, fallback: ColorId): ColorId {
   if (value && COLOR_IDS.has(value as ColorId)) return value as ColorId;
   return fallback;
+}
+
+function ralCodeOf(value: string | null) {
+  if (!value) return "";
+  return value.replace(/[^0-9A-Za-z -]/g, "").trim().slice(0, 24);
 }
 
 function intOf(value: string | null, fallback: number) {
@@ -184,10 +199,14 @@ export function defaultConfig(layout: Layout): KozijnConfig {
     laminated: defaultLaminated(layout, lowGlass),
     laminatedTouched: false,
     vent: "geen",
+    spacer: "standaard",
+    bars: "geen",
+    ralCode: "",
     sill: layout.group === "ramen" ? "doorlopend" : "laag",
     rebate: "stomp",
     hardware: "zwaar",
     handle: "standaard",
+    handleColor: "wit",
     screen: "geen",
     corner: "verstek",
     step: STEPS[0].id,
@@ -234,10 +253,14 @@ export function parseConfig(params: URLSearchParams, layout: Layout): KozijnConf
     laminated: oneOf(params.get("gel"), LAMINATED_IDS, base.laminated),
     laminatedTouched,
     vent: oneOf(params.get("vent"), VENTS, base.vent),
+    spacer: oneOf(params.get("afstand"), SPACERS, base.spacer),
+    bars: oneOf(params.get("roede"), BARS, base.bars),
+    ralCode: ralCodeOf(params.get("ralcode")),
     sill: oneOf(params.get("dorpel"), SILLS, base.sill),
     rebate: oneOf(params.get("aanslag"), REBATES, base.rebate),
     hardware: oneOf(params.get("beslag"), HARDWARE, base.hardware),
     handle: oneOf(params.get("kruk"), HANDLES, base.handle),
+    handleColor: oneOf(params.get("krukkleur"), HANDLE_COLORS, base.handleColor),
     screen: oneOf(params.get("hor"), SCREENS, base.screen),
     corner: oneOf(params.get("hoek"), CORNER_IDS, base.corner),
     step: oneOf(params.get("stap"), STEP_IDS, STEPS[0].id),
@@ -269,10 +292,14 @@ export function serializeConfig(config: KozijnConfig) {
   params.set("gel", config.laminated);
   if (config.laminatedTouched) params.set("gelvast", "1");
   params.set("vent", config.vent);
+  params.set("afstand", config.spacer);
+  params.set("roede", config.bars);
+  if (config.ralCode) params.set("ralcode", config.ralCode);
   params.set("dorpel", config.sill);
   params.set("aanslag", config.rebate);
   params.set("beslag", config.hardware);
   params.set("kruk", config.handle);
+  params.set("krukkleur", config.handleColor);
   params.set("hor", config.screen);
   params.set("hoek", config.corner);
   params.set("stap", config.step);

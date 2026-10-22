@@ -67,7 +67,7 @@ test("the order text names the vakken, the size and the colours", () => {
   assert.match(text, /Vak 2 rechts: draaikiep, scharnier rechts, naar binnen/);
   assert.match(text, /1600 × 1400 mm/);
   assert.match(text, /Antraciet \(RAL 7016\)/);
-  assert.match(text, /Wit \(RAL 9016\)/);
+  assert.match(text, /Glad wit \(RAL 9016\)/);
   assert.match(text, /HR\+\+/);
   assert.match(text, /HVL/);
   assert.match(text, /ventilatierooster/);
@@ -134,6 +134,8 @@ test("the working drawing follows size, hinge side and opening", () => {
 
   const withVent = workingDrawingSvg(turn, { ...defaultConfig(turn), vent: "rooster" });
   assert.match(withVent, /data-vent="rooster"/);
+  const withDuco = workingDrawingSvg(turn, { ...defaultConfig(turn), vent: "duco", bars: "met" });
+  assert.equal(withDuco.includes('data-vent="rooster"'), false);
   assert.notEqual(withVent, mitre);
 
   const slide = workingDrawingSvg(smart, defaultConfig(smart));
@@ -155,7 +157,19 @@ test("the working drawing follows size, hinge side and opening", () => {
 });
 
 test("detail cards use only matching Fillout photos", () => {
-  const filled = ["hvl", "folie"] as const;
+  const filled = [
+    "hvl",
+    "folie",
+    "duco",
+    "spacer-zwart",
+    "kruk-wit",
+    "kruk-alu",
+    "kruk-zwart",
+    "roeden",
+    "ral",
+    "stomp",
+    "aanslag",
+  ] as const;
   for (const photo of Object.values(DETAIL_PHOTOS)) {
     assert.equal(photo.width, 960, photo.id);
     assert.equal(photo.height, 720, photo.id);

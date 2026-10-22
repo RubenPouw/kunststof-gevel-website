@@ -245,7 +245,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
             {step.id === "ventilatie" ? (
               <fieldset>
                 <legend className="text-[14px] font-medium">Ventilatie</legend>
-                <div className="mt-2 grid grid-cols-2 gap-3">
+                <div className="mt-2 grid gap-3 sm:grid-cols-3">
                   <button
                     type="button"
                     aria-pressed={config.vent === "geen"}
@@ -256,9 +256,14 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
                   </button>
                   <DetailPhotoCard
                     photo={DETAIL_PHOTOS.rooster}
-                    label="Zelfregulerend rooster"
+                    label="Ventilatierooster"
                     active={config.vent === "rooster"}
                     onPick={() => patch({ vent: "rooster" })}
+                  />
+                  <DetailPhotoCard
+                    photo={DETAIL_PHOTOS.duco}
+                    active={config.vent === "duco"}
+                    onPick={() => patch({ vent: "duco" })}
                   />
                 </div>
               </fieldset>
@@ -506,6 +511,7 @@ function ColorStep({
       <p className="text-[14px] text-kg-text-2">Kies je kleur. Dit zijn de snelle keuzes. De volledige AP-lijst volgt. De folie bevestigen we op de offerte.</p>
       {layout.group === "schuifpuien" ? null : <DetailPhotoCard photo={DETAIL_PHOTOS.profile} />}
       <DetailPhotoCard photo={DETAIL_PHOTOS.folie} />
+      <DetailPhotoCard photo={DETAIL_PHOTOS.ral} />
       <Swatches label="Kozijn buiten" value={config.frameOut} onPick={(frameOut) => onChange({ frameOut: frameOut as KozijnConfig["frameOut"] })} />
       <Swatches label="Kozijn binnen" value={config.frameIn} onPick={(frameIn) => onChange({ frameIn: frameIn as KozijnConfig["frameIn"] })} />
       {sash ? (
@@ -514,8 +520,27 @@ function ColorStep({
           <Swatches label="Vleugel binnen" value={config.sashIn} onPick={(sashIn) => onChange({ sashIn: sashIn as KozijnConfig["sashIn"] })} />
         </>
       ) : null}
+      {ralOpen(layout, config) ? (
+        <label className="block text-[14px]">
+          RAL-code
+          <input
+            value={config.ralCode}
+            maxLength={24}
+            autoComplete="off"
+            placeholder="Bijvoorbeeld 7016"
+            className="mt-1 h-12 w-full border border-kg-lijn bg-white px-3 font-mono text-[16px]"
+            onChange={(event) => onChange({ ralCode: event.target.value.replace(/[^0-9A-Za-z -]/g, "").slice(0, 24) })}
+          />
+        </label>
+      ) : null}
     </div>
   );
+}
+
+function ralOpen(layout: Layout, config: KozijnConfig) {
+  const ids = [config.frameOut, config.frameIn];
+  if (layout.panes.some((pane) => pane.kind !== "vast")) ids.push(config.sashOut, config.sashIn);
+  return ids.includes("ral");
 }
 
 function Swatches({ label, value, onPick }: { label: string; value: string; onPick: (id: string) => void }) {
@@ -530,10 +555,14 @@ function Swatches({ label, value, onPick }: { label: string; value: string; onPi
               key={color.id}
               type="button"
               onClick={() => onPick(color.id)}
-              className={cn("flex h-12 items-center gap-2 border px-2", active ? "border-kg-navy" : "border-kg-lijn")}
+              className={cn("flex min-h-12 items-center gap-2 border px-2 py-1", active ? "border-kg-navy" : "border-kg-lijn")}
               aria-pressed={active}
             >
-              <span className="size-6 border border-kg-lijn" style={{ background: color.hex }} />
+              {color.swatch ? (
+                <img src={color.swatch} alt="" width={24} height={24} className="size-6 border border-kg-lijn object-cover" />
+              ) : (
+                <span className="size-6 border border-kg-lijn" style={{ background: color.hex }} />
+              )}
               <span className="text-[13px]">{color.name}</span>
             </button>
           );
@@ -563,6 +592,43 @@ function GlassStep({ config, onChange }: { config: KozijnConfig; onChange: (part
           />
         </div>
       </fieldset>
+      <fieldset>
+        <legend className="text-[14px] font-medium">Afstandhouder</legend>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
+          <button
+            type="button"
+            aria-pressed={config.spacer === "standaard"}
+            onClick={() => onChange({ spacer: "standaard" })}
+            className={cn("border px-3 py-4 text-left text-[14px]", config.spacer === "standaard" ? "border-kg-navy bg-white" : "border-kg-lijn")}
+          >
+            Standaard (alu/grijs)
+          </button>
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.spacerZwart}
+            active={config.spacer === "zwart"}
+            onPick={() => onChange({ spacer: "zwart" })}
+          />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend className="text-[14px] font-medium">Roeden</legend>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
+          <button
+            type="button"
+            aria-pressed={config.bars === "geen"}
+            onClick={() => onChange({ bars: "geen" })}
+            className={cn("border px-3 py-4 text-left text-[14px]", config.bars === "geen" ? "border-kg-navy bg-white" : "border-kg-lijn")}
+          >
+            Zonder roede
+          </button>
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.roeden}
+            active={config.bars === "met"}
+            onPick={() => onChange({ bars: "met" })}
+          />
+        </div>
+        <p className="mt-2 text-[14px] text-kg-text-2">Met roede bevestigen we de indeling per mail.</p>
+      </fieldset>
       <ChoiceStep
         label="Onderkant van het glas"
         value={config.lowGlass}
@@ -585,15 +651,21 @@ function GlassStep({ config, onChange }: { config: KozijnConfig; onChange: (part
 function SillStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
   return (
     <div className="space-y-6">
-      <ChoiceStep
-        label="Aansluiting"
-        value={config.rebate}
-        options={[
-          { id: "stomp", label: "Stomp" },
-          { id: "aanslag", label: "Met aanslag" },
-        ]}
-        onPick={(rebate) => onChange({ rebate: rebate as KozijnConfig["rebate"] })}
-      />
+      <fieldset>
+        <legend className="text-[14px] font-medium">Aansluiting</legend>
+        <div className="mt-2 grid grid-cols-2 gap-3">
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.stomp}
+            active={config.rebate === "stomp"}
+            onPick={() => onChange({ rebate: "stomp" })}
+          />
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.aanslag}
+            active={config.rebate === "aanslag"}
+            onPick={() => onChange({ rebate: "aanslag" })}
+          />
+        </div>
+      </fieldset>
       <ChoiceStep
         label="Onderdorpel"
         value={config.sill}
@@ -636,6 +708,26 @@ function HardwareStep({ config, onChange }: { config: KozijnConfig; onChange: (p
             label="Afsluitbaar"
             active={config.handle === "afsluitbaar"}
             onPick={() => onChange({ handle: "afsluitbaar" })}
+          />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend className="text-[14px] font-medium">Kleur van de kruk</legend>
+        <div className="mt-2 grid gap-3 sm:grid-cols-3">
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.krukWit}
+            active={config.handleColor === "wit"}
+            onPick={() => onChange({ handleColor: "wit" })}
+          />
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.krukAlu}
+            active={config.handleColor === "aluminium"}
+            onPick={() => onChange({ handleColor: "aluminium" })}
+          />
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.krukZwart}
+            active={config.handleColor === "zwart"}
+            onPick={() => onChange({ handleColor: "zwart" })}
           />
         </div>
       </fieldset>

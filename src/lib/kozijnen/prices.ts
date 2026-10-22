@@ -4,7 +4,9 @@
  *
  * Inkoop is excl. btw. Verkoop excl. btw = inkoop × (1 + opslag / 100).
  * De standaardopslag is priceBook.marginPercent (80).
- * Een optie mag een eigen opslag hebben. In dit boek volgt elke toeslag de standaard.
+ * Een optie mag een eigen opslag hebben.
+ * Het ventilatierooster en de Duco-klep gebruiken 50 procent.
+ * De overige toeslagen volgen de standaard.
  * Incl. btw = verkoop excl. × 1,21.
  *
  * TODO(kalibratie): combinaties van twee of drie vakken zijn de som van de
@@ -16,6 +18,10 @@
  * TODO(kalibratie): folie, triple, gelaagd, zwaarder beslag, rooster en HVL
  * zijn vaste nettobedragen van één gemeten samenstelling. Ze schalen nog niet
  * met de maat. De HVL-toeslag is gemeten op 1000×1200.
+ * TODO(kalibratie): zwarte afstandhouder, Duco-klep, krukkleur, roeden en RAL
+ * naar keuze hebben nog geen inkoop. Die bedragen komen later. Rooster en
+ * Duco-klep krijgen 50 procent op de inkoop. De andere nieuwe opties volgen
+ * de standaardopslag.
  */
 
 export type PriceMode = "fixed" | "per_m2" | "percent";
@@ -99,7 +105,12 @@ export const priceBook: PriceBook = {
     slot("kleur.binnen", "Folie kozijn binnen", "fixed", null),
     slot("kleur.vleugel-buiten", "Folie vleugel buiten", "fixed", null),
     slot("kleur.vleugel-binnen", "Folie vleugel binnen", "fixed", null),
-    slot("ventilatie.rooster", "Ventilatierooster", "fixed", 211.01),
+    slot("ventilatie.rooster", "Ventilatierooster", "fixed", 211.01, 50),
+    slot("ventilatie.duco", "Duco-klep", "fixed", null, 50),
+    slot("afstandhouder.zwart", "Zwarte afstandhouder", "fixed", null),
+    slot("roeden.met", "Roeden", "fixed", null),
+    slot("kleur.ral", "RAL naar keuze", "fixed", null),
+    slot("kruk.kleur", "Krukkleur", "fixed", null),
     slot("dorpel.laag", "Lage dorpel", "fixed", null),
     slot("aanslag", "Aanslag", "fixed", null),
     slot("beslag.zwaar", "Zwaarder beslag", "fixed", 61.49),
@@ -224,28 +235,37 @@ export function optionIdsFor(config: {
   sashOut: string;
   sashIn: string;
   vent: string;
+  spacer: string;
+  bars: string;
   sill: string;
   rebate: string;
   hardware: string;
   handle: string;
+  handleColor: string;
   screen: string;
   corner: string;
   hasSash: boolean;
 }) {
   const ids: string[] = [];
+  const foil = (id: string) => id !== "9016" && id !== "ral";
   if (config.glass === "triple") ids.push("glas.triple");
   if (config.laminated === "binnen" || config.laminated === "beide") ids.push("glas.gelaagd");
   if (config.laminated === "beide") ids.push("glas.gelaagd.extra");
-  if (config.frameOut !== "9016") ids.push("kleur.buiten");
-  if (config.frameIn !== "9016") ids.push("kleur.binnen");
-  if (config.hasSash && config.sashOut !== config.frameOut) ids.push("kleur.vleugel-buiten");
-  if (config.hasSash && config.sashIn !== config.frameIn) ids.push("kleur.vleugel-binnen");
+  if (foil(config.frameOut)) ids.push("kleur.buiten");
+  if (foil(config.frameIn)) ids.push("kleur.binnen");
+  if (config.hasSash && config.sashOut !== config.frameOut && foil(config.sashOut)) ids.push("kleur.vleugel-buiten");
+  if (config.hasSash && config.sashIn !== config.frameIn && foil(config.sashIn)) ids.push("kleur.vleugel-binnen");
+  if ([config.frameOut, config.frameIn, config.sashOut, config.sashIn].includes("ral")) ids.push("kleur.ral");
   if (config.vent === "rooster") ids.push("ventilatie.rooster");
+  if (config.vent === "duco") ids.push("ventilatie.duco");
+  if (config.spacer === "zwart") ids.push("afstandhouder.zwart");
+  if (config.bars === "met") ids.push("roeden.met");
   if (config.sill === "laag") ids.push("dorpel.laag");
   if (config.rebate === "aanslag") ids.push("aanslag");
   if (config.hardware === "zwaar") ids.push("beslag.zwaar");
   if (config.corner === "hvl") ids.push("hoek.hvl");
   if (config.handle === "afsluitbaar") ids.push("kruk.afsluitbaar");
+  if (config.handleColor !== "wit") ids.push("kruk.kleur");
   if (config.screen === "inzet") ids.push("hor.inzet");
   if (config.screen === "plisse") ids.push("hor.plisse");
   return ids;

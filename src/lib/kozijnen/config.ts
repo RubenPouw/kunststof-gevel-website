@@ -94,13 +94,14 @@ export const SIZE_LIMITS: Record<string, SizeBox> = {
 
 /** Snelle keuzes, akkoord naast de AP-lijst. TODO(leverancier): foliecodes en de volledige AP-lijst. */
 export const FRAME_COLORS = [
-  { id: "9016", name: "Wit", code: "RAL 9016", hex: "#F4F4F1", foilCode: null as string | null },
-  { id: "9001", name: "Crème", code: "RAL 9001", hex: "#E7DDC8", foilCode: null },
-  { id: "9016-nerf", name: "Wit houtnerf", code: "RAL 9016 nerf", hex: "#E6E0D6", foilCode: null },
-  { id: "7016", name: "Antraciet", code: "RAL 7016", hex: "#383E42", foilCode: null },
-  { id: "7016-nerf", name: "Antraciet houtnerf", code: "RAL 7016 nerf", hex: "#3A3E3C", foilCode: null },
-  { id: "9005", name: "Zwart", code: "RAL 9005", hex: "#1C1C1C", foilCode: null },
-  { id: "7021", name: "Zwartgrijs", code: "RAL 7021", hex: "#2F3234", foilCode: null },
+  { id: "9016", name: "Glad wit", code: "RAL 9016", hex: "#FFFFFF", foilCode: null as string | null, swatch: "/kozijnen/swatch-glad-wit.webp" },
+  { id: "9001", name: "Glad crème", code: "RAL 9001", hex: "#DAD4C4", foilCode: null, swatch: "/kozijnen/swatch-glad-creme.webp" },
+  { id: "9016-nerf", name: "Wit houtnerf", code: "RAL 9016 nerf", hex: "#E6E0D6", foilCode: null, swatch: null },
+  { id: "7016", name: "Antraciet", code: "RAL 7016", hex: "#383E42", foilCode: null, swatch: null },
+  { id: "7016-nerf", name: "Antraciet houtnerf", code: "RAL 7016 nerf", hex: "#3A3E3C", foilCode: null, swatch: null },
+  { id: "9005", name: "Zwart", code: "RAL 9005", hex: "#1C1C1C", foilCode: null, swatch: null },
+  { id: "7021", name: "Zwartgrijs", code: "RAL 7021", hex: "#2F3234", foilCode: null, swatch: null },
+  { id: "ral", name: "RAL naar keuze, op aanvraag", code: "op aanvraag", hex: "#F4F2ED", foilCode: null, swatch: "/kozijnen/swatch-ral-k7.webp" },
 ] as const;
 
 export type ColorId = (typeof FRAME_COLORS)[number]["id"];
