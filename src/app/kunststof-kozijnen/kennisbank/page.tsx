@@ -9,7 +9,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Kennisbank kozijnen",
-  description: "Meten, draairichting, glas, ventilatie, beslag, profiel, montage, subsidie en levering van kunststof kozijnen.",
+  description: "Meten, draairichting, glas, ventilatie, beslag, profiel, zelf plaatsen, subsidie en levering van kunststof kozijnen.",
   alternates: { canonical: "/kunststof-kozijnen/kennisbank" },
 };
 

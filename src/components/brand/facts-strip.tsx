@@ -1,11 +1,15 @@
-import { facts } from "@/lib/site";
+"use client";
+
+import { usePathname } from "next/navigation";
+
+import { uspForPath } from "@/lib/usp";
 
 export function FactsStrip({
   articleCount,
 }: {
   articleCount?: number;
 }) {
-  const items = facts.map((item, index) =>
+  const items = uspForPath(usePathname() ?? "/").map((item, index) =>
     index === 0 && articleCount
       ? { k: String(articleCount), v: item.v }
       : item,

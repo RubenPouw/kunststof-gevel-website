@@ -90,7 +90,7 @@ export const STEPS: { id: StepId; label: string; article: string; hint: string }
     id: "extra",
     label: "Extra",
     article: "montage",
-    hint: "Horren. Montage vraagt u apart.",
+    hint: "Horren. Wij leveren het kozijn. Plaatsen doet u zelf.",
   },
   {
     id: "overzicht",

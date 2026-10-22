@@ -317,15 +317,15 @@ export const articles: Article[] = [
   },
   {
     slug: "montage",
-    title: "Plaatsen en het oude kozijn afvoeren",
-    description: "Zelf plaatsen of laten doen, wat u nodig hebt, en wat er met het oude kozijn gebeurt.",
+    title: "Zelf plaatsen en het oude kozijn afvoeren",
+    description: "Zelf plaatsen: wat u nodig hebt, en wat er met het oude kozijn gebeurt. Wij leveren het kozijn en monteren niet.",
     kicker: "Plaatsing",
     sections: [
       {
-        heading: "Zelf of laten doen",
+        heading: "Wij leveren, u plaatst",
         paragraphs: [
-          "Een los kozijn leveren we. Plaatsen kan zelf, als u het stellen, het ankaren en het afdichten aandurft. Montage door ons loopt via een offerte, niet via deze configurator.",
-          "Bij een schuifpui of een deur is het gewicht en de dorpel de reden om hulp te vragen. Een vast raam in een bestaande sparing is het meest overzichtelijk.",
+          "Wij maken het kozijn op maat en leveren het. Wij plaatsen het niet en komen niet inmeten. Plaatsen doet u zelf, als u het stellen, het ankaren en het afdichten aandurft, of u schakelt uw eigen installateur in.",
+          "Bij een schuifpui of een deur is het gewicht en de dorpel de reden om een eigen installateur te vragen. Een vast raam in een bestaande sparing is het meest overzichtelijk.",
         ],
       },
       {
@@ -338,7 +338,7 @@ export const articles: Article[] = [
       {
         heading: "Het oude kozijn",
         paragraphs: [
-          "Hout en glas gaan niet bij het huisvuil. Glas is apart, hout kan naar de milieustraat of met de montage mee. Zet in de aanvraag of het oude kozijn weg moet. We zetten geen tarief op deze pagina.",
+          "Hout en glas gaan niet bij het huisvuil. Glas is apart, hout kan naar de milieustraat. Wij nemen het oude kozijn niet mee, omdat wij niet komen plaatsen. We zetten geen tarief op deze pagina.",
         ],
       },
     ],
@@ -349,7 +349,7 @@ export const articles: Article[] = [
       },
     ],
     links: [
-      { href: "/offerte", label: "Montage via offerte" },
+      { href: "/kunststof-kozijnen/kennisbank/hoe-moet-je-meten", label: "Meetinstructie" },
       { href: "/contact", label: "Contact" },
       ...sharedLinks,
     ],
@@ -452,7 +452,7 @@ export const articles: Article[] = [
       },
       {
         q: "Plaatsen jullie ook?",
-        a: "Montage loopt via een aparte offerte. In de configurator stelt u het kozijn samen.",
+        a: "Nee. Wij maken het kozijn op maat en leveren het. Plaatsen doet u zelf of uw eigen installateur. In de configurator stelt u het kozijn samen.",
       },
       {
         q: "Hoe meet ik?",

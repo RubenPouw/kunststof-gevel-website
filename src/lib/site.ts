@@ -107,12 +107,7 @@ export const footerNav: { href: string; label: string }[] = footerColumns.flatMa
 
 export const nav = shopNav;
 
-export const facts = [
-  { k: "Showroom", v: "op afspraak in Utrecht" },
-  { k: "Levering", v: "in overleg" },
-  { k: "10 jaar", v: "garantie op kleur" },
-  { k: "Montage", v: "via offerte" },
-] as const;
+export { siteUsp as facts } from "./usp";
 
 export const uspItems = [
   "Showroom op afspraak in Utrecht",

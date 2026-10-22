@@ -42,7 +42,7 @@ export const hubCopy = {
     },
     {
       q: "Meten jullie in?",
-      a: "U meet zelf met de meetinstructie, of u zet in de aanvraag dat u een opname wilt. Montage is een aparte offerte.",
+      a: "U meet zelf met de meetinstructie. Wij maken het kozijn op maat en leveren het. Plaatsen doet u zelf, of uw eigen installateur. Wij monteren kozijnen niet.",
     },
     {
       q: "Staat er hang- en sluitwerk op?",
