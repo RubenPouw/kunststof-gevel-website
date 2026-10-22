@@ -7,11 +7,14 @@ export function KozijnDrawing({
   config,
   caption = true,
   prefix,
+  fit = false,
 }: {
   layout: Layout;
   config: KozijnConfig;
   caption?: boolean;
   prefix?: string;
+  /** Vaste hoogte voor een keuzetegel. De tekening schaalt mee, zonder te croppen. */
+  fit?: boolean;
 }) {
   const box = drawingBox(config);
   const svg = workingDrawingSvg(layout, config, prefix ?? layout.slug);
@@ -19,8 +22,12 @@ export function KozijnDrawing({
   return (
     <figure className="m-0 bg-white">
       <div
-        className="w-full"
-        style={{ aspectRatio: `${Math.round(box.width)} / ${Math.round(box.height)}` }}
+        className={fit ? "mx-auto max-w-full" : "w-full"}
+        style={
+          fit
+            ? { height: "10.5rem", width: `min(100%, calc(10.5rem * ${box.width} / ${box.height}))` }
+            : { aspectRatio: `${Math.round(box.width)} / ${Math.round(box.height)}` }
+        }
         dangerouslySetInnerHTML={{ __html: svg }}
       />
       {caption ? (

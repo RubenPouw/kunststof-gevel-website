@@ -4,11 +4,13 @@ import { cn } from "@/lib/utils";
 export function DetailPhotoCard({
   photo,
   label,
+  note,
   active = false,
   onPick,
 }: {
   photo: DetailPhoto;
   label?: string;
+  note?: string;
   active?: boolean;
   onPick?: () => void;
 }) {
@@ -29,14 +31,16 @@ export function DetailPhotoCard({
           />
         </span>
       ) : (
-        <span className={`grid place-items-center px-3 text-center ${frame}`} role="img" aria-label={photo.alt}>
-          <span className="text-[13px] text-kg-text-2">Foto volgt</span>
+        <span className={`grid place-items-center px-4 text-center ${frame}`} role="img" aria-label={photo.alt}>
+          <span className="text-[14px] text-kg-text-2">Foto volgt</span>
         </span>
       )}
-      <span className="block px-3 py-2 text-left text-[14px]">{title}</span>
+      <span className="block px-4 pt-4 text-left text-[16px] leading-snug font-medium">{title}</span>
+      {note ? <span className="block px-4 pt-1 text-left text-[14px] leading-snug text-kg-text-2">{note}</span> : null}
+      {onPick ? <span className="block px-4 pt-3 pb-4 font-mono text-[12px]">{active ? "Gekozen" : "Kies"}</span> : <span className="block h-4" />}
     </>
   );
-  const className = cn("block w-full border bg-white text-left", active ? "border-kg-navy" : "border-kg-lijn");
+  const className = cn("block w-full border-2 bg-white text-left", active ? "border-kg-navy bg-kg-kalk" : "border-kg-lijn");
   if (!onPick) {
     return <figure className={cn(className, "m-0")}>{body}</figure>;
   }

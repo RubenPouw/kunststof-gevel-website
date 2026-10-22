@@ -102,6 +102,26 @@ export const STEPS: { id: StepId; label: string; article: string; hint: string }
   },
 ];
 
+/**
+ * Zichtbare volgorde. Eén sectie tegelijk.
+ * `steps` wijst naar de bestaande stap-id's, zodat oude links met `stap=` blijven werken.
+ * Dorpel hoort bij profiel, horren bij beslag. Geen keuze valt weg.
+ */
+export const FLOW: { id: string; label: string; steps: StepId[] }[] = [
+  { id: "type", label: "Type", steps: ["indeling"] },
+  { id: "maten", label: "Maten", steps: ["maten"] },
+  { id: "profiel", label: "Profiel/hoek", steps: ["hoek", "dorpel"] },
+  { id: "kleur", label: "Kleur", steps: ["kleur"] },
+  { id: "glas", label: "Glas", steps: ["glas"] },
+  { id: "beslag", label: "Beslag/kruk", steps: ["beslag", "extra"] },
+  { id: "ventilatie", label: "Ventilatie", steps: ["ventilatie"] },
+  { id: "overzicht", label: "Overzicht", steps: ["overzicht"] },
+];
+
+export function flowForStep(step: StepId) {
+  return FLOW.find((item) => item.steps.includes(step)) ?? FLOW[0];
+}
+
 export type KozijnConfig = {
   layout: string;
   width: number;
@@ -205,7 +225,7 @@ export function defaultConfig(layout: Layout): KozijnConfig {
     handleColor: "wit",
     screen: "geen",
     corner: "verstek",
-    step: STEPS[0].id,
+    step: FLOW[0].steps[0],
   };
 }
 
@@ -259,7 +279,7 @@ export function parseConfig(params: URLSearchParams, layout: Layout): KozijnConf
     handleColor: oneOf(params.get("krukkleur"), HANDLE_COLORS, base.handleColor),
     screen: oneOf(params.get("hor"), SCREENS, base.screen),
     corner: oneOf(params.get("hoek"), CORNER_IDS, base.corner),
-    step: oneOf(params.get("stap"), STEP_IDS, STEPS[0].id),
+    step: oneOf(params.get("stap"), STEP_IDS, FLOW[0].steps[0]),
   };
   if (!laminatedTouched) next.laminated = defaultLaminated(layout, next.lowGlass);
   if (!layout.fillings.includes(next.filling)) next.filling = base.filling;
@@ -341,9 +361,9 @@ export function panesFor(layout: Layout, config: KozijnConfig) {
   return panes;
 }
 
-/** Het herstelblok hoort alleen op de eerste stap, zolang de bezoeker het niet sluit. */
+/** Het herstelblok hoort alleen op de eerste zichtbare stap, zolang de bezoeker het niet sluit. */
 export function resumeVisible(step: StepId, pending: boolean) {
-  return pending && step === STEPS[0].id;
+  return pending && step === FLOW[0].steps[0];
 }
 
 export function colorLabel(id: string) {
