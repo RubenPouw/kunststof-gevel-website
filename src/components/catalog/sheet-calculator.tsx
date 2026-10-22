@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { HPL_SHEET_M2, parseMeters, sheetOrder } from "@/lib/area";
-import { formatNlNumber, formatPrice } from "@/lib/format";
+import { VatPrice } from "@/components/brand/vat-price";
+import { formatNlNumber, inclVat } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
@@ -84,7 +85,14 @@ export function SheetCalculator({
         <p className="mt-3 font-mono text-[14px]">
           {formatNlNumber(order.netM2, 3)} m² netto / {formatNlNumber(order.sheetM2, 3)} m² = {order.sheets}{" "}
           {order.sheets === 1 ? "plaat" : "platen"}
-          {unitExcl > 0 ? ` · ${formatPrice(order.sheets * unitExcl)} excl. btw` : ""}
+          {unitExcl > 0 ? (
+            <>
+              {" · "}
+              <VatPrice incl={inclVat(order.sheets * unitExcl)} excl={order.sheets * unitExcl} />
+            </>
+          ) : (
+            ""
+          )}
         </p>
       ) : (
         <p className="mt-3 border border-kg-navy px-3 py-2 text-[14px] text-kg-navy" role="alert">

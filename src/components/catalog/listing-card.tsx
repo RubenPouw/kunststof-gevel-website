@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { VatPrice } from "@/components/brand/vat-price";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { ListingCardModel } from "@/lib/catalog/listing";
-import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
+import { formatLengthMm } from "@/lib/format";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
@@ -22,7 +23,6 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
     status.text,
   );
   const incl = selected?.price ?? 0;
-  const excl = exclVat(incl);
   const sku = (selected?.sku ?? card.slug).replace(/-3M$/, "");
   const priced = card.hasPrice && (selected?.price ?? 0) > 0;
 
@@ -80,11 +80,7 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
           </span>
           <span className="text-right">
             {priced ? (
-              <>
-                {formatPrice(excl)}
-                {card.saleUnit === "sheet" ? " /plaat" : ""} excl. btw
-                <span className="mt-0.5 block text-[12px] text-kg-text-2">{formatPrice(incl)} incl. btw</span>
-              </>
+              <VatPrice incl={incl} suffix={card.saleUnit === "sheet" ? " /plaat" : ""} />
             ) : (
               "Prijs op aanvraag"
             )}

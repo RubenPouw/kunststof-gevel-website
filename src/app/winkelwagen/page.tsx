@@ -3,9 +3,10 @@
 import Link from "next/link";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
-import { formatLengthMm, formatNlNumber, formatPrice, inclVat, shippingEstimateCopy } from "@/lib/format";
+import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export default function CartPage() {
@@ -99,7 +100,10 @@ export default function CartPage() {
                         aria-label={`Aantal ${resolved.name}`}
                       />
                       <p className="text-right font-mono text-[14px] tabular-nums">
-                        {formatPrice(resolved.unitExcl * line.qty)}
+                        <VatPrice
+                          incl={inclVat(resolved.unitExcl * line.qty)}
+                          excl={resolved.unitExcl * line.qty}
+                        />
                       </p>
                       <p
                         className="text-right font-mono text-[13px] whitespace-nowrap"
@@ -120,7 +124,12 @@ export default function CartPage() {
               <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em]">Materiaal geregeld. Handen erbij?</h2>
               <p className="mt-2 font-mono text-[13px] text-kg-grind">
                 {gevelM2
-                  ? `${formatNlNumber(gevelM2, 1)} m² gevelbekleding in uw winkelwagen · montage ${formatPrice(mountPrice)} excl. btw`
+                  ? (
+                    <>
+                      {formatNlNumber(gevelM2, 1)} m² gevelbekleding in uw winkelwagen · montage{" "}
+                      <VatPrice incl={inclVat(mountPrice)} excl={mountPrice} />
+                    </>
+                  )
                   : "Geen montage-artikelen in uw winkelwagen"}
               </p>
             </div>
@@ -149,40 +158,67 @@ export default function CartPage() {
                 )}
               >
                 Montage via offerte
-                {gevelM2 ? ` · ${formatNlNumber(gevelM2, 1)} m², ${formatPrice(mountPrice)}` : ""}
+                {gevelM2 ? (
+                  <>
+                    {" · "}
+                    {formatNlNumber(gevelM2, 1)} m², <VatPrice incl={inclVat(mountPrice)} excl={mountPrice} />
+                  </>
+                ) : (
+                  ""
+                )}
               </button>
             </div>
           </div>
         </div>
 
-        <aside className="h-fit border border-kg-lijn bg-white p-6 lg:sticky lg:top-[130px]">
+        <aside className="h-fit border border-kg-lijn bg-white p-6 lg:sticky lg:top-[170px]">
           <h2 className="font-mono text-[13px] text-kg-text-2">Overzicht</h2>
-          <p className="mt-3 text-[14px] text-kg-text-2">{shippingEstimateCopy()}</p>
+          <p className="mt-3 text-[14px] text-kg-text-2">
+            <ShippingEstimate />
+          </p>
           <dl className="mt-4 space-y-2 font-mono text-[14px]">
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-3">
               <dt>Materiaal</dt>
-              <dd>{formatPrice(subtotal)}</dd>
+              <dd>
+                <VatPrice incl={inclVat(subtotal)} excl={subtotal} />
+              </dd>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-3">
               <dt>Montage</dt>
-              <dd>{mount ? formatPrice(mount) : "nee"}</dd>
+              <dd>{mount ? <VatPrice incl={inclVat(mount)} excl={mount} /> : "nee"}</dd>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-3">
               <dt>Verzending</dt>
-              <dd>{shipping ? formatPrice(shipping) : "gratis"}</dd>
+              <dd>{shipping ? <VatPrice incl={inclVat(shipping)} excl={shipping} /> : "gratis"}</dd>
             </div>
-            <div className="flex justify-between">
-              <dt>Btw 21%</dt>
+            <div className="flex justify-between gap-3">
+              <dt>
+                <span className="kg-vat">
+                  <span className="kg-vat-incl">Waarvan btw 21%</span>
+                  <span className="kg-vat-excl">Btw 21%</span>
+                </span>
+              </dt>
               <dd>{formatPrice(vat)}</dd>
             </div>
           </dl>
-          <div className="mt-4 flex items-baseline justify-between border-t border-kg-lijn pt-4">
-            <span className="text-[15px]">Totaal incl. btw</span>
-            <span className="font-mono text-[28px] font-bold">{formatPrice(totalIncl)}</span>
+          <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-kg-lijn pt-4">
+            <span className="text-[15px]">
+              <span className="kg-vat">
+                <span className="kg-vat-incl">Totaal incl. btw</span>
+                <span className="kg-vat-excl">Totaal excl. btw</span>
+              </span>
+            </span>
+            <span className="font-mono text-[28px] font-bold">
+              <VatPrice incl={totalIncl} excl={net} labeled={false} />
+            </span>
           </div>
+          <p className="kg-vat-excl mt-2 font-mono text-[13px] text-kg-text-2">
+            Totaal incl. 21% btw {formatPrice(totalIncl)}
+          </p>
           {remainingForFreeShipping > 0 && lines.length > 0 ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              Nog {formatPrice(remainingForFreeShipping)} tot gratis verzending
+              Nog <VatPrice incl={inclVat(remainingForFreeShipping)} excl={remainingForFreeShipping} /> tot gratis
+              verzending
             </p>
           ) : null}
           <Link

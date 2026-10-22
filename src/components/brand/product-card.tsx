@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { VatPrice } from "@/components/brand/vat-price";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
 import { productHasPrice } from "@/lib/catalog/helpers";
-import { exclVat, formatPrice } from "@/lib/format";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { stockLabel } from "@/lib/week";
 import { productAlt } from "@/lib/seo/alt";
@@ -52,14 +52,7 @@ export function ProductCard({
           {delivery}
         </p>
         <div className="mt-1 font-mono text-[14px]">
-          {productHasPrice(product) ? (
-            <>
-              {formatPrice(exclVat(incl))} excl. btw
-              <span className="mt-0.5 block text-[12px] text-kg-text-2">{formatPrice(incl)} incl. btw</span>
-            </>
-          ) : (
-            "Prijs op aanvraag"
-          )}
+          {productHasPrice(product) ? <VatPrice incl={incl} /> : "Prijs op aanvraag"}
         </div>
         <div className={cn("mt-2 flex gap-2", showSample && color ? "flex-col sm:flex-row" : "")}>
           <Link

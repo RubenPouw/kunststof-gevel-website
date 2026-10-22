@@ -61,6 +61,7 @@ export default function PrivacyPage() {
         <h2>Cookies</h2>
         <p className="mt-3">
           De winkelwagen en een eventueel account staan in uw browser. We laden geen script van Google of een andere meetpartij.
+          De keuze incl. of excl. btw bewaren we een jaar in een functionele cookie en in deze browser, zodat de volgende pagina dezelfde prijzen toont. Daar zit geen account of meting in.
         </p>
         <p className="mt-3">
           Kiest u in de cookiebanner voor accepteren, dan zetten we een eigen cookie voor ongeveer negentig dagen. Daarin staat een willekeurig kenmerk van deze browser en, als u via een advertentie binnenkwam, de klikcode uit het adres. Onze server kan daarna een gebeurtenis doorsturen, zoals een geopende configurator, een verstuurde offerte, een staalaanvraag of een bestelling. Bij een aanvraag of bestelling gaat een gehasht e-mailadres of telefoonnummer mee, zodat Google de klik aan de inzending kan koppelen. Weigeren betekent: geen meetcookie en geen doorstuur. Tot u kiest, blijft een klikcode alleen in dit tabblad en gaat die niet naar Google. De site werkt zonder toestemming.

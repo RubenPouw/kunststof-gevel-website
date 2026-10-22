@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { AreaCalculator } from "@/components/catalog/area-calculator";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { ProductCard } from "@/components/brand/product-card";
@@ -15,7 +16,7 @@ import { findVariant, uniqueLengths } from "@/lib/catalog/derive";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product, ProductVariant } from "@/lib/catalog/types";
 import { productHasPrice, profileRole } from "@/lib/catalog/helpers";
-import { exclVat, formatLengthMm, formatPrice, inclVat, shippingEstimateCopy } from "@/lib/format";
+import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
 import { stockLabel } from "@/lib/week";
@@ -88,8 +89,10 @@ export function ProductDetail({
   const coverage = sheet ? undefined : selected.panelsPerM2;
   const canBuy = productHasPrice(product) && selected.price > 0;
   const unitExcl = exclVat(selected.price);
-  const priceM2 = canBuy && coverage ? unitExcl * coverage : undefined;
-  const sheetM2Price = canBuy && sheet && product.sheetM2 ? unitExcl / product.sheetM2 : undefined;
+  const priceM2Excl = canBuy && coverage ? unitExcl * coverage : undefined;
+  const priceM2Incl = canBuy && coverage ? selected.price * coverage : undefined;
+  const sheetM2Excl = canBuy && sheet && product.sheetM2 ? unitExcl / product.sheetM2 : undefined;
+  const sheetM2Incl = canBuy && sheet && product.sheetM2 ? selected.price / product.sheetM2 : undefined;
   const status = stockLabel(selected.inStock, selected.stockText);
   const skuShort = selected.sku.replace(/-3M$/, "");
 
@@ -228,16 +231,40 @@ export function ProductDetail({
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <p className="font-mono text-[32px] leading-none font-bold">
-                {canBuy ? formatPrice(unitExcl) : "Prijs op aanvraag"}
+                {canBuy ? <VatPrice incl={selected.price} excl={unitExcl} labeled={false} /> : "Prijs op aanvraag"}
               </p>
               <p className="mt-1 text-[14px] text-kg-text-2">
-                {canBuy
-                  ? sheet
-                    ? `${formatPrice(inclVat(unitExcl))} incl. btw /plaat${sheetM2Price ? ` · ${formatPrice(sheetM2Price)} /m² excl. btw op de hele plaat` : ""}`
-                    : `${formatPrice(inclVat(unitExcl))} incl. btw /paneel${priceM2 ? ` · ${formatPrice(priceM2)} /m² excl. btw` : ""}`
-                  : "Niet online te bestellen"}
+                {canBuy ? (
+                  sheet ? (
+                    <span className="kg-vat">
+                      <span className="kg-vat-incl">
+                        incl. btw /plaat
+                        {sheetM2Incl ? ` · ${formatPrice(sheetM2Incl)} /m² incl. btw op de hele plaat` : ""}
+                      </span>
+                      <span className="kg-vat-excl">
+                        excl. btw /plaat
+                        {sheetM2Excl ? ` · ${formatPrice(sheetM2Excl)} /m² excl. btw op de hele plaat` : ""}
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="kg-vat">
+                      <span className="kg-vat-incl">
+                        incl. btw /paneel
+                        {priceM2Incl ? ` · ${formatPrice(priceM2Incl)} /m² incl. btw` : ""}
+                      </span>
+                      <span className="kg-vat-excl">
+                        excl. btw /paneel
+                        {priceM2Excl ? ` · ${formatPrice(priceM2Excl)} /m² excl. btw` : ""}
+                      </span>
+                    </span>
+                  )
+                ) : (
+                  "Niet online te bestellen"
+                )}
               </p>
-              <p className="mt-2 text-[14px] text-kg-text-2">{shippingEstimateCopy()}</p>
+              <p className="mt-2 text-[14px] text-kg-text-2">
+                <ShippingEstimate />
+              </p>
             </div>
             <p className="font-mono text-[13px] whitespace-nowrap" style={{ color: status.color }}>
               {leadTimeLabel(selected.inStock ? null : confirmedLeadTimeWeeks(product.category, product.slug), status.text)}
@@ -335,7 +362,7 @@ export function ProductDetail({
                 disabled={!selected.inStock}
                 className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1")}
               >
-                In bestelling · {formatPrice(unitExcl * qty)}
+                In bestelling · <VatPrice incl={selected.price * qty} excl={unitExcl * qty} />
               </button>
             ) : (
               <Link href="/offerte" className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1 no-underline")}>
@@ -445,7 +472,13 @@ export function ProductDetail({
           disabled={canBuy && !selected.inStock}
           className={cn(buttonVariants({ variant: "primary", block: true }))}
         >
-          {canBuy ? `In bestelling · ${formatPrice(unitExcl * qty)}` : "Vraag de prijs"}
+          {canBuy ? (
+            <>
+              In bestelling · <VatPrice incl={selected.price * qty} excl={unitExcl * qty} />
+            </>
+          ) : (
+            "Vraag de prijs"
+          )}
         </button>
       </div>
     </div>

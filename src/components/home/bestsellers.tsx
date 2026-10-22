@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { VatPrice } from "@/components/brand/vat-price";
 import { SectionHead } from "@/components/brand/section-head";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
-import { exclVat, formatPrice } from "@/lib/format";
 import { productAlt } from "@/lib/seo/alt";
 import { stockLabel } from "@/lib/week";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,15 @@ import { cn } from "@/lib/utils";
 export function Bestsellers({ products }: { products: Product[] }) {
   return (
     <section className="container-kg section-kg">
-      <SectionHead title="Veel gekozen" aside="Prijzen excl. btw" />
+      <SectionHead
+        title="Veel gekozen"
+        aside={
+          <span className="kg-vat">
+            <span className="kg-vat-incl">Prijzen incl. btw</span>
+            <span className="kg-vat-excl">Prijzen excl. btw</span>
+          </span>
+        }
+      />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {products.slice(0, 4).map((product) => {
           const variant = product.variants[0];
@@ -42,7 +50,7 @@ export function Bestsellers({ products }: { products: Product[] }) {
                 </h3>
                 <div className="mt-auto flex justify-between border-t border-kg-lijn pt-2.5 font-mono text-[14px] tabular-nums">
                   <span style={{ color: status.color }}>{status.text}</span>
-                  <span>{formatPrice(exclVat(variant?.price ?? product.price))}</span>
+                  <VatPrice incl={variant?.price ?? product.price} />
                 </div>
                 <div className="mt-1 flex gap-2">
                   <Link

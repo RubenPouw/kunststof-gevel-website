@@ -271,6 +271,51 @@
   border: 1px solid var(--color-border);
 }
 
+.kg-btw-switch {
+  display: inline-flex;
+  height: 32px;
+  border: 1px solid var(--kg-grind);
+}
+
+.kg-btw-switch button {
+  min-width: 5.6rem;
+  padding: 0 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1;
+  color: var(--kg-kalk);
+  background: transparent;
+  cursor: pointer;
+}
+
+html:not([data-btw="excl"]) .kg-btw-switch button[data-mode="incl"],
+html[data-btw="excl"] .kg-btw-switch button[data-mode="excl"] {
+  background: var(--kg-signal);
+  color: var(--kg-navy);
+}
+
+.kg-btw-switch-light {
+  border-color: var(--kg-navy);
+}
+
+.kg-btw-switch-light button {
+  color: var(--kg-navy);
+}
+
+html:not([data-btw="excl"]) .kg-btw-switch-light button[data-mode="incl"],
+html[data-btw="excl"] .kg-btw-switch-light button[data-mode="excl"] {
+  background: var(--kg-navy);
+  color: var(--kg-kalk);
+}
+
+html:not([data-btw="excl"]) .kg-vat-excl {
+  display: none;
+}
+
+html[data-btw="excl"] .kg-vat-incl {
+  display: none;
+}
+
 @keyframes kg-marquee {
   from {
     transform: translateX(0);

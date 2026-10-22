@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from "react";
 
+import { VatPrice } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
 import { facadeOrder, FACADE_WASTE, parseMeters } from "@/lib/area";
-import { formatNlNumber, formatPrice } from "@/lib/format";
+import { formatNlNumber, inclVat } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
@@ -89,7 +90,7 @@ export function AreaCalculator({
           {formatNlNumber(order.grossM2, 1)} m² bruto
           {order.openingsM2 > 0 ? ` minus ${formatNlNumber(order.openingsM2, 1)} m² openingen` : ""} ={" "}
           {formatNlNumber(order.netM2, 1)} m². Met {wastePct}% snijverlies: {order.panels} panelen van{" "}
-          {lengthLabel} · {formatPrice(order.panels * unitExcl)} excl. btw
+          {lengthLabel} · <VatPrice incl={inclVat(order.panels * unitExcl)} excl={order.panels * unitExcl} />
         </p>
       ) : (
         <p className="mt-3 border border-kg-navy px-3 py-2 text-[14px] text-kg-navy" role="alert">

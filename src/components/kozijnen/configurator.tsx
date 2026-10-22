@@ -17,7 +17,7 @@ import {
   publicProfileName,
 } from "@/lib/kozijnen/config";
 import { layoutPath, type Layout } from "@/lib/kozijnen/layouts";
-import { formatPrice } from "@/lib/format";
+import { VatPrice } from "@/components/brand/vat-price";
 import { addBasketItem, readBasket, writeBasket } from "@/lib/kozijnen/basket";
 import {
   KOZIJN_STORAGE_KEY,
@@ -328,9 +328,8 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
             </div>
           </dl>
           {pricesActive && price && "totalExcl" in price ? (
-            <p className="mt-3">
-              <span className="font-mono text-[18px]">{formatPrice(price.totalExcl)} excl. btw</span>
-              <span className="mt-1 block font-mono text-[14px] text-kg-text-2">{formatPrice(price.totalIncl)} incl. 21% btw</span>
+            <p className="mt-3 font-mono text-[18px]">
+              <VatPrice incl={price.totalIncl} excl={price.totalExcl} />
             </p>
           ) : (
             <p className="mt-3 text-[14px] leading-snug text-kg-text-2">Geen prijs op het scherm. De offerte is vrijblijvend.</p>
@@ -727,9 +726,8 @@ function Overview({
         ))}
       </dl>
       {price?.pricesActive ? (
-        <p>
-          <span className="font-mono text-[18px]">{formatPrice(price.totalExcl)} excl. btw</span>
-          <span className="mt-1 block font-mono text-[14px] text-kg-text-2">{formatPrice(price.totalIncl)} incl. 21% btw</span>
+        <p className="font-mono text-[18px]">
+          <VatPrice incl={price.totalIncl} excl={price.totalExcl} />
         </p>
       ) : (
         <p className="text-[16px]">Vrijblijvende offerte aanvragen. Er staat geen bedrag op deze samenstelling.</p>

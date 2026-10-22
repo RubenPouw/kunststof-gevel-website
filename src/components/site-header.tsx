@@ -5,12 +5,23 @@ import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 import { Logo } from "@/components/brand/logo";
+import { VatSwitch } from "@/components/brand/vat-switch";
 import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import { shopNav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+function VatBar() {
+  return (
+    <div className="border-t border-[var(--kg-line-dark)]">
+      <div className="container-kg flex h-11 items-center justify-end">
+        <VatSwitch />
+      </div>
+    </div>
+  );
+}
 
 function SearchIcon() {
   return (
@@ -64,6 +75,7 @@ export function SiteHeader() {
             {site.phone}
           </a>
         </div>
+        <VatBar />
       </header>
     );
   }
@@ -151,6 +163,8 @@ export function SiteHeader() {
           </button>
         </div>
       </div>
+
+      <VatBar />
 
       {menuOpen ? (
         <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 lg:hidden">

@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { useActionState } from "react";
 
 import { beginCheckout } from "@/app/afrekenen/actions";
+import { shippingEstimateBothCopy, VatBoth } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
-import { formatPrice, roundMoney, shippingEstimateCopy } from "@/lib/format";
+import { formatPrice, inclVat, roundMoney } from "@/lib/format";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -130,29 +131,49 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
 
             <aside className="border border-kg-lijn bg-kg-kalk p-5">
               <h2 className="text-[22px]">Samenvatting</h2>
-              <p className="mt-2 text-[14px] text-kg-text-2">{shippingEstimateCopy()}</p>
-              <ul className="mt-3 space-y-2 text-[14px]">
+              <p className="mt-2 text-[14px] text-kg-text-2">{shippingEstimateBothCopy()}</p>
+              <ul className="mt-3 space-y-3 text-[14px]">
                 {lines.map((line) => {
                   const resolved = resolveCartLine(line);
                   if (!resolved) return null;
+                  const lineExcl = resolved.unitExcl * line.qty;
                   return (
-                    <li key={line.variantSku} className="flex justify-between gap-4">
+                    <li key={line.variantSku} className="flex items-start justify-between gap-4">
                       <span>
                         {resolved.name} · {resolved.colorName} · {line.variantSku} × {line.qty}
                       </span>
-                      <span className="font-mono text-[16px] font-bold">{formatPrice(resolved.unitExcl * line.qty)}</span>
+                      <VatBoth incl={inclVat(lineExcl)} excl={lineExcl} className="text-[14px] font-bold" />
                     </li>
                   );
                 })}
               </ul>
               <p className="mt-4 font-mono text-[13px]">
-                Verzending {shipping ? formatPrice(shipping) : "gratis"} excl. btw
-                {remainingForFreeShipping > 0 ? `. Nog ${formatPrice(remainingForFreeShipping)} tot gratis verzending` : ""}
+                {shipping ? (
+                  <>
+                    Verzending deze bestelling {formatPrice(shipping)} excl. btw ({formatPrice(inclVat(shipping))} incl.
+                    21% btw)
+                  </>
+                ) : (
+                  "Verzending deze bestelling: gratis"
+                )}
+                {remainingForFreeShipping > 0
+                  ? `. Nog ${formatPrice(remainingForFreeShipping)} excl. btw (${formatPrice(inclVat(remainingForFreeShipping))} incl. 21% btw) tot gratis verzending`
+                  : ""}
               </p>
-              <div className="mt-4 flex items-baseline justify-between">
-                <span>Totaal incl. btw</span>
-                <span className="font-mono text-[28px] font-bold">{formatPrice(totalIncl)}</span>
-              </div>
+              <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-4 font-mono text-[14px]">
+                <div className="flex justify-between gap-3">
+                  <dt>Totaal excl. btw</dt>
+                  <dd>{formatPrice(net)}</dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt>Btw 21%</dt>
+                  <dd>{formatPrice(vat)}</dd>
+                </div>
+                <div className="flex justify-between gap-3 text-[18px] font-bold">
+                  <dt>Totaal incl. 21% btw</dt>
+                  <dd>{formatPrice(totalIncl)}</dd>
+                </div>
+              </dl>
               <div className="mt-5 flex flex-wrap gap-2">
                 <button type="button" className={buttonVariants({ variant: "secondary" })} onClick={() => setStep(1)}>
                   Terug

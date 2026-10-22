@@ -295,7 +295,13 @@ export function ProductListing({
               ? totalUnfiltered === 0
                 ? "Geen artikelen"
                 : "Geen producten met deze filters."
-              : `${rangeStart} – ${rangeEnd} van ${total} · prijzen excl. btw`}
+              : `${rangeStart} – ${rangeEnd} van ${total} · `}
+            {total > 0 ? (
+              <span className="kg-vat">
+                <span className="kg-vat-incl">prijzen incl. btw</span>
+                <span className="kg-vat-excl">prijzen excl. btw</span>
+              </span>
+            ) : null}
             {totalUnfiltered !== total ? ` (van ${totalUnfiltered})` : null}
           </p>
           {cards.length === 0 ? (
