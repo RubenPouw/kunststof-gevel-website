@@ -1,4 +1,4 @@
-import { priceBook, pricesFlagActive, type PriceResult } from "./prices";
+import { pricesFlagActive, type PriceResult } from "./prices";
 
 export type DraftLine = {
   title: string;
@@ -71,10 +71,3 @@ export async function createKozijnDraftOrder(
   return { ok: true as const, checkoutUrl: url };
 }
 
-/** True zolang geen enkel inkoopbedrag is ingevuld. De opslag mag wel vaststaan. */
-export function productionBookHasNoPrices() {
-  for (const type of Object.values(priceBook.types)) {
-    if (type.base != null || type.perM2 != null) return false;
-  }
-  return priceBook.options.every((option) => option.amount == null);
-}

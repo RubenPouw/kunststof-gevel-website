@@ -1,4 +1,4 @@
-import { GLASS_TYPES, LAMINATED, LOW_GLASS, PROFILE } from "./config";
+import { GLASS_TYPES, LAMINATED, LOW_GLASS, publicProfileName } from "./config";
 import { getLayoutBySlug } from "./layouts";
 import { colorLabel, panesFor, sizeInRange, type KozijnConfig } from "./model";
 
@@ -36,7 +36,7 @@ export function summaryLines(config: KozijnConfig): SummaryLine[] {
   const laminated = LAMINATED.find((item) => item.id === config.laminated)?.label ?? config.laminated;
   const low = LOW_GLASS.find((item) => item.id === config.lowGlass)?.label ?? config.lowGlass;
   const lines: SummaryLine[] = [
-    { label: "Profiel", value: PROFILE.name },
+    { label: "Profiel", value: publicProfileName(config.layout) },
     { label: "Indeling", value: title },
     { label: "Breedte", value: `${config.width} mm, buitenwerks` },
     { label: "Hoogte", value: `${config.height} mm, buitenwerks` },

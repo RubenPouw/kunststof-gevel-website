@@ -1,4 +1,4 @@
-import { PROFILE } from "./config";
+import { PROFILE, SLIDING_NAME, profileSpecSentence } from "./config";
 
 export type Block = { heading: string; paragraphs: string[] };
 export type Faq = { q: string; a: string };
@@ -154,7 +154,7 @@ export const articles: Article[] = [
       },
       {
         q: "Wat is een aanslag waard in de maat?",
-        a: "De aanslag hoort bij de buitenwerkse maat. Hoe diep het profiel is, publiceren we pas als de leverancier dat cijfer bevestigt.",
+        a: `De aanslag hoort bij de buitenwerkse maat. De inbouwdiepte van het kader is ${PROFILE.depthMm} mm.`,
       },
     ],
     links: [
@@ -172,7 +172,7 @@ export const articles: Article[] = [
         heading: "HR++ en triple",
         paragraphs: [
           "HR++ is dubbel isolatieglas met een coating en een gasvulling. Triple heeft drie ruiten. Triple isoleert verder en dempt meer geluid, en het pakket is dikker en zwaarder.",
-          `Of ${PROFILE.name} elk pakket pakt, bevestigen we bij de offerte. We zetten hier geen Ug-waarde neer zolang die niet vaststaat.`,
+          `${PROFILE.name} neemt glas tot ${PROFILE.glassMaxMm} mm. In de berekening komt het kozijn op Uw 1,3 met dubbel glas en op Uw 1,1 met triple. Met een ventilatierooster komt die berekening op Uw 1,4.`,
         ],
       },
       {
@@ -273,8 +273,7 @@ export const articles: Article[] = [
       {
         heading: "Eén profiel",
         paragraphs: [
-          `U kiest geen merk. Elk kozijn in deze sectie is ${PROFILE.name}. Dat houdt de tekening, het beslag en de offerte vergelijkbaar.`,
-          "Inbouwdiepte, aantal kamers en de Uw-waarde publiceren we pas als de leverancier die cijfers bevestigt. Tot die tijd staan ze niet op de pagina, ook niet als een richtgetal.",
+          `Ramen en deuren zijn ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}. ${profileSpecSentence()} Een 4-delige schuifpui rekenen we in de offerte.`,
         ],
       },
       {
@@ -364,7 +363,7 @@ export const articles: Article[] = [
       {
         heading: "Wat isolatie hier betekent",
         paragraphs: [
-          "Een kozijn verliest warmte via het glas en via het profiel. HR++ of triple verlaagt het verlies via het glas. Hoe ver, hangt af van het pakket en van het kader. De Uw-waarde van dit profiel publiceren we pas als de leverancier hem bevestigt.",
+          `Een kozijn verliest warmte via het glas en via het profiel. Bij ${PROFILE.name} komt de berekening op Uw 1,3 met dubbel glas en op Uw 1,1 met triple. Dat is de berekende waarde van dit kozijn.`,
           "Kieren rond het oude hout zijn vaak een groter verlies dan de keuze tussen twee coatings. Stellen en afdichten hoort bij de winst.",
         ],
       },
@@ -433,11 +432,11 @@ export const articles: Article[] = [
     faqs: [
       {
         q: "Welk profiel leveren jullie?",
-        a: `Alleen ${PROFILE.name}. Er is geen merkmenu.`,
+        a: `Ramen en deuren zijn ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte.`,
       },
       {
         q: "Waarom zie ik geen prijs?",
-        a: "De inkoopbedragen zijn er nog niet. De configurator eindigt in een vrijblijvende offerte. We verzinnen geen bedrag.",
+        a: "Op de site staat nog geen bedrag bij de samenstelling. U vraagt een vrijblijvende offerte aan.",
       },
       {
         q: "Moet ik een account aanmaken?",

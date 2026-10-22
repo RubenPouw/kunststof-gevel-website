@@ -9,28 +9,30 @@ export const PROFILE = {
   id: "ideal-7000-nl",
   /** Klantzichtbare naam. */
   name: "Aluplast Ideal 7000 NL",
-  /** Officiële systeemnaam. Niet los als specificatie publiceren. */
+  /** Officiële systeemnaam. De 64 mm is de aanzichthoogte van het kader, niet de inbouwdiepte. */
   systemName: "Aluplast Ideal 7000 NL 64 mm",
-  /** TODO(leverancier): Uw van het complete raam bij HR++, in W/m²K. */
-  uwHrpp: null as number | null,
-  /** TODO(leverancier): Uw van het complete raam bij triple, in W/m²K. */
-  uwTriple: null as number | null,
-  /** TODO(leverancier): Ug van het glas, HR++ en triple apart. */
-  ugHrpp: null as number | null,
-  ugTriple: null as number | null,
-  /** TODO(leverancier): aantal kamers in het profiel. */
-  chambers: null as number | null,
-  /** TODO(leverancier): inbouwdiepte als los cijfer, pas tonen als de data het bevestigt. */
-  depthMm: null as number | null,
-  /** TODO(leverancier): sponning en maximale glasdikte in mm. */
-  rebateMm: null as number | null,
-  glassThicknessMm: null as string | null,
-  /** TODO(leverancier): pas vullen als een keurmerk voor dit profiel vaststaat. */
+  /** Kamers in het kader. */
+  frameChambers: 3,
+  /** Kamers in de vleugel. */
+  sashChambers: 5,
+  /** Aantal dichtingen. */
+  gaskets: 2,
+  /** Maximale glasdikte in mm. */
+  glassMaxMm: 52,
+  /** Inbouwdiepte van het kader in mm. De aanzichthoogte van 64 mm is dit niet. */
+  depthMm: 120,
+  /** Berekende Uw van het kozijn met dubbel glas, in W/m²K. */
+  uwDouble: 1.3,
+  /** Berekende Uw van het kozijn met triple, in W/m²K. */
+  uwTriple: 1.1,
+  /** Berekende Uw met een ventilatierooster, in W/m²K. */
+  uwWithVent: 1.4,
+  /** Geen certificaten publiceren. */
   certificates: [] as string[],
-  /** TODO(leverancier): productietijd in werkdagen, en de extra dagen per folie. */
+  /** Geen levertijd publiceren. */
   leadTimeWorkdays: null as number | null,
   colorExtraWorkdays: null as number | null,
-  /** TODO(leverancier): garantie in jaren, per onderdeel. */
+  /** Geen garantie publiceren. */
   warranty: null as {
     profileYears: number;
     glassYears: number;
@@ -39,28 +41,49 @@ export const PROFILE = {
   cornerVariants: ["verstek", "hvl"] as const,
 } as const;
 
+/** Verkoopnaam van de 2-delige schuifpui. Een ander systeem dan het raamprofiel. */
+export const SLIDING_NAME = "Aluplast Smart-Slide schuifpui";
+
+export function publicProfileName(slug: string) {
+  if (slug === "schuifpui-2-delig") return SLIDING_NAME;
+  if (slug === "schuifpui-4-delig") return "Kunststof schuifpui";
+  return PROFILE.name;
+}
+
+function decimalComma(value: number) {
+  return value.toFixed(1).replace(".", ",");
+}
+
+/** Klantzichtbare specificatie. Geen certificaten, garantie of levertijd. */
+export function profileSpecSentence() {
+  return `Kader ${PROFILE.frameChambers} kamers, vleugel ${PROFILE.sashChambers} kamers, ${PROFILE.gaskets} dichtingen, glas tot ${PROFILE.glassMaxMm} mm. Inbouwdiepte ${PROFILE.depthMm} mm. In de berekening komt dit profiel op Uw ${decimalComma(PROFILE.uwDouble)} met dubbel glas en Uw ${decimalComma(PROFILE.uwTriple)} met triple.`;
+}
+
 export type SizeBox = {
   minWidth: number;
   maxWidth: number;
   minHeight: number;
   maxHeight: number;
+  /** Maximaal glasoppervlak in m². Alleen gezet waar dat de grens is. */
+  maxAreaM2?: number;
+  /** Maximale breedte van één draaiende vleugel, in mm. */
+  maxSashWidth?: number;
 };
 
 /**
- * Veilige defaults om een aanvraag te begrenzen.
- * TODO(leverancier): vervangen door de productietabel. De max hoogte kan daar
- * meelopen met de breedte. Die koppeling verzinnen we niet.
- * Herkomst van de getallen: openbare categoriegrenzen van vergelijkbare
- * indelingen, afgerond naar een band waarin een offerte nog zinvol is.
+ * Draaikiep: maximaal ongeveer 1512 mm breed per vleugel.
+ * Vast glas: maximaal 3,35 m².
+ * 600×600 is getest. Overige grenzen blijven de online aanvraagband.
+ * De maximale hoogte van een draaikiepraam loopt hier nog niet mee met de breedte.
  */
 export const SIZE_LIMITS: Record<string, SizeBox> = {
-  "vast-raam": { minWidth: 400, maxWidth: 2400, minHeight: 400, maxHeight: 2400 },
-  draairaam: { minWidth: 602, maxWidth: 1384, minHeight: 614, maxHeight: 2600 },
-  draaikiepraam: { minWidth: 602, maxWidth: 1384, minHeight: 614, maxHeight: 2600 },
-  "draaikiepraam-met-vast-raam": { minWidth: 770, maxWidth: 2500, minHeight: 600, maxHeight: 2200 },
-  "vast-draaikiep-vast": { minWidth: 1290, maxWidth: 3000, minHeight: 600, maxHeight: 2200 },
-  "draaikiep-vast-draaikiep": { minWidth: 1290, maxWidth: 3300, minHeight: 600, maxHeight: 2200 },
-  stolpraam: { minWidth: 1166, maxWidth: 2926, minHeight: 968, maxHeight: 2284 },
+  "vast-raam": { minWidth: 600, maxWidth: 3350, minHeight: 600, maxHeight: 3350, maxAreaM2: 3.35 },
+  draairaam: { minWidth: 600, maxWidth: 1512, minHeight: 600, maxHeight: 2600, maxSashWidth: 1512 },
+  draaikiepraam: { minWidth: 600, maxWidth: 1512, minHeight: 600, maxHeight: 2600, maxSashWidth: 1512 },
+  "draaikiepraam-met-vast-raam": { minWidth: 770, maxWidth: 2500, minHeight: 600, maxHeight: 2200, maxSashWidth: 1512 },
+  "vast-draaikiep-vast": { minWidth: 1290, maxWidth: 3000, minHeight: 600, maxHeight: 2200, maxSashWidth: 1512 },
+  "draaikiep-vast-draaikiep": { minWidth: 1290, maxWidth: 3300, minHeight: 600, maxHeight: 2200, maxSashWidth: 1512 },
+  stolpraam: { minWidth: 1166, maxWidth: 2926, minHeight: 968, maxHeight: 2284, maxSashWidth: 1512 },
   "schuifpui-2-delig": { minWidth: 1600, maxWidth: 4000, minHeight: 1142, maxHeight: 2400 },
   "schuifpui-4-delig": { minWidth: 2000, maxWidth: 6000, minHeight: 1142, maxHeight: 2400 },
   achterdeur: { minWidth: 722, maxWidth: 1200, minHeight: 1849, maxHeight: 2500 },
@@ -83,8 +106,8 @@ export const FRAME_COLORS = [
 export type ColorId = (typeof FRAME_COLORS)[number]["id"];
 
 export const GLASS_TYPES = [
-  { id: "hrpp", label: "HR++", detail: "Standaard isolatieglas." },
-  { id: "triple", label: "Triple", detail: "Een extra ruit. Of het profiel de dikte pakt, bevestigen we." },
+  { id: "hrpp", label: "HR++", detail: "Dubbel isolatieglas. In de berekening Uw 1,3." },
+  { id: "triple", label: "Triple", detail: "Drie ruiten. In de berekening Uw 1,1. Het profiel neemt glas tot 52 mm." },
 ] as const;
 
 export type GlassId = (typeof GLASS_TYPES)[number]["id"];

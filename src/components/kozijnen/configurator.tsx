@@ -12,8 +12,8 @@ import {
   GLASS_TYPES,
   LAMINATED,
   LOW_GLASS,
-  PROFILE,
   colorById,
+  publicProfileName,
 } from "@/lib/kozijnen/config";
 import { layoutPath, type Layout } from "@/lib/kozijnen/layouts";
 import { formatPrice } from "@/lib/format";
@@ -251,7 +251,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
           <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-3 font-mono text-[13px]">
             <div className="flex justify-between gap-3">
               <dt className="text-kg-text-2">Profiel</dt>
-              <dd className="text-right">{PROFILE.name}</dd>
+              <dd className="text-right">{publicProfileName(layout.slug)}</dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-kg-text-2">Maat</dt>

@@ -1,4 +1,4 @@
-import { PROFILE } from "./config";
+import { PROFILE, SLIDING_NAME, profileSpecSentence } from "./config";
 import type { KozijnGroup, Layout } from "./layouts";
 
 export type CopyBlock = { heading: string; paragraphs: string[] };
@@ -7,14 +7,13 @@ export type CopyFaq = { q: string; a: string };
 export const hubCopy = {
   title: "Kunststof kozijnen op maat",
   description:
-    `Kunststof ramen, schuifpuien en deuren in ${PROFILE.name}. Zelf samenstellen en een vrijblijvende offerte aanvragen, zonder account.`,
-  lead: `Eén profiel: ${PROFILE.name}. U stelt het kozijn samen op buitenwerkse maat. Een prijs tonen we pas als de inkoopbedragen er zijn. Tot die tijd eindigt de configurator in een vrijblijvende offerte.`,
+    `Kunststof ramen en deuren in ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}. Zelf samenstellen en een vrijblijvende offerte aanvragen, zonder account.`,
+  lead: `Ramen en deuren: ${PROFILE.name}. Een 2-delige schuifpui: ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. U stelt het kozijn samen op buitenwerkse maat. Op de site staat nog geen bedrag. De configurator eindigt in een vrijblijvende offerte.`,
   sections: [
     {
       heading: "Waarom één profiel",
       paragraphs: [
-        `Een kozijn kiezen begint bij de opening, niet bij een lijst merken. ${PROFILE.name} is het kader dat we hier voeren. Daarmee blijven glas, beslag en kleur vergelijkbaar tussen een draaikiepraam en een schuifpui.`,
-        "Technische cijfers zoals inbouwdiepte, kamers en Uw-waarde zetten we op deze pagina zodra de leverancier ze bevestigt. Een getal dat we nog niet hebben, laten we weg.",
+        `Ramen en deuren delen één kader: ${PROFILE.name}. ${profileSpecSentence()} Een 2-delige schuifpui is een ander systeem, de ${SLIDING_NAME}. Een 4-delige pui vragen we als offerte aan.`,
       ],
     },
     {
@@ -85,13 +84,13 @@ export const groupCopy: Record<KozijnGroup, { title: string; description: string
   },
   schuifpuien: {
     title: "Kunststof schuifpuien",
-    description: `Schuifpuien in twee of vier delen, in ${PROFILE.name}. Gelaagd glas staat standaard aan.`,
-    lead: "Een schuifpui schuift opzij in plaats van de kamer in. Twee delen voor een gewone pui, vier delen als de opening breed is.",
+    description: `Een 2-delige schuifpui is een ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. Gelaagd glas staat standaard aan.`,
+    lead: `Een schuifpui schuift opzij in plaats van de kamer in. Twee delen is een ${SLIDING_NAME}. Vier delen vragen we als offerte aan.`,
     sections: [
       {
         heading: "Twee of vier",
         paragraphs: [
-          "Bij twee delen schuift één vleugel voor de andere. Bij vier delen verdeelt u de breedte. Welk deel beweegt, kiest u in de configurator. De tekening toont dat van buiten.",
+          `Bij twee delen schuift één vleugel voor de andere. Dat is de ${SLIDING_NAME}. Bij vier delen verdeelt u de breedte. Het bedrag van vier delen volgt in de offerte. Welk deel beweegt, kiest u in de configurator. De tekening toont dat van buiten.`,
         ],
       },
       {
@@ -172,7 +171,7 @@ const layoutBody: Record<string, { paragraphs: string[]; faqs: CopyFaq[] }> = {
     ],
     faqs: [
       { q: "Kan ik hem op de badkamer zetten?", a: "Ja. Kies dan meteen of het glas mat moet. Mat glas zet u in de opmerking. De glasstap kiest isolatie en gelaagdheid." },
-      { q: "Welk beslag staat erop?", a: "Standaard het zwaardere beslag. De certificaten bevestigen we op de offerte." },
+      { q: "Welk beslag staat erop?", a: "Standaard het zwaardere beslag. Dat zijn extra sluitpunten." },
     ],
   },
   "draaikiepraam-met-vast-raam": {

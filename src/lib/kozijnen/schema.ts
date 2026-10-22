@@ -1,15 +1,15 @@
 import { absoluteUrl } from "@/lib/seo/schema";
 
-import { PROFILE } from "./config";
+import { publicProfileName } from "./config";
 import type { Layout } from "./layouts";
 
 export function kozijnProductJsonLd(layout: Layout, description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: `${layout.title} in ${PROFILE.name}`,
+    name: `${layout.title} in ${publicProfileName(layout.slug)}`,
     description,
-    brand: { "@type": "Brand", name: PROFILE.name },
+    brand: { "@type": "Brand", name: publicProfileName(layout.slug) },
     category: "Kunststof kozijnen",
     url: absoluteUrl(`/kunststof-kozijnen/${layout.group}/${layout.slug}`),
   };
