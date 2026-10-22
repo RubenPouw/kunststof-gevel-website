@@ -14,8 +14,9 @@ import { useCart } from "@/lib/cart";
 import { findVariant, uniqueLengths } from "@/lib/catalog/derive";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product, ProductVariant } from "@/lib/catalog/types";
-import { productHasPrice } from "@/lib/catalog/helpers";
-import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
+import { productHasPrice, profileRole } from "@/lib/catalog/helpers";
+import { exclVat, formatLengthMm, formatPrice, inclVat, shippingEstimateCopy } from "@/lib/format";
+import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
 import { stockLabel } from "@/lib/week";
 import { cn } from "@/lib/utils";
@@ -44,7 +45,7 @@ function tabCopy(sheet: boolean, id: (typeof TABS)[number]["id"]) {
   if (id === "garantie") {
     return "10 jaar fabrieksgarantie op kleur- en vormvastheid bij montage volgens voorschrift. Wij regelen het contact met de fabrikant.";
   }
-  return "Een montageblad sturen we op verzoek. Vraag het via de telefoon of de mail.";
+    return "";
 }
 
 export function ProductDetail({
@@ -127,7 +128,7 @@ export function ProductDetail({
         ["Werkende breedte", product.workingWidthMm ? `${product.workingWidthMm} mm` : ""],
         ["Dikte", product.specs.find((spec) => /dikte/i.test(spec.label))?.value ?? ""],
         ["Lengte", formatLengthMm(selected.length)],
-        ["Kleur", `${selected.colorName.toLowerCase()}${selected.ral ? ` ${selected.ral}` : ""}`],
+        ["Kleur", `${selected.colorName}${selected.ral ? ` ${selected.ral}` : ""}`],
         ["Brandklasse", product.specs.find((spec) => /brand/i.test(spec.label))?.value ?? ""],
       ].filter((row): row is [string, string] => Boolean(row[1]));
 
@@ -232,19 +233,20 @@ export function ProductDetail({
               <p className="mt-1 text-[14px] text-kg-text-2">
                 {canBuy
                   ? sheet
-                    ? `/plaat excl. btw${sheetM2Price ? ` · ${formatPrice(sheetM2Price)} /m² op de hele plaat` : ""}`
-                    : `/paneel excl. btw${priceM2 ? ` · ${formatPrice(priceM2)} /m²` : ""}`
+                    ? `${formatPrice(inclVat(unitExcl))} incl. btw /plaat${sheetM2Price ? ` · ${formatPrice(sheetM2Price)} /m² excl. btw op de hele plaat` : ""}`
+                    : `${formatPrice(inclVat(unitExcl))} incl. btw /paneel${priceM2 ? ` · ${formatPrice(priceM2)} /m² excl. btw` : ""}`
                   : "Niet online te bestellen"}
               </p>
+              <p className="mt-2 text-[14px] text-kg-text-2">{shippingEstimateCopy()}</p>
             </div>
             <p className="font-mono text-[13px] whitespace-nowrap" style={{ color: status.color }}>
-              {status.text}
+              {leadTimeLabel(selected.inStock ? null : confirmedLeadTimeWeeks(product.category, product.slug), status.text)}
             </p>
           </div>
 
           {product.colors.length > 1 ? (
             <fieldset>
-              <legend className="text-[17px] font-medium">Kies je kleur</legend>
+              <legend className="text-[17px] font-medium">Kies je kleur · {product.colors.length} kleuren</legend>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {product.colors.map((color) => (
                   <button
@@ -392,9 +394,25 @@ export function ProductDetail({
           ))}
         </div>
         <div className="mt-6 grid gap-8 lg:grid-cols-2">
-          <p className="text-[15px] leading-[1.5] text-kg-text-2">
-            {tab === "omschrijving" ? product.description : tabCopy(sheet, tab)}
-          </p>
+          <div className="text-[15px] leading-[1.5] text-kg-text-2">
+            {tab === "downloads" ? (
+              product.downloads && product.downloads.length > 0 ? (
+                <ul className="space-y-2">
+                  {product.downloads.map((file) => (
+                    <li key={file.href}>
+                      <a href={file.href}>{file.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Voor dit artikel staat geen montagehandleiding of prestatieverklaring online.</p>
+              )
+            ) : tab === "omschrijving" ? (
+              product.description ? <p>{product.description}</p> : <p>Geen omschrijving bij dit artikel.</p>
+            ) : (
+              <p>{tabCopy(sheet, tab)}</p>
+            )}
+          </div>
           <div className="border border-kg-lijn bg-white p-5 font-mono text-[14px]">
             <p className="font-medium">Levering en retour</p>
             <p className="mt-2 text-kg-text-2">
@@ -407,7 +425,9 @@ export function ProductDetail({
         </div>
       </section>
 
-      {related.length > 0 ? (
+      {product.category === "gevelbekleding" && related.length > 0 ? (
+        <RelatedProfiles related={related} />
+      ) : related.length > 0 ? (
         <section className="mt-16 mb-8">
           <h2 className="text-[22px] font-bold tracking-[-0.03em]">Hoort erbij</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -428,6 +448,30 @@ export function ProductDetail({
           {canBuy ? `In bestelling · ${formatPrice(unitExcl * qty)}` : "Vraag de prijs"}
         </button>
       </div>
+    </div>
+  );
+}
+
+function RelatedProfiles({ related }: { related: Product[] }) {
+  const noodzakelijk = related.filter((item) => profileRole(item) === "noodzakelijk");
+  const aanbevolen = related.filter((item) => profileRole(item) !== "noodzakelijk");
+  const groups = [
+    { title: "Noodzakelijk", items: noodzakelijk },
+    { title: "Aanbevolen", items: aanbevolen },
+  ].filter((group) => group.items.length > 0);
+  if (!groups.length) return null;
+  return (
+    <div className="mt-16 mb-8 space-y-10">
+      {groups.map((group) => (
+        <section key={group.title}>
+          <h2 className="text-[22px] font-bold tracking-[-0.03em]">{group.title}</h2>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {group.items.map((item) => (
+              <ProductCard key={item.slug} product={item} />
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }

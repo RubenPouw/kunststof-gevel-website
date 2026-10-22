@@ -1,4 +1,5 @@
 import { facadeOrder, HPL_SHEET_M2 } from "@/lib/area";
+import { resolveColour } from "@/lib/catalog/colours";
 import {
   extractHplColor,
   extractPanelLength,
@@ -58,12 +59,8 @@ export function inferProfileType(name: string, productType?: string): ProfileTyp
   return "overig";
 }
 
-export function colorFamilyFromName(colorName: string): ColorFamily {
-  const t = colorName.toLowerCase();
-  if (/eiken|oak|meranti|noten|houtlook|golden/.test(t)) return "houtlook";
-  if (/wit|creme|crème|zand|beige|ivoor/.test(t)) return "licht";
-  if (/antraciet|zwart|grijs|gray|grey|diepzwart/.test(t)) return "donker";
-  return "overig";
+export function colorFamilyFromName(colorName: string, context = ""): ColorFamily {
+  return resolveColour(colorName, context).family;
 }
 
 export function panelsPerM2(workingWidthMm: number, lengthMeters: number) {
@@ -164,10 +161,14 @@ export function enrichProduct(product: Product): Product {
       anyAssumed = true;
     }
     const meters = sheet ? undefined : parseLengthMeters(length);
-    const family = colorFamilyFromName(colorName);
+    const colour = resolveColour(colorName, name, { codes: product.category !== "hpl-platen" });
+    const family = colour.family;
+    if (colour.name !== colorName) colorName = colour.name;
+    const hex = product.source === "shopify" || colour.name !== variant.colorName ? colour.hex : variant.hex;
     const next: ProductVariant = {
       ...variant,
       colorName,
+      hex,
       ral,
       length,
       lengthAssumed: assumed,

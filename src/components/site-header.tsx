@@ -9,7 +9,7 @@ import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
-import { shopNav } from "@/lib/site";
+import { shopNav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 function SearchIcon() {
@@ -53,6 +53,20 @@ export function SiteHeader() {
   }
 
   const trayDots = Array.from({ length: SAMPLE_LIMIT }, (_, index) => items[index]?.hex ?? "#DDD9D0");
+  const bare = pathname === "/afrekenen" || pathname.startsWith("/afrekenen/");
+
+  if (bare) {
+    return (
+      <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
+        <div className="container-kg flex h-[72px] items-center justify-between gap-4">
+          <Logo size={20} tone="dark" />
+          <a href={site.phoneHref} className="font-mono text-[14px] text-kg-kalk no-underline">
+            {site.phone}
+          </a>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">

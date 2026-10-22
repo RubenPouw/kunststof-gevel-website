@@ -123,7 +123,7 @@ export function sanitizeDescription(description: string, title: string) {
     .replace(/^[,.\s]+|[,.\s]+$/g, "")
     .trim();
 
-  if (text.length < 24) return withoutTrespa(`${title}.`);
+  if (text.length < 24 || text.toLowerCase() === withoutTrespa(title).toLowerCase()) return "";
   return withoutTrespa(text);
 }
 

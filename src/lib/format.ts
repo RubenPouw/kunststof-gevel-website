@@ -26,6 +26,10 @@ export function inclVat(excl: number) {
   return roundMoney(excl * VAT_RATE);
 }
 
+export function shippingEstimateCopy() {
+  return `Verzending ${formatPrice(SHIPPING_FLAT)} excl. btw. Gratis vanaf ${formatPrice(FREE_SHIPPING_FROM)} excl. btw. Het bedrag in de checkout is leidend.`;
+}
+
 export function formatLengthMm(length: string) {
   const meters = length.trim().toLowerCase().match(/^(\d+(?:[.,]\d+)?)\s*(m|meter|mtr)\b/);
   if (meters) {

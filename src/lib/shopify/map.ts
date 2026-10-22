@@ -1,3 +1,4 @@
+import { resolveColour } from "@/lib/catalog/colours";
 import { enrichProduct, inferProfileType } from "@/lib/catalog/derive";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
 import {
@@ -238,13 +239,10 @@ function isDefaultOption(name: string, value: string) {
   return name.toLowerCase() === "title" && value.toLowerCase() === "default title";
 }
 
-function colorHex(colorName: string) {
+function colorHex(colorName: string, context = "") {
   const key = colorName.trim().toLowerCase();
   if (COLOR_HEX[key]) return COLOR_HEX[key];
-  let hash = 0;
-  for (const char of key) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
-  const palette = ["#3A3D41", "#7A4E2E", "#5C2E22", "#6B6E72", "#A39480", "#4C5055"];
-  return palette[hash % palette.length];
+  return resolveColour(colorName, context).hex;
 }
 
 function lengthFromTitle(title: string) {
@@ -283,7 +281,7 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     sku,
     ean: "",
     colorName: color,
-    hex: colorHex(color),
+    hex: colorHex(color, product.title),
     length,
     price: Number.parseFloat(variant.price.amount) || 0,
     inStock: variant.availableForSale,
@@ -298,12 +296,12 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
 
 function specsFor(product: ShopifyProduct, brand: Brand, category: CategorySlug, variants: ProductVariant[]): Spec[] {
   const specs: Spec[] = [{ label: "Merk", value: brand.name }];
-  if (product.productType) specs.push({ label: "Type", value: product.productType });
-  specs.push({ label: "Categorie", value: category });
-  const lengths = [...new Set(variants.map((variant) => variant.length))];
+  const width = product.title.match(/(\d+(?:[.,]\d+)?)\s*mm/i);
+  if (width) specs.push({ label: "Maat", value: `${width[1].replace(".", ",")} mm` });
+  const lengths = [...new Set(variants.map((variant) => variant.length).filter((value) => value && value !== "stuk"))];
   if (lengths.length === 1) specs.push({ label: "Lengte", value: lengths[0] });
   const sku = variants.find((variant) => variant.sku)?.sku;
-  if (sku) specs.push({ label: "SKU", value: sku });
+  if (sku) specs.push({ label: "Artikelnummer", value: sku });
   return specs;
 }
 
@@ -342,10 +340,7 @@ export function mapShopifyProduct(
     brand: brand.name,
     brandSlug: brand.slug,
     category,
-    description: sanitizeDescription(
-      product.description || `${product.title} van ${brand.name}.`,
-      product.title,
-    ),
+    description: sanitizeDescription(product.description, product.title),
     specs: specsFor(product, brand, category, variants),
     relatedSlugs: [],
     variants,

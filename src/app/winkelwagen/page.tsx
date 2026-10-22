@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
-import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
+import { formatLengthMm, formatNlNumber, formatPrice, inclVat, shippingEstimateCopy } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export default function CartPage() {
@@ -157,6 +157,7 @@ export default function CartPage() {
 
         <aside className="h-fit border border-kg-lijn bg-white p-6 lg:sticky lg:top-[130px]">
           <h2 className="font-mono text-[13px] text-kg-text-2">Overzicht</h2>
+          <p className="mt-3 text-[14px] text-kg-text-2">{shippingEstimateCopy()}</p>
           <dl className="mt-4 space-y-2 font-mono text-[14px]">
             <div className="flex justify-between">
               <dt>Materiaal</dt>

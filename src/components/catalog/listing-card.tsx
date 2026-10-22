@@ -8,6 +8,7 @@ import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { ListingCardModel } from "@/lib/catalog/listing";
 import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
+import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
 import { stockLabel } from "@/lib/week";
@@ -16,6 +17,12 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
   const [index, setIndex] = useState(card.activeIndex);
   const selected = card.swatches[index] ?? card.swatches[0];
   const status = stockLabel(selected?.inStock ?? false, selected?.stockText);
+  const delivery = leadTimeLabel(
+    selected?.inStock ? null : confirmedLeadTimeWeeks(card.category, card.slug),
+    status.text,
+  );
+  const incl = selected?.price ?? 0;
+  const excl = exclVat(incl);
   const sku = (selected?.sku ?? card.slug).replace(/-3M$/, "");
   const priced = card.hasPrice && (selected?.price ?? 0) > 0;
 
@@ -43,6 +50,11 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
             ? `3050 × 1300 mm · hele plaat${selected?.ral ? ` · ${selected.ral}` : ""}`
             : `${formatLengthMm(selected?.length ?? "")}${card.workingWidthMm ? ` · ${card.workingWidthMm} mm werkend` : ""}`}
         </p>
+        {card.swatches.length > 0 ? (
+          <p className="mt-2 font-mono text-[12px] text-kg-text-2">
+            {card.swatches.length} {card.swatches.length === 1 ? "kleur" : "kleuren"}
+          </p>
+        ) : null}
         {card.swatches.length > 1 ? (
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {card.swatches.map((color, colorIndex) => {
@@ -64,12 +76,18 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
         ) : null}
         <div className="mt-3 flex items-baseline justify-between border-t border-kg-lijn pt-2.5 font-mono text-[14px]">
           <span className="whitespace-nowrap" style={{ color: status.color }}>
-            {status.text}
+            {delivery}
           </span>
-          <span>
-            {priced
-              ? `${formatPrice(exclVat(selected?.price ?? 0))}${card.saleUnit === "sheet" ? " /plaat" : ""} excl. btw`
-              : "Prijs op aanvraag"}
+          <span className="text-right">
+            {priced ? (
+              <>
+                {formatPrice(excl)}
+                {card.saleUnit === "sheet" ? " /plaat" : ""} excl. btw
+                <span className="mt-0.5 block text-[12px] text-kg-text-2">{formatPrice(incl)} incl. btw</span>
+              </>
+            ) : (
+              "Prijs op aanvraag"
+            )}
           </span>
         </div>
         <div className="mt-auto flex flex-wrap gap-2 pt-3">

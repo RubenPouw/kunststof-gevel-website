@@ -80,6 +80,10 @@ services:
         sync: false
       - key: GOOGLE_ADS_CONVERSION_BESTELLING
         sync: false
+      - key: BETALEN_KLARNA_ACTIEF
+        value: "false"
+      - key: BETALEN_RIVERTY_ACTIEF
+        value: "false"
   - type: cron
     name: kunststofgevel-catalogus-controle
     runtime: node

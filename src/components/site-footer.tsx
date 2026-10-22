@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { Logo } from "@/components/brand/logo";
 import { footerColumns, legalNav, site } from "@/lib/site";
 
 export function SiteFooter() {
+  const pathname = usePathname() ?? "/";
+  if (pathname === "/afrekenen" || pathname.startsWith("/afrekenen/")) return null;
   return (
     <footer className="mt-auto bg-kg-navy text-kg-grind print:hidden">
       <div className="h-1.5" style={{ background: "var(--gradient-signal)" }} />

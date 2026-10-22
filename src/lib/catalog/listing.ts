@@ -33,6 +33,7 @@ export type ListingCardModel = {
   saleUnit?: "sheet";
   workingWidthMm?: number;
   sampleable: boolean;
+  category: Product["category"];
   hasPrice: boolean;
   swatches: ListingSwatch[];
   activeIndex: number;
@@ -85,6 +86,7 @@ export function toListingCard(product: Product): ListingCardModel {
     saleUnit: product.saleUnit,
     workingWidthMm: product.workingWidthMm,
     sampleable: product.sampleable,
+    category: product.category,
     hasPrice: productHasPrice(product),
     swatches,
     activeIndex,

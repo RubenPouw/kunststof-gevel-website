@@ -40,10 +40,25 @@ export function quoteReference() {
 }
 
 export async function deliverKozijnQuote(config: KozijnConfig, contact: QuoteContact, path: string) {
+  return deliverKozijnQuotes([{ config, path }], contact);
+}
+
+export async function deliverKozijnQuotes(
+  entries: { config: KozijnConfig; path: string }[],
+  contact: QuoteContact,
+) {
+  const first = entries[0];
+  if (!first) return { ok: false as const, error: "De mand is leeg." };
+  const config = first.config;
   const layout = getLayoutBySlug(config.layout);
   const ref = quoteReference();
-  const spec = summaryText(config);
-  const link = `${site.origin}${path}`;
+  const spec = entries
+    .map((entry, index) => {
+      const title = getLayoutBySlug(entry.config.layout)?.title ?? entry.config.layout;
+      return [`Kozijn ${index + 1}: ${title}`, summaryText(entry.config), `${site.origin}${entry.path}`].join("\n");
+    })
+    .join("\n\n");
+  const link = entries.map((entry) => `${site.origin}${entry.path}`).join("\n");
   const shop = [
     `Kozijnaanvraag ${ref}`,
     `${contact.name}, ${contact.email}, ${contact.phone}, ${contact.postcode}`,
@@ -59,7 +74,7 @@ export async function deliverKozijnQuote(config: KozijnConfig, contact: QuoteCon
   const customer = [
     `Beste ${contact.name},`,
     "",
-    `We hebben uw aanvraag voor een ${layout?.title.toLowerCase() ?? "kozijn"} ontvangen. Kenmerk ${ref}.`,
+    `We hebben uw aanvraag voor ${entries.length} ${entries.length === 1 ? "kozijn" : "kozijnen"} ontvangen. Kenmerk ${ref}.`,
     "Er staat nog geen prijs op. U ontvangt een vrijblijvende offerte.",
     "",
     spec,
@@ -88,7 +103,7 @@ export async function deliverKozijnQuote(config: KozijnConfig, contact: QuoteCon
       firstName: contact.name.split(/\s+/)[0] ?? contact.name,
       lastName: contact.name.split(/\s+/).slice(1).join(" "),
       phone: contact.phone,
-      note: `Kozijnaanvraag ${ref}. ${layout?.title ?? config.layout}. ${contact.postcode}.`,
+      note: `Kozijnaanvraag ${ref}. ${entries.length} kozijnen. ${contact.postcode}.`,
       tags: ["Kozijnaanvraag", layout?.title ?? "Kozijn"],
     }),
   ]);

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { KozijnDrawing } from "@/components/kozijnen/drawing";
+import { KozijnView3D } from "@/components/kozijnen/view-3d";
 import { CornerFigures } from "@/components/kozijnen/figures";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -17,6 +18,7 @@ import {
 } from "@/lib/kozijnen/config";
 import { layoutPath, type Layout } from "@/lib/kozijnen/layouts";
 import { formatPrice } from "@/lib/format";
+import { addBasketItem, readBasket, writeBasket } from "@/lib/kozijnen/basket";
 import {
   KOZIJN_STORAGE_KEY,
   STEPS,
@@ -49,6 +51,8 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   const [sent, setSent] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
+  const [view, setView] = useState<"tekening" | "3d">("tekening");
+  const [basketNote, setBasketNote] = useState<string | null>(null);
 
   useEffect(() => {
     if (init.current === layout.slug) return;
@@ -88,7 +92,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   }, [askResume, config, layout, ready]);
 
   useEffect(() => {
-    if (!pricesActive || config.step !== "overzicht") return;
+    if (!pricesActive) return;
     const controller = new AbortController();
     const query = serializeConfig(config);
     void fetch("/api/kozijnen/prijs", {
@@ -260,6 +264,15 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
                 error={formError}
                 sending={sending}
                 onQuote={onQuote}
+                onBasket={() => {
+                  const next = addBasketItem(readBasket(), {
+                    layout: layout.slug,
+                    query: serializeConfig(config),
+                    title: `${layout.title} ${config.width} × ${config.height} mm`,
+                  });
+                  writeBasket(next);
+                  setBasketNote(`${next.length} ${next.length === 1 ? "kozijn" : "kozijnen"} in de offertemand.`);
+                }}
               />
             ) : null}
           </div>
@@ -283,7 +296,15 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
         </div>
 
         <aside className="order-1 border border-kg-lijn bg-kg-kalk p-4 lg:sticky lg:top-24 lg:order-2">
-          <KozijnDrawing layout={layout} config={config} />
+          <div className="mt-3 flex gap-2">
+            <button type="button" className={cn("h-10 border px-3 text-[14px]", view === "tekening" ? "border-kg-navy bg-white" : "border-kg-lijn")} onClick={() => setView("tekening")}>
+              Tekening
+            </button>
+            <button type="button" className={cn("h-10 border px-3 text-[14px]", view === "3d" ? "border-kg-navy bg-white" : "border-kg-lijn")} onClick={() => setView("3d")}>
+              3D
+            </button>
+          </div>
+          {view === "3d" ? <KozijnView3D layout={layout} config={config} /> : <KozijnDrawing layout={layout} config={config} />}
           <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-3 font-mono text-[13px]">
             <div className="flex justify-between gap-3">
               <dt className="text-kg-text-2">Profiel</dt>
@@ -296,11 +317,25 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
               </dd>
             </div>
             <div className="flex justify-between gap-3">
+              <dt className="text-kg-text-2">Grenzen</dt>
+              <dd className="text-right">
+                {layout.limits.minWidth}–{layout.limits.maxWidth} × {layout.limits.minHeight}–{layout.limits.maxHeight}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-3">
               <dt className="text-kg-text-2">Buiten</dt>
               <dd>{colorById(config.frameOut).name}</dd>
             </div>
           </dl>
-          <p className="mt-3 text-[14px] leading-snug text-kg-text-2">Geen prijs op het scherm. De offerte is vrijblijvend.</p>
+          {pricesActive && price && "totalExcl" in price ? (
+            <p className="mt-3">
+              <span className="font-mono text-[18px]">{formatPrice(price.totalExcl)} excl. btw</span>
+              <span className="mt-1 block font-mono text-[14px] text-kg-text-2">{formatPrice(price.totalIncl)} incl. 21% btw</span>
+            </p>
+          ) : (
+            <p className="mt-3 text-[14px] leading-snug text-kg-text-2">Geen prijs op het scherm. De offerte is vrijblijvend.</p>
+          )}
+          {basketNote ? <p className="mt-2 text-[14px]">{basketNote}</p> : null}
         </aside>
       </div>
     </div>
@@ -315,11 +350,7 @@ function StepHint({ step }: { step: (typeof STEPS)[number] }) {
         className="inline-flex size-11 shrink-0 items-center justify-center border border-kg-lijn bg-white text-kg-navy no-underline"
         aria-label={`Uitleg over ${step.label}`}
       >
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 11v6" />
-          <path d="M12 7.5h.01" />
-        </svg>
+        ?
       </Link>
       <span className="pt-2.5">{step.hint}</span>
     </p>
@@ -340,15 +371,18 @@ function SizeStep({
   const box = layout.limits;
   return (
     <div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Field label="Breedte (mm)" value={config.width} onChange={(width) => onChange({ width })} />
-        <Field label="Hoogte (mm)" value={config.height} onChange={(height) => onChange({ height })} />
-      </div>
-      <p className={cn("mt-3 text-[14px]", inRange ? "text-kg-text-2" : "text-kg-navy")}>
-        {inRange
-          ? `Online aanvragen tussen ${box.minWidth} en ${box.maxWidth} mm breed, en ${box.minHeight} en ${box.maxHeight} mm hoog.`
-          : `Deze maat valt buiten ${box.minWidth} tot ${box.maxWidth} mm breed en ${box.minHeight} tot ${box.maxHeight} mm hoog. U kunt de aanvraag wel versturen. We beoordelen hem handmatig.`}
+      <p className="text-[14px] text-kg-text-2">
+        Online aanvragen tussen {box.minWidth} en {box.maxWidth} mm breed, en {box.minHeight} en {box.maxHeight} mm hoog.
       </p>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <Field label="Breedte (mm)" value={config.width} invalid={!inRange} onChange={(width) => onChange({ width })} />
+        <Field label="Hoogte (mm)" value={config.height} invalid={!inRange} onChange={(height) => onChange({ height })} />
+      </div>
+      {inRange ? null : (
+        <p className="mt-3 border border-kg-navy bg-white px-3 py-2 text-[14px] text-kg-navy" role="alert">
+          Deze maat valt buiten {box.minWidth} tot {box.maxWidth} mm breed en {box.minHeight} tot {box.maxHeight} mm hoog. U kunt de aanvraag wel versturen. We beoordelen hem handmatig.
+        </p>
+      )}
       <p className="mt-2 text-[14px]">
         <Link href="/kunststof-kozijnen/kennisbank/hoe-moet-je-meten">Zo meet u de buitenwerkse maat</Link>
       </p>
@@ -356,13 +390,14 @@ function SizeStep({
   );
 }
 
-function Field({ label, value, onChange }: { label: string; value: number; onChange: (value: number) => void }) {
+function Field({ label, value, invalid = false, onChange }: { label: string; value: number; invalid?: boolean; onChange: (value: number) => void }) {
   return (
     <label className="block text-[14px]">
       {label}
       <input
         inputMode="numeric"
-        className="mt-1 h-12 w-full border border-kg-lijn bg-white px-3 font-mono text-[16px]"
+        aria-invalid={invalid}
+        className={cn("mt-1 h-12 w-full border bg-white px-3 font-mono text-[16px]", invalid ? "border-kg-navy" : "border-kg-lijn")}
         value={Number.isFinite(value) ? value : ""}
         onChange={(event) => {
         const next = Number(event.target.value);
@@ -619,7 +654,7 @@ function ExtraStep({
         onPick={(screen) => onChange({ screen: screen as KozijnConfig["screen"] })}
       />
       <p className="text-[14px] text-kg-text-2">
-        Plaatsen en het oude kozijn afvoeren vraagt u in de offerte, niet als bedrag in deze stap.
+        Wij leveren het kozijn. Plaatsen doet u zelf. Horren vraagt u in de offerte, niet als bedrag in deze stap.
       </p>
     </div>
   );
@@ -668,6 +703,7 @@ function Overview({
   error,
   sending,
   onQuote,
+  onBasket,
 }: {
   lines: { label: string; value: string }[];
   pdfHref: string;
@@ -677,6 +713,7 @@ function Overview({
   error: string | null;
   sending: boolean;
   onQuote: (form: FormData) => void;
+  onBasket: () => void;
 }) {
   const wa = `${site.whatsapp}?text=${encodeURIComponent(`Kozijn samengesteld: ${share}`)}`;
   return (
@@ -698,6 +735,12 @@ function Overview({
         <p className="text-[16px]">Vrijblijvende offerte aanvragen. Er staat geen bedrag op deze samenstelling.</p>
       )}
       <div className="flex flex-wrap gap-2">
+        <button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} onClick={onBasket}>
+          Zet in de offertemand
+        </button>
+        <Link href="/kunststof-kozijnen/offertemand" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+          Offertemand
+        </Link>
         <a className={buttonVariants({ variant: "secondary", size: "sm" })} href={pdfHref}>
           Aanvraag als PDF
         </a>

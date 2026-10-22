@@ -137,6 +137,8 @@ export type Product = {
   lengthAssumed?: boolean;
   /** Shopify product.updatedAt when the catalog comes from the Storefront API. */
   updatedAt?: string;
+  /** Real files only. Empty means the downloads block stays quiet. */
+  downloads?: { label: string; href: string }[];
 };
 
 export type SampleColor = {

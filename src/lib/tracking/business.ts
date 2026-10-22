@@ -19,7 +19,7 @@ function contextFrom(request: Request, email?: string, phone?: string): TrackCon
 }
 
 export async function trackOfferte(
-  input: { request: Request; config: KozijnConfig; email: string; phone: string; layout: string },
+  input: { request: Request; config: KozijnConfig; email: string; phone: string; layout: string; count?: number; types?: string },
   env: NodeJS.ProcessEnv = process.env,
   fetchImpl: typeof fetch = fetch,
 ) {
@@ -27,8 +27,8 @@ export async function trackOfferte(
   return trackServerEvent(
     "offertemand_verzonden",
     {
-      aantal_kozijnen: 1,
-      typen: input.layout,
+      aantal_kozijnen: input.count ?? 1,
+      typen: input.types ?? input.layout,
       ...(total == null ? {} : { totaalwaarde: total }),
     },
     contextFrom(input.request, input.email, input.phone),
@@ -52,7 +52,7 @@ export async function trackStaal(
 }
 
 export async function settleOfferte(
-  input: { request: Request; config: KozijnConfig; email: string; phone: string; layout: string },
+  input: { request: Request; config: KozijnConfig; email: string; phone: string; layout: string; count?: number; types?: string },
 ) {
   await settleTracking(trackOfferte(input));
 }

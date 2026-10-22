@@ -9,7 +9,9 @@ export function FactsStrip({
 }: {
   articleCount?: number;
 }) {
-  const items = uspForPath(usePathname() ?? "/").map((item, index) =>
+  const pathname = usePathname() ?? "/";
+  if (pathname === "/afrekenen" || pathname.startsWith("/afrekenen/")) return null;
+  const items = uspForPath(pathname).map((item, index) =>
     index === 0 && articleCount
       ? { k: String(articleCount), v: item.v }
       : item,

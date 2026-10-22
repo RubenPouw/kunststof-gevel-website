@@ -201,6 +201,17 @@ export function filterProductsByQuery(products: Product[], query: string) {
   });
 }
 
+export function profileRole(product: Product): "noodzakelijk" | "aanbevolen" | null {
+  const name = product.name.toLowerCase();
+  const accessory =
+    product.category === "montage" ||
+    product.profileType === "profiel" ||
+    /profiel|schroef|eindkap|hoekstuk|verbind/.test(name);
+  if (!accessory) return null;
+  if (/schroef|startprofiel|ventilatie|\bclip\b/.test(name)) return "noodzakelijk";
+  return "aanbevolen";
+}
+
 export function relatedProductsOf(product: Product, products: Product[]) {
   const bySlug = new Map(products.map((item) => [item.slug, item]));
   const fromField = product.relatedSlugs

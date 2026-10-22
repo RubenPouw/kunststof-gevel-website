@@ -26,6 +26,12 @@ export type CheckoutCustomer = {
   postcode: string;
   city: string;
   company?: string;
+  kvk?: string;
+  btw?: string;
+  reference?: string;
+  deliveryDate?: string;
+  pickup?: boolean;
+  payment?: "checkout" | "rekening" | "klarna" | "riverty";
 };
 
 export type CheckoutResult =
@@ -233,9 +239,22 @@ export async function createShopifyCheckout(input: {
     quantity: Math.min(999, Math.max(1, Math.round(item.line.quantity))),
     name: item.product?.name ?? item.line.variantSku,
   }));
+  const paymentLabel = {
+    checkout: "Betalen in de Shopify-checkout",
+    rekening: "Op rekening",
+    klarna: "Klarna, via Shopify Payments",
+    riverty: "Riverty, nog niet gekoppeld",
+  }[input.customer.payment ?? "checkout"];
   const note = [
     "Bestelling via kunststof-gevel.nl",
     input.montage ? "Klant wil montage meerekenen. Montage zit niet in deze betaling en loopt via de offerte." : "",
+    `Betaling: ${paymentLabel}`,
+    input.customer.pickup ? "Afhalen in de showroom, op afspraak" : "Bezorgen",
+    input.customer.reference ? `Referentie: ${input.customer.reference}` : "",
+    input.customer.deliveryDate ? `Gewenste leverdatum: ${input.customer.deliveryDate}` : "",
+    input.customer.company ? `Bedrijf: ${input.customer.company}` : "",
+    input.customer.kvk ? `KvK: ${input.customer.kvk}` : "",
+    input.customer.btw ? `Btw: ${input.customer.btw}` : "",
     `${input.customer.name}, ${input.customer.phone}, ${input.customer.address}, ${input.customer.postcode} ${input.customer.city}`,
   ]
     .filter(Boolean)
