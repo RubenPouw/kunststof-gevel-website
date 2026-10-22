@@ -1,8 +1,9 @@
 import Link from "next/link";
 
+import { BrandRow } from "@/components/catalog/brand-row";
 import { ProductListing } from "@/components/catalog/product-listing";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
-import type { ListingCardModel, ListingFacets } from "@/lib/catalog/listing";
+import { DEFAULT_PRESENTATION, type ListingCardModel, type ListingFacets, type ListingPresentation } from "@/lib/catalog/listing";
 import type { Brand, ListingFilters } from "@/lib/catalog/types";
 
 export function CategoryPage({
@@ -18,6 +19,8 @@ export function CategoryPage({
   brandOptions = [],
   basePath,
   filters,
+  presentation = DEFAULT_PRESENTATION,
+  showStockChip = false,
   sheetCalculator = false,
   emptyMessage,
   sampleHref,
@@ -34,6 +37,8 @@ export function CategoryPage({
   brandOptions?: Brand[];
   basePath: string;
   filters: ListingFilters;
+  presentation?: ListingPresentation;
+  showStockChip?: boolean;
   sheetCalculator?: boolean;
   emptyMessage?: string;
   sampleHref?: string;
@@ -55,6 +60,10 @@ export function CategoryPage({
         </div>
       ) : null}
 
+      {brandOptions.length > 1 ? (
+        <BrandRow brands={brandOptions} basePath={basePath} filters={filters} presentation={presentation} />
+      ) : null}
+
       <ProductListing
         cards={cards}
         total={total}
@@ -64,9 +73,9 @@ export function CategoryPage({
         pageSize={pageSize}
         filters={filters}
         basePath={basePath}
-        brandOptions={brandOptions}
-        showBrandChips
-        showStockChip
+        view={presentation.view}
+        sort={presentation.sort}
+        showStockChip={showStockChip}
         emptyMessage={emptyMessage}
       />
     </div>

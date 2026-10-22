@@ -308,11 +308,13 @@ html[data-btw="excl"] .kg-btw-switch-light button[data-mode="excl"] {
   color: var(--kg-kalk);
 }
 
-html:not([data-btw="excl"]) .kg-vat-excl {
+html:not([data-btw="excl"]) .kg-vat-excl,
+html:not([data-btw="excl"]) .kg-price-excl {
   display: none;
 }
 
-html[data-btw="excl"] .kg-vat-incl {
+html[data-btw="excl"] .kg-vat-incl,
+html[data-btw="excl"] .kg-price-incl {
   display: none;
 }
 

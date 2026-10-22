@@ -16,7 +16,11 @@ const CODES: Record<string, string> = Object.fromEntries(
   Object.entries(colourCodes).map(([code, name]) => [code.toLowerCase(), name]),
 );
 
+/** Neutral chip when the hue is not published. Not a guessed wood tone. */
+export const UNKNOWN_COLOUR_HEX = "#C5C1B8";
+
 const RULES: { test: RegExp; family: ColorFamily; hex: string; label: string }[] = [
+  { test: /smokey shadow/, family: "houtlook", hex: UNKNOWN_COLOUR_HEX, label: "Smokey shadow" },
   { test: /vergrijsd/, family: "houtlook", hex: "#A39480", label: "Vergrijsd eiken" },
   { test: /golden\s*oak|golden/, family: "houtlook", hex: "#C4A36A", label: "Golden oak" },
   { test: /california redwood|mahonie|chocolade|mocca|cappuccino/, family: "houtlook", hex: "#6B3A2A", label: "Houtlook" },
@@ -30,15 +34,18 @@ const RULES: { test: RegExp; family: ColorFamily; hex: string; label: string }[]
   { test: /parelgrijs|lichtgrijs|zilvergrijs/, family: "licht", hex: "#D5D3CE", label: "Lichtgrijs" },
   { test: /zwart/, family: "donker", hex: "#1A1A1A", label: "Zwart" },
   { test: /grijs|gray|grey|aluminium|\bmetaal\b/, family: "donker", hex: "#6B6E72", label: "Grijs" },
-  { test: /cr[eè]me|cream|ivoor|ivory|ral\s*9001/, family: "licht", hex: "#E8DCC8", label: "Crème" },
-  { test: /zand|beige|\bsand\b|\bklei\b|claystone|carrara|marmer|freestone|dolomit/, family: "licht", hex: "#C4B496", label: "Zand" },
-  { test: /ral\s*9010|ral\s*9016|wit\b|traffic white|snowwhite|\bwhite\b/, family: "licht", hex: "#F4F1EA", label: "Wit" },
-  { test: /groen|olijf|\bgreen\b/, family: "overig", hex: "#3F5344", label: "Groen" },
-  { test: /blauw|\bblue\b/, family: "overig", hex: "#2C4A6E", label: "Blauw" },
-  { test: /terracotta/, family: "overig", hex: "#A24B32", label: "Terracotta" },
-  { test: /rood\b/, family: "overig", hex: "#8B3A32", label: "Rood" },
-  { test: /bruin/, family: "overig", hex: "#6B4A32", label: "Bruin" },
-  { test: /\brvs\b|\bstaal\b/, family: "overig", hex: "#C5C7C4", label: "RVS" },
+  { test: /cr[eè]me|cremi|cream|ivoor|ivory|ral\s*9001/, family: "licht", hex: "#E8DCC8", label: "Crème" },
+  { test: /zand|beige|sahara|\bsand\b|\bklei\b|claystone|carrara|marmer|freestone|dolomit/, family: "licht", hex: "#C4B496", label: "Zand" },
+  { test: /ral\s*9010|ral\s*9016|bianco|wit\b|traffic white|snowwhite|\bwhite\b/, family: "licht", hex: "#F4F1EA", label: "Wit" },
+  { test: /monumentengroen|mosgroen|olijf|groen|\bgreen\b/, family: "groen", hex: "#3F5344", label: "Groen" },
+  { test: /lichtblauw/, family: "blauw", hex: "#8AA4C4", label: "Lichtblauw" },
+  { test: /staalblauw|monumentenblauw|blauw|\bblue\b/, family: "blauw", hex: "#2C4A6E", label: "Blauw" },
+  { test: /terracotta|wijnrood|rood\b/, family: "rood", hex: "#8B3A32", label: "Rood" },
+  { test: /lichtbruin/, family: "bruin", hex: "#A67C52", label: "Lichtbruin" },
+  { test: /donkerbruin|bruin/, family: "bruin", hex: "#6B4A32", label: "Bruin" },
+  { test: /\bgeel\b/, family: "geel", hex: "#E6C229", label: "Geel" },
+  { test: /\brvs\b|\bstaal\b|metallo/, family: "metaal", hex: "#C5C7C4", label: "RVS" },
+  { test: /\b(alpin|elba|helios|tirol)\b|steenlook/, family: "steen", hex: UNKNOWN_COLOUR_HEX, label: "Steen" },
   { test: /nerf/, family: "houtlook", hex: "#8B5E3C", label: "Houtlook" },
 ];
 
@@ -52,9 +59,6 @@ function matchWords(text: string) {
   const key = norm(text);
   return RULES.find((rule) => rule.test.test(key)) ?? null;
 }
-
-/** Neutral chip when the colour is unknown. Not a guessed wood tone. */
-export const UNKNOWN_COLOUR_HEX = "#C5C1B8";
 
 export function resolveColour(name: string, context = "", options?: { codes?: boolean }): ColourHit {
   const key = norm(name);

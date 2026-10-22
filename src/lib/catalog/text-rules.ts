@@ -3,6 +3,7 @@
 export const DISTRIBUTOR_BRAND_SLUGS = new Set(["heering", "milin"]);
 
 const PRODUCT_LINES: { slug: string; re: RegExp }[] = [
+  { slug: "novicell", re: /\bnovicell\b/i },
   { slug: "milinboard", re: /\bmilinboard\b/i },
   { slug: "vinytherm", re: /\bvinytherm\b/i },
   { slug: "vinyplus", re: /\bviny\s?plus\b/i },

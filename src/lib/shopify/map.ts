@@ -55,6 +55,7 @@ export const PRODUCT_TYPE_TO_CATEGORY: Record<string, CategorySlug> = {
 
 const KNOWN_BRANDS: Brand[] = [
   { slug: "milin", name: "Milin", summary: "Kunststof gevel- en afwerkproducten van Milin." },
+  { slug: "novicell", name: "Novicell", summary: "Houtlook gevelpanelen van Novicell, in fijne en grove nerf." },
   { slug: "heering", name: "Heering", summary: "Kunststof gevelbekleding en profielen van Heering." },
   { slug: "milinboard", name: "Milinboard", summary: "Kunststof vensterbanken en overzetbanken, inclusief eindkappen." },
   { slug: "vinyplus", name: "VinyPlus", summary: "Gevelpanelen en dakranden, uit voorraad in veelgebruikte kleuren." },

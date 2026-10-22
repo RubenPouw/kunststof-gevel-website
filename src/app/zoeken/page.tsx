@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { CategoryPage } from "@/components/catalog/category-page";
 import { parseListingSearchParams, searchProducts } from "@/lib/catalog";
+import { parseListingPresentation } from "@/lib/catalog/helpers";
 import { prepareListing } from "@/lib/catalog/listing";
 
 export const metadata: Metadata = {
@@ -20,9 +21,10 @@ export default async function SearchPage({
   const query = (Array.isArray(raw) ? raw[0] : raw) ?? "";
   const results = await searchProducts(query);
   const filters = parseListingSearchParams(params);
+  const presentation = parseListingPresentation(params);
   const paginaRaw = Array.isArray(params.pagina) ? params.pagina[0] : params.pagina;
   const pagina = Number(paginaRaw || "1");
-  const view = prepareListing(results, filters, Number.isFinite(pagina) ? pagina : 1);
+  const view = prepareListing(results, filters, Number.isFinite(pagina) ? pagina : 1, undefined, presentation.sort);
 
   return (
     <CategoryPage
@@ -40,6 +42,7 @@ export default async function SearchPage({
       page={view.page}
       pageSize={view.pageSize}
       filters={filters}
+      presentation={presentation}
       basePath={query ? `/zoeken?q=${encodeURIComponent(query)}` : "/zoeken"}
     />
   );

@@ -6,7 +6,8 @@ import { CategoryListing } from "@/components/catalog/category-listing";
 import { categoryViewMetadata } from "@/data/seo/categories";
 import { brandViewMetadata } from "@/lib/seo/listing-meta";
 import { getProductsByBrand, getProductsByCategory, listBrands, parseListingSearchParams } from "@/lib/catalog";
-import { PAGE_SIZE, prepareListing } from "@/lib/catalog/listing";
+import { parseListingPresentation } from "@/lib/catalog/helpers";
+import { CATEGORY_PAGE_SIZE, PAGE_SIZE, prepareListing } from "@/lib/catalog/listing";
 import { decodeListingState, isCategorySlug } from "@/lib/catalog/paths";
 import { categorySlugs } from "@/lib/catalog/types";
 
@@ -19,7 +20,7 @@ export async function generateStaticParams() {
   const params: { kind: string; slug: string; state: string[] }[] = [];
   for (const slug of categorySlugs) {
     const products = await getProductsByCategory(slug);
-    const pages = Math.min(Math.ceil(products.length / PAGE_SIZE), 4);
+    const pages = Math.min(Math.ceil(products.length / CATEGORY_PAGE_SIZE), 4);
     for (let page = 2; page <= pages; page += 1) {
       params.push({ kind: "categorie", slug, state: ["p", String(page)] });
     }
@@ -40,7 +41,8 @@ async function readState(params: Props["params"]) {
   const decoded = decodeListingState(kind, slug, state);
   if (!decoded) return null;
   const filters = parseListingSearchParams(Object.fromEntries(decoded.search.entries()));
-  return { ...decoded, filters };
+  const presentation = parseListingPresentation(decoded.search);
+  return { ...decoded, filters, presentation };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -49,11 +51,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (decoded.kind === "categorie") {
     if (!isCategorySlug(decoded.slug)) return { title: "Assortiment", robots: { index: false, follow: false } };
     const products = await getProductsByCategory(decoded.slug);
-    const view = prepareListing(products, decoded.filters, decoded.pagina);
+    const view = prepareListing(products, decoded.filters, decoded.pagina, CATEGORY_PAGE_SIZE, decoded.presentation.sort);
     return categoryViewMetadata(decoded.slug, decoded.filters, view.page, view.pages);
   }
   const products = await getProductsByBrand(decoded.slug);
-  const view = prepareListing(products, decoded.filters, decoded.pagina);
+  const view = prepareListing(products, decoded.filters, decoded.pagina, PAGE_SIZE, decoded.presentation.sort);
   return brandViewMetadata(decoded.slug, decoded.filters, view.page, view.pages);
 }
 
@@ -62,9 +64,21 @@ export default async function ListingStatePage({ params }: Props) {
   if (!decoded) notFound();
   if (decoded.kind === "categorie") {
     if (!isCategorySlug(decoded.slug)) notFound();
-    return <CategoryListing slug={decoded.slug} filters={decoded.filters} page={decoded.pagina} />;
+    return (
+      <CategoryListing
+        slug={decoded.slug}
+        filters={decoded.filters}
+        page={decoded.pagina}
+        presentation={decoded.presentation}
+      />
+    );
   }
-  const listing = await BrandListing({ slug: decoded.slug, filters: decoded.filters, page: decoded.pagina });
+  const listing = await BrandListing({
+    slug: decoded.slug,
+    filters: decoded.filters,
+    page: decoded.pagina,
+    presentation: decoded.presentation,
+  });
   if (!listing) notFound();
   return listing;
 }

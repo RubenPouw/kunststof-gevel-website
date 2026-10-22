@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   width="1122.52"
+   height="793.70135"
+   viewBox="0 0 1122.52 793.70135"
+   sodipodi:docname="Linerio - logo - CMYK.ai"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath16">
+      <path
+         d="M 0,595.276 H 841.89 V 0 H 0 Z"
+         id="path14" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <g
+     id="g8"
+     inkscape:groupmode="layer"
+     inkscape:label="Linerio - logo - CMYK"
+     transform="matrix(1.3333333,0,0,-1.3333333,0,793.70133)">
+    <g
+       id="g10">
+      <g
+         id="g12"
+         clip-path="url(#clipPath16)">
+        <g
+           id="g18"
+           transform="translate(243.1923,265.2005)">
+          <path
+             d="M 0,0 H -25.128 V 101.842 H -41.04 V -15.412 H 0 Z M 38.022,101.842 H 21.774 V -15.412 H 38.022 Z M 122.61,-15.412 V 101.842 H 108.54 V 22.87 L 81.575,101.842 H 66.498 V -15.412 H 80.569 V 66.493 L 108.54,-15.412 Z M 194.64,0 h -28.477 v 38.022 h 22.615 v 14.406 h -22.615 v 33.837 h 27.641 v 15.577 H 150.251 V -15.412 h 44.389 z m 47.737,87.106 c 4.245,0 7.539,-1.286 9.881,-3.854 2.348,-2.573 3.519,-6.312 3.519,-11.223 V 59.801 c 0,-4.915 -1.171,-8.655 -3.519,-11.222 -2.342,-2.573 -5.636,-3.855 -9.881,-3.855 h -9.215 v 42.382 z m 16.749,-50.421 c 8.379,4.13 12.564,12.004 12.564,23.617 v 12.063 c 0,9.49 -2.593,16.773 -7.789,21.859 -5.191,5.08 -12.313,7.618 -21.358,7.618 H 217.25 V -15.412 h 15.912 V 31.49 h 7.078 c 2.242,0 3.874,0.055 4.88,0.17 l 15.012,-47.072 h 16.583 z m 54.775,65.157 H 297.653 V -15.412 h 16.248 z m 45.896,-16.748 c 2.122,2.347 4.97,3.519 8.544,3.519 3.459,0 6.282,-1.172 8.46,-3.519 2.177,-2.348 3.268,-5.641 3.268,-9.881 V 11.057 c 0,-4.134 -1.091,-7.403 -3.268,-9.801 -2.178,-2.402 -5.001,-3.604 -8.46,-3.604 -3.574,0 -6.422,1.202 -8.544,3.604 -2.122,2.398 -3.179,5.667 -3.179,9.801 v 64.156 c 0,4.24 1.057,7.533 3.179,9.881 m -11.388,-94.64 c 5.136,-5.025 11.668,-7.538 19.597,-7.538 7.929,0 14.576,2.593 19.932,7.789 5.361,5.19 8.044,12.028 8.044,20.517 v 64.491 c 0,8.485 -2.598,15.242 -7.789,20.268 -5.196,5.025 -11.758,7.538 -19.686,7.538 -7.929,0 -14.547,-2.598 -19.847,-7.788 -5.306,-5.191 -7.959,-12.034 -7.959,-20.518 V 10.722 c 0,-8.49 2.568,-15.247 7.708,-20.268"
+             style="fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path20" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

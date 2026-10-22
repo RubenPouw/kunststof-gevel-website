@@ -1,3 +1,4 @@
+import type { ListingPresentation, ListingSort, ListingView } from "./listing";
 import { slugKey } from "./derive";
 import type {
   Brand,
@@ -8,6 +9,22 @@ import type {
   ProfileType,
 } from "./types";
 import { colorFamilies, profileTypes } from "./types";
+
+const LISTING_SORTS = new Set<ListingSort>(["relevantie", "naam", "prijs-op", "prijs-af"]);
+
+export function parseListingPresentation(
+  search: URLSearchParams | Record<string, string | string[] | undefined>,
+): ListingPresentation {
+  const read = (key: string) => {
+    if (search instanceof URLSearchParams) return search.get(key) ?? undefined;
+    const value = search[key];
+    return Array.isArray(value) ? value[0] : value;
+  };
+  const view: ListingView = read("weergave") === "raster" ? "raster" : "lijst";
+  const sortRaw = read("sorteer");
+  const sort: ListingSort = sortRaw && LISTING_SORTS.has(sortRaw as ListingSort) ? (sortRaw as ListingSort) : "relevantie";
+  return { view, sort };
+}
 
 export function getVariant(product: Product, sku: string) {
   return product.variants.find((variant) => variant.sku === sku);
@@ -105,12 +122,15 @@ export function listingHref(
   basePath: string,
   current: ListingFilters,
   patch: Partial<ListingFilters> & { brandSlug?: string | "" },
+  presentation?: ListingPresentation,
 ) {
   const [path, existing] = basePath.split("?");
   const params = new URLSearchParams(existing);
   const next: ListingFilters = { ...current, ...patch };
   const brand = patch.brandSlug === "" ? undefined : next.brandSlug;
-  ["merk", "voorraad", "type", "kleur", "breedte", "kleurnaam", "ral"].forEach((key) => params.delete(key));
+  ["merk", "voorraad", "type", "kleur", "breedte", "kleurnaam", "ral", "weergave", "sorteer", "pagina"].forEach((key) =>
+    params.delete(key),
+  );
   if (brand) params.set("merk", brand);
   if (next.inStockOnly) params.set("voorraad", "1");
   if (next.profileType) params.set("type", next.profileType);
@@ -118,6 +138,8 @@ export function listingHref(
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
   if (next.colorSlug) params.set("kleurnaam", next.colorSlug);
   if (next.ral) params.set("ral", next.ral);
+  if (presentation?.view === "raster") params.set("weergave", "raster");
+  if (presentation?.sort && presentation.sort !== "relevantie") params.set("sorteer", presentation.sort);
   const query = params.toString();
   return query ? `${path}?${query}` : path;
 }
@@ -144,15 +166,15 @@ export function listingFacets(list: Product[]) {
         hex: current?.hex ?? color.hex,
       });
     }
-    if (product.saleUnit === "sheet" || product.category === "hpl-platen") {
-      for (const color of product.colors) {
-        const key = slugKey(color.name);
-        const current = sheetColors.get(key);
-        sheetColors.set(key, {
-          name: current?.name ?? color.name,
-          count: (current?.count ?? 0) + 1,
-          hex: current?.hex ?? color.hex,
-        });
+    for (const color of product.colors) {
+      const key = slugKey(color.name);
+      const current = sheetColors.get(key);
+      sheetColors.set(key, {
+        name: current?.name ?? color.name,
+        count: (current?.count ?? 0) + 1,
+        hex: current?.hex ?? color.hex,
+      });
+      if (product.saleUnit === "sheet" || product.category === "hpl-platen") {
         const ral = color.ral?.replace(/\D/g, "");
         if (ral && /^\d{4}$/.test(ral)) rals.set(ral, (rals.get(ral) ?? 0) + 1);
       }
@@ -163,17 +185,19 @@ export function listingFacets(list: Product[]) {
     profileTypes: [...types.entries()]
       .map(([slug, count]) => ({ slug, count }))
       .sort((a, b) => b.count - a.count),
-    colorFamilies: [...families.entries()].map(([slug, value]) => ({
-      slug,
-      count: value.count,
-      hex: value.hex,
-    })),
+    colorFamilies: [...families.entries()]
+      .map(([slug, value]) => ({
+        slug,
+        count: value.count,
+        hex: value.hex,
+      }))
+      .sort((a, b) => colorFamilies.indexOf(a.slug) - colorFamilies.indexOf(b.slug)),
     widths: [...widths.entries()]
       .map(([mm, count]) => ({ mm, count }))
       .sort((a, b) => a.mm - b.mm),
     sheetColors: [...sheetColors.entries()]
       .map(([slug, value]) => ({ slug, ...value }))
-      .sort((a, b) => a.name.localeCompare(b.name, "nl")),
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "nl")),
     rals: [...rals.entries()]
       .map(([code, count]) => ({ code, count }))
       .sort((a, b) => a.code.localeCompare(b.code, "nl", { numeric: true })),

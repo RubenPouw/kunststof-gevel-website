@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import test from "node:test";
 
-import { prepareListing, toListingCard } from "../src/lib/catalog/listing.ts";
+import { CATEGORY_PAGE_SIZE, prepareListing, toListingCard } from "../src/lib/catalog/listing.ts";
 import { decodeListingState, listingRewriteTarget } from "../src/lib/catalog/paths.ts";
 import { parseListingSearchParams } from "../src/lib/catalog/helpers.ts";
 import type { Product, ProductVariant } from "../src/lib/catalog/types.ts";
@@ -56,12 +56,14 @@ function product(index: number): Product {
   };
 }
 
-test("listing card keeps one swatch per colour and drops the description", () => {
+test("listing card keeps one swatch per colour and every length", () => {
   const card = toListingCard(product(1));
   assert.equal(card.swatches.length, 3);
   assert.equal(JSON.stringify(card).includes("beschrijving"), false);
   assert.equal(JSON.stringify(card).includes("kunststof"), false);
   assert.equal(card.swatches[0]?.length, "3 m");
+  assert.equal(card.swatches[0]?.lengths.length, 4);
+  assert.equal(card.swatches[0]?.name, "Antraciet");
 });
 
 test("prepareListing returns ten cards per page from the full list", () => {
@@ -72,6 +74,29 @@ test("prepareListing returns ten cards per page from the full list", () => {
   assert.equal(page.cards[0]?.slug, "product-10");
   assert.equal(page.pages, 3);
   assert.ok(page.facets.profileTypes.length >= 1);
+});
+
+test("category page size is sixteen and relevantie keeps catalog order", () => {
+  const all = Array.from({ length: 20 }, (_, index) => product(index));
+  const page = prepareListing(all, {}, 1, CATEGORY_PAGE_SIZE);
+  assert.equal(page.cards.length, 16);
+  assert.equal(page.pageSize, 16);
+  assert.equal(page.pages, 2);
+  assert.equal(page.cards[0]?.slug, "product-0");
+  const byName = prepareListing(all, {}, 1, 20, "naam");
+  assert.equal(byName.cards[0]?.slug, "product-0");
+  assert.equal(byName.cards.at(-1)?.slug, "product-9");
+});
+
+test("raster view rewrites and the default list does not", () => {
+  assert.equal(
+    listingRewriteTarget("/gevelbekleding", new URLSearchParams("weergave=raster")),
+    "/weergave/categorie/gevelbekleding/p/1/weergave/raster",
+  );
+  assert.equal(listingRewriteTarget("/gevelbekleding", new URLSearchParams("weergave=lijst")), null);
+  assert.equal(listingRewriteTarget("/gevelbekleding", new URLSearchParams("sorteer=naam")), "/weergave/categorie/gevelbekleding/p/1/sorteer/naam");
+  const decoded = decodeListingState("categorie", "gevelbekleding", ["p", "1", "weergave", "raster"]);
+  assert.equal(decoded?.search.get("weergave"), "raster");
 });
 
 test("pagina and filters rewrite to a cacheable path and back", () => {

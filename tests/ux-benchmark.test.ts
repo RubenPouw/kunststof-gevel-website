@@ -4,6 +4,8 @@ import test from "node:test";
 import { resolveColour, UNKNOWN_COLOUR_HEX } from "../src/lib/catalog/colours.ts";
 import { enrichProduct } from "../src/lib/catalog/derive.ts";
 import { profileRole } from "../src/lib/catalog/helpers.ts";
+import { matchProductLine } from "../src/lib/catalog/text-rules.ts";
+import { inferBrand } from "../src/lib/shopify/map.ts";
 import type { Product, ProductVariant } from "../src/lib/catalog/types.ts";
 import { SHIPPING_FLAT, FREE_SHIPPING_FROM, shippingEstimateCopy } from "../src/lib/format.ts";
 import { addBasketItem } from "../src/lib/kozijnen/basket.ts";
@@ -86,6 +88,29 @@ test("A24 is antraciet and not a brown chip, HPL decor codes stay codes", () => 
   const unknown = resolveColour("ZX9", "", { codes: true });
   assert.equal(unknown.name, "ZX9");
   assert.equal(unknown.hex, UNKNOWN_COLOUR_HEX);
+
+  for (const name of ["Groen", "Blauw", "Rood", "Wijnrood", "Bruin", "Donkerbruin", "Geel", "Rvs", "Alpin", "Elba", "Helios", "Tirol", "Monumentengroen", "Mosgroen", "Lichtblauw"]) {
+    assert.notEqual(resolveColour(name).family, "overig", name);
+  }
+  assert.equal(resolveColour("Groen").family, "groen");
+  assert.equal(resolveColour("Wijnrood").family, "rood");
+  assert.equal(resolveColour("Alpin").family, "steen");
+  assert.equal(resolveColour("Transparant").family, "overig");
+  assert.equal(resolveColour("Transparant").hex, UNKNOWN_COLOUR_HEX);
+});
+
+test("Novicell stays its own brand when the supplier is Heering", () => {
+  assert.equal(matchProductLine("Novicell sponningdeel 167mm grove nerf"), "novicell");
+  assert.equal(matchProductLine("Keralit sponningdeel 143mm"), "keralit");
+  const brand = inferBrand({
+    vendor: "Heering",
+    title: "Novicell sponningdeel 167mm grove nerf",
+    tags: [],
+    handle: "novicell-sponningdeel-167mm-grove-nerf",
+    productType: "gevelbekleding",
+  });
+  assert.equal(brand.slug, "novicell");
+  assert.equal(brand.name, "Novicell");
 });
 
 test("lead time stays empty until a week count is confirmed", () => {

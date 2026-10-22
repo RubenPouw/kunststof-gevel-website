@@ -11,13 +11,19 @@ export const LISTING_QUERY_KEYS = [
   "kleurnaam",
   "ral",
   "pagina",
+  "weergave",
+  "sorteer",
 ] as const;
+
+const ACTIVE_SORTS = new Set(["naam", "prijs-op", "prijs-af"]);
 
 export function listingQueryActive(search: URLSearchParams) {
   for (const key of LISTING_QUERY_KEYS) {
     const value = search.get(key);
     if (!value) continue;
     if (key === "pagina" && (value === "1" || !/^\d+$/.test(value))) continue;
+    if (key === "weergave" && value !== "raster") continue;
+    if (key === "sorteer" && !ACTIVE_SORTS.has(value)) continue;
     return true;
   }
   return false;

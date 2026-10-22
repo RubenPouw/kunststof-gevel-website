@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { getProductsByCategory } from "@/lib/catalog";
 import { hasActiveFilters } from "@/lib/catalog/helpers";
-import { PAGE_SIZE, listingPageHref } from "@/lib/catalog/listing";
+import { CATEGORY_PAGE_SIZE, listingPageHref } from "@/lib/catalog/listing";
 import type { CategorySlug, ListingFilters } from "@/lib/catalog/types";
 
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
@@ -201,7 +201,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
 
 export async function categoryRouteMetadata(slug: CategorySlug): Promise<Metadata> {
   const products = await getProductsByCategory(slug);
-  const pages = Math.ceil(products.length / PAGE_SIZE);
+  const pages = Math.ceil(products.length / CATEGORY_PAGE_SIZE);
   return {
     ...categoryMetadata(slug),
     ...(pages > 1 ? { pagination: { next: `/${slug}?pagina=2` } } : {}),

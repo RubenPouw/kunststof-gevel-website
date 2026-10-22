@@ -3,7 +3,7 @@ import { SeoArticle } from "@/components/seo/article";
 import { getCategoryStory } from "@/data/seo/categories";
 import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
-import { prepareListing } from "@/lib/catalog/listing";
+import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import { categoryStaalGroup } from "@/lib/staal/tree";
 import type { ListingFilters } from "@/lib/catalog/types";
 
@@ -11,15 +11,17 @@ export async function CategoryListing({
   slug,
   filters,
   page,
+  presentation = DEFAULT_PRESENTATION,
 }: {
   slug: CategorySlug;
   filters: ListingFilters;
   page: number;
+  presentation?: ListingPresentation;
 }) {
   const category = await getCategory(slug);
   if (!category) return null;
   const all = await getProductsByCategory(slug);
-  const view = prepareListing(all, filters, page);
+  const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
   const story = getCategoryStory(slug);
   const staalGroep = categoryStaalGroup(slug);
 
@@ -38,6 +40,8 @@ export async function CategoryListing({
         brandOptions={await brandsInProducts(all)}
         basePath={`/${slug}`}
         filters={filters}
+        presentation={presentation}
+        showStockChip
         sheetCalculator={slug === "hpl-platen"}
         sampleHref={staalGroep ? `/staalaanvraag?groep=${staalGroep}` : undefined}
         emptyMessage={

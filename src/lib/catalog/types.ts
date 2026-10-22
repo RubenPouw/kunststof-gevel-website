@@ -23,7 +23,19 @@ export const profileTypes = [
 
 export type ProfileType = (typeof profileTypes)[number];
 
-export const colorFamilies = ["donker", "licht", "houtlook", "overig"] as const;
+export const colorFamilies = [
+  "donker",
+  "licht",
+  "houtlook",
+  "groen",
+  "blauw",
+  "rood",
+  "bruin",
+  "geel",
+  "metaal",
+  "steen",
+  "overig",
+] as const;
 
 export type ColorFamily = (typeof colorFamilies)[number];
 
@@ -44,6 +56,13 @@ export const colorFamilyLabels: Record<ColorFamily, string> = {
   donker: "Donker",
   licht: "Licht",
   houtlook: "Houtlook",
+  groen: "Groen",
+  blauw: "Blauw",
+  rood: "Rood",
+  bruin: "Bruin",
+  geel: "Geel",
+  metaal: "Metaal",
+  steen: "Steen",
   overig: "Overig",
 };
 
