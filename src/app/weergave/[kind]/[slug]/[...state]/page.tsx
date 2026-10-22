@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 
 import { BrandListing } from "@/components/catalog/brand-listing";
 import { CategoryListing } from "@/components/catalog/category-listing";
+import { LandingListing } from "@/components/catalog/landing-listing";
 import { categoryViewMetadata } from "@/data/seo/categories";
-import { brandViewMetadata } from "@/lib/seo/listing-meta";
+import { brandViewMetadata, landingViewMetadata } from "@/lib/seo/listing-meta";
 import { getProductsByBrand, getProductsByCategory, listBrands, parseListingSearchParams } from "@/lib/catalog";
 import { parseListingPresentation } from "@/lib/catalog/helpers";
 import { CATEGORY_PAGE_SIZE, PAGE_SIZE, prepareListing } from "@/lib/catalog/listing";
@@ -54,6 +55,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const view = prepareListing(products, decoded.filters, decoded.pagina, CATEGORY_PAGE_SIZE, decoded.presentation.sort);
     return categoryViewMetadata(decoded.slug, decoded.filters, view.page, view.pages);
   }
+  if (decoded.kind === "land") {
+    return landingViewMetadata(decoded.slug, decoded.filters, decoded.pagina);
+  }
   const products = await getProductsByBrand(decoded.slug);
   const view = prepareListing(products, decoded.filters, decoded.pagina, PAGE_SIZE, decoded.presentation.sort);
   return brandViewMetadata(decoded.slug, decoded.filters, view.page, view.pages);
@@ -72,6 +76,16 @@ export default async function ListingStatePage({ params }: Props) {
         presentation={decoded.presentation}
       />
     );
+  }
+  if (decoded.kind === "land") {
+    const listing = await LandingListing({
+      slug: decoded.slug,
+      filters: decoded.filters,
+      page: decoded.pagina,
+      presentation: decoded.presentation,
+    });
+    if (!listing) notFound();
+    return listing;
   }
   const listing = await BrandListing({
     slug: decoded.slug,

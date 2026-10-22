@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getProductsByBrand, getProductsByCategory, parseListingSearchParams, searchProducts } from "@/lib/catalog";
 import { parseListingPresentation } from "@/lib/catalog/helpers";
+import { productsForLandingSlug } from "@/lib/catalog/landing-products";
 import { CATEGORY_PAGE_SIZE, PAGE_SIZE, prepareListing } from "@/lib/catalog/listing";
 import { isCategorySlug, parseBasis } from "@/lib/catalog/paths";
 
@@ -22,10 +23,12 @@ export async function GET(request: Request) {
   const all =
     basis.kind === "zoeken"
       ? await searchProducts(query)
-      : basis.kind === "categorie" && isCategorySlug(basis.slug)
-        ? await getProductsByCategory(basis.slug)
-        : await getProductsByBrand(basis.slug);
-  const pageSize = basis.kind === "categorie" ? CATEGORY_PAGE_SIZE : PAGE_SIZE;
+      : basis.kind === "land"
+        ? await productsForLandingSlug(basis.slug)
+        : basis.kind === "categorie" && isCategorySlug(basis.slug)
+          ? await getProductsByCategory(basis.slug)
+          : await getProductsByBrand(basis.slug);
+  const pageSize = basis.kind === "categorie" || basis.kind === "land" ? CATEGORY_PAGE_SIZE : PAGE_SIZE;
   const view = prepareListing(all, filters, Number.isFinite(pagina) ? pagina : 1, pageSize, presentation.sort);
 
   return NextResponse.json(

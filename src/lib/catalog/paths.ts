@@ -1,3 +1,4 @@
+import { isLandingSlug } from "@/data/seo/landings";
 import { categorySlugs, type CategorySlug } from "@/lib/catalog/types";
 
 const CATEGORY_PATHS = new Set(categorySlugs.map((slug) => `/${slug}`));
@@ -34,12 +35,15 @@ export function listingRewriteTarget(pathname: string, search: URLSearchParams) 
   if (CATEGORY_PATHS.has(pathname)) {
     return encodeListingPath("categorie", pathname.slice(1), search);
   }
+  if (isLandingSlug(pathname.slice(1))) {
+    return encodeListingPath("land", pathname.slice(1), search);
+  }
   const brand = pathname.match(/^\/merken\/([^/]+)$/);
   if (!brand) return null;
   return encodeListingPath("merk", decodeURIComponent(brand[1]), search);
 }
 
-export function encodeListingPath(kind: "categorie" | "merk", slug: string, search: URLSearchParams) {
+export function encodeListingPath(kind: "categorie" | "merk" | "land", slug: string, search: URLSearchParams) {
   const pagina = search.get("pagina");
   const page = pagina && /^[1-9]\d*$/.test(pagina) ? pagina : "1";
   const parts = ["weergave", kind, slug, "p", page];
@@ -52,7 +56,8 @@ export function encodeListingPath(kind: "categorie" | "merk", slug: string, sear
 }
 
 export function decodeListingState(kind: string, slug: string, state: string[]) {
-  if ((kind !== "categorie" && kind !== "merk") || !slug) return null;
+  if ((kind !== "categorie" && kind !== "merk" && kind !== "land") || !slug) return null;
+  if (kind === "land" && !isLandingSlug(slug)) return null;
   if (state[0] !== "p" || !/^[1-9]\d*$/.test(state[1] ?? "")) return null;
   const search = new URLSearchParams();
   const pagina = Number(state[1]);
@@ -66,17 +71,18 @@ export function decodeListingState(kind: string, slug: string, state: string[]) 
     search.set(key, value);
   }
   return {
-    kind: kind as "categorie" | "merk",
+    kind: kind as "categorie" | "merk" | "land",
     slug,
     pagina,
     search,
   };
 }
 
-export function parseBasis(basis: string): { kind: "categorie" | "merk" | "zoeken"; slug: string } | null {
+export function parseBasis(basis: string): { kind: "categorie" | "merk" | "zoeken" | "land"; slug: string } | null {
   const path = basis.split("?")[0] || "";
   if (path === "/zoeken") return { kind: "zoeken", slug: "" };
   const category = path.replace(/^\//, "");
+  if (isLandingSlug(category) && path === `/${category}`) return { kind: "land", slug: category };
   if ((categorySlugs as readonly string[]).includes(category) && path === `/${category}`) {
     return { kind: "categorie", slug: category };
   }

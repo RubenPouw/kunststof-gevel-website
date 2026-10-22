@@ -53,7 +53,7 @@ export function fallbackTarget(path: string) {
     if (slug.includes("dakrand") || slug.includes("boei")) {
       return brand ? `/dakranden?merk=${brand}` : "/dakranden";
     }
-    if (slug.includes("vensterbank")) return "/kozijnafwerking";
+    if (slug.includes("vensterbank")) return "/kunststof-vensterbank";
     if (slug.includes("plafond")) return "/merken/florence";
     if (brand) return `/merken/${brand}`;
     return "/gevelbekleding";
@@ -64,7 +64,8 @@ export function fallbackTarget(path: string) {
     if (path.includes("dakrand") || path.includes("boei")) {
       return brand ? `/dakranden?merk=${brand}` : "/dakranden";
     }
-    if (path.includes("vensterbank") || path.includes("plaatmateriaal")) return "/kozijnafwerking";
+    if (path.includes("plaatmateriaal")) return "/kozijnafwerking";
+    if (path.includes("vensterbank")) return "/kunststof-vensterbank";
     if (path.includes("plafond") || path.includes("overstek")) return "/merken/florence";
     if (path.includes("montage")) return brand ? `/montage?merk=${brand}` : "/montage";
     if (brand) return `/merken/${brand}`;

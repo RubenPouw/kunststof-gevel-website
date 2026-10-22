@@ -19,7 +19,7 @@ test("every crawled URL is a one-hop redirect or the same canonical URL", () => 
     if (destination !== row.from && targets.has(destination)) {
       assert.equal(targets.get(destination), destination, `chain via ${row.from}`);
     }
-    if (destination === "/" ) assert.equal(row.from, "/");
+    if (destination === "/") assert.ok(row.from === "/" || row.from === "/kunststof-gevelbekleding", row.from);
   }
 });
 

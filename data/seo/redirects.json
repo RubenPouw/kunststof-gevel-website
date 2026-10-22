@@ -169,9 +169,9 @@
   },
   {
     "from": "/kunststof-vensterbank",
-    "to": "/kozijnafwerking",
-    "status": "301",
-    "reason": "category"
+    "to": "/kunststof-vensterbank",
+    "status": "200",
+    "reason": "ranking-page"
   },
   {
     "from": "/kunststof-vensterbank-binnen-condens-afwerking",
@@ -307,9 +307,9 @@
   },
   {
     "from": "/product-categorie/kozijn-afwerking-vensterbanken/kunststof-vensterbank",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "category"
+    "reason": "ranking-page"
   },
   {
     "from": "/product-categorie/kozijn-afwerking-vensterbanken/montage-materiaal-plaatwerk",
@@ -397,15 +397,15 @@
   },
   {
     "from": "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding",
-    "to": "/merken/keralit",
+    "to": "/keralit-gevelbekleding",
     "status": "301",
-    "reason": "category"
+    "reason": "ranking-page"
   },
   {
     "from": "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding/keralit-panelen",
-    "to": "/merken/keralit",
+    "to": "/keralit-gevelbekleding",
     "status": "301",
-    "reason": "category"
+    "reason": "ranking-page"
   },
   {
     "from": "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding/montage-materialen-keralit",
@@ -463,9 +463,9 @@
   },
   {
     "from": "/product-categorie/kunststof-gevelbekleding/zierer-steenstrips",
-    "to": "/merken/zierer",
+    "to": "/zierer-steenstrips",
     "status": "301",
-    "reason": "category"
+    "reason": "ranking-page"
   },
   {
     "from": "/product-sitemap.xml",
@@ -487,15 +487,15 @@
   },
   {
     "from": "/product/bevestigingsschroeven-3-x-40-mm",
-    "to": "/gevelbekleding",
+    "to": "/zierer-steenstrips",
     "status": "301",
-    "reason": "category-family"
+    "reason": "steenstrip-family"
   },
   {
     "from": "/product/bevestigingsschroeven-35-x-30-mm",
-    "to": "/gevelbekleding",
+    "to": "/montage",
     "status": "301",
-    "reason": "category-family"
+    "reason": "montage-family"
   },
   {
     "from": "/product/buitenhoek-300-mm",
@@ -511,9 +511,9 @@
   },
   {
     "from": "/product/eindkap-400-mm-overzet-vensterbank",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "vensterbank-family"
+    "reason": "vensterbank-page"
   },
   {
     "from": "/product/eindkap-inwendig-hoekprofiel-uitwendig-hoekprofiel-smal",
@@ -523,15 +523,15 @@
   },
   {
     "from": "/product/eindkap-steenlook-vensterbank-500-mm",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "vensterbank-family"
+    "reason": "vensterbank-page"
   },
   {
     "from": "/product/eindkap-vensterbank-type-b",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "vensterbank-family"
+    "reason": "vensterbank-page"
   },
   {
     "from": "/product/eindprofiel-19-mm-inwendig-5m1-per-lengte",
@@ -1087,15 +1087,15 @@
   },
   {
     "from": "/product/milinboard-steenlook-vensterbank",
-    "to": "/kozijnafwerking?merk=milinboard",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "vensterbank-family"
+    "reason": "vensterbank-page"
   },
   {
     "from": "/product/milinboard-vensterbank-type-b",
-    "to": "/kozijnafwerking?merk=milinboard",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "vensterbank-family"
+    "reason": "vensterbank-page"
   },
   {
     "from": "/product/milyt-hpl-plaat",
@@ -1111,15 +1111,15 @@
   },
   {
     "from": "/product/novaboard-eindkap",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "vensterbank-family"
+    "reason": "vensterbank-page"
   },
   {
     "from": "/product/novaboard-kunststof-vensterbank",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
-    "reason": "vensterbank-family"
+    "reason": "vensterbank-page"
   },
   {
     "from": "/product/ongelijkzijdig-u-profiel-10-mm-omrandingsprofiel",
@@ -1213,9 +1213,9 @@
   },
   {
     "from": "/product/torx-schroeven-in-ral-kleur",
-    "to": "/gevelbekleding",
+    "to": "/montage",
     "status": "301",
-    "reason": "category-family"
+    "reason": "montage-family"
   },
   {
     "from": "/product/trim-kraal-vent-keralit-dakrand-600-cm",
@@ -1405,25 +1405,25 @@
   },
   {
     "from": "/product/zierer-hoekstuk-50-x-50-x-345-mm-grof",
-    "to": "/merken/zierer",
+    "to": "/zierer-steenstrips",
     "status": "301",
     "reason": "steenstrip-family"
   },
   {
     "from": "/product/zierer-hoekstuk-50-x-50-x-345-mm-wildverband",
-    "to": "/merken/zierer",
+    "to": "/zierer-steenstrips",
     "status": "301",
     "reason": "steenstrip-family"
   },
   {
     "from": "/product/zierer-leisteen",
-    "to": "/merken/zierer",
+    "to": "/zierer-steenstrips",
     "status": "301",
     "reason": "steenstrip-family"
   },
   {
     "from": "/product/zierer-startprofiel-51-x-14-x-1-mm",
-    "to": "/merken/zierer",
+    "to": "/zierer-steenstrips",
     "status": "301",
     "reason": "steenstrip-family"
   },
@@ -1441,13 +1441,13 @@
   },
   {
     "from": "/product/zierer-ventilatie-afsluitprofiel-65-x-17-mm",
-    "to": "/merken/zierer",
+    "to": "/zierer-steenstrips",
     "status": "301",
     "reason": "steenstrip-family"
   },
   {
     "from": "/product/zierer-ventilatieprofiel-50-25-x-20-mm",
-    "to": "/merken/zierer",
+    "to": "/zierer-steenstrips",
     "status": "301",
     "reason": "steenstrip-family"
   },
@@ -3637,7 +3637,7 @@
   },
   {
     "from": "/wp-content/uploads/2022/08/761-vensterbank-type-B.jpg",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -3715,7 +3715,7 @@
   },
   {
     "from": "/wp-content/uploads/2022/09/755-overzetvensterbank.jpg",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -3739,7 +3739,7 @@
   },
   {
     "from": "/wp-content/uploads/2022/10/752-steenlook-vensterbank.jpg",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -3973,7 +3973,7 @@
   },
   {
     "from": "/wp-content/uploads/2024/01/villa-met-keralit-gevelbekleding-sponningdeel143-vke.webp",
-    "to": "/merken/keralit",
+    "to": "/keralit-gevelbekleding",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4069,7 +4069,7 @@
   },
   {
     "from": "/wp-content/uploads/2024/03/CT25BI5203_530_Novaboard_vensterbanken_IMD.jpeg",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4111,7 +4111,7 @@
   },
   {
     "from": "/wp-content/uploads/2024/03/PR3236BI12712_7225_Novaboard_vensterbank_25cm_SZ5.jpeg",
-    "to": "/kozijnafwerking",
+    "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4726,5 +4726,47 @@
     "to": "/kunststof-kozijnen",
     "status": "301",
     "reason": "kozijnen-hub"
+  },
+  {
+    "from": "/keralit-gevelbekleding",
+    "to": "/keralit-gevelbekleding",
+    "status": "200",
+    "reason": "ranking-page"
+  },
+  {
+    "from": "/zierer-steenstrips",
+    "to": "/zierer-steenstrips",
+    "status": "200",
+    "reason": "ranking-page"
+  },
+  {
+    "from": "/kunststof-gevelbekleding",
+    "to": "/",
+    "status": "301",
+    "reason": "homepage-owns-the-term"
+  },
+  {
+    "from": "/vinyplus-gevelbekleding",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "brand"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen",
+    "to": "/dakranden",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kozijn-afwerking-vensterbanken",
+    "to": "/kunststof-vensterbank",
+    "status": "301",
+    "reason": "vensterbank-page"
   }
 ]
