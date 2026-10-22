@@ -24,7 +24,11 @@
  * - ventilatierooster: per stuk, uit een eerder meetpunt rond 1000 mm (piece)
  * - krukkleur en afsluitbare kruk: per vleugel (sash). Wit is 0
  * - crème in de massa en antraciet: per m omtrek van het kozijn (frame_m)
- * - RAL naar keuze: geen prijs. Er is geen lakprijs, alleen folie. Blijft op aanvraag
+ * - RAL naar keuze: één zijde, 70.44 op de referentiemaat. Dat is ongeveer
+ *   27,6 procent van het witte raam. De schaal is voorlopig een percentage
+ *   van de inkoopbasis, zodat dit meetpunt exact 70.44 blijft. Onder 5 stuks
+ *   bicolor hoort hier nog een onbekende toeslag bij. De klant ziet geen
+ *   bedrag. De regel blijft op aanvraag en telt alleen in de interne offerte.
  *
  * Het glasoppervlak is de opening binnen het kadervooraanzicht van 64 mm, per vak.
  * De sponning van de vleugel en een tussenstijl zijn nog niet gemeten.
@@ -70,6 +74,11 @@ export type PriceSlot = {
    * Ontbreekt dit, dan geldt priceBook.marginPercent.
    */
   marginPercent?: number;
+  /**
+   * Het bedrag blijft in de interne offerte en gaat niet naar de klant.
+   * De publieke prijs blijft dan uit, ook als de prijsvlag aan staat.
+   */
+  withheld?: boolean;
 };
 
 export type FrameCurve = {
@@ -111,7 +120,7 @@ function slot(
   label: string,
   mode: PriceMode,
   amount: number | null,
-  options?: { marginPercent?: number },
+  options?: { marginPercent?: number; withheld?: boolean },
 ): PriceSlot {
   return {
     id,
@@ -119,8 +128,12 @@ function slot(
     mode,
     amount,
     ...(options?.marginPercent == null ? {} : { marginPercent: options.marginPercent }),
+    ...(options?.withheld ? { withheld: true } : {}),
   };
 }
+
+/** Gemeten netto meerprijs van RAL naar keuze, één zijde, op de referentiemaat. */
+const RAL_ONE_SIDE_NET = 70.44;
 
 /** De maat waarop de optiebedragen hieronder gemeten zijn. */
 const OPTION_REFERENCE: PriceInput = {
@@ -161,7 +174,7 @@ export const priceBook: PriceBook = {
     slot("kleur.antraciet.beide", "Antraciet twee zijden", "frame_m", 77.97),
     slot("kleur.ontbreekt", "Kleur op aanvraag", "fixed", null),
     slot("kleur.vleugel", "Afwijkende vleugelkleur", "fixed", null),
-    slot("kleur.ral", "RAL naar keuze", "fixed", null),
+    slot("kleur.ral", "RAL naar keuze", "percent", (RAL_ONE_SIDE_NET / rectNet(TURN_TILT, 1000, 1200)) * 100, { withheld: true }),
     slot("ventilatie.rooster", "Ventilatierooster", "piece", 211, { marginPercent: 50 }),
     slot("ventilatie.duco", "Duco-klep", "width_m", 188.81, { marginPercent: 50 }),
     slot("afstandhouder.zwart", "Zwarte afstandhouder", "glass_m", 6.04),
@@ -211,9 +224,19 @@ export function publicPrice(result: PriceResult) {
  * Percentages rekenen op de inkoop van het element, niet op elkaar.
  * Elke regel krijgt daarna zijn eigen opslag. De basis gebruikt de standaard.
  * Ontbreekt één gebruikt bedrag, of heeft het type geen formule, dan is er geen prijs.
+ * Een ingehouden optie houdt de publieke prijs tegen.
  */
 export function calculatePrice(input: PriceInput, book: PriceBook, active: boolean): PriceResult {
   if (!active) return { pricesActive: false };
+  return priced(input, book, false);
+}
+
+/** Verkoop voor de interne offerte. Een ingehouden optie telt hier wel mee. */
+export function internalPrice(input: PriceInput, book: PriceBook = priceBook): PriceResult {
+  return priced(input, book, true);
+}
+
+function priced(input: PriceInput, book: PriceBook, includeWithheld: boolean): PriceResult {
   const purchase = unitPurchase(input, book);
   if (purchase == null) return { pricesActive: false };
   const lines: PriceLine[] = [{ id: "basis", label: "Basis", amountExcl: round2(purchase * factorFor(book.marginPercent)) }];
@@ -221,6 +244,7 @@ export function calculatePrice(input: PriceInput, book: PriceBook, active: boole
   for (const id of input.optionIds) {
     const option = book.options.find((item) => item.id === id);
     if (!option || option.amount == null) return { pricesActive: false };
+    if (option.withheld && !includeWithheld) return { pricesActive: false };
     const extra = extraPurchase(option, input, purchase);
     if (extra == null) return { pricesActive: false };
     const selling = extra * factorFor(option.marginPercent ?? book.marginPercent);

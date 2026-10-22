@@ -3,7 +3,8 @@ import { syncActiveCampaignContact } from "@/lib/activecampaign";
 import { site } from "@/lib/site";
 
 import { getLayoutBySlug, layoutPath } from "./layouts";
-import type { KozijnConfig } from "./model";
+import { panesFor, type KozijnConfig } from "./model";
+import { internalPrice, optionIdsFor, priceBook } from "./prices";
 import { summaryText } from "./text";
 
 export type QuoteContact = {
@@ -39,6 +40,46 @@ export function quoteReference() {
   return `KZ-${Date.now().toString(36).toUpperCase()}`;
 }
 
+function euro(value: number) {
+  return `€ ${value.toFixed(2).replace(".", ",")}`;
+}
+
+/** Interne regel voor de winkelmail. De klantmail krijgt dit niet. */
+export function shopPriceNote(config: KozijnConfig) {
+  const sides = [config.frameOut, config.frameIn, config.sashOut, config.sashIn].filter((id) => id === "ral").length;
+  if (sides === 0) return "";
+  const layout = getLayoutBySlug(config.layout);
+  const caveat = [
+    "Dit bedrag gaat niet naar de klant. RAL naar keuze blijft op aanvraag.",
+    "De opgeslagen regel is één zijde.",
+    sides > 1 ? "Meer dan één zijde RAL is niet apart gemeten." : "",
+    "Onder 5 stuks bicolor hoort hier nog een toeslag bij. Die toeslag is nog niet bekend.",
+  ].filter((line) => line !== "");
+  if (!layout) return caveat.join("\n");
+  const hasSash = panesFor(layout, config).some((pane) => pane.kind !== "vast");
+  const result = internalPrice(
+    {
+      layout: layout.slug,
+      widthMm: config.width,
+      heightMm: config.height,
+      panes: layout.panes,
+      optionIds: optionIdsFor({ ...config, hasSash }),
+    },
+    priceBook,
+  );
+  if (!result.pricesActive) {
+    return ["De interne berekening is nog niet compleet, omdat een andere optie geen bedrag heeft.", ...caveat].join("\n");
+  }
+  const ral = result.lines.find((line) => line.id === "kleur.ral");
+  return [
+    ral ? `Interne regel RAL naar keuze: ${euro(ral.amountExcl)} excl. btw.` : "",
+    `Intern totaal: ${euro(result.totalExcl)} excl. btw.`,
+    ...caveat,
+  ]
+    .filter((line) => line !== "")
+    .join("\n");
+}
+
 export async function deliverKozijnQuote(config: KozijnConfig, contact: QuoteContact, path: string) {
   return deliverKozijnQuotes([{ config, path }], contact);
 }
@@ -58,6 +99,15 @@ export async function deliverKozijnQuotes(
       return [`Kozijn ${index + 1}: ${title}`, summaryText(entry.config), `${site.origin}${entry.path}`].join("\n");
     })
     .join("\n\n");
+  const shopSpec = entries
+    .map((entry, index) => {
+      const title = getLayoutBySlug(entry.config.layout)?.title ?? entry.config.layout;
+      const note = shopPriceNote(entry.config);
+      return [`Kozijn ${index + 1}: ${title}`, summaryText(entry.config), note, `${site.origin}${entry.path}`]
+        .filter((line) => line !== "")
+        .join("\n");
+    })
+    .join("\n\n");
   const link = entries.map((entry) => `${site.origin}${entry.path}`).join("\n");
   const shop = [
     `Kozijnaanvraag ${ref}`,
@@ -65,9 +115,9 @@ export async function deliverKozijnQuotes(
     contact.note ? `Opmerking: ${contact.note}` : "",
     link,
     "",
-    spec,
+    shopSpec,
     "",
-    "Geen prijs in deze aanvraag. Inkoopbedragen zijn nog niet ingevuld.",
+    "Geen prijs naar de klant. Inkoopbedragen staan niet in deze mail.",
   ]
     .filter((line) => line !== "")
     .join("\n");
