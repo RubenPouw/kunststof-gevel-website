@@ -22,10 +22,6 @@ const SPACER: Record<string, string> = {
   standaard: "standaard, alu of grijs",
   zwart: "zwart, warm edge",
 };
-const BARS: Record<string, string> = {
-  geen: "zonder roede",
-  met: "met roede, contact per mail",
-};
 const HANDLE_COLOR: Record<string, string> = {
   wit: "wit",
   aluminium: "aluminium (F9)",
@@ -79,7 +75,6 @@ export function summaryLines(config: KozijnConfig): SummaryLine[] {
     { label: "Gelaagd", value: laminated },
     { label: "Onderkant glas", value: low },
     { label: "Afstandhouder", value: SPACER[config.spacer] },
-    { label: "Roeden", value: BARS[config.bars] },
     { label: "Ventilatie", value: VENT[config.vent] },
     { label: "Aanslag", value: REBATE[config.rebate] },
     { label: "Onderdorpel", value: SILL[config.sill] },

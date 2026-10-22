@@ -21,7 +21,6 @@ export type Filling = "paneel" | "half" | "glas";
 export type Vent = "geen" | "rooster" | "duco";
 export type Spacer = "standaard" | "zwart";
 export type HandleColor = "wit" | "aluminium" | "zwart";
-export type Bars = "geen" | "met";
 export type Sill = "doorlopend" | "laag";
 export type Rebate = "stomp" | "aanslag";
 export type Hardware = "basis" | "zwaar";
@@ -69,7 +68,7 @@ export const STEPS: { id: StepId; label: string; article: string; hint: string }
     id: "glas",
     label: "Glas",
     article: "glas",
-    hint: "Laag glas zetten we standaard gelaagd. Daaronder de afstandhouder en de roeden.",
+    hint: "Laag glas zetten we standaard gelaagd. Daaronder de afstandhouder.",
   },
   {
     id: "ventilatie",
@@ -121,7 +120,6 @@ export type KozijnConfig = {
   laminatedTouched: boolean;
   vent: Vent;
   spacer: Spacer;
-  bars: Bars;
   ralCode: string;
   sill: Sill;
   rebate: Rebate;
@@ -139,7 +137,6 @@ const FILLINGS = new Set<Filling>(["paneel", "half", "glas"]);
 const VENTS = new Set<Vent>(["geen", "rooster", "duco"]);
 const SPACERS = new Set<Spacer>(["standaard", "zwart"]);
 const HANDLE_COLORS = new Set<HandleColor>(["wit", "aluminium", "zwart"]);
-const BARS = new Set<Bars>(["geen", "met"]);
 const SILLS = new Set<Sill>(["doorlopend", "laag"]);
 const REBATES = new Set<Rebate>(["stomp", "aanslag"]);
 const HARDWARE = new Set<Hardware>(["basis", "zwaar"]);
@@ -200,7 +197,6 @@ export function defaultConfig(layout: Layout): KozijnConfig {
     laminatedTouched: false,
     vent: "geen",
     spacer: "standaard",
-    bars: "geen",
     ralCode: "",
     sill: layout.group === "ramen" ? "doorlopend" : "laag",
     rebate: "stomp",
@@ -233,6 +229,7 @@ export function applyLaminatedDefault(config: KozijnConfig, layout: Layout): Koz
   return { ...config, laminated: defaultLaminated(layout, config.lowGlass) };
 }
 
+/** Oude deellinks met `roede` worden genegeerd. Roeden zitten niet meer in de samenstelling. */
 export function parseConfig(params: URLSearchParams, layout: Layout): KozijnConfig {
   const base = defaultConfig(layout);
   const laminatedTouched = params.get("gelvast") === "1";
@@ -254,7 +251,6 @@ export function parseConfig(params: URLSearchParams, layout: Layout): KozijnConf
     laminatedTouched,
     vent: oneOf(params.get("vent"), VENTS, base.vent),
     spacer: oneOf(params.get("afstand"), SPACERS, base.spacer),
-    bars: oneOf(params.get("roede"), BARS, base.bars),
     ralCode: ralCodeOf(params.get("ralcode")),
     sill: oneOf(params.get("dorpel"), SILLS, base.sill),
     rebate: oneOf(params.get("aanslag"), REBATES, base.rebate),
@@ -293,7 +289,6 @@ export function serializeConfig(config: KozijnConfig) {
   if (config.laminatedTouched) params.set("gelvast", "1");
   params.set("vent", config.vent);
   params.set("afstand", config.spacer);
-  params.set("roede", config.bars);
   if (config.ralCode) params.set("ralcode", config.ralCode);
   params.set("dorpel", config.sill);
   params.set("aanslag", config.rebate);

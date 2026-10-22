@@ -134,7 +134,7 @@ test("the working drawing follows size, hinge side and opening", () => {
 
   const withVent = workingDrawingSvg(turn, { ...defaultConfig(turn), vent: "rooster" });
   assert.match(withVent, /data-vent="rooster"/);
-  const withDuco = workingDrawingSvg(turn, { ...defaultConfig(turn), vent: "duco", bars: "met" });
+  const withDuco = workingDrawingSvg(turn, { ...defaultConfig(turn), vent: "duco" });
   assert.equal(withDuco.includes('data-vent="rooster"'), false);
   assert.notEqual(withVent, mitre);
 
@@ -165,7 +165,6 @@ test("detail cards use only matching Fillout photos", () => {
     "kruk-wit",
     "kruk-alu",
     "kruk-zwart",
-    "roeden",
     "ral",
     "stomp",
     "aanslag",

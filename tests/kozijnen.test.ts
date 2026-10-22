@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { createKozijnDraftOrder } from "../src/lib/kozijnen/checkout.ts";
 import { PROFILE, SIZE_LIMITS, SLIDING_NAME, publicProfileName } from "../src/lib/kozijnen/config.ts";
 import { getLayoutBySlug } from "../src/lib/kozijnen/layouts.ts";
-import { defaultConfig, defaultLaminated, parseConfig, resumeVisible, serializeConfig, sizeInRange } from "../src/lib/kozijnen/model.ts";
+import { configFromUnknown, defaultConfig, defaultLaminated, parseConfig, resumeVisible, serializeConfig, sizeInRange } from "../src/lib/kozijnen/model.ts";
 import { buildPdf, quotePdfLines } from "../src/lib/kozijnen/pdf.ts";
 import { calculatePrice, optionIdsFor, optionNet, priceBook, pricesFlagActive, publicPrice, type PriceBook, type PriceInput } from "../src/lib/kozijnen/prices.ts";
 import { CLAIMS, SUPPLIER } from "../src/lib/kozijnen/supplier.ts";
@@ -103,7 +103,7 @@ test("selling price is purchase times the markup and the flag stays off", () => 
   assert.equal(priceBook.options.find((option) => option.id === "ventilatie.duco")?.marginPercent, 50);
   assert.equal(priceBook.options.find((option) => option.id === "ventilatie.duco")?.amount, 188.81);
   assert.equal(priceBook.options.find((option) => option.id === "kleur.ral")?.amount, null);
-  assert.equal(priceBook.options.find((option) => option.id === "roeden.met")?.quoteOnly, true);
+  assert.equal(priceBook.options.some((option) => option.id === "roeden.met"), false);
   const quiet = calculatePrice(plain("draaikiepraam", 1000, 1200, [{ kind: "draaikiep", flex: 1 }]), priceBook, false);
   assert.deepEqual(quiet, { pricesActive: false });
   const quoteOnly = calculatePrice(plain("schuifpui-4-delig", 4000, 2100, []), priceBook, true);
@@ -172,20 +172,20 @@ test("selling price is purchase times the markup and the flag stays off", () => 
   assert.equal(priced.lines.some((line) => line.id === "marge"), false);
 });
 
-test("new Fillout options stay out of the price until a purchase amount exists", () => {
+test("RAL keeps the window a quote while the other Fillout options round-trip", () => {
   const layout = getLayoutBySlug("draaikiepraam");
   assert.ok(layout);
   const config = defaultConfig(layout);
   config.vent = "duco";
   config.spacer = "zwart";
-  config.bars = "met";
   config.handleColor = "zwart";
   config.frameOut = "ral";
   config.ralCode = "RAL 7016";
   const ids = optionIdsFor({ ...config, hasSash: true });
-  for (const id of ["ventilatie.duco", "afstandhouder.zwart", "roeden.met", "kruk.zwart", "kleur.ral"]) {
+  for (const id of ["ventilatie.duco", "afstandhouder.zwart", "kruk.zwart", "kleur.ral"]) {
     assert.equal(ids.includes(id), true, id);
   }
+  assert.equal(ids.includes("roeden.met"), false);
   assert.equal(ids.includes("ventilatie.rooster"), false);
   assert.equal(ids.includes("kleur.antraciet.buiten"), false);
   const priced = calculatePrice(
@@ -203,15 +203,39 @@ test("new Fillout options stay out of the price until a purchase amount exists",
   const text = summaryText(config);
   assert.match(text, /Duco-klep/);
   assert.match(text, /zwart, warm edge/);
-  assert.match(text, /met roede, contact per mail/);
+  assert.equal(/roede/i.test(text), false);
   assert.match(text, /RAL naar keuze, op aanvraag \(RAL 7016\)/);
   assert.equal(text.includes("€"), false);
   const again = parseConfig(new URLSearchParams(serializeConfig(config)), layout);
   assert.equal(again.vent, "duco");
   assert.equal(again.spacer, "zwart");
-  assert.equal(again.bars, "met");
   assert.equal(again.handleColor, "zwart");
   assert.equal(again.ralCode, "RAL 7016");
+  assert.equal(serializeConfig(again).includes("roede"), false);
+});
+
+test("an old share link with roede still opens and drops the parameter", () => {
+  const layout = getLayoutBySlug("draaikiepraam");
+  assert.ok(layout);
+  const parsed = parseConfig(new URLSearchParams("b=1000&h=1200&roede=met&afstand=zwart"), layout);
+  assert.equal(parsed.width, 1000);
+  assert.equal(parsed.height, 1200);
+  assert.equal(parsed.spacer, "zwart");
+  assert.equal(/roede/i.test(summaryText(parsed)), false);
+  assert.equal(serializeConfig(parsed).includes("roede"), false);
+  const stored = configFromUnknown({
+    layout: "draaikiepraam",
+    width: 1000,
+    height: 1200,
+    afstand: "zwart",
+    roede: "met",
+    bars: "met",
+  });
+  assert.ok(stored);
+  assert.equal(stored.width, 1000);
+  assert.equal(stored.spacer, "zwart");
+  assert.equal(/roede/i.test(summaryText(stored)), false);
+  assert.equal(serializeConfig(stored).includes("roede"), false);
 });
 
 test("reference option surcharges sell at the measured extra times the markup", () => {
@@ -243,9 +267,6 @@ test("reference option surcharges sell at the measured extra times the markup", 
     assert.equal(JSON.stringify(shown).includes(String(row.net)), false, row.id);
   }
 
-  assert.equal(optionNet("roeden.met", ref), 71.58);
-  const bars = calculatePrice({ ...ref, optionIds: ["roeden.met"] }, priceBook, true);
-  assert.equal(bars.pricesActive, false);
   const ral = calculatePrice({ ...ref, optionIds: ["kleur.ral"] }, priceBook, true);
   assert.equal(ral.pricesActive, false);
   const plainWindow = calculatePrice(ref, priceBook, true);
@@ -260,7 +281,6 @@ test("reference option surcharges sell at the measured extra times the markup", 
   assert.equal(optionNet("ventilatie.rooster", wide), 211);
   assert.equal(optionNet("hoek.hvl", two), 49.04 * 2);
   assert.equal(optionNet("kruk.aluminium", two), 0.51 * 2);
-  assert.equal(optionNet("roeden.met", two), 71.58 * 2);
   assert.equal(
     optionNet("kleur.antraciet.buiten", wide),
     43.02 * ((2 * (2000 + 1200)) / (2 * (1000 + 1200))),
@@ -365,7 +385,7 @@ test("kozijn pages do not ship review markup, the price module, or hidden suppli
     assert.equal(source.includes("Kömmerling"), false, file);
   }
 
-  const banned = /\bEKO\b|eko4u|eko-nl|\bRC2\b|\bPKVW\b|\bKOMO\b|\bSKG\b|hefschuif|brievenbus|bovenlicht|\bvoordeur\b|Politiekeurmerk|1,80|marginPercent|V-Super|\bHFL\b|75\.67|22\.97|66\.27|38\.54|14\.52|67\.64|139\.81|111\.61|967\.83|283\.77|43\.02|34\.31|50\.78|61\.49|211\.01|19\.37|6\.04|49\.04|188\.81|71\.58|22\.56|53\.95|77\.97|4\.24|0\.51/i;
+  const banned = /\bEKO\b|eko4u|eko-nl|\bRC2\b|\bPKVW\b|\bKOMO\b|\bSKG\b|hefschuif|brievenbus|bovenlicht|\bvoordeur\b|Politiekeurmerk|1,80|marginPercent|V-Super|\bHFL\b|75\.67|22\.97|66\.27|38\.54|14\.52|67\.64|139\.81|111\.61|967\.83|283\.77|43\.02|34\.31|50\.78|61\.49|211\.01|19\.37|6\.04|49\.04|188\.81|22\.56|53\.95|77\.97|4\.24|0\.51/i;
   const roots = ["../src/components/kozijnen", "../src/app/kunststof-kozijnen", "../src/lib/kozijnen"];
   const skip = new Set(["supplier.ts", "prices.ts", "checkout.ts"]);
   for (const root of roots) {

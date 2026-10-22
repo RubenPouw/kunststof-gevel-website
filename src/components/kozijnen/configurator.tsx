@@ -610,25 +610,6 @@ function GlassStep({ config, onChange }: { config: KozijnConfig; onChange: (part
           />
         </div>
       </fieldset>
-      <fieldset>
-        <legend className="text-[14px] font-medium">Roeden</legend>
-        <div className="mt-2 grid gap-3 sm:grid-cols-2">
-          <button
-            type="button"
-            aria-pressed={config.bars === "geen"}
-            onClick={() => onChange({ bars: "geen" })}
-            className={cn("border px-3 py-4 text-left text-[14px]", config.bars === "geen" ? "border-kg-navy bg-white" : "border-kg-lijn")}
-          >
-            Zonder roede
-          </button>
-          <DetailPhotoCard
-            photo={DETAIL_PHOTOS.roeden}
-            active={config.bars === "met"}
-            onPick={() => onChange({ bars: "met" })}
-          />
-        </div>
-        <p className="mt-2 text-[14px] text-kg-text-2">Met roede bevestigen we de indeling per mail.</p>
-      </fieldset>
       <ChoiceStep
         label="Onderkant van het glas"
         value={config.lowGlass}

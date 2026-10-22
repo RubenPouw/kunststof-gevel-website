@@ -23,7 +23,6 @@
  * - Duco-klep: per m breedte (width_m)
  * - ventilatierooster: per stuk, uit een eerder meetpunt rond 1000 mm (piece)
  * - krukkleur en afsluitbare kruk: per vleugel (sash). Wit is 0
- * - roeden: per vak, opgeslagen, niet in de verkoopprijs zolang de verdeling onbekend is
  * - crème in de massa en antraciet: per m omtrek van het kozijn (frame_m)
  * - RAL naar keuze: geen prijs. Er is geen lakprijs, alleen folie. Blijft op aanvraag
  *
@@ -71,8 +70,6 @@ export type PriceSlot = {
    * Ontbreekt dit, dan geldt priceBook.marginPercent.
    */
   marginPercent?: number;
-  /** Bedrag staat in het boek, maar de optie blijft een offerte. */
-  quoteOnly?: boolean;
 };
 
 export type FrameCurve = {
@@ -114,7 +111,7 @@ function slot(
   label: string,
   mode: PriceMode,
   amount: number | null,
-  options?: { marginPercent?: number; quoteOnly?: boolean },
+  options?: { marginPercent?: number },
 ): PriceSlot {
   return {
     id,
@@ -122,7 +119,6 @@ function slot(
     mode,
     amount,
     ...(options?.marginPercent == null ? {} : { marginPercent: options.marginPercent }),
-    ...(options?.quoteOnly ? { quoteOnly: true } : {}),
   };
 }
 
@@ -169,7 +165,6 @@ export const priceBook: PriceBook = {
     slot("ventilatie.rooster", "Ventilatierooster", "piece", 211, { marginPercent: 50 }),
     slot("ventilatie.duco", "Duco-klep", "width_m", 188.81, { marginPercent: 50 }),
     slot("afstandhouder.zwart", "Zwarte afstandhouder", "glass_m", 6.04),
-    slot("roeden.met", "Roeden", "pane", 71.58, { quoteOnly: true }),
     slot("kruk.aluminium", "Kruk aluminium", "sash", 0.51),
     slot("kruk.zwart", "Kruk zwart", "sash", 0.04),
     slot("dorpel.laag", "Lage dorpel", "fixed", null),
@@ -225,7 +220,7 @@ export function calculatePrice(input: PriceInput, book: PriceBook, active: boole
   let total = purchase * factorFor(book.marginPercent);
   for (const id of input.optionIds) {
     const option = book.options.find((item) => item.id === id);
-    if (!option || option.amount == null || option.quoteOnly) return { pricesActive: false };
+    if (!option || option.amount == null) return { pricesActive: false };
     const extra = extraPurchase(option, input, purchase);
     if (extra == null) return { pricesActive: false };
     const selling = extra * factorFor(option.marginPercent ?? book.marginPercent);
@@ -363,7 +358,6 @@ export function optionIdsFor(config: {
   sashIn: string;
   vent: string;
   spacer: string;
-  bars: string;
   sill: string;
   rebate: string;
   hardware: string;
@@ -387,7 +381,6 @@ export function optionIdsFor(config: {
   if (config.vent === "rooster") ids.push("ventilatie.rooster");
   if (config.vent === "duco") ids.push("ventilatie.duco");
   if (config.spacer === "zwart") ids.push("afstandhouder.zwart");
-  if (config.bars === "met") ids.push("roeden.met");
   if (config.sill === "laag") ids.push("dorpel.laag");
   if (config.rebate === "aanslag") ids.push("aanslag");
   if (config.hardware === "zwaar") ids.push("beslag.zwaar");
