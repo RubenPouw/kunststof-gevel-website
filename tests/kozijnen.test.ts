@@ -78,6 +78,11 @@ test("a shared url roundtrips without a price", () => {
 
 test("selling price is purchase times 1.80 and stays hidden without purchase amounts", () => {
   assert.equal(priceBook.marginPercent, 80);
+  assert.equal(priceBook.options.find((option) => option.id === "ventilatie.rooster")?.marginPercent, 50);
+  assert.equal(
+    priceBook.options.filter((option) => option.id !== "ventilatie.rooster").every((option) => option.marginPercent == null),
+    true,
+  );
   assert.equal(productionBookHasNoPrices(), true);
   const quiet = calculatePrice({ layout: "draaikiepraam", areaM2: 1.2, optionIds: ["beslag.zwaar"] }, priceBook, false);
   assert.deepEqual(quiet, { pricesActive: false });
@@ -97,6 +102,27 @@ test("selling price is purchase times 1.80 and stays hidden without purchase amo
   assert.equal(priced.lines.some((line) => line.id === "marge"), false);
   const colour = priced.lines.find((line) => line.id === "kleur.buiten");
   assert.equal(colour?.amountExcl, 72);
+
+  const mixed: PriceBook = {
+    marginPercent: 80,
+    types: { draaikiepraam: { base: 100, perM2: 50 } },
+    options: [
+      { id: "kleur.buiten", label: "Folie buiten", mode: "percent", amount: 20 },
+      { id: "ventilatie.rooster", label: "Ventilatierooster", mode: "fixed", amount: 100, marginPercent: 50 },
+    ],
+  };
+  const withVent = calculatePrice(
+    { layout: "draaikiepraam", areaM2: 2, optionIds: ["kleur.buiten", "ventilatie.rooster"] },
+    mixed,
+    true,
+  );
+  assert.equal(withVent.pricesActive, true);
+  if (!withVent.pricesActive) return;
+  assert.equal(withVent.lines.find((line) => line.id === "basis")?.amountExcl, 360);
+  assert.equal(withVent.lines.find((line) => line.id === "kleur.buiten")?.amountExcl, 72);
+  assert.equal(withVent.lines.find((line) => line.id === "ventilatie.rooster")?.amountExcl, 150);
+  assert.equal(withVent.totalExcl, 582);
+  assert.equal(withVent.totalIncl, 704.22);
 });
 
 test("draft order checkout does not call Shopify while the flags are off", async () => {

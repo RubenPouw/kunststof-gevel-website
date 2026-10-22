@@ -3,8 +3,9 @@
  * Inkoopbedragen zijn null tot de leverancier ze levert. Geen enkel bedrag verzinnen.
  *
  * Inkoop is excl. btw: basis plus toeslagen.
- * Verkoop excl. btw = inkoop × (1 + marginPercent / 100).
- * Bij 80 is dat × 1,80, ook over opties en toeslagen.
+ * Verkoop excl. btw = inkoop × (1 + opslag / 100).
+ * De standaardopslag is priceBook.marginPercent (80, dus × 1,80).
+ * Een optie mag een eigen opslag hebben. Het ventilatierooster is 50, dus × 1,50.
  * Incl. btw = verkoop excl. × 1,21.
  * Percentages van opties rekenen op de inkoopbasis, niet op elkaar.
  */
@@ -17,6 +18,11 @@ export type PriceSlot = {
   mode: PriceMode;
   /** Euro, exclusief btw. null = nog niet gevuld. */
   amount: number | null;
+  /**
+   * Opslag in procenten op de inkoop van deze optie.
+   * Ontbreekt dit, dan geldt priceBook.marginPercent.
+   */
+  marginPercent?: number;
 };
 
 export type TypePrice = {
@@ -28,8 +34,9 @@ export type TypePrice = {
 
 export type PriceBook = {
   /**
-   * Opslag in procenten op de hele inkoop (basis en opties).
+   * Standaardopslag in procenten op de inkoop.
    * 80 betekent verkoop = inkoop × 1,80.
+   * Een optie met een eigen marginPercent gaat daarvoor.
    */
   marginPercent: number;
   types: Record<string, TypePrice>;
@@ -56,11 +63,11 @@ function emptyTypes(): Record<string, TypePrice> {
   return Object.fromEntries(TYPE_IDS.map((id) => [id, { base: null, perM2: null }]));
 }
 
-function slot(id: string, label: string, mode: PriceMode): PriceSlot {
-  return { id, label, mode, amount: null };
+function slot(id: string, label: string, mode: PriceMode, marginPercent?: number): PriceSlot {
+  return { id, label, mode, amount: null, ...(marginPercent == null ? {} : { marginPercent }) };
 }
 
-/** Productieboek. Opslag staat vast. Inkoopbedragen blijven null tot ze gevuld zijn. */
+/** Productieboek. Standaardopslag 80. Het rooster wijkt af. Inkoopbedragen blijven null. */
 export const priceBook: PriceBook = {
   marginPercent: 80,
   types: emptyTypes(),
@@ -72,7 +79,7 @@ export const priceBook: PriceBook = {
     slot("kleur.binnen", "Folie kozijn binnen", "percent"),
     slot("kleur.vleugel-buiten", "Folie vleugel buiten", "percent"),
     slot("kleur.vleugel-binnen", "Folie vleugel binnen", "percent"),
-    slot("ventilatie.rooster", "Ventilatierooster", "fixed"),
+    slot("ventilatie.rooster", "Ventilatierooster", "fixed", 50),
     slot("dorpel.laag", "Lage dorpel", "fixed"),
     slot("aanslag", "Aanslag", "percent"),
     slot("beslag.zwaar", "Zwaarder beslag", "fixed"),
@@ -107,7 +114,8 @@ export function pricesFlagActive(env: NodeJS.ProcessEnv = process.env) {
 
 /**
  * Percentages rekenen op de basis (vast bedrag + m²), niet op elkaar.
- * Vaste bedragen en m²-toeslagen komen daarna. Marge als laatste.
+ * Vaste bedragen en m²-toeslagen komen daarna.
+ * Elke regel krijgt daarna zijn eigen opslag. De basis gebruikt de standaard.
  * Ontbreekt één gebruikt bedrag, dan is er geen prijs.
  */
 export function calculatePrice(input: PriceInput, book: PriceBook, active: boolean): PriceResult {
@@ -119,26 +127,29 @@ export function calculatePrice(input: PriceInput, book: PriceBook, active: boole
   const area = input.areaM2;
   if (!Number.isFinite(area) || area <= 0) return { pricesActive: false };
   const base = type.base + area * type.perM2;
-  const purchase: PriceLine[] = [{ id: "basis", label: "Basis", amountExcl: base }];
-  let extra = 0;
+  const lines: PriceLine[] = [{ id: "basis", label: "Basis", amountExcl: round2(base * factorFor(book.marginPercent)) }];
+  let total = base * factorFor(book.marginPercent);
   for (const id of input.optionIds) {
     const option = book.options.find((item) => item.id === id);
     if (!option) return { pricesActive: false };
     if (option.amount == null) return { pricesActive: false };
-    const amount =
+    const purchase =
       option.mode === "percent" ? (base * option.amount) / 100 : option.mode === "per_m2" ? option.amount * area : option.amount;
-    extra += amount;
-    purchase.push({ id, label: option.label, amountExcl: amount });
+    const selling = purchase * factorFor(option.marginPercent ?? book.marginPercent);
+    total += selling;
+    lines.push({ id, label: option.label, amountExcl: round2(selling) });
   }
-  const factor = 1 + book.marginPercent / 100;
-  const lines = purchase.map((line) => ({ ...line, amountExcl: round2(line.amountExcl * factor) }));
-  const totalExcl = round2((base + extra) * factor);
+  const totalExcl = round2(total);
   return {
     pricesActive: true,
     lines,
     totalExcl,
     totalIncl: round2(totalExcl * VAT),
   };
+}
+
+function factorFor(marginPercent: number) {
+  return 1 + marginPercent / 100;
 }
 
 function round2(value: number) {
