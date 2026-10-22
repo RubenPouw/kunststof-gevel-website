@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
+import { DETAIL_PHOTOS } from "../src/lib/kozijnen/detail-photos.ts";
+import { drawnPanes, frameFaceMm, workingDrawingSvg } from "../src/lib/kozijnen/drawing.ts";
 import { allLayouts, getLayoutBySlug } from "../src/lib/kozijnen/layouts.ts";
 import { defaultConfig } from "../src/lib/kozijnen/model.ts";
 import { hingeOnRight, openingPhrase, opensInward, slideTowardRight } from "../src/lib/kozijnen/opening.ts";
-import { pictureScene, productPictureSvg } from "../src/lib/kozijnen/picture.ts";
 import { summaryText } from "../src/lib/kozijnen/text.ts";
 
 test("opening direction is seen from outside and windows stay inward", () => {
@@ -84,45 +85,80 @@ test("the order text names the vakken, the size and the colours", () => {
   assert.match(door, /schuivend, schuift naar links/);
 });
 
-test("product pictures keep a fixed shape and stay small", () => {
-  let total = 0;
-  for (const layout of allLayouts()) {
-    const config = defaultConfig(layout);
-    const wide = productPictureSvg(layout, config);
-    const narrow = productPictureSvg(layout, { ...config, width: 600, height: 600 });
-    assert.equal(wide, narrow, layout.slug);
-    assert.match(wide, /<svg[^>]*width="\d+"[^>]*height="\d+"/);
-    assert.equal(/EKO|three|webgl/i.test(wide), false, layout.slug);
-    assert.ok(wide.length < 6000, `${layout.slug} ${wide.length}`);
-    total += wide.length;
-    const scene = pictureScene(layout, config);
-    assert.equal(scene.width > 0 && scene.height > 0, true);
-  }
-  assert.ok(total < 40_000, String(total));
+function labels(svg: string) {
+  return [...svg.matchAll(/<text[^>]*>([^<]*)<\/text>/g)].map((match) => match[1]);
+}
 
+test("the working drawing follows size, hinge side and opening", () => {
   const pair = getLayoutBySlug("draaikiepraam-met-vast-raam");
-  const turn = getLayoutBySlug("draairaam");
+  const turn = getLayoutBySlug("draaikiepraam");
   const smart = getLayoutBySlug("schuifpui-2-delig");
   assert.ok(pair && turn && smart);
-  const right = productPictureSvg(pair, defaultConfig(pair));
-  const left = productPictureSvg(pair, { ...defaultConfig(pair), side: "links" });
+
+  const config = defaultConfig(pair);
+  const panes = drawnPanes(pair, config);
+  assert.deepEqual(
+    panes.map((pane) => pane.kind),
+    ["vast", "draaikiep"],
+  );
+  assert.equal(panes[0]?.width, 750);
+  assert.equal(panes[1]?.width, 750);
+  assert.equal(panes[1]?.hingeRight, true);
+  assert.equal(panes.reduce((sum, pane) => sum + pane.width, 0), config.width);
+
+  const right = workingDrawingSvg(pair, config);
+  const left = workingDrawingSvg(pair, { ...config, side: "links" });
   assert.notEqual(right, left);
-  assert.match(productPictureSvg(turn, defaultConfig(turn)), /stroke-dasharray/);
-  assert.match(productPictureSvg(getLayoutBySlug("draaikiepraam")!, defaultConfig(getLayoutBySlug("draaikiepraam")!)), /L .* L /);
-  const mitre = productPictureSvg(turn, defaultConfig(turn));
-  const butt = productPictureSvg(turn, { ...defaultConfig(turn), corner: "hvl" });
-  assert.notEqual(mitre, butt);
-  const white = productPictureSvg(turn, defaultConfig(turn));
-  const dark = productPictureSvg(turn, { ...defaultConfig(turn), frameOut: "7016", sashOut: "7016" });
-  assert.match(dark, /#383E42/i);
-  assert.notEqual(white, dark);
-  const grain = productPictureSvg(turn, { ...defaultConfig(turn), frameOut: "7016-nerf" });
-  assert.match(grain, /<pattern/);
-  const slide = productPictureSvg(smart, defaultConfig(smart));
-  assert.match(slide, /stroke-dasharray/);
-  const withVent = productPictureSvg(turn, { ...defaultConfig(turn), vent: "rooster" });
+  assert.match(right, /width="\d+" height="\d+"/);
+  assert.match(right, /stroke-dasharray/);
+  assert.match(right, /data-apex="rechts"/);
+  assert.match(left, /data-apex="links"/);
+  assert.equal(labels(right).filter((label) => label === "750").length >= 1, true);
+  assert.equal(labels(right).includes("1500"), true);
+  assert.equal(labels(right).includes("1400"), true);
+  assert.equal(labels(right).includes("64"), true);
+  assert.equal(/EKO|three|webgl/i.test(right), false);
+
+  const wider = workingDrawingSvg(pair, { ...config, width: 1800, height: 1600 });
+  assert.notEqual(wider, right);
+  assert.equal(labels(wider).includes("900"), true);
+  assert.equal(labels(wider).includes("1800"), true);
+
+  const mitre = workingDrawingSvg(turn, defaultConfig(turn));
+  const butt = workingDrawingSvg(turn, { ...defaultConfig(turn), corner: "hvl" });
+  assert.match(mitre, /data-hoek="verstek"/);
+  assert.match(butt, /data-hoek="hvl"/);
+  assert.match(mitre, /stroke-dasharray/);
+  const tiltCount = mitre.match(/<path /g)?.length ?? 0;
+  assert.equal(tiltCount >= 2, true);
+
+  const withVent = workingDrawingSvg(turn, { ...defaultConfig(turn), vent: "rooster" });
+  assert.match(withVent, /data-vent="rooster"/);
   assert.notEqual(withVent, mitre);
+
+  const slide = workingDrawingSvg(smart, defaultConfig(smart));
+  assert.match(slide, /data-slide="links"/);
+  assert.equal(labels(slide).includes("64"), false);
+  assert.equal(frameFaceMm(smart.slug), null);
+  assert.equal(frameFaceMm(turn.slug), 64);
+  const slideLeft = workingDrawingSvg(smart, { ...defaultConfig(smart), active: "links" });
+  assert.match(slideLeft, /data-slide="rechts"/);
+
+  for (const layout of allLayouts()) {
+    const svg = workingDrawingSvg(layout, defaultConfig(layout));
+    assert.match(svg, /<svg[^>]*width="\d+"[^>]*height="\d+"/);
+    assert.equal(/EKO/i.test(svg), false, layout.slug);
+  }
 
   const pkg = readFileSync(new URL("../package.json", import.meta.url), "utf8");
   assert.equal(/three|@react-three|drei/i.test(pkg), false);
+});
+
+test("detail cards stay empty until a real photo is allowed", () => {
+  for (const photo of Object.values(DETAIL_PHOTOS)) {
+    assert.equal(photo.src, null, photo.id);
+    assert.equal(photo.sourceUrl, null, photo.id);
+    assert.equal(photo.width, 640);
+    assert.equal(photo.height, 480);
+  }
 });

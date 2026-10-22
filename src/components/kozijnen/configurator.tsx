@@ -3,17 +3,12 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { DetailPhotoCard } from "@/components/kozijnen/detail-photo";
 import { KozijnDrawing } from "@/components/kozijnen/drawing";
-import { KozijnOrderSummary, KozijnPicture } from "@/components/kozijnen/product-picture";
-import { CornerFigures } from "@/components/kozijnen/figures";
+import { KozijnOrderSummary } from "@/components/kozijnen/order-summary";
+import { DETAIL_PHOTOS } from "@/lib/kozijnen/detail-photos";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  CORNERS,
-  FRAME_COLORS,
-  GLASS_TYPES,
-  LAMINATED,
-  LOW_GLASS,
-} from "@/lib/kozijnen/config";
+import { FRAME_COLORS, LAMINATED, LOW_GLASS } from "@/lib/kozijnen/config";
 import { layoutPath, type Layout } from "@/lib/kozijnen/layouts";
 import { VatPrice } from "@/components/brand/vat-price";
 import { addBasketItem, readBasket, writeBasket } from "@/lib/kozijnen/basket";
@@ -49,7 +44,6 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   const [sent, setSent] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
-  const [view, setView] = useState<"tekening" | "aanzicht">("aanzicht");
   const [basketNote, setBasketNote] = useState<string | null>(null);
 
   useEffect(() => {
@@ -248,7 +242,27 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
             {step.id === "hoek" ? <CornerStep config={config} onChange={patch} /> : null}
             {step.id === "kleur" ? <ColorStep layout={layout} config={config} onChange={patch} /> : null}
             {step.id === "glas" ? <GlassStep config={config} onChange={patch} /> : null}
-            {step.id === "ventilatie" ? <ChoiceStep label="Ventilatie" value={config.vent} options={[{ id: "geen", label: "Geen rooster" }, { id: "rooster", label: "Zelfregulerend rooster" }]} onPick={(vent) => patch({ vent: vent as KozijnConfig["vent"] })} /> : null}
+            {step.id === "ventilatie" ? (
+              <fieldset>
+                <legend className="text-[14px] font-medium">Ventilatie</legend>
+                <div className="mt-2 grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    aria-pressed={config.vent === "geen"}
+                    onClick={() => patch({ vent: "geen" })}
+                    className={cn("border px-3 py-4 text-left text-[14px]", config.vent === "geen" ? "border-kg-navy bg-white" : "border-kg-lijn")}
+                  >
+                    Geen rooster
+                  </button>
+                  <DetailPhotoCard
+                    photo={DETAIL_PHOTOS.rooster}
+                    label="Zelfregulerend rooster"
+                    active={config.vent === "rooster"}
+                    onPick={() => patch({ vent: "rooster" })}
+                  />
+                </div>
+              </fieldset>
+            ) : null}
             {step.id === "dorpel" ? <SillStep config={config} onChange={patch} /> : null}
             {step.id === "beslag" ? <HardwareStep config={config} onChange={patch} /> : null}
             {step.id === "extra" ? <ExtraStep layout={layout} config={config} onChange={patch} /> : null}
@@ -294,15 +308,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
         </div>
 
         <aside className="order-1 border border-kg-lijn bg-kg-kalk p-4 lg:sticky lg:top-24 lg:order-2">
-          <div className="mt-3 flex gap-2">
-            <button type="button" className={cn("h-10 border px-3 text-[14px]", view === "tekening" ? "border-kg-navy bg-white" : "border-kg-lijn")} onClick={() => setView("tekening")}>
-              Tekening
-            </button>
-            <button type="button" className={cn("h-10 border px-3 text-[14px]", view === "aanzicht" ? "border-kg-navy bg-white" : "border-kg-lijn")} onClick={() => setView("aanzicht")}>
-              Aanzicht
-            </button>
-          </div>
-          {view === "tekening" ? <KozijnDrawing layout={layout} config={config} /> : <KozijnPicture layout={layout} config={config} />}
+          <KozijnDrawing layout={layout} config={config} />
           <KozijnOrderSummary config={config} />
           {pricesActive && price && "totalExcl" in price ? (
             <p className="mt-3 font-mono text-[18px]">
@@ -399,6 +405,7 @@ function LayoutStep({
   }
   return (
     <div className="space-y-6">
+      {layout.slug === "schuifpui-2-delig" ? <DetailPhotoCard photo={DETAIL_PHOTOS.smartSlide} /> : null}
       <p className="text-[14px] text-kg-text-2">
         U staat buiten, met het gezicht naar de gevel. Links is de linkerkant vanaf die plek.
         {layout.chooseSide ? " De scharnieren zitten aan de kant die u kiest." : ""}
@@ -462,13 +469,21 @@ function LayoutStep({
 function CornerStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
   return (
     <div className="space-y-6">
-      <CornerFigures />
-      <ChoiceStep
-        label="Hoekuitvoering"
-        value={config.corner}
-        options={CORNERS.map((item) => ({ id: item.id, label: item.label }))}
-        onPick={(corner) => onChange({ corner: corner as KozijnConfig["corner"] })}
-      />
+      <fieldset>
+        <legend className="text-[14px] font-medium">Hoekuitvoering</legend>
+        <div className="mt-2 grid grid-cols-2 gap-3">
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.verstek}
+            active={config.corner === "verstek"}
+            onPick={() => onChange({ corner: "verstek" })}
+          />
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.hvl}
+            active={config.corner === "hvl"}
+            onPick={() => onChange({ corner: "hvl" })}
+          />
+        </div>
+      </fieldset>
       <p className="text-[14px] text-kg-text-2">
         Verstek: de naad loopt schuin over de hoek. HVL: de profielen komen haaks samen en de naad staat recht. Een isolatieverschil publiceren we niet.
       </p>
@@ -489,6 +504,8 @@ function ColorStep({
   return (
     <div className="space-y-6">
       <p className="text-[14px] text-kg-text-2">Kies je kleur. Dit zijn de snelle keuzes. De volledige AP-lijst volgt. De folie bevestigen we op de offerte.</p>
+      {layout.group === "schuifpuien" ? null : <DetailPhotoCard photo={DETAIL_PHOTOS.profile} />}
+      <DetailPhotoCard photo={DETAIL_PHOTOS.folie} />
       <Swatches label="Kozijn buiten" value={config.frameOut} onPick={(frameOut) => onChange({ frameOut: frameOut as KozijnConfig["frameOut"] })} />
       <Swatches label="Kozijn binnen" value={config.frameIn} onPick={(frameIn) => onChange({ frameIn: frameIn as KozijnConfig["frameIn"] })} />
       {sash ? (
@@ -529,12 +546,23 @@ function Swatches({ label, value, onPick }: { label: string; value: string; onPi
 function GlassStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
   return (
     <div className="space-y-6">
-      <ChoiceStep
-        label="Isolatie"
-        value={config.glass}
-        options={GLASS_TYPES.map((item) => ({ id: item.id, label: item.label }))}
-        onPick={(glass) => onChange({ glass: glass as KozijnConfig["glass"] })}
-      />
+      <fieldset>
+        <legend className="text-[14px] font-medium">Isolatie</legend>
+        <div className="mt-2 grid grid-cols-2 gap-3">
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.hrpp}
+            label="HR++"
+            active={config.glass === "hrpp"}
+            onPick={() => onChange({ glass: "hrpp" })}
+          />
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.triple}
+            label="Triple"
+            active={config.glass === "triple"}
+            onPick={() => onChange({ glass: "triple" })}
+          />
+        </div>
+      </fieldset>
       <ChoiceStep
         label="Onderkant van het glas"
         value={config.lowGlass}
@@ -594,15 +622,23 @@ function HardwareStep({ config, onChange }: { config: KozijnConfig; onChange: (p
       <p className="text-[14px] text-kg-text-2">
         We vragen het zwaardere beslag aan. Een keurmerk zetten we er pas bij als de leverancier dat voor dit profiel bevestigt.
       </p>
-      <ChoiceStep
-        label="Kruk"
-        value={config.handle}
-        options={[
-          { id: "standaard", label: "Standaard" },
-          { id: "afsluitbaar", label: "Afsluitbaar" },
-        ]}
-        onPick={(handle) => onChange({ handle: handle as KozijnConfig["handle"] })}
-      />
+      <fieldset>
+        <legend className="text-[14px] font-medium">Kruk</legend>
+        <div className="mt-2 grid grid-cols-2 gap-3">
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.kruk}
+            label="Standaard"
+            active={config.handle === "standaard"}
+            onPick={() => onChange({ handle: "standaard" })}
+          />
+          <DetailPhotoCard
+            photo={DETAIL_PHOTOS.krukSlot}
+            label="Afsluitbaar"
+            active={config.handle === "afsluitbaar"}
+            onPick={() => onChange({ handle: "afsluitbaar" })}
+          />
+        </div>
+      </fieldset>
     </div>
   );
 }

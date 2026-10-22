@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { KozijnOrderSummary, KozijnPicture } from "@/components/kozijnen/product-picture";
+import { KozijnDrawing } from "@/components/kozijnen/drawing";
+import { KozijnOrderSummary } from "@/components/kozijnen/order-summary";
 import { buttonVariants } from "@/components/ui/button";
 import { readBasket, removeBasketItem, writeBasket, type BasketItem } from "@/lib/kozijnen/basket";
 import { getLayoutBySlug, layoutPath } from "@/lib/kozijnen/layouts";
@@ -73,7 +74,7 @@ export default function OffertemandPage() {
         <p className="mt-8">De mand is leeg.</p>
       ) : (
         <ul className="mt-8 divide-y divide-kg-lijn border-y border-kg-lijn">
-          {items.map((item) => {
+          {items.map((item, index) => {
             const layout = getLayoutBySlug(item.layout);
             const href = layout ? `${layoutPath(layout)}?${item.query}` : "/kunststof-kozijnen";
             const config = layout ? parseConfig(new URLSearchParams(item.query), layout) : null;
@@ -83,7 +84,7 @@ export default function OffertemandPage() {
                   <Link href={href}>{item.title}</Link>
                   {layout && config ? (
                     <div className="mt-3 max-w-sm">
-                      <KozijnPicture layout={layout} config={config} prefix={`m${item.layout}`} />
+                      <KozijnDrawing layout={layout} config={config} prefix={`m${index}-${item.layout}`} />
                       <KozijnOrderSummary config={config} />
                     </div>
                   ) : (
