@@ -42,7 +42,7 @@ test("kozijn routes get the kozijn bar, the rest keep montage and colour guarant
   assert.equal(line(uspForPath("/")), line(uspBySection.site));
   assert.equal(line(uspForPath("/offerte")), line(uspBySection.site));
   assert.match(line(uspBySection.kozijnen), /Aluplast kozijnen op maat/);
-  assert.match(line(uspBySection.kozijnen), /Ontwerp in 3D in de configurator/);
+  assert.match(line(uspBySection.kozijnen), /Aanzicht per indeling/);
   assert.match(line(uspBySection.kozijnen), /Meerdere kozijnen in één offertemand/);
   assert.match(line(uspBySection.kozijnen), /Duidelijke meetinstructie/);
 });

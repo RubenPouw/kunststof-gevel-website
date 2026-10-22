@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { KozijnDrawing } from "@/components/kozijnen/drawing";
-import { KozijnView3D } from "@/components/kozijnen/view-3d";
+import { KozijnOrderSummary, KozijnPicture } from "@/components/kozijnen/product-picture";
 import { CornerFigures } from "@/components/kozijnen/figures";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -13,8 +13,6 @@ import {
   GLASS_TYPES,
   LAMINATED,
   LOW_GLASS,
-  colorById,
-  publicProfileName,
 } from "@/lib/kozijnen/config";
 import { layoutPath, type Layout } from "@/lib/kozijnen/layouts";
 import { VatPrice } from "@/components/brand/vat-price";
@@ -51,7 +49,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   const [sent, setSent] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
-  const [view, setView] = useState<"tekening" | "3d">("tekening");
+  const [view, setView] = useState<"tekening" | "aanzicht">("aanzicht");
   const [basketNote, setBasketNote] = useState<string | null>(null);
 
   useEffect(() => {
@@ -300,33 +298,12 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
             <button type="button" className={cn("h-10 border px-3 text-[14px]", view === "tekening" ? "border-kg-navy bg-white" : "border-kg-lijn")} onClick={() => setView("tekening")}>
               Tekening
             </button>
-            <button type="button" className={cn("h-10 border px-3 text-[14px]", view === "3d" ? "border-kg-navy bg-white" : "border-kg-lijn")} onClick={() => setView("3d")}>
-              3D
+            <button type="button" className={cn("h-10 border px-3 text-[14px]", view === "aanzicht" ? "border-kg-navy bg-white" : "border-kg-lijn")} onClick={() => setView("aanzicht")}>
+              Aanzicht
             </button>
           </div>
-          {view === "3d" ? <KozijnView3D layout={layout} config={config} /> : <KozijnDrawing layout={layout} config={config} />}
-          <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-3 font-mono text-[13px]">
-            <div className="flex justify-between gap-3">
-              <dt className="text-kg-text-2">Profiel</dt>
-              <dd className="text-right">{publicProfileName(layout.slug)}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-kg-text-2">Maat</dt>
-              <dd>
-                {config.width} × {config.height}
-              </dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-kg-text-2">Grenzen</dt>
-              <dd className="text-right">
-                {layout.limits.minWidth}–{layout.limits.maxWidth} × {layout.limits.minHeight}–{layout.limits.maxHeight}
-              </dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-kg-text-2">Buiten</dt>
-              <dd>{colorById(config.frameOut).name}</dd>
-            </div>
-          </dl>
+          {view === "tekening" ? <KozijnDrawing layout={layout} config={config} /> : <KozijnPicture layout={layout} config={config} />}
+          <KozijnOrderSummary config={config} />
           {pricesActive && price && "totalExcl" in price ? (
             <p className="mt-3 font-mono text-[18px]">
               <VatPrice incl={price.totalIncl} excl={price.totalExcl} />

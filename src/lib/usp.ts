@@ -10,7 +10,7 @@ export const uspBySection = {
   ],
   kozijnen: [
     { k: "Aluplast", v: "kozijnen op maat" },
-    { k: "Ontwerp in 3D", v: "in de configurator" },
+    { k: "Aanzicht", v: "per indeling" },
     { k: "Meerdere kozijnen", v: "in één offertemand" },
     { k: "Duidelijke", v: "meetinstructie" },
   ],

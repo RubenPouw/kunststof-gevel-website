@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { KozijnOrderSummary, KozijnPicture } from "@/components/kozijnen/product-picture";
 import { buttonVariants } from "@/components/ui/button";
 import { readBasket, removeBasketItem, writeBasket, type BasketItem } from "@/lib/kozijnen/basket";
 import { getLayoutBySlug, layoutPath } from "@/lib/kozijnen/layouts";
+import { parseConfig } from "@/lib/kozijnen/model";
 
 export default function OffertemandPage() {
   const [items, setItems] = useState<BasketItem[]>([]);
@@ -74,11 +76,19 @@ export default function OffertemandPage() {
           {items.map((item) => {
             const layout = getLayoutBySlug(item.layout);
             const href = layout ? `${layoutPath(layout)}?${item.query}` : "/kunststof-kozijnen";
+            const config = layout ? parseConfig(new URLSearchParams(item.query), layout) : null;
             return (
-              <li key={`${item.layout}?${item.query}`} className="flex items-start justify-between gap-4 py-3">
-                <div>
+              <li key={`${item.layout}?${item.query}`} className="flex items-start justify-between gap-4 py-4">
+                <div className="min-w-0 flex-1">
                   <Link href={href}>{item.title}</Link>
-                  <p className="font-mono text-[13px] text-kg-text-2">{item.layout}</p>
+                  {layout && config ? (
+                    <div className="mt-3 max-w-sm">
+                      <KozijnPicture layout={layout} config={config} prefix={`m${item.layout}`} />
+                      <KozijnOrderSummary config={config} />
+                    </div>
+                  ) : (
+                    <p className="font-mono text-[13px] text-kg-text-2">{item.layout}</p>
+                  )}
                 </div>
                 <button type="button" className="text-[14px] underline" onClick={() => remove(item)}>
                   Haal weg

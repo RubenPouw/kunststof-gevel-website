@@ -1,6 +1,7 @@
 import { colorById } from "@/lib/kozijnen/config";
 import type { Layout } from "@/lib/kozijnen/layouts";
 import { panesFor, type KozijnConfig } from "@/lib/kozijnen/model";
+import { hingeOnRight } from "@/lib/kozijnen/opening";
 
 export function KozijnDrawing({
   layout,
@@ -87,15 +88,6 @@ export function KozijnDrawing({
       ) : null}
     </figure>
   );
-}
-
-function hingeOnRight(layout: Layout, config: KozijnConfig, index: number, count: number) {
-  if (layout.slug === "draaikiepraam-met-vast-raam") return config.side === "rechts";
-  if (layout.slug === "vast-draaikiep-vast") return true;
-  if (layout.slug === "draaikiep-vast-draaikiep") return index === count - 1;
-  if (layout.meeting) return config.active === "rechts" ? index === count - 1 : index === 0;
-  if (layout.chooseSide) return config.side === "rechts";
-  return index >= count / 2;
 }
 
 function glassRects(

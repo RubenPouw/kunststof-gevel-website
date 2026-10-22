@@ -1,6 +1,7 @@
 import { GLASS_TYPES, LAMINATED, LOW_GLASS, publicProfileName } from "./config";
 import { getLayoutBySlug } from "./layouts";
 import { colorLabel, panesFor, sizeInRange, type KozijnConfig } from "./model";
+import { openingPhrase } from "./opening";
 
 const DIRECTION: Record<string, string> = {
   binnen: "naar binnen",
@@ -12,7 +13,7 @@ const FILLING: Record<string, string> = {
   half: "half glas",
   glas: "vol glas",
 };
-const VENT: Record<string, string> = { geen: "geen rooster", rooster: "zelfregulerend rooster" };
+const VENT: Record<string, string> = { geen: "geen rooster", rooster: "ventilatierooster" };
 const SILL: Record<string, string> = { doorlopend: "doorlopend kunststof", laag: "lage dorpel" };
 const REBATE: Record<string, string> = { stomp: "stomp", aanslag: "met aanslag" };
 const HARDWARE: Record<string, string> = {
@@ -38,8 +39,8 @@ export function summaryLines(config: KozijnConfig): SummaryLine[] {
   const lines: SummaryLine[] = [
     { label: "Profiel", value: publicProfileName(config.layout) },
     { label: "Indeling", value: title },
-    { label: "Breedte", value: `${config.width} mm, buitenwerks` },
-    { label: "Hoogte", value: `${config.height} mm, buitenwerks` },
+    { label: "Opening", value: layout ? vakken(layout, config) : title },
+    { label: "Buitenwerk", value: `${config.width} × ${config.height} mm` },
     { label: "Maat", value: inRange ? "binnen de online grenzen" : "buiten de online grenzen, handmatig beoordelen" },
   ];
   if (layout?.chooseSide) lines.push({ label: "Scharnierzijde", value: `${SIDE[config.side]}, van buiten gezien` });
@@ -69,6 +70,23 @@ export function summaryLines(config: KozijnConfig): SummaryLine[] {
     { label: "Hor", value: SCREEN[config.screen] },
   );
   return lines;
+}
+
+function vakken(layout: NonNullable<ReturnType<typeof getLayoutBySlug>>, config: KozijnConfig) {
+  const panes = panesFor(layout, config);
+  return panes
+    .map((pane, index) => {
+      const place = panes.length === 1 ? "Het vak" : `Vak ${index + 1} ${seat(index, panes.length)}`;
+      return `${place}: ${openingPhrase(layout, config, pane.kind, index, panes.length)}`;
+    })
+    .join(". ");
+}
+
+function seat(index: number, count: number) {
+  if (count === 4) return ["links", "links van het midden", "rechts van het midden", "rechts"][index] ?? "";
+  if (index === 0) return "links";
+  if (index === count - 1) return "rechts";
+  return "midden";
 }
 
 export function summaryText(config: KozijnConfig) {
