@@ -9,6 +9,8 @@ export type ActiveCampaignContact = {
   lastName?: string;
   phone?: string;
   note?: string;
+  /** Best effort. A tag failure does not fail the contact sync. */
+  tags?: string[];
 };
 
 export type ActiveCampaignResult =
@@ -37,15 +39,15 @@ export function isActiveCampaignConfigured() {
   return getActiveCampaignConfig() !== null;
 }
 
-async function acPost(config: ActiveCampaignConfig, path: string, body: unknown) {
+async function acFetch(config: ActiveCampaignConfig, path: string, method: "GET" | "POST", body?: unknown) {
   const response = await fetch(`${config.url}${path}`, {
-    method: "POST",
+    method,
     headers: {
       "Api-Token": config.key,
       Accept: "application/json",
-      "Content-Type": "application/json",
+      ...(body ? { "Content-Type": "application/json" } : {}),
     },
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : undefined,
     signal: AbortSignal.timeout(8000),
   });
   const text = await response.text();
@@ -56,6 +58,44 @@ async function acPost(config: ActiveCampaignConfig, path: string, body: unknown)
     return { ok: true as const, data: text ? (JSON.parse(text) as unknown) : null };
   } catch {
     return { ok: false as const, status: response.status };
+  }
+}
+
+async function acPost(config: ActiveCampaignConfig, path: string, body: unknown) {
+  return acFetch(config, path, "POST", body);
+}
+
+function tagIdFrom(data: unknown) {
+  if (!data || typeof data !== "object") return "";
+  const tag = (data as { tag?: { id?: string | number } }).tag;
+  return tag?.id ? String(tag.id) : "";
+}
+
+async function findTagId(config: ActiveCampaignConfig, name: string) {
+  const found = await acFetch(config, `/api/3/tags?search=${encodeURIComponent(name)}`, "GET");
+  if (!found.ok || !found.data || typeof found.data !== "object") return "";
+  const tags = (found.data as { tags?: { id?: string | number; tag?: string }[] }).tags ?? [];
+  const match = tags.find((tag) => tag.tag?.trim().toLowerCase() === name.toLowerCase());
+  return match?.id ? String(match.id) : "";
+}
+
+async function applyTags(config: ActiveCampaignConfig, contact: string, tags: string[]) {
+  const unique = [...new Set(tags.map((tag) => tag.trim()).filter(Boolean))];
+  for (const name of unique) {
+    try {
+      const created = await acPost(config, "/api/3/tags", { tag: { tag: name, tagType: "contact" } });
+      const id = created.ok ? tagIdFrom(created.data) : await findTagId(config, name);
+      if (!id) {
+        console.error("[activecampaign] tag niet gevonden", created.ok ? "" : created.status);
+        continue;
+      }
+      const linked = await acPost(config, "/api/3/contactTags", { contactTag: { contact, tag: id } });
+      if (!linked.ok && linked.status !== 422) {
+        console.error("[activecampaign] tag-koppeling mislukt", linked.status);
+      }
+    } catch (error) {
+      console.error("[activecampaign] tag mislukt", error instanceof Error ? error.name : "fout");
+    }
   }
 }
 
@@ -103,6 +143,7 @@ export async function syncActiveCampaignContact(
         console.error("[activecampaign] notitie mislukt", noted.status);
       }
     }
+    if (id && input.tags?.length) await applyTags(config, id, input.tags);
     return { ok: true, skipped: false };
   } catch (error) {
     console.error("[activecampaign] niet bereikbaar", error instanceof Error ? error.name : "fout");

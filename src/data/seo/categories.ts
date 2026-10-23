@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
-import type { CategorySlug } from "@/lib/catalog/types";
+import { getProductsByCategory } from "@/lib/catalog";
+import { hasActiveFilters } from "@/lib/catalog/helpers";
+import { CATEGORY_PAGE_SIZE, listingPageHref } from "@/lib/catalog/listing";
+import type { CategorySlug, ListingFilters } from "@/lib/catalog/types";
 
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
 
@@ -32,7 +35,14 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
         heading: "Rekenen per gevelvlak",
         paragraphs: [
           "Op het product staat een m²-calculator: breedte, hoogte en openingen. Daar bovenop rekenen wij 10% snijverlies. Het aantal panelen kunt u meteen in de bestelling zetten.",
-          "Hulpstukken — start, hoek, eind — staan onder montage. Zonder die profielen is de gevel niet af.",
+          "Hulpstukken (start, hoek, eind) staan onder montage. Zonder die profielen is de gevel niet af.",
+        ],
+      },
+      {
+        heading: "Waar het paneel past",
+        paragraphs: [
+          "Een rechte zijgevel, een dakkapel, een schuur of een chalet gebruiken hetzelfde systeem. Het verschil zit in de hoeken, de dagkanten en of de ondergrond nog recht is.",
+          "Voor een schuur of tuinhuis volstaat vaak een lichter rabat. Een woning in de zon, met een lange gevel, heeft meer aan een stijf paneel zoals Keralit. Leg daar een staal op de bestaande muur, niet alleen op een foto.",
         ],
       },
     ],
@@ -95,7 +105,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
     ],
     links: [
       { href: "/merken/milinboard", label: "Milinboard banken" },
-      { href: "/kozijnen", label: "Kozijnen configureren" },
+      { href: "/kunststof-kozijnen", label: "Kozijnen configureren" },
     ],
   },
   montage: {
@@ -108,7 +118,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
         heading: "Hulpstukken per systeem",
         paragraphs: [
           "Elk merk heeft een eigen start, een eigen hoek en een eigen eind. Een aluminium VinyPlus-hoek past niet op een Keralit-sponning. Filter op merk en bestel de profielen in de lengte van het paneel.",
-          "De uitgewerkte volgorde — regels, spouw, startprofiel, schroefmaat — staat in de montage-uitleg. Laten zetten kan via de offerte: een Caveman rekent plaatsing apart van het materiaal.",
+          "De uitgewerkte volgorde (regels, spouw, startprofiel, schroefmaat) staat in de montage-uitleg. Laten zetten kan via de offerte. Plaatsing rekenen we apart van het materiaal.",
         ],
       },
     ],
@@ -123,7 +133,98 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       { href: "/offerte", label: "Montage laten uitvoeren" },
     ],
   },
+  "hpl-platen": {
+    slug: "hpl-platen",
+    metaTitle: "HPL platen",
+    description:
+      "HPL platen van 3050 × 1300 × 6 mm. Hele plaat, 3,965 m². Compact exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur en RAL.",
+    sections: [
+      {
+        heading: "HPL platen kopen",
+        paragraphs: [
+          "HPL is een compacte plaat: lagen papier en hars, geperst onder hoge druk. Het oppervlak is hard en bestand tegen vocht. U bestelt de plaat heel. Wij zagen niet op maat.",
+          "De lijnen in deze categorie zijn HPL Compact Exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur of op RAL. Een staal legt u buiten tegen de gevel, niet alleen op een scherm.",
+        ],
+      },
+      {
+        heading: "Maat van de plaat",
+        paragraphs: [
+          "Elke plaat is 3050 × 1300 mm en 6 mm dik. Dat is 3,965 m². De teller deelt uw vlak door die maat en rondt naar boven af op hele platen. Een reststuk blijft van u.",
+          "Een gevelpaneel rekent anders. Daar telt de werkende breedte, plus 10% snijverlies. Die calculator staat op rabat en sponning, niet op deze plaat.",
+        ],
+      },
+      {
+        heading: "Welke lijn",
+        paragraphs: [
+          "HPL Compact Exterieur is de plaat voor buiten, op een geventileerde achterconstructie. FR brandvertragend kiest u als het bestek een brandvertragende plaat vraagt. Op het artikel staat geen brandklasse die wij er zelf bij verzinnen.",
+          "Renolit eenzijdig heeft de decorlaag aan één kant. Abet is een decorlijn in vaste kleuren. De plaatmaat is bij alle vier gelijk.",
+        ],
+      },
+      {
+        heading: "Waar de plaat past",
+        paragraphs: [
+          "Een vlakke gevel, een boeideel, een dagkant of een binnenwand. Geen rabatnaad. Voor een gevel die het naadbeeld van een sponning of rabat moet hebben, neemt u een gevelpaneel.",
+          "Buiten houdt u een spouw aan en kit u die niet dicht. Bevestig volgens het voorschrift van de lijn.",
+        ],
+      },
+      {
+        heading: "Onderhoud",
+        paragraphs: [
+          "Niet schilderen. Afspoelen met water en een mild middel is genoeg. Geen schuurmiddel en geen hogedruk op korte afstand.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Zagen jullie de plaat op maat?",
+        a: "Nee. U bestelt hele platen van 3050 × 1300 mm. Zaagwerk op de bouw is van u.",
+      },
+      {
+        q: "Hoeveel m² is één plaat?",
+        a: "3,965 m². De teller Platen nodig deelt het netto vlak door die maat en rondt naar boven af.",
+      },
+      {
+        q: "Welke lijn gebruik ik buiten?",
+        a: "HPL Compact Exterieur, op een geventileerde achterconstructie. FR als het bestek brandvertragend vraagt. Renolit eenzijdig en Abet kiest u op de afwerking die op de plaat staat.",
+      },
+    ],
+    links: [
+      { href: "/merken/hpl-compact-exterieur", label: "HPL Compact Exterieur" },
+      { href: "/merken/hpl-fr", label: "FR brandvertragend" },
+      { href: "/merken/renolit", label: "Renolit eenzijdig" },
+      { href: "/merken/abet", label: "Abet" },
+      { href: "/blog/hpl-plaat", label: "Plaat of gevelpaneel" },
+      { href: "/gevelbekleding", label: "Gevelpanelen" },
+    ],
+  },
 };
+
+export async function categoryRouteMetadata(slug: CategorySlug): Promise<Metadata> {
+  const products = await getProductsByCategory(slug);
+  const pages = Math.ceil(products.length / CATEGORY_PAGE_SIZE);
+  return {
+    ...categoryMetadata(slug),
+    ...(pages > 1 ? { pagination: { next: `/${slug}?pagina=2` } } : {}),
+  };
+}
+
+export function categoryViewMetadata(
+  slug: CategorySlug,
+  filters: ListingFilters,
+  pagina: number,
+  pages: number,
+): Metadata {
+  const base = categoryMetadata(slug);
+  const path = `/${slug}`;
+  return {
+    ...base,
+    robots: hasActiveFilters(filters) ? { index: false, follow: true } : undefined,
+    pagination: {
+      previous: pagina > 1 ? listingPageHref(path, filters, pagina - 1) : undefined,
+      next: pagina < pages ? listingPageHref(path, filters, pagina + 1) : undefined,
+    },
+  };
+}
 
 export function getCategoryStory(slug: string) {
   if (slug in categoryStories) return categoryStories[slug as CategorySlug];

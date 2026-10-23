@@ -1,11 +1,17 @@
-import { facts } from "@/lib/site";
+"use client";
+
+import { usePathname } from "next/navigation";
+
+import { uspForPath } from "@/lib/usp";
 
 export function FactsStrip({
   articleCount,
 }: {
   articleCount?: number;
 }) {
-  const items = facts.map((item, index) =>
+  const pathname = usePathname() ?? "/";
+  if (pathname === "/afrekenen" || pathname.startsWith("/afrekenen/")) return null;
+  const items = uspForPath(pathname).map((item, index) =>
     index === 0 && articleCount
       ? { k: String(articleCount), v: item.v }
       : item,
@@ -13,7 +19,7 @@ export function FactsStrip({
 
   return (
     <div
-      className="bevel-24"
+      className="bevel-24 print:hidden"
       style={{ background: "var(--gradient-signal)" }}
     >
       <div className="container-kg grid grid-cols-2 gap-y-2 py-3.5 font-mono text-[13px] text-kg-navy sm:text-[14px] lg:grid-cols-4">

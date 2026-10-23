@@ -1,3 +1,6 @@
+import { colourCodeIn, colourSearchTokens, labelColour, supplierColourName } from "./colours";
+import type { ListingPresentation, ListingSort, ListingView } from "./listing";
+import { slugKey } from "./derive";
 import type {
   Brand,
   ColorFamily,
@@ -7,6 +10,22 @@ import type {
   ProfileType,
 } from "./types";
 import { colorFamilies, profileTypes } from "./types";
+
+const LISTING_SORTS = new Set<ListingSort>(["relevantie", "naam", "prijs-op", "prijs-af"]);
+
+export function parseListingPresentation(
+  search: URLSearchParams | Record<string, string | string[] | undefined>,
+): ListingPresentation {
+  const read = (key: string) => {
+    if (search instanceof URLSearchParams) return search.get(key) ?? undefined;
+    const value = search[key];
+    return Array.isArray(value) ? value[0] : value;
+  };
+  const view: ListingView = read("weergave") === "raster" ? "raster" : "lijst";
+  const sortRaw = read("sorteer");
+  const sort: ListingSort = sortRaw && LISTING_SORTS.has(sortRaw as ListingSort) ? (sortRaw as ListingSort) : "relevantie";
+  return { view, sort };
+}
 
 export function getVariant(product: Product, sku: string) {
   return product.variants.find((variant) => variant.sku === sku);
@@ -21,7 +40,26 @@ export function getVariantBySku(products: Product[], sku: string) {
 }
 
 export function getDefaultVariant(product: Product): ProductVariant {
-  return product.variants.find((variant) => variant.popular) ?? product.variants[0];
+  return (
+    product.variants.find((variant) => variant.popular && variant.price > 0) ??
+    product.variants.find((variant) => variant.price > 0) ??
+    product.variants[0]
+  );
+}
+
+export function productHasPrice(product: Product) {
+  return product.variants.some((variant) => variant.price > 0) && product.price > 0;
+}
+
+/** A Kleurnaam slug matches the full label, the supplier name, or the code. */
+export function colourMatchesSlug(colorName: string, slug: string) {
+  const label = labelColour(colorName);
+  if (slugKey(label) === slug) return true;
+  const code = colourCodeIn(label);
+  if (!code) return false;
+  if (slugKey(code) === slug) return true;
+  const name = supplierColourName(code);
+  return Boolean(name && slugKey(name) === slug);
 }
 
 export function applyListingFilters(list: Product[], filters: ListingFilters) {
@@ -31,6 +69,12 @@ export function applyListingFilters(list: Product[], filters: ListingFilters) {
     if (filters.profileType && product.profileType !== filters.profileType) return false;
     if (filters.workingWidthMm && product.workingWidthMm !== filters.workingWidthMm) return false;
     if (filters.colorFamily && !product.colors.some((color) => color.family === filters.colorFamily)) {
+      return false;
+    }
+    if (filters.colorSlug && !product.colors.some((color) => colourMatchesSlug(color.name, filters.colorSlug ?? ""))) {
+      return false;
+    }
+    if (filters.ral && !product.colors.some((color) => color.ral?.replace(/\D/g, "") === filters.ral)) {
       return false;
     }
     return true;
@@ -56,9 +100,12 @@ export function parseListingSearchParams(
   const typeRaw = firstParam(searchParams.type);
   const kleurRaw = firstParam(searchParams.kleur);
   const breedteRaw = firstParam(searchParams.breedte);
+  const colorSlug = firstParam(searchParams.kleurnaam);
+  const ralRaw = firstParam(searchParams.ral);
   const profileType = profileTypes.find((item) => item === typeRaw);
   const colorFamily = colorFamilies.find((item) => item === kleurRaw);
   const workingWidthMm = breedteRaw && /^\d+$/.test(breedteRaw) ? Number(breedteRaw) : undefined;
+  const ral = ralRaw && /^\d{4}$/.test(ralRaw) ? ralRaw : undefined;
 
   return {
     brandSlug: brandSlug || undefined,
@@ -66,24 +113,45 @@ export function parseListingSearchParams(
     profileType,
     colorFamily,
     workingWidthMm,
+    colorSlug: colorSlug || undefined,
+    ral,
   };
+}
+
+export function hasActiveFilters(filters: ListingFilters) {
+  return Boolean(
+    filters.brandSlug ||
+      filters.inStockOnly ||
+      filters.profileType ||
+      filters.colorFamily ||
+      filters.workingWidthMm ||
+      filters.colorSlug ||
+      filters.ral,
+  );
 }
 
 export function listingHref(
   basePath: string,
   current: ListingFilters,
   patch: Partial<ListingFilters> & { brandSlug?: string | "" },
+  presentation?: ListingPresentation,
 ) {
   const [path, existing] = basePath.split("?");
   const params = new URLSearchParams(existing);
   const next: ListingFilters = { ...current, ...patch };
   const brand = patch.brandSlug === "" ? undefined : next.brandSlug;
-  ["merk", "voorraad", "type", "kleur", "breedte"].forEach((key) => params.delete(key));
+  ["merk", "voorraad", "type", "kleur", "breedte", "kleurnaam", "ral", "weergave", "sorteer", "pagina"].forEach((key) =>
+    params.delete(key),
+  );
   if (brand) params.set("merk", brand);
   if (next.inStockOnly) params.set("voorraad", "1");
   if (next.profileType) params.set("type", next.profileType);
   if (next.colorFamily) params.set("kleur", next.colorFamily);
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
+  if (next.colorSlug) params.set("kleurnaam", next.colorSlug);
+  if (next.ral) params.set("ral", next.ral);
+  if (presentation?.view === "raster") params.set("weergave", "raster");
+  if (presentation?.sort && presentation.sort !== "relevantie") params.set("sorteer", presentation.sort);
   const query = params.toString();
   return query ? `${path}?${query}` : path;
 }
@@ -92,6 +160,8 @@ export function listingFacets(list: Product[]) {
   const types = new Map<ProfileType, number>();
   const families = new Map<ColorFamily, { count: number; hex: string }>();
   const widths = new Map<number, number>();
+  const sheetColors = new Map<string, { name: string; count: number; hex: string }>();
+  const rals = new Map<string, number>();
 
   for (const product of list) {
     types.set(product.profileType, (types.get(product.profileType) ?? 0) + 1);
@@ -108,20 +178,41 @@ export function listingFacets(list: Product[]) {
         hex: current?.hex ?? color.hex,
       });
     }
+    for (const color of product.colors) {
+      const key = slugKey(color.name);
+      const current = sheetColors.get(key);
+      sheetColors.set(key, {
+        name: current?.name ?? color.name,
+        count: (current?.count ?? 0) + 1,
+        hex: current?.hex ?? color.hex,
+      });
+      if (product.saleUnit === "sheet" || product.category === "hpl-platen") {
+        const ral = color.ral?.replace(/\D/g, "");
+        if (ral && /^\d{4}$/.test(ral)) rals.set(ral, (rals.get(ral) ?? 0) + 1);
+      }
+    }
   }
 
   return {
     profileTypes: [...types.entries()]
       .map(([slug, count]) => ({ slug, count }))
       .sort((a, b) => b.count - a.count),
-    colorFamilies: [...families.entries()].map(([slug, value]) => ({
-      slug,
-      count: value.count,
-      hex: value.hex,
-    })),
+    colorFamilies: [...families.entries()]
+      .map(([slug, value]) => ({
+        slug,
+        count: value.count,
+        hex: value.hex,
+      }))
+      .sort((a, b) => colorFamilies.indexOf(a.slug) - colorFamilies.indexOf(b.slug)),
     widths: [...widths.entries()]
       .map(([mm, count]) => ({ mm, count }))
       .sort((a, b) => a.mm - b.mm),
+    sheetColors: [...sheetColors.entries()]
+      .map(([slug, value]) => ({ slug, ...value }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "nl")),
+    rals: [...rals.entries()]
+      .map(([code, count]) => ({ code, count }))
+      .sort((a, b) => a.code.localeCompare(b.code, "nl", { numeric: true })),
   };
 }
 
@@ -138,12 +229,23 @@ export function filterProductsByQuery(products: Product[], query: string) {
       product.productType ?? "",
       product.profileType,
       product.slug,
-      ...product.variants.flatMap((variant) => [variant.sku, variant.ean, variant.colorName]),
+      ...product.variants.flatMap((variant) => [variant.sku, variant.ean, ...colourSearchTokens(variant.colorName)]),
     ]
       .join(" ")
       .toLowerCase();
     return haystack.includes(q);
   });
+}
+
+export function profileRole(product: Product): "noodzakelijk" | "aanbevolen" | null {
+  const name = product.name.toLowerCase();
+  const accessory =
+    product.category === "montage" ||
+    product.profileType === "profiel" ||
+    /profiel|schroef|eindkap|hoekstuk|verbind/.test(name);
+  if (!accessory) return null;
+  if (/schroef|startprofiel|ventilatie|\bclip\b/.test(name)) return "noodzakelijk";
+  return "aanbevolen";
 }
 
 export function relatedProductsOf(product: Product, products: Product[]) {

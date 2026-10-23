@@ -5,12 +5,23 @@ import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 import { Logo } from "@/components/brand/logo";
+import { VatSwitch } from "@/components/brand/vat-switch";
 import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
-import { shopNav } from "@/lib/site";
+import { shopNav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+function VatBar() {
+  return (
+    <div className="border-t border-[var(--kg-line-dark)]">
+      <div className="container-kg flex h-11 items-center justify-end">
+        <VatSwitch />
+      </div>
+    </div>
+  );
+}
 
 function SearchIcon() {
   return (
@@ -53,13 +64,28 @@ export function SiteHeader() {
   }
 
   const trayDots = Array.from({ length: SAMPLE_LIMIT }, (_, index) => items[index]?.hex ?? "#DDD9D0");
+  const bare = pathname === "/afrekenen" || pathname.startsWith("/afrekenen/");
+
+  if (bare) {
+    return (
+      <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
+        <div className="container-kg flex h-[72px] items-center justify-between gap-4">
+          <Logo size={20} tone="dark" />
+          <a href={site.phoneHref} className="font-mono text-[14px] text-kg-kalk no-underline">
+            {site.phone}
+          </a>
+        </div>
+        <VatBar />
+      </header>
+    );
+  }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy">
+    <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
       <div className="container-kg flex h-[72px] items-center gap-4 lg:gap-6">
         <Logo size={20} tone="dark" />
 
-        <nav className="hidden items-center gap-2 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
+        <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
           {shopNav.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
@@ -67,7 +93,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-2.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline",
+                  "px-2 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline",
                   active && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
                 )}
               >
@@ -137,6 +163,8 @@ export function SiteHeader() {
           </button>
         </div>
       </div>
+
+      <VatBar />
 
       {menuOpen ? (
         <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 lg:hidden">

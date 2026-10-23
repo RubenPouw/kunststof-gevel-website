@@ -264,8 +264,146 @@ export const brandStories: BrandStory[] = [
     ],
     links: [
       { href: "/kozijnafwerking", label: "Kozijnafwerking" },
-      { href: "/kozijnen", label: "Kunststof kozijnen" },
+      { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
     ],
+  },
+  {
+    slug: "unipanel",
+    metaTitle: "Unipanel bouwpanelen",
+    description: "Unipanel bouwpanelen en bijpassende afwerking voor overstek en wand.",
+    lead: "Unipanel is een bouwpaneel voor overstek en wand. De breedtes lopen uiteen, de kleur meestal wit of een folie.",
+    sections: [
+      {
+        heading: "Waar het past",
+        paragraphs: [
+          "Een overstek of een plafond vraagt een vlak paneel, geen rabat. Unipanel dekt die vlakken. Hulpstukken zoals sierlijst en schroeven bestelt u erbij, in dezelfde order.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is Unipanel een gevelpaneel?",
+        a: "Nee. Het is een bouwpaneel voor overstek en wand. Voor de gevel zelf kiest u Keralit, VinyPlus of een vergelijkbaar systeem.",
+      },
+    ],
+    links: [
+      { href: "/offerte", label: "Offerte voor overstek" },
+      { href: "/dakranden", label: "Dakranden" },
+    ],
+  },
+  {
+    slug: "florence",
+    metaTitle: "Florence plafondpanelen",
+    description: "Florence plafondpanelen voor binnen en buiten, met profielen en plinten.",
+    lead: "Florence is een plafondpaneel. Binnen of buiten, met een verbinding en een plint in dezelfde lijn.",
+    sections: [
+      {
+        heading: "Plafond, geen gevel",
+        paragraphs: [
+          "De panelen zijn licht en bedoeld voor een plafond of een overstek, niet voor een gevel die in de regen staat als rabat. Lengtes staan bij het artikel, vaak rond de 270 cm.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan ik Florence buiten gebruiken?",
+        a: "Er is een buitenplafondpaneel. Gebruik dat voor een overstek. Een binnenpaneel hoort binnen.",
+      },
+    ],
+    links: [
+      { href: "/offerte", label: "Plafond laten rekenen" },
+      { href: "/contact", label: "Contact" },
+    ],
+  },
+  {
+    slug: "hpl-compact-exterieur",
+    metaTitle: "HPL Compact Exterieur",
+    description: "HPL Compact Exterieur, 3050 × 1300 × 6 mm, hele plaat voor buiten.",
+    lead: "HPL Compact Exterieur is de plaat voor buiten. U krijgt hem heel: 3050 × 1300 mm, 6 mm dik, 3,965 m².",
+    sections: [
+      {
+        heading: "Buiten, met een spouw",
+        paragraphs: [
+          "Zet de plaat op een geventileerde achterconstructie. Kit de spouw niet dicht. De kleur kiest u in de filter, of via een staal buiten.",
+          "Wij zagen de plaat niet. Reststukken blijven van u.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is dit een gevelpaneel met sponning?",
+        a: "Nee. Het is een vlakke plaat. Voor een rabatnaad neemt u een gevelpaneel.",
+      },
+    ],
+    links: [
+      { href: "/hpl-platen", label: "Alle HPL platen" },
+      { href: "/stalen", label: "Staal aanvragen" },
+    ],
+  },
+  {
+    slug: "hpl-fr",
+    metaTitle: "FR brandvertragend",
+    description: "Brandvertragende HPL plaat, 3050 × 1300 × 6 mm, hele plaat.",
+    lead: "FR brandvertragend is dezelfde plaatmaat, gekozen als het bestek een brandvertragende plaat vraagt.",
+    sections: [
+      {
+        heading: "Geen verzonnen klasse",
+        paragraphs: [
+          "Op deze pagina staat geen brandklasse. Die hoort op het artikel of in het document van de lijn, niet als een losse belofte.",
+          "De plaat is 3,965 m² en gaat heel de deur uit.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is FR hetzelfde formaat als Compact Exterieur?",
+        a: "Ja. 3050 × 1300 × 6 mm. Het verschil zit in de brandvertragende opbouw, niet in de rekenmaat.",
+      },
+    ],
+    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+  },
+  {
+    slug: "renolit",
+    metaTitle: "Renolit eenzijdig",
+    description: "Renolit eenzijdig, HPL plaat met decor aan één kant. Hele plaat van 3,965 m².",
+    lead: "Renolit eenzijdig heeft de decorlaag aan één kant. De plaatmaat is 3050 × 1300 × 6 mm.",
+    sections: [
+      {
+        heading: "Eén zichtzijde",
+        paragraphs: [
+          "Reken ermee dat de decorlaag aan één kant zit. De achterkant is geen tweede zichtzijde.",
+          "Filter op kleur of RAL. Wij zagen de plaat niet op maat.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan ik beide kanten als zichtzijde gebruiken?",
+        a: "Nee. Eenzijdig betekent één decorzijde.",
+      },
+    ],
+    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+  },
+  {
+    slug: "abet",
+    metaTitle: "Abet HPL",
+    description: "Abet HPL platen, 3050 × 1300 × 6 mm, hele plaat, filter op kleur en RAL.",
+    lead: "Abet is een decorlijn in de HPL platen. U kiest de kleur of de RAL. De plaat wordt heel geleverd.",
+    sections: [
+      {
+        heading: "Kleur, dan het aantal",
+        paragraphs: [
+          "Filter de lijst op kleur of op RAL. Daarna telt Platen nodig het vlak om naar hele platen van 3,965 m².",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Zit zaagwerk bij de prijs?",
+        a: "Nee. U bestelt de hele plaat.",
+      },
+    ],
+    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
   },
 ];
 

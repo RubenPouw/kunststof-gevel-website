@@ -119,7 +119,7 @@ function QuoteFields({
               className="mt-1 size-4 accent-[var(--kg-navy)]"
             />
             <span>
-              Inclusief montage door een Caveman
+              Inclusief montage in de offerte
               <span className="mt-1 block text-[13px] text-[var(--color-text-muted)]">
                 Uitvinken als u alleen materiaal wilt. De bandbreedte past mee.
               </span>
@@ -143,7 +143,7 @@ function QuoteFields({
         <p className="mt-5 bg-kg-offwhite px-4 py-3 text-[14px]">
           Indicatie {liveEstimate.montage ? "inclusief montage" : "materiaal"}:{" "}
           <strong className="font-heading text-[22px] font-bold">
-            {formatPrice(liveEstimate.low)} – {formatPrice(liveEstimate.high)}
+            {formatPrice(liveEstimate.low)} tot {formatPrice(liveEstimate.high)}
           </strong>
         </p>
       ) : null}

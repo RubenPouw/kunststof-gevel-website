@@ -1,14 +1,12 @@
-import type { Metadata } from "next";
-
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { categoryMetadata } from "@/data/seo/categories";
+import { categoryRouteMetadata } from "@/data/seo/categories";
 
-export const metadata: Metadata = categoryMetadata("dakranden");
+export const revalidate = 3600;
 
-export default function DakrandenPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  return <CategoryListing slug="dakranden" searchParams={searchParams} />;
+export function generateMetadata() {
+  return categoryRouteMetadata("dakranden");
+}
+
+export default function DakrandenPage() {
+  return <CategoryListing slug="dakranden" filters={{}} page={1} />;
 }

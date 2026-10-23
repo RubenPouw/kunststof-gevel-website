@@ -3,6 +3,7 @@ export const categorySlugs = [
   "dakranden",
   "kozijnafwerking",
   "montage",
+  "hpl-platen",
 ] as const;
 
 export type CategorySlug = (typeof categorySlugs)[number];
@@ -22,7 +23,19 @@ export const profileTypes = [
 
 export type ProfileType = (typeof profileTypes)[number];
 
-export const colorFamilies = ["donker", "licht", "houtlook", "overig"] as const;
+export const colorFamilies = [
+  "donker",
+  "licht",
+  "houtlook",
+  "groen",
+  "blauw",
+  "rood",
+  "bruin",
+  "geel",
+  "metaal",
+  "steen",
+  "overig",
+] as const;
 
 export type ColorFamily = (typeof colorFamilies)[number];
 
@@ -43,6 +56,13 @@ export const colorFamilyLabels: Record<ColorFamily, string> = {
   donker: "Donker",
   licht: "Licht",
   houtlook: "Houtlook",
+  groen: "Groen",
+  blauw: "Blauw",
+  rood: "Rood",
+  bruin: "Bruin",
+  geel: "Geel",
+  metaal: "Metaal",
+  steen: "Steen",
   overig: "Overig",
 };
 
@@ -77,8 +97,11 @@ export type ProductVariant = {
   options?: { name: string; value: string }[];
   colorFamily: ColorFamily;
   panelsPerM2?: number;
+  /** True when the length was not in the article data and we used 6 m. */
+  lengthAssumed?: boolean;
   sampleId: string;
   image?: ProductImage;
+  shopifyVariantId?: string;
 };
 
 export type ProductImage = {
@@ -123,7 +146,18 @@ export type Product = {
   workingWidthMm?: number;
   profileType: ProfileType;
   sampleable: boolean;
+  /** Whole HPL sheet. The gevel calculator does not apply. */
+  saleUnit?: "sheet";
+  /** Square metres of one whole sheet. */
+  sheetM2?: number;
   panelsPerM2?: number;
+  /** Other Shopify handles that are the same article. Not written back to Shopify. */
+  aliasSlugs?: string[];
+  lengthAssumed?: boolean;
+  /** Shopify product.updatedAt when the catalog comes from the Storefront API. */
+  updatedAt?: string;
+  /** Real files only. Empty means the downloads block stays quiet. */
+  downloads?: { label: string; href: string }[];
 };
 
 export type SampleColor = {
@@ -141,4 +175,8 @@ export type ListingFilters = {
   profileType?: ProfileType;
   colorFamily?: ColorFamily;
   workingWidthMm?: number;
+  /** Exact colour name, slugified. Used for HPL sheets. */
+  colorSlug?: string;
+  /** RAL digits, for example 7016. */
+  ral?: string;
 };

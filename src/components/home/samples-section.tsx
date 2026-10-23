@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import { SectionHead } from "@/components/brand/section-head";
+import { ColourName } from "@/components/catalog/colour-name";
 import { SampleTrayCard } from "@/components/samples/sample-tray-card";
 import type { SampleColor } from "@/lib/catalog/types";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
@@ -47,7 +48,7 @@ export function SamplesSection({ colors }: { colors: SampleColor[] }) {
                       </span>
                     ) : null}
                   </div>
-                  <span className="mt-2 block text-[15px] font-medium">{color.colorName}</span>
+                  <ColourName value={color.colorName} className="mt-2 block text-[15px] font-medium" />
                   <span className="block font-mono text-[12px] text-kg-text-2">{color.ral ?? color.brandName}</span>
                 </button>
               );

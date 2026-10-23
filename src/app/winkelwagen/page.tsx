@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 
-import { CavemenMark } from "@/components/brand/marks";
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { ColourName } from "@/components/catalog/colour-name";
+import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
-import { paymentMethods } from "@/lib/site";
-import { weekNow } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 export default function CartPage() {
@@ -23,7 +22,6 @@ export default function CartPage() {
     gevelM2,
     mountPrice,
   } = useCart();
-  const week = weekNow();
   const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
   const mount = mountGevel ? mountPrice : 0;
   const net = subtotal + mount + shipping;
@@ -59,11 +57,7 @@ export default function CartPage() {
                   const resolved = resolveCartLine(line);
                   if (!resolved) return null;
                   const lead =
-                    resolved.kind === "kozijn"
-                      ? `Levering wk ${week + 3}`
-                      : resolved.inStock
-                        ? `Op voorraad · wk ${week}`
-                        : `Levering wk ${week + 2}`;
+                    resolved.kind === "kozijn" || !resolved.inStock ? "Levertijd in overleg" : "Op voorraad";
                   const leadColor = resolved.kind === "kozijn" || !resolved.inStock ? "var(--kg-navy)" : "var(--kg-stock)";
                   return (
                     <li
@@ -81,6 +75,11 @@ export default function CartPage() {
                         />
                         <div>
                           <p className="text-[15px] font-medium">{resolved.name}</p>
+                          {resolved.colorName ? (
+                            <p className="text-[14px] text-kg-navy">
+                              <ColourName value={resolved.colorName} />
+                            </p>
+                          ) : null}
                           <p className="font-mono text-[13px] text-kg-text-2">
                             {resolved.skuLabel}
                             {resolved.length && resolved.kind === "product"
@@ -107,7 +106,10 @@ export default function CartPage() {
                         aria-label={`Aantal ${resolved.name}`}
                       />
                       <p className="text-right font-mono text-[14px] tabular-nums">
-                        {formatPrice(resolved.unitExcl * line.qty)}
+                        <VatPrice
+                          incl={inclVat(resolved.unitExcl * line.qty)}
+                          excl={resolved.unitExcl * line.qty}
+                        />
                       </p>
                       <p
                         className="text-right font-mono text-[13px] whitespace-nowrap"
@@ -124,14 +126,16 @@ export default function CartPage() {
 
           <div className="mt-8 flex flex-col gap-5 bg-kg-navy p-6 text-kg-kalk sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="flex items-center gap-2 text-[15px] font-bold">
-                <CavemenMark size={18} />
-                Montage door een Caveman
-              </div>
+              <p className="font-mono text-[13px] text-kg-grind">Montage</p>
               <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em]">Materiaal geregeld. Handen erbij?</h2>
               <p className="mt-2 font-mono text-[13px] text-kg-grind">
                 {gevelM2
-                  ? `${formatNlNumber(gevelM2, 1)} m² gevelbekleding in uw winkelwagen · montage ${formatPrice(mountPrice)} excl. btw`
+                  ? (
+                    <>
+                      {formatNlNumber(gevelM2, 1)} m² gevelbekleding in uw winkelwagen · montage{" "}
+                      <VatPrice incl={inclVat(mountPrice)} excl={mountPrice} />
+                    </>
+                  )
                   : "Geen montage-artikelen in uw winkelwagen"}
               </p>
             </div>
@@ -146,7 +150,7 @@ export default function CartPage() {
                     : "border-kg-grind bg-transparent text-kg-kalk",
                 )}
               >
-                Alleen levering — —
+                Alleen levering
               </button>
               <button
                 type="button"
@@ -159,40 +163,68 @@ export default function CartPage() {
                     : "border-kg-grind bg-transparent text-kg-kalk",
                 )}
               >
-                Gevel gezet door Caveman
-                {gevelM2 ? ` · ${formatNlNumber(gevelM2, 1)} m² — ${formatPrice(mountPrice)}` : ""}
+                Montage via offerte
+                {gevelM2 ? (
+                  <>
+                    {" · "}
+                    {formatNlNumber(gevelM2, 1)} m², <VatPrice incl={inclVat(mountPrice)} excl={mountPrice} />
+                  </>
+                ) : (
+                  ""
+                )}
               </button>
             </div>
           </div>
         </div>
 
-        <aside className="h-fit border border-kg-lijn bg-white p-6 lg:sticky lg:top-[130px]">
+        <aside className="h-fit border border-kg-lijn bg-white p-6 lg:sticky lg:top-[170px]">
           <h2 className="font-mono text-[13px] text-kg-text-2">Overzicht</h2>
+          <p className="mt-3 text-[14px] text-kg-text-2">
+            <ShippingEstimate />
+          </p>
           <dl className="mt-4 space-y-2 font-mono text-[14px]">
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-3">
               <dt>Materiaal</dt>
-              <dd>{formatPrice(subtotal)}</dd>
+              <dd>
+                <VatPrice incl={inclVat(subtotal)} excl={subtotal} />
+              </dd>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-3">
               <dt>Montage</dt>
-              <dd>{mount ? formatPrice(mount) : "—"}</dd>
+              <dd>{mount ? <VatPrice incl={inclVat(mount)} excl={mount} /> : "nee"}</dd>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-3">
               <dt>Verzending</dt>
-              <dd>{shipping ? formatPrice(shipping) : "gratis"}</dd>
+              <dd>{shipping ? <VatPrice incl={inclVat(shipping)} excl={shipping} /> : "gratis"}</dd>
             </div>
-            <div className="flex justify-between">
-              <dt>Btw 21%</dt>
+            <div className="flex justify-between gap-3">
+              <dt>
+                <span className="kg-vat">
+                  <span className="kg-vat-incl">Waarvan btw 21%</span>
+                  <span className="kg-vat-excl">Btw 21%</span>
+                </span>
+              </dt>
               <dd>{formatPrice(vat)}</dd>
             </div>
           </dl>
-          <div className="mt-4 flex items-baseline justify-between border-t border-kg-lijn pt-4">
-            <span className="text-[15px]">Totaal incl. btw</span>
-            <span className="font-mono text-[28px] font-bold">{formatPrice(totalIncl)}</span>
+          <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-kg-lijn pt-4">
+            <span className="text-[15px]">
+              <span className="kg-vat">
+                <span className="kg-vat-incl">Totaal incl. btw</span>
+                <span className="kg-vat-excl">Totaal excl. btw</span>
+              </span>
+            </span>
+            <span className="font-mono text-[28px] font-bold">
+              <VatPrice incl={totalIncl} excl={net} labeled={false} />
+            </span>
           </div>
+          <p className="kg-vat-excl mt-2 font-mono text-[13px] text-kg-text-2">
+            Totaal incl. 21% btw {formatPrice(totalIncl)}
+          </p>
           {remainingForFreeShipping > 0 && lines.length > 0 ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              Nog {formatPrice(remainingForFreeShipping)} tot gratis verzending
+              Nog <VatPrice incl={inclVat(remainingForFreeShipping)} excl={remainingForFreeShipping} /> tot gratis
+              verzending
             </p>
           ) : null}
           <Link
@@ -212,7 +244,7 @@ export default function CartPage() {
             Bewaar als offerte
           </Link>
           <p className="mt-4 font-mono text-[13px] text-kg-text-2">
-            Levering week {week} · {paymentMethods.join(" · ")} · zakelijk factuur 30 dagen
+            Levertijd bevestigen we na bestelling. Betalen doet u in de Shopify-checkout. Montage zit niet in dat bedrag.
           </p>
         </aside>
       </div>

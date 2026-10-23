@@ -1,4 +1,14 @@
-import { enrichProduct } from "@/lib/catalog/derive";
+import { resolveColour } from "@/lib/catalog/colours";
+import { enrichProduct, inferProfileType } from "@/lib/catalog/derive";
+import { correctVariantImages } from "@/lib/catalog/variant-images";
+import {
+  DISTRIBUTOR_BRAND_SLUGS,
+  isHplSheetText,
+  matchHplLine,
+  matchProductLine,
+  sanitizeDescription,
+  withoutTrespa,
+} from "@/lib/catalog/text-rules";
 import type {
   Brand,
   CategorySlug,
@@ -11,7 +21,7 @@ import { categorySlugs } from "@/lib/catalog/types";
 
 import type { ShopifyImage, ShopifyProduct, ShopifyVariant } from "./types";
 
-const GENERIC_VENDORS = new Set(["mijn winkel", "my store", "shop", ""]);
+const GENERIC_VENDORS = new Set(["mijn winkel", "my store", "shop", "", "aj fust", "ajfust"]);
 
 const EXCLUDED_HANDLE = /^(verzendkosten|pakketservice)(-|$)/i;
 const EXCLUDED_TITLE = /verzendkosten|pakketservice/i;
@@ -21,6 +31,7 @@ export const CATEGORY_COLLECTION_HANDLES: Record<CategorySlug, string[]> = {
   dakranden: ["dakranden", "dakrand"],
   kozijnafwerking: ["kozijnafwerking"],
   montage: ["montage", "kunststof-profielen", "kunststof-profiel"],
+  "hpl-platen": ["hpl-platen", "hpl-plaat", "hpl platen"],
 };
 
 export const PRODUCT_TYPE_TO_CATEGORY: Record<string, CategorySlug> = {
@@ -37,10 +48,14 @@ export const PRODUCT_TYPE_TO_CATEGORY: Record<string, CategorySlug> = {
   "kunststof profielen": "montage",
   "kunststof profiel": "montage",
   montage: "montage",
+  "hpl plaat": "hpl-platen",
+  "hpl platen": "hpl-platen",
+  "hpl-plaat": "hpl-platen",
 };
 
 const KNOWN_BRANDS: Brand[] = [
   { slug: "milin", name: "Milin", summary: "Kunststof gevel- en afwerkproducten van Milin." },
+  { slug: "novicell", name: "Novicell", summary: "Houtlook gevelpanelen van Novicell, in fijne en grove nerf." },
   { slug: "heering", name: "Heering", summary: "Kunststof gevelbekleding en profielen van Heering." },
   { slug: "milinboard", name: "Milinboard", summary: "Kunststof vensterbanken en overzetbanken, inclusief eindkappen." },
   { slug: "vinyplus", name: "VinyPlus", summary: "Gevelpanelen en dakranden, uit voorraad in veelgebruikte kleuren." },
@@ -56,6 +71,25 @@ const KNOWN_BRANDS: Brand[] = [
   { slug: "werzalit", name: "Werzalit", summary: "Vensterbanken en plaatmateriaal." },
   { slug: "thomdeck", name: "ThomDeck", summary: "Kunststof dek- en afwerkproducten." },
   { slug: "multitexx", name: "Multitexx", summary: "Gevelpanelen voor renovatie en nieuwbouw." },
+  { slug: "unipanel", name: "Unipanel", summary: "Bouwpanelen en afwerking voor overstek en wand." },
+  { slug: "florence", name: "Florence", summary: "Plafondpanelen voor binnen en buiten, met bijpassende profielen." },
+  { slug: "hpl", name: "HPL", summary: "Compacte HPL plaat van 6 mm, geleverd als hele plaat van 3050 × 1300 mm." },
+  {
+    slug: "hpl-compact-exterieur",
+    name: "HPL Compact Exterieur",
+    summary: "HPL plaat voor buiten. Hele plaat, 3050 × 1300 × 6 mm.",
+  },
+  {
+    slug: "hpl-fr",
+    name: "FR brandvertragend",
+    summary: "Brandvertragende HPL plaat in dezelfde plaatmaat van 3050 × 1300 × 6 mm.",
+  },
+  {
+    slug: "renolit",
+    name: "Renolit eenzijdig",
+    summary: "HPL plaat met een decorlaag aan één kant. Hele plaat van 3,965 m².",
+  },
+  { slug: "abet", name: "Abet", summary: "HPL decorlijn. Hele plaat van 3050 × 1300 × 6 mm, te filteren op kleur en RAL." },
 ];
 
 const COLOR_HEX: Record<string, string> = {
@@ -101,6 +135,7 @@ export function categoryFromCollectionHandle(handle: string): CategorySlug | und
 
 export function categoryFromTitle(title: string): CategorySlug | undefined {
   const t = title.toLowerCase();
+  if (isHplSheetText(t)) return "hpl-platen";
   if (/(vensterbank|overzetbank|overzetvensterbank)/.test(t)) return "kozijnafwerking";
   if (/(dakrand|boeideel)/.test(t)) return "dakranden";
   if (
@@ -144,15 +179,41 @@ function slugify(value: string) {
     .replace(/^-|-$/g, "");
 }
 
-export function inferBrand(product: Pick<ShopifyProduct, "vendor" | "title" | "tags">): Brand {
-  const haystack = [product.vendor, product.title, ...product.tags].join(" ");
-  const matched = KNOWN_BRANDS.find((brand) => {
-    const re = new RegExp(`\\b${brand.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
-    return re.test(haystack);
-  });
+function brandBySlug(slug: string) {
+  return KNOWN_BRANDS.find((brand) => brand.slug === slug);
+}
+
+export function inferBrand(
+  product: Pick<ShopifyProduct, "vendor" | "title" | "tags" | "handle" | "productType">,
+): Brand {
+  const blob = `${product.title} ${product.handle.replace(/-/g, " ")} ${product.productType ?? ""} ${product.tags.join(" ")}`;
+  if (/\bhpl\b/i.test(blob) && !/sandwich|reiniger/i.test(blob)) {
+    const line = matchHplLine(blob);
+    const hplBrand = brandBySlug(line ?? "hpl");
+    if (hplBrand) return hplBrand;
+  }
+
+  const fromTitle = matchProductLine(`${product.title} ${product.handle.replace(/-/g, " ")}`);
+  if (fromTitle && !DISTRIBUTOR_BRAND_SLUGS.has(fromTitle)) {
+    const brand = brandBySlug(fromTitle);
+    if (brand) return brand;
+  }
+
+  const fromTags = matchProductLine(product.tags.join(" "));
+  if (fromTags && !DISTRIBUTOR_BRAND_SLUGS.has(fromTags)) {
+    const brand = brandBySlug(fromTags);
+    if (brand) return brand;
+  }
+
+  if (fromTitle) {
+    const brand = brandBySlug(fromTitle);
+    if (brand) return brand;
+  }
+
+  const matched = brandBySlug(matchProductLine(product.vendor) ?? "");
   if (matched) return matched;
 
-  const vendor = product.vendor.trim();
+  const vendor = withoutTrespa(product.vendor.trim());
   if (vendor && !GENERIC_VENDORS.has(vendor.toLowerCase())) {
     return {
       slug: slugify(vendor),
@@ -179,13 +240,10 @@ function isDefaultOption(name: string, value: string) {
   return name.toLowerCase() === "title" && value.toLowerCase() === "default title";
 }
 
-function colorHex(colorName: string) {
+function colorHex(colorName: string, context = "") {
   const key = colorName.trim().toLowerCase();
   if (COLOR_HEX[key]) return COLOR_HEX[key];
-  let hash = 0;
-  for (const char of key) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
-  const palette = ["#3A3D41", "#7A4E2E", "#5C2E22", "#6B6E72", "#A39480", "#4C5055"];
-  return palette[hash % palette.length];
+  return resolveColour(colorName, context).hex;
 }
 
 function lengthFromTitle(title: string) {
@@ -193,9 +251,17 @@ function lengthFromTitle(title: string) {
   return match?.[1]?.replace("mtr", "m");
 }
 
+function usableAlt(alt: string | null | undefined, fallback: string) {
+  const value = alt?.trim() ?? "";
+  if (value.length < 3) return fallback;
+  if (/^(img|image|foto|screenshot|schermafbeelding|dsc|img_)/i.test(value)) return fallback;
+  if (/\.(jpe?g|png|webp|gif)$/i.test(value)) return fallback;
+  return withoutTrespa(value);
+}
+
 function mapImage(image: ShopifyImage | null | undefined, fallbackAlt: string): ProductImage | undefined {
   if (!image?.url) return undefined;
-  return { url: image.url, alt: image.altText || fallbackAlt };
+  return { url: image.url, alt: usableAlt(image.altText, fallbackAlt) };
 }
 
 function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: number): ProductVariant {
@@ -216,7 +282,7 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     sku,
     ean: "",
     colorName: color,
-    hex: colorHex(color),
+    hex: colorHex(color, product.title),
     length,
     price: Number.parseFloat(variant.price.amount) || 0,
     inStock: variant.availableForSale,
@@ -224,27 +290,19 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     options: variant.selectedOptions,
     colorFamily: "overig",
     sampleId: "",
+    shopifyVariantId: variant.id,
     image: mapImage(variant.image, `${product.title}, ${color}`),
   };
 }
 
 function specsFor(product: ShopifyProduct, brand: Brand, category: CategorySlug, variants: ProductVariant[]): Spec[] {
-  const specs: Spec[] = [
-    { label: "Merk", value: brand.name },
-    {
-      label: "Leverancier",
-      value:
-        product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
-          ? product.vendor
-          : brand.name,
-    },
-  ];
-  if (product.productType) specs.push({ label: "Type", value: product.productType });
-  specs.push({ label: "Categorie", value: category });
-  const lengths = [...new Set(variants.map((variant) => variant.length))];
+  const specs: Spec[] = [{ label: "Merk", value: brand.name }];
+  const width = product.title.match(/(\d+(?:[.,]\d+)?)\s*mm/i);
+  if (width) specs.push({ label: "Maat", value: `${width[1].replace(".", ",")} mm` });
+  const lengths = [...new Set(variants.map((variant) => variant.length).filter((value) => value && value !== "stuk"))];
   if (lengths.length === 1) specs.push({ label: "Lengte", value: lengths[0] });
   const sku = variants.find((variant) => variant.sku)?.sku;
-  if (sku) specs.push({ label: "SKU", value: sku });
+  if (sku) specs.push({ label: "Artikelnummer", value: sku });
   return specs;
 }
 
@@ -256,6 +314,7 @@ export function mapShopifyProduct(
 
   const brand = inferBrand(product);
   const category = inferCategory(product, collectionHandles);
+  const profileType = inferProfileType(product.title, product.productType);
   const variants = product.variants.nodes.map((variant, index) => mapVariant(product, variant, index));
   if (!variants.length) return null;
 
@@ -264,24 +323,25 @@ export function mapShopifyProduct(
   const inStock = variants.some((variant) => variant.inStock);
   const uniqueLengths = [...new Set(variants.map((variant) => variant.length))];
   const length = uniqueLengths.length === 1 ? uniqueLengths[0] : uniqueLengths.join(" / ");
+  const alt = withoutTrespa(`${brand.name} ${product.title}`);
   const images = [
-    mapImage(product.featuredImage, product.title),
-    ...product.images.nodes.map((image) => mapImage(image, product.title)),
+    mapImage(product.featuredImage, alt),
+    ...product.images.nodes.map((image) => mapImage(image, alt)),
     ...variants.map((variant) => variant.image),
   ].filter((image, index, list): image is ProductImage => {
     return Boolean(image) && list.findIndex((item) => item?.url === image?.url) === index;
   });
 
-  return enrichProduct({
+  return correctVariantImages(enrichProduct({
     slug: product.handle,
-    name: product.title,
+    name: withoutTrespa(product.title),
     vendor: product.vendor && !GENERIC_VENDORS.has(product.vendor.toLowerCase())
       ? product.vendor
       : brand.name,
     brand: brand.name,
     brandSlug: brand.slug,
     category,
-    description: product.description || `${product.title} van ${brand.name}.`,
+    description: sanitizeDescription(product.description, product.title),
     specs: specsFor(product, brand, category, variants),
     relatedSlugs: [],
     variants,
@@ -295,9 +355,10 @@ export function mapShopifyProduct(
     images,
     productType: product.productType || undefined,
     source: "shopify",
-    profileType: "overig",
+    profileType,
     sampleable: false,
-  });
+    updatedAt: product.updatedAt,
+  }));
 }
 
 export function brandsFromProducts(products: Product[], extras: Brand[] = []): Brand[] {

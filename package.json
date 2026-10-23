@@ -2,14 +2,16 @@
   "name": "kunststofgevel-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0 --port 43147",
-    "build": "next build",
-    "start": "next start --hostname 0.0.0.0",
-    "lint": "eslint"
+    "build": "node --experimental-strip-types --import ./tests/register.mjs scripts/catalog-boot.ts && next build",
+    "start": "node --experimental-strip-types --import ./tests/register.mjs scripts/catalog-boot.ts --migrate-only && next start --hostname 0.0.0.0",
+    "lint": "eslint",
+    "test": "node --experimental-strip-types --import ./tests/register.mjs --test tests/*.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -21,6 +23,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^1.39.0",
     "next": "16.3.4",
+    "postgres": "^3.4.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "shadcn": "^4.20.1",

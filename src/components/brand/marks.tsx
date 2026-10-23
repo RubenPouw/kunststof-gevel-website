@@ -11,7 +11,7 @@ export function CavesuppliesMark({
   size = 11,
   fill = "currentColor",
   className,
-  title = "Cavesupplies",
+  title = "kunststof-gevel.nl",
 }: MarkProps) {
   return (
     <svg
