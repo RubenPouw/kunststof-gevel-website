@@ -3,7 +3,7 @@ export type UspItem = { k: string; v: string };
 /** Header-USP per deel van de site. Kozijnen: geen montage, geen kleurgarantie, geen voorraad. Alles is op maat. */
 export const uspBySection = {
   site: [
-    { k: "Showroom", v: "op afspraak in Utrecht" },
+    { k: "Showroom", v: "op afspraak in Hedel" },
     { k: "Levering", v: "in overleg" },
     { k: "10 jaar", v: "garantie op kleur" },
     { k: "Montage", v: "via offerte" },

@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Bel ${site.phone}, app ${site.mobileDisplay} of mail ${site.email}. Showroom op afspraak in Utrecht.`,
+  description: `Bel ${site.phone}, app ${site.mobileDisplay} of mail ${site.email}. Showroom op afspraak in Hedel.`,
   alternates: { canonical: "/contact" },
 };
 

@@ -102,7 +102,7 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
             <div className="grid gap-4 bg-white p-5">
               <label className="flex min-h-11 items-center gap-3 text-[15px]">
                 <input type="checkbox" checked={pickup} onChange={(event) => setPickup(event.target.checked)} />
-                Afhalen in Utrecht, op afspraak
+                Afhalen in Hedel, op afspraak
               </label>
               {pickup ? null : (
                 <div className="grid gap-4 sm:grid-cols-2">

@@ -5,7 +5,7 @@ export const site = {
   slogan: "Nooit meer schilderen. Vervang hout door kunststof.",
   house: "kunststof-gevel.nl",
   description:
-    "Webshop van Pouw Online Group B.V. voor kunststof gevelbekleding, dakranden en kozijnen. Showroom op afspraak in Utrecht.",
+    "Webshop van Pouw Online Group B.V. voor kunststof gevelbekleding, dakranden en kozijnen. Showroom op afspraak in Hedel.",
   phone: "030 227 1397",
   phoneHref: "tel:+31302271397",
   phoneE164: "+31302271397",
@@ -16,10 +16,10 @@ export const site = {
   emailHref: "mailto:info@kunststof-gevel.nl",
   whatsapp: "https://wa.me/31613639368",
   hours: "ma t/m vr 08:00-17:00",
-  address: "Spinsterlaan 6A, 3454 WZ Utrecht",
-  street: "Spinsterlaan 6A",
-  postalCode: "3454 WZ",
-  city: "Utrecht",
+  address: "Binnenkamp 7a, 5321 KA Hedel",
+  street: "Binnenkamp 7a",
+  postalCode: "5321 KA",
+  city: "Hedel",
   addressNote: "Showroom, alleen op afspraak",
   company: "Pouw Online Group B.V.",
   region: "Heel Nederland",
@@ -35,7 +35,7 @@ export const hero = {
   kicker: "Kunststof gevelbekleding · Keralit · VinyPlus · Eurotexx",
   title: "Nooit meer schilderen.",
   subtitle: "Vervang hout door kunststof.",
-  body: "Kunststof gevelbekleding, dakranden en kozijnafwerking. Showroom op afspraak in Utrecht. Zelf monteren of montage via een offerte.",
+  body: "Kunststof gevelbekleding, dakranden en kozijnafwerking. Showroom op afspraak in Hedel. Zelf monteren of montage via een offerte.",
   cta: "Bekijk voorraad",
   samples: "Kies gratis kleurstalen",
   micro: "Altijd binnen 24 uur bericht",
@@ -110,7 +110,7 @@ export const nav = shopNav;
 export { siteUsp as facts } from "./usp";
 
 export const uspItems = [
-  "Showroom op afspraak in Utrecht",
+  "Showroom op afspraak in Hedel",
   "Levertijd bevestigen we per bestelling",
   "10 jaar garantie op kleur",
   "Montage via offerte",

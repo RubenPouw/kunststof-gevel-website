@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Over ons",
   description:
-    `${site.company} levert kunststof gevelbekleding vanuit de showroom in Utrecht, op afspraak.`,
+    `${site.company} levert kunststof gevelbekleding vanuit de showroom in Hedel, op afspraak.`,
   alternates: { canonical: "/over-ons" },
 };
 

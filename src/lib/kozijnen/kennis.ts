@@ -393,7 +393,7 @@ export const articles: Article[] = [
         heading: "Wat we nu kunnen zeggen",
         paragraphs: [
           "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn bevestigen we per offerte. Een kleur in folie kan langer duren dan wit. Hoeveel langer, zetten we er pas bij als de leverancier dat aantal dagen geeft.",
-          "Levering is in overleg, in heel Nederland. Afhalen kan in de showroom in Utrecht, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
+          "Levering is in overleg, in heel Nederland. Afhalen kan in de showroom in Hedel, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
         ],
       },
       {

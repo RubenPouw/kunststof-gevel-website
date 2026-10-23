@@ -84,7 +84,7 @@ export function quotePdfLines(input: { title: string; lines: SummaryLine[]; refe
     "",
     "Dit document is een aanvraag. Er staat geen prijs op.",
     "We reageren op werkdagen. Levertijd en garantie bevestigen we in de offerte.",
-    "Pouw Online Group B.V., Spinsterlaan 6A, 3454 WZ Utrecht",
+    "Pouw Online Group B.V., Binnenkamp 7a, 5321 KA Hedel",
     "030 227 1397",
   ];
 }

@@ -249,7 +249,7 @@ export async function createShopifyCheckout(input: {
     "Bestelling via kunststof-gevel.nl",
     input.montage ? "Klant wil montage meerekenen. Montage zit niet in deze betaling en loopt via de offerte." : "",
     `Betaling: ${paymentLabel}`,
-    input.customer.pickup ? "Afhalen in de showroom, op afspraak" : "Bezorgen",
+    input.customer.pickup ? "Afhalen in de showroom in Hedel, op afspraak" : "Bezorgen",
     input.customer.reference ? `Referentie: ${input.customer.reference}` : "",
     input.customer.deliveryDate ? `Gewenste leverdatum: ${input.customer.deliveryDate}` : "",
     input.customer.company ? `Bedrijf: ${input.customer.company}` : "",
