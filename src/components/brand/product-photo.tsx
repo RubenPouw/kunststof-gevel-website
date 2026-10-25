@@ -16,6 +16,7 @@ export function ProductPhoto({
   fallback = "#C9C4B8",
   bevel = 16,
   priority = false,
+  fit = "contain",
   className,
   imageClassName,
 }: {
@@ -25,6 +26,8 @@ export function ProductPhoto({
   fallback?: string;
   bevel?: 8 | 16 | 24 | null;
   priority?: boolean;
+  /** Packshots stay contained. Category photos cover the bevel. */
+  fit?: "contain" | "cover";
   className?: string;
   imageClassName?: string;
 }) {
@@ -37,7 +40,7 @@ export function ProductPhoto({
       sizes={sizes}
       priority={priority}
       loader={isShopifyImage(image.url) ? shopifyImageLoader : undefined}
-      className={cn("object-contain", imageClassName)}
+      className={cn(fit === "cover" ? "object-cover" : "object-contain", imageClassName)}
     />
   ) : null;
   const classes = cn("relative overflow-hidden", image && "bg-white", className);
