@@ -271,6 +271,67 @@
   border: 1px solid var(--color-border);
 }
 
+/* Listing soft cards. Approved exception to radius 0 and no shadow. */
+@utility kg-soft-card {
+  border-radius: 10px;
+  border: 1px solid var(--kg-lijn);
+  background: var(--kg-white);
+  box-shadow:
+    0 1px 2px rgb(27 40 56 / 0.05),
+    0 6px 16px rgb(27 40 56 / 0.07);
+}
+
+.kg-soft-card[aria-current="true"] {
+  border-color: var(--kg-navy);
+}
+
+.kg-btw-switch {
+  display: inline-flex;
+  height: 32px;
+  border: 1px solid var(--kg-grind);
+}
+
+.kg-btw-switch button {
+  min-width: 5.6rem;
+  padding: 0 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1;
+  color: var(--kg-kalk);
+  background: transparent;
+  cursor: pointer;
+}
+
+html:not([data-btw="excl"]) .kg-btw-switch button[data-mode="incl"],
+html[data-btw="excl"] .kg-btw-switch button[data-mode="excl"] {
+  background: var(--kg-signal);
+  color: var(--kg-navy);
+}
+
+.kg-btw-switch-light {
+  border-color: var(--kg-navy);
+}
+
+.kg-btw-switch-light button {
+  color: var(--kg-navy);
+}
+
+html:not([data-btw="excl"]) .kg-btw-switch-light button[data-mode="incl"],
+html[data-btw="excl"] .kg-btw-switch-light button[data-mode="excl"] {
+  background: var(--kg-navy);
+  color: var(--kg-kalk);
+}
+
+html:not([data-btw="excl"]) .kg-vat-excl,
+html:not([data-btw="excl"]) .kg-price-excl {
+  display: none;
+}
+
+html[data-btw="excl"] .kg-vat-incl,
+html[data-btw="excl"] .kg-price-incl {
+  display: none;
+}
+
 @keyframes kg-marquee {
   from {
     transform: translateX(0);

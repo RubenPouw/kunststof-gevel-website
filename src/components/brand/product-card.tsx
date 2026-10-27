@@ -1,10 +1,14 @@
 import Link from "next/link";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { VatPrice } from "@/components/brand/vat-price";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
-import { exclVat, formatPrice } from "@/lib/format";
+import { productHasPrice } from "@/lib/catalog/helpers";
+import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
+import { stockLabel } from "@/lib/week";
+import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
 
 export function ProductCard({
@@ -16,13 +20,20 @@ export function ProductCard({
 }) {
   const color = product.colors[0];
   const variant = product.variants[0];
+  const incl = variant?.price ?? product.price;
+  const status = stockLabel(variant?.inStock ?? product.inStock, variant?.stockText ?? product.stockText);
+  const delivery = leadTimeLabel(
+    variant?.inStock ?? product.inStock ? null : confirmedLeadTimeWeeks(product.category, product.slug),
+    status.text,
+  );
+  const sku = (variant?.sku ?? product.slug).replace(/-3M$/, "");
 
   return (
     <article className="flex flex-col border border-kg-lijn bg-white">
       <Link href={`/producten/${product.slug}`} className="relative block p-3 text-inherit no-underline hover:no-underline">
         <ProductPhoto
           image={product.images[0]}
-          alt={product.name}
+          alt={productAlt(product)}
           sizes="(min-width: 1024px) 280px, 50vw"
           fallback={color?.hex}
           className="aspect-[4/3]"
@@ -30,15 +41,18 @@ export function ProductCard({
         />
       </Link>
       <div className="flex flex-1 flex-col gap-1.5 px-3.5 pb-3.5">
-        <p className="font-mono text-[13px] text-kg-text-2">{product.brand}</p>
+        <p className="font-mono text-[13px] text-kg-text-2">Art. {sku} · {product.brand}</p>
         <h3 className="min-h-11 text-[17px] leading-[1.3] font-medium">
           <Link href={`/producten/${product.slug}`} className="text-inherit no-underline hover:no-underline">
             {product.name}
           </Link>
         </h3>
-        <p className="font-mono text-[13px] text-kg-text-2">{product.meta}</p>
+        <p className="font-mono text-[13px] text-kg-text-2">
+          {product.colors.length > 0 ? `${product.colors.length} ${product.colors.length === 1 ? "kleur" : "kleuren"} · ` : ""}
+          {delivery}
+        </p>
         <div className="mt-1 font-mono text-[14px]">
-          {formatPrice(exclVat(variant?.price ?? product.price))} excl. btw
+          {productHasPrice(product) ? <VatPrice incl={incl} /> : "Prijs op aanvraag"}
         </div>
         <div className={cn("mt-2 flex gap-2", showSample && color ? "flex-col sm:flex-row" : "")}>
           <Link
@@ -49,7 +63,7 @@ export function ProductCard({
               !showSample && "w-full",
             )}
           >
-            Voeg toe
+            Bekijk
           </Link>
           {showSample && color ? (
             <SampleAddButton

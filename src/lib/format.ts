@@ -26,11 +26,29 @@ export function inclVat(excl: number) {
   return roundMoney(excl * VAT_RATE);
 }
 
+export function shippingEstimateCopy() {
+  return `Verzending ${formatPrice(SHIPPING_FLAT)} excl. btw. Gratis vanaf ${formatPrice(FREE_SHIPPING_FROM)} excl. btw. Het bedrag in de checkout is leidend.`;
+}
+
+export function shippingEstimateInclCopy() {
+  return `Verzending ${formatPrice(inclVat(SHIPPING_FLAT))} incl. btw. Gratis vanaf ${formatPrice(inclVat(FREE_SHIPPING_FROM))} incl. btw. Het bedrag in de checkout is leidend.`;
+}
+
+export function shippingEstimateBothCopy() {
+  return `Verzending ${formatPrice(SHIPPING_FLAT)} excl. btw (${formatPrice(inclVat(SHIPPING_FLAT))} incl. 21% btw). Gratis vanaf ${formatPrice(FREE_SHIPPING_FROM)} excl. btw (${formatPrice(inclVat(FREE_SHIPPING_FROM))} incl. 21% btw). Het bedrag in de checkout is leidend.`;
+}
+
 export function formatLengthMm(length: string) {
   const meters = length.trim().toLowerCase().match(/^(\d+(?:[.,]\d+)?)\s*(m|meter|mtr)\b/);
   if (meters) {
     const mm = Math.round(Number(meters[1].replace(",", ".")) * 1000);
     return `${mm.toLocaleString("nl-NL")} mm`;
+  }
+  const mm = length.trim().match(/^(\d+(?:[.,]\d+)?)\s*mm$/i);
+  if (mm) {
+    const n = Number(mm[1].replace(",", "."));
+    if (!Number.isInteger(n)) return `${mm[1].replace(".", ",")} mm`;
+    return `${n.toLocaleString("nl-NL")} mm`;
   }
   if (/^\d+$/.test(length.trim())) {
     return `${Number(length).toLocaleString("nl-NL")} mm`;

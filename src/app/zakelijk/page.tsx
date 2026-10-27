@@ -7,6 +7,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Zakelijk",
   description: "Vaste prijzen voor aannemers. Geen staffelkortingen die later in meerwerk verdwijnen.",
+  alternates: { canonical: "/zakelijk" },
 };
 
 export default function ZakelijkPage() {

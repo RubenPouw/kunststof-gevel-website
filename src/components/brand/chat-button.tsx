@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 import { site } from "@/lib/site";
 
 export function ChatButton() {
+  const pathname = usePathname() ?? "/";
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -16,6 +18,8 @@ export function ChatButton() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  if (pathname === "/afrekenen" || pathname.startsWith("/afrekenen/")) return null;
 
   return (
     <div className="fixed right-6 bottom-6 z-[80] flex flex-col items-end gap-3">

@@ -1,7 +1,13 @@
 import { cache } from "react";
 
+import { enrichProduct } from "@/lib/catalog/derive";
+import { findListedProduct } from "@/lib/catalog/dedupe";
+import { correctVariantImages } from "@/lib/catalog/variant-images";
+import { databaseUrl } from "@/lib/db/client";
+import { readStoredProducts } from "@/lib/db/store";
 import { isShopifyConfigured } from "@/lib/shopify/config";
 import { fetchShopifySearchHandles, loadShopifyCatalog } from "@/lib/shopify/catalog";
+import { brandsFromProducts } from "@/lib/shopify/map";
 
 import {
   applyListingFilters,
@@ -10,6 +16,7 @@ import {
   getDefaultVariant,
   getVariant,
   getVariantBySku,
+  hasActiveFilters,
   listingFacets,
   listingHref,
   parseListingSearchParams,
@@ -54,6 +61,7 @@ export {
   getDefaultVariant,
   getVariant,
   getVariantBySku,
+  hasActiveFilters,
   listingFacets,
   listingHref,
   parseListingSearchParams,
@@ -65,8 +73,15 @@ export type CatalogData = {
   products: Product[];
   brands: Brand[];
   categories: Category[];
-  source: "shopify" | "static";
+  source: "postgres" | "shopify" | "static";
 };
+
+const CATALOG_MEMORY_MS = 30_000;
+let catalogMemory: { at: number; data: CatalogData } | null = null;
+
+export function clearCatalogCache() {
+  catalogMemory = null;
+}
 
 function staticCatalog(): CatalogData {
   return {
@@ -77,10 +92,26 @@ function staticCatalog(): CatalogData {
   };
 }
 
-export const getCatalog = cache(async (): Promise<CatalogData> => {
-  if (!isShopifyConfigured()) {
-    return staticCatalog();
+async function loadCatalog(): Promise<CatalogData> {
+  if (databaseUrl()) {
+    try {
+      const stored = await readStoredProducts();
+      const products = stored?.map(correctVariantImages);
+      if (products && products.length) {
+        const brands = brandsFromProducts(products);
+        return {
+          products,
+          brands: brands.length ? brands : staticBrands,
+          categories: staticCategories,
+          source: "postgres",
+        };
+      }
+    } catch (error) {
+      console.error("[catalog] Postgres niet bereikbaar, val terug op Shopify", error);
+    }
   }
+
+  if (!isShopifyConfigured()) return staticCatalog();
 
   try {
     const shopify = await loadShopifyCatalog();
@@ -89,7 +120,7 @@ export const getCatalog = cache(async (): Promise<CatalogData> => {
       return staticCatalog();
     }
     return {
-      products: shopify.products,
+      products: shopify.products.map(correctVariantImages),
       brands: shopify.brands.length ? shopify.brands : staticBrands,
       categories: shopify.categories,
       source: "shopify",
@@ -98,6 +129,18 @@ export const getCatalog = cache(async (): Promise<CatalogData> => {
     console.error("[catalog] Shopify Storefront mislukt, statische fallback", error);
     return staticCatalog();
   }
+}
+
+function withColourLabels(data: CatalogData): CatalogData {
+  // Re-apply name mapping on stored rows so an old width or "Overig" type does not stick.
+  return { ...data, products: data.products.map((product) => enrichProduct(product)) };
+}
+
+export const getCatalog = cache(async (): Promise<CatalogData> => {
+  if (catalogMemory && Date.now() - catalogMemory.at < CATALOG_MEMORY_MS) return catalogMemory.data;
+  const data = withColourLabels(await loadCatalog());
+  catalogMemory = { at: Date.now(), data };
+  return data;
 });
 
 export async function listProducts() {
@@ -113,14 +156,7 @@ export async function listCategories() {
 }
 
 export async function getProduct(slug: string) {
-  const products = await listProducts();
-  const direct = products.find((product) => product.slug === slug);
-  if (direct) return direct;
-  const base = slug.replace(/-(\d+)$/, "");
-  if (base !== slug) {
-    return products.find((product) => product.slug === base);
-  }
-  return products.find((product) => product.slug.startsWith(`${slug}-`));
+  return findListedProduct(await listProducts(), slug);
 }
 
 export async function getCategory(slug: string) {
@@ -151,7 +187,11 @@ export async function searchProducts(query: string) {
   try {
     const handles = await fetchShopifySearchHandles(query);
     if (!handles.length) return local;
-    const byHandle = new Map(products.map((product) => [product.slug, product]));
+    const byHandle = new Map<string, Product>();
+    for (const product of products) {
+      byHandle.set(product.slug, product);
+      for (const alias of product.aliasSlugs ?? []) byHandle.set(alias, product);
+    }
     const fromSearch = handles
       .map((handle) => byHandle.get(handle))
       .filter((product): product is Product => Boolean(product));

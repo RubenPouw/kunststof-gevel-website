@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Offerte",
   description:
     "Vraag een prijsindicatie aan voor kunststof gevelbekleding. Vaste offerte na opname.",
+  alternates: { canonical: "/offerte" },
 };
 
 export default function OffertePage() {

@@ -10,3 +10,13 @@ export function shopifyImageLoader({ src, width }: ImageLoaderProps) {
   url.searchParams.set("width", String(width));
   return url.toString();
 }
+
+/** Small CDN thumbnail. Other hosts stay untouched. */
+export function shopifyThumb(src: string, width: number) {
+  if (!isShopifyImage(src)) return src;
+  try {
+    return shopifyImageLoader({ src, width });
+  } catch {
+    return src;
+  }
+}

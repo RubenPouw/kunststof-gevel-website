@@ -2,7 +2,9 @@ services:
   - type: web
     name: kunststofgevel-website
     runtime: node
-    plan: free
+    # Paid plan so the shop does not spin down. Region is Frankfurt.
+    # Changing region on an existing Render service may require a new service. This file is config only.
+    plan: starter
     region: frankfurt
     buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
@@ -24,3 +26,74 @@ services:
         sync: false
       - key: ACTIVECAMPAIGN_LIST_ID
         sync: false
+      - key: SHOPIFY_ADMIN_ACCESS_TOKEN
+        sync: false
+      - key: LEAD_EMAIL_TO
+        value: info@kunststof-gevel.nl
+      - key: LEAD_EMAIL_FROM
+        value: info@kunststof-gevel.nl
+      - key: LEAD_EMAIL_PROVIDER
+        value: smtp
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAILERSEND_API_KEY
+        sync: false
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        value: info@kunststof-gevel.nl
+      - key: SMTP_PASS
+        sync: false
+      - key: NOINDEX
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SHOPIFY_WEBHOOK_SECRET
+        sync: false
+      - key: SYNC_SECRET
+        sync: false
+      - key: TRACKING_GA4_ACTIEF
+        value: "false"
+      - key: GA4_MEASUREMENT_ID
+        sync: false
+      - key: GA4_API_SECRET
+        sync: false
+      - key: TRACKING_ADS_ACTIEF
+        value: "false"
+      - key: GOOGLE_ADS_DEVELOPER_TOKEN
+        sync: false
+      - key: GOOGLE_ADS_CUSTOMER_ID
+        sync: false
+      - key: GOOGLE_ADS_LOGIN_CUSTOMER_ID
+        sync: false
+      - key: GOOGLE_ADS_CLIENT_ID
+        sync: false
+      - key: GOOGLE_ADS_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_ADS_REFRESH_TOKEN
+        sync: false
+      - key: GOOGLE_ADS_CONVERSION_OFFERTE
+        sync: false
+      - key: GOOGLE_ADS_CONVERSION_STAAL
+        sync: false
+      - key: GOOGLE_ADS_CONVERSION_BESTELLING
+        sync: false
+      - key: BETALEN_KLARNA_ACTIEF
+        value: "false"
+      - key: BETALEN_RIVERTY_ACTIEF
+        value: "false"
+  - type: cron
+    name: kunststofgevel-catalogus-controle
+    runtime: node
+    region: frankfurt
+    plan: starter
+    schedule: "20 2 * * *"
+    buildCommand: node -e "process.exit(0)"
+    startCommand: node scripts/catalog-cron.mjs
+    envVars:
+      - key: SYNC_SECRET
+        sync: false
+      - key: CATALOG_SYNC_URL
+        value: https://kunststofgevel-website.onrender.com/api/catalogus/controle

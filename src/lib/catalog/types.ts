@@ -3,6 +3,7 @@ export const categorySlugs = [
   "dakranden",
   "kozijnafwerking",
   "montage",
+  "hpl-platen",
 ] as const;
 
 export type CategorySlug = (typeof categorySlugs)[number];
@@ -22,7 +23,30 @@ export const profileTypes = [
 
 export type ProfileType = (typeof profileTypes)[number];
 
-export const colorFamilies = ["donker", "licht", "houtlook", "overig"] as const;
+/** Listing groups. The fine profile type stays for existing type= links. */
+export const productGroups = ["gevelpaneel", "afwerkprofiel", "toebehoren"] as const;
+
+export type ProductGroup = (typeof productGroups)[number];
+
+export const productGroupLabels: Record<ProductGroup, string> = {
+  gevelpaneel: "Gevelpanelen",
+  afwerkprofiel: "Afwerkprofielen",
+  toebehoren: "Toebehoren",
+};
+
+export const colorFamilies = [
+  "donker",
+  "licht",
+  "houtlook",
+  "groen",
+  "blauw",
+  "rood",
+  "bruin",
+  "geel",
+  "metaal",
+  "steen",
+  "overig",
+] as const;
 
 export type ColorFamily = (typeof colorFamilies)[number];
 
@@ -43,6 +67,13 @@ export const colorFamilyLabels: Record<ColorFamily, string> = {
   donker: "Donker",
   licht: "Licht",
   houtlook: "Houtlook",
+  groen: "Groen",
+  blauw: "Blauw",
+  rood: "Rood",
+  bruin: "Bruin",
+  geel: "Geel",
+  metaal: "Metaal",
+  steen: "Steen",
   overig: "Overig",
 };
 
@@ -77,8 +108,11 @@ export type ProductVariant = {
   options?: { name: string; value: string }[];
   colorFamily: ColorFamily;
   panelsPerM2?: number;
+  /** True when the length was not in the article data and we used 6 m. */
+  lengthAssumed?: boolean;
   sampleId: string;
   image?: ProductImage;
+  shopifyVariantId?: string;
 };
 
 export type ProductImage = {
@@ -121,9 +155,22 @@ export type Product = {
   productType?: string;
   source?: "static" | "shopify";
   workingWidthMm?: number;
+  /** Front-end group for the product-type filter and the default sort. */
+  productGroup?: ProductGroup;
   profileType: ProfileType;
   sampleable: boolean;
+  /** Whole HPL sheet. The gevel calculator does not apply. */
+  saleUnit?: "sheet";
+  /** Square metres of one whole sheet. */
+  sheetM2?: number;
   panelsPerM2?: number;
+  /** Other Shopify handles that are the same article. Not written back to Shopify. */
+  aliasSlugs?: string[];
+  lengthAssumed?: boolean;
+  /** Shopify product.updatedAt when the catalog comes from the Storefront API. */
+  updatedAt?: string;
+  /** Real files only. Empty means the downloads block stays quiet. */
+  downloads?: { label: string; href: string }[];
 };
 
 export type SampleColor = {
@@ -136,9 +183,21 @@ export type SampleColor = {
 };
 
 export type ListingFilters = {
+  /** One brand. A single `merk` value stays this field. */
   brandSlug?: string;
+  /** Two or more brands. Same `merk` param, comma-separated. */
+  brandSlugs?: string[];
   inStockOnly?: boolean;
   profileType?: ProfileType;
+  profileTypes?: ProfileType[];
+  productGroup?: ProductGroup;
+  productGroups?: ProductGroup[];
   colorFamily?: ColorFamily;
   workingWidthMm?: number;
+  /** Exact colour name, slugified. One `kleurnaam` value. */
+  colorSlug?: string;
+  /** Two or more colour names. Same `kleurnaam` param, comma-separated. */
+  colorSlugs?: string[];
+  /** RAL digits, for example 7016. */
+  ral?: string;
 };

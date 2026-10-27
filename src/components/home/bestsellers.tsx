@@ -1,31 +1,38 @@
 import Link from "next/link";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { VatPrice } from "@/components/brand/vat-price";
 import { SectionHead } from "@/components/brand/section-head";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog/types";
-import { exclVat, formatPrice } from "@/lib/format";
-import { weekNow, stockLabel } from "@/lib/week";
+import { productAlt } from "@/lib/seo/alt";
+import { stockLabel } from "@/lib/week";
 import { cn } from "@/lib/utils";
 
 export function Bestsellers({ products }: { products: Product[] }) {
-  const week = weekNow();
-
   return (
     <section className="container-kg section-kg">
-      <SectionHead title="Deze week leverbaar" aside="Meest besteld · prijzen excl. btw" />
+      <SectionHead
+        title="Veel gekozen"
+        aside={
+          <span className="kg-vat">
+            <span className="kg-vat-incl">Prijzen incl. btw</span>
+            <span className="kg-vat-excl">Prijzen excl. btw</span>
+          </span>
+        }
+      />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {products.slice(0, 4).map((product) => {
           const variant = product.variants[0];
-          const status = stockLabel(product.inStock, week, product.stockText);
+          const status = stockLabel(product.inStock, product.stockText);
           const color = product.colors[0];
           return (
             <article key={product.slug} className="flex flex-col border border-kg-lijn bg-white">
               <Link href={`/producten/${product.slug}`} className="block p-3 no-underline hover:no-underline">
                 <ProductPhoto
                   image={product.images[0]}
-                  alt={product.name}
+                  alt={productAlt(product)}
                   sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw"
                   fallback={color?.hex}
                   className="aspect-[4/3]"
@@ -43,7 +50,7 @@ export function Bestsellers({ products }: { products: Product[] }) {
                 </h3>
                 <div className="mt-auto flex justify-between border-t border-kg-lijn pt-2.5 font-mono text-[14px] tabular-nums">
                   <span style={{ color: status.color }}>{status.text}</span>
-                  <span>{formatPrice(exclVat(variant?.price ?? product.price))}</span>
+                  <VatPrice incl={variant?.price ?? product.price} />
                 </div>
                 <div className="mt-1 flex gap-2">
                   <Link
