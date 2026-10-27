@@ -1,5 +1,6 @@
 import { resolveColour } from "@/lib/catalog/colours";
 import { enrichProduct, inferProfileType } from "@/lib/catalog/derive";
+import { initialLength, isRealListedLength, parseWorkingWidthMm } from "@/lib/catalog/measures";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
 import {
   DISTRIBUTOR_BRAND_SLUGS,
@@ -246,17 +247,18 @@ function colorHex(colorName: string, context = "") {
   return resolveColour(colorName, context).hex;
 }
 
-function lengthFromTitle(title: string) {
-  const match = title.match(/(\d+(?:[.,]\d+)?\s?(?:mm|cm|mtr|m)\b)/i);
-  return match?.[1]?.replace("mtr", "m");
-}
-
 function usableAlt(alt: string | null | undefined, fallback: string) {
   const value = alt?.trim() ?? "";
   if (value.length < 3) return fallback;
+  if (/https?:\/\//i.test(value) || /^www\./i.test(value)) return fallback;
   if (/^(img|image|foto|screenshot|schermafbeelding|dsc|img_)/i.test(value)) return fallback;
   if (/\.(jpe?g|png|webp|gif)$/i.test(value)) return fallback;
   return withoutTrespa(value);
+}
+
+/** Shopify alts sometimes store the file URL. Callers get the product name instead. */
+export function productImageAlt(alt: string | null | undefined, fallback: string) {
+  return usableAlt(alt, fallback);
 }
 
 function mapImage(image: ShopifyImage | null | undefined, fallbackAlt: string): ProductImage | undefined {
@@ -270,10 +272,7 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     variant.selectedOptions.find((option) => !isDefaultOption(option.name, option.value) && !/lengte|length|maat|size/.test(option.name.toLowerCase()))
       ?.value ??
     (variant.title !== "Default Title" ? variant.title : "Standaard");
-  const length =
-    optionValue(variant, ["lengte", "length", "maat", "size"]) ??
-    lengthFromTitle(product.title) ??
-    "stuk";
+  const length = initialLength(product.title, optionValue(variant, ["lengte", "length", "maat", "size"]));
   const sku =
     variant.sku?.trim() ||
     `${product.handle}-${index + 1}`.toUpperCase().replace(/[^A-Z0-9-]+/g, "-");
@@ -297,9 +296,9 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
 
 function specsFor(product: ShopifyProduct, brand: Brand, category: CategorySlug, variants: ProductVariant[]): Spec[] {
   const specs: Spec[] = [{ label: "Merk", value: brand.name }];
-  const width = product.title.match(/(\d+(?:[.,]\d+)?)\s*mm/i);
-  if (width) specs.push({ label: "Maat", value: `${width[1].replace(".", ",")} mm` });
-  const lengths = [...new Set(variants.map((variant) => variant.length).filter((value) => value && value !== "stuk"))];
+  const width = parseWorkingWidthMm(product.title);
+  if (width) specs.push({ label: "Werkende breedte", value: `${width} mm` });
+  const lengths = [...new Set(variants.map((variant) => variant.length).filter((value) => isRealListedLength(value)))];
   if (lengths.length === 1) specs.push({ label: "Lengte", value: lengths[0] });
   const sku = variants.find((variant) => variant.sku)?.sku;
   if (sku) specs.push({ label: "Artikelnummer", value: sku });

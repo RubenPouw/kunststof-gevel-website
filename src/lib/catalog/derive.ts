@@ -1,6 +1,12 @@
 import { facadeOrder, HPL_SHEET_M2 } from "@/lib/area";
 import { labelColour, resolveColour, UNKNOWN_COLOUR_HEX } from "@/lib/catalog/colours";
 import {
+  inferProductGroup,
+  initialLength,
+  isRealListedLength,
+  parseWorkingWidthMm,
+} from "@/lib/catalog/measures";
+import {
   extractHplColor,
   extractPanelLength,
   parseLengthMeters,
@@ -15,10 +21,10 @@ import type {
   ProductVariant,
   ProfileType,
   SampleColor,
-  Spec,
 } from "./types";
 
 export { parseLengthMeters };
+export { parseWorkingWidthMm };
 
 export const THREE_M_PRICE_RATIO = 46.9 / 87.3;
 
@@ -35,16 +41,6 @@ export function sampleId(brandSlug: string, colorName: string, skuSuffix?: strin
   return `${brandSlug}:${skuSuffix || slugKey(colorName)}`;
 }
 
-export function parseWorkingWidthMm(name: string, specs: Spec[] = []): number | undefined {
-  const labelled = specs.find((spec) => /werkende breedte|werkend/i.test(spec.label));
-  const fromSpec = labelled?.value.match(/(\d+(?:[.,]\d+)?)\s*mm/i);
-  if (fromSpec) return Number(fromSpec[1].replace(",", "."));
-
-  const fromName = name.match(/(\d+)\s*mm/i);
-  if (fromName) return Number(fromName[1]);
-  return undefined;
-}
-
 export function inferProfileType(name: string, productType?: string): ProfileType {
   const t = `${name} ${productType ?? ""}`.toLowerCase();
   if (/steenstrip|wildverband/.test(t)) return "steenstrip";
@@ -52,7 +48,7 @@ export function inferProfileType(name: string, productType?: string): ProfileTyp
   if (/potdeksel/.test(t)) return "potdeksel";
   if (/rondkant/.test(t)) return "rondkant";
   if (/quattro/.test(t)) return "quattro";
-  if (/\brabat\b|duafort/.test(t)) return "rabat";
+  if (/rabat|duafort/.test(t)) return "rabat";
   if (/dakrand|boeideel/.test(t)) return "dakrand";
   if (/vensterbank|overzet/.test(t)) return "vensterbank";
   if (/profiel|schroef|clip|verbind|startpr|eindkap|ventilatie|kit/.test(t)) return "profiel";
@@ -75,11 +71,12 @@ const CLADDING_PROFILES: ProfileType[] = ["sponning", "potdeksel", "rabat", "ron
 
 export function isFacadePanel(product: Pick<Product, "category" | "name" | "workingWidthMm" | "profileType">) {
   if (!product.workingWidthMm) return false;
+  if (inferProductGroup(product.name) !== "gevelpaneel") return false;
   if (/hoekstuk|schroef|wildverband|steenstrip|profiel|clip|ventilatie|kit|verbinding|startpr/i.test(product.name)) {
     return false;
   }
   if (!CLADDING_PROFILES.includes(product.profileType)) return false;
-  return product.category === "gevelbekleding" || product.profileType === "rabat" || /\brabat\b/i.test(product.name);
+  return product.category === "gevelbekleding" || product.profileType === "rabat" || /rabat/i.test(product.name);
 }
 
 function variantLength(variant: ProductVariant, productName: string) {
@@ -182,12 +179,13 @@ export const HPL_SHEET_SIZE = "3050 × 1300 mm";
 export function enrichProduct(product: Product): Product {
   const sheet = product.category === "hpl-platen" || product.saleUnit === "sheet";
   const name = withoutTrespa(product.name);
-  const workingWidthMm = sheet ? undefined : (product.workingWidthMm ?? parseWorkingWidthMm(name, product.specs));
+  const workingWidthMm = sheet ? undefined : parseWorkingWidthMm(name, product.specs);
   const profileType = sheet
     ? "overig"
     : product.profileType && product.profileType !== "overig"
       ? product.profileType
       : inferProfileType(name, product.productType);
+  const productGroup = sheet ? undefined : inferProductGroup(name, product.productType);
   const facade = sheet
     ? false
     : isFacadePanel({
@@ -215,10 +213,16 @@ export function enrichProduct(product: Product): Product {
         colorName = parsed.colorName || parsed.ral || colorName;
       }
       length = HPL_SHEET_SIZE;
-    } else if (!parseLengthMeters(length) && facade) {
-      length = "6 m";
-      assumed = true;
-      anyAssumed = true;
+    } else {
+      if (!isRealListedLength(length)) {
+        length = initialLength(name, length === "stuk" ? undefined : length);
+      }
+      if (!isRealListedLength(length) && facade) {
+        length = "6 m";
+        assumed = true;
+        anyAssumed = true;
+      }
+      if (!isRealListedLength(length)) length = "stuk";
     }
     const meters = sheet ? undefined : parseLengthMeters(length);
     const colour = resolveColour(colorName, name);
@@ -231,7 +235,7 @@ export function enrichProduct(product: Product): Product {
       hex,
       ral,
       length,
-      lengthAssumed: assumed,
+      lengthAssumed: assumed || Boolean(variant.lengthAssumed && isRealListedLength(length)),
       colorFamily: family,
       panelsPerM2: sheet || !workingWidthMm || !meters ? undefined : Number(panelsPerM2(workingWidthMm, meters).toFixed(2)),
       sampleId: sampleId(product.brandSlug, colorName),
@@ -270,6 +274,7 @@ export function enrichProduct(product: Product): Product {
     description: withoutTrespa(product.description),
     workingWidthMm,
     profileType,
+    productGroup,
     sampleable,
     saleUnit: sheet ? "sheet" : product.saleUnit,
     sheetM2: sheet ? HPL_SHEET_M2 : undefined,

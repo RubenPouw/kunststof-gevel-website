@@ -23,6 +23,17 @@ export const profileTypes = [
 
 export type ProfileType = (typeof profileTypes)[number];
 
+/** Listing groups. The fine profile type stays for existing type= links. */
+export const productGroups = ["gevelpaneel", "afwerkprofiel", "toebehoren"] as const;
+
+export type ProductGroup = (typeof productGroups)[number];
+
+export const productGroupLabels: Record<ProductGroup, string> = {
+  gevelpaneel: "Gevelpanelen",
+  afwerkprofiel: "Afwerkprofielen",
+  toebehoren: "Toebehoren",
+};
+
 export const colorFamilies = [
   "donker",
   "licht",
@@ -144,6 +155,8 @@ export type Product = {
   productType?: string;
   source?: "static" | "shopify";
   workingWidthMm?: number;
+  /** Front-end group for the product-type filter and the default sort. */
+  productGroup?: ProductGroup;
   profileType: ProfileType;
   sampleable: boolean;
   /** Whole HPL sheet. The gevel calculator does not apply. */
@@ -173,6 +186,7 @@ export type ListingFilters = {
   brandSlug?: string;
   inStockOnly?: boolean;
   profileType?: ProfileType;
+  productGroup?: ProductGroup;
   colorFamily?: ColorFamily;
   workingWidthMm?: number;
   /** Exact colour name, slugified. Used for HPL sheets. */

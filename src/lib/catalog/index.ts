@@ -1,6 +1,6 @@
 import { cache } from "react";
 
-import { applyColourLabels } from "@/lib/catalog/derive";
+import { enrichProduct } from "@/lib/catalog/derive";
 import { findListedProduct } from "@/lib/catalog/dedupe";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
 import { databaseUrl } from "@/lib/db/client";
@@ -132,7 +132,8 @@ async function loadCatalog(): Promise<CatalogData> {
 }
 
 function withColourLabels(data: CatalogData): CatalogData {
-  return { ...data, products: data.products.map(applyColourLabels) };
+  // Re-apply name mapping on stored rows so an old width or "Overig" type does not stick.
+  return { ...data, products: data.products.map((product) => enrichProduct(product)) };
 }
 
 export const getCatalog = cache(async (): Promise<CatalogData> => {

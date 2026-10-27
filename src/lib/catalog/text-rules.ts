@@ -133,7 +133,7 @@ export function parseLengthMeters(length: string): number | undefined {
   const match = value.match(/^(\d+(?:[.,]\d+)?)\s*(m|meter|mtr)\b/);
   if (!match) return undefined;
   const meters = Number(match[1].replace(",", "."));
-  if (!Number.isFinite(meters) || meters < 0.5 || meters > 12) return undefined;
+  if (!Number.isFinite(meters) || meters < 0.5 || meters > 100) return undefined;
   return meters;
 }
 
@@ -157,7 +157,8 @@ export function extractPanelLength(text: string): string | undefined {
   const meters = text.match(/(\d+(?:[.,]\d+)?)\s*(?:mtr|meter|m)\b/i);
   if (meters) {
     const n = Number(meters[1].replace(",", "."));
-    if (n >= 0.5 && n <= 12) return formatMeters(n);
+    // Rolls (folie, tape, loodvervanger) run past a panel length. 143 mm stays ignored.
+    if (n >= 0.5 && n <= 100) return formatMeters(n);
   }
 
   const labelledMm = text.match(/(?:lengte|length)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*mm\b/i);

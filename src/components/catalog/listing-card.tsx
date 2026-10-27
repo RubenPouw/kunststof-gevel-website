@@ -9,11 +9,20 @@ import { VatPrice } from "@/components/brand/vat-price";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { ListingCardModel } from "@/lib/catalog/listing";
-import { formatLengthMm } from "@/lib/format";
+import { describeMeasure } from "@/lib/catalog/measures";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
 import { stockLabel } from "@/lib/week";
+
+function measureLine(card: ListingCardModel, length: string) {
+  const measure = describeMeasure(card.name, length, card.workingWidthMm);
+  if (measure.text === "Stuk") return "Per stuk";
+  if (measure.label === "Lengte" && card.workingWidthMm) return `${measure.text} · ${card.workingWidthMm} mm werkend`;
+  if (measure.label === "Lengte") return measure.text;
+  if (measure.label === "Werkende breedte") return `${measure.text} werkend`;
+  return `${measure.label} ${measure.text}`;
+}
 
 export function ListingCard({ card }: { card: ListingCardModel }) {
   const [index, setIndex] = useState(card.activeIndex);
@@ -49,7 +58,7 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
         <p className="mt-1 font-mono text-[13px] text-kg-text-2">
           {card.saleUnit === "sheet"
             ? `3050 × 1300 mm · hele plaat${selected?.ral ? ` · ${selected.ral}` : ""}`
-            : `${formatLengthMm(selected?.length ?? "")}${card.workingWidthMm ? ` · ${card.workingWidthMm} mm werkend` : ""}`}
+            : measureLine(card, selected?.length ?? "")}
         </p>
         {card.swatches.length > 0 ? (
           <p className="mt-2 font-mono text-[12px] text-kg-text-2">

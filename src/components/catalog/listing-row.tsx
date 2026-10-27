@@ -8,11 +8,16 @@ import { ProductPhoto } from "@/components/brand/product-photo";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import type { ListingCardModel, ListingLengthOption, ListingSwatch } from "@/lib/catalog/listing";
+import { describeMeasure, isRealListedLength } from "@/lib/catalog/measures";
 import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
 import { stockLabel } from "@/lib/week";
+
+function firstRealLength(swatch: ListingSwatch | undefined) {
+  return swatch?.lengths.find((item) => isRealListedLength(item.length))?.length ?? swatch?.lengths[0]?.length ?? "";
+}
 
 function selectedLength(swatch: ListingSwatch | undefined, length: string): ListingLengthOption | undefined {
   return swatch?.lengths.find((item) => item.length === length) ?? swatch?.lengths[0];
@@ -22,7 +27,7 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
   const cart = useCart();
   const initial = card.swatches[card.activeIndex] ?? card.swatches[0];
   const [colour, setColour] = useState(initial?.name ?? "");
-  const [length, setLength] = useState(initial?.length ?? "");
+  const [length, setLength] = useState(firstRealLength(initial));
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const swatch = card.swatches.find((item) => item.name === colour) ?? initial;
@@ -36,12 +41,14 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
   );
   const sku = (variant?.sku ?? card.slug).replace(/-3M$/, "");
   const image = variant?.image ?? swatch?.image;
+  const lengthChoices = (swatch?.lengths ?? []).filter((item) => isRealListedLength(item.length));
+  const measure = describeMeasure(card.name, lengthChoices.length ? (variant?.length ?? "") : "stuk", card.workingWidthMm);
 
   function onColour(next: string) {
     setColour(next);
     const match = card.swatches.find((item) => item.name === next);
-    if (match && !match.lengths.some((item) => item.length === length)) {
-      setLength(match.lengths[0]?.length ?? "");
+    if (match && !match.lengths.some((item) => item.length === length && isRealListedLength(item.length))) {
+      setLength(firstRealLength(match));
     }
   }
 
@@ -86,6 +93,9 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
               {card.name}
             </Link>
           </h3>
+          {lengthChoices.length > 0 && card.workingWidthMm ? (
+            <p className="mt-1 font-mono text-[13px] text-kg-text-2">{card.workingWidthMm} mm werkend</p>
+          ) : null}
           <p className="mt-1 font-mono text-[13px] whitespace-nowrap" style={{ color: status.color }}>
             {delivery}
           </p>
@@ -111,20 +121,27 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
         </label>
       ) : null}
 
-      <label className="block w-full lg:w-[112px] lg:shrink-0">
-        <span className="sr-only">Lengte</span>
-        <select
-          value={variant?.length ?? ""}
-          onChange={(event) => setLength(event.target.value)}
-          className="h-11 w-full border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy"
-        >
-          {(swatch?.lengths.length ? swatch.lengths : [{ length: card.swatches[0]?.length || "" }]).map((item) => (
-            <option key={item.length} value={item.length}>
-              {item.length ? formatLengthMm(item.length) : "Stuk"}
-            </option>
-          ))}
-        </select>
-      </label>
+      {lengthChoices.length > 0 ? (
+        <label className="block w-full lg:w-[112px] lg:shrink-0">
+          <span className="sr-only">Lengte</span>
+          <select
+            value={lengthChoices.some((item) => item.length === variant?.length) ? variant?.length : lengthChoices[0]?.length}
+            onChange={(event) => setLength(event.target.value)}
+            className="h-11 w-full border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy"
+          >
+            {lengthChoices.map((item) => (
+              <option key={item.length} value={item.length}>
+                {formatLengthMm(item.length)}
+              </option>
+            ))}
+          </select>
+        </label>
+      ) : (
+        <p className="flex h-11 w-full items-center border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy lg:w-[148px] lg:shrink-0">
+          <span className="sr-only">{measure.label}</span>
+          {measure.text === "Stuk" ? "Per stuk" : measure.label === "Werkende breedte" ? `${measure.text} werkend` : `${measure.label} ${measure.text}`}
+        </p>
+      )}
 
       <div className="flex h-11 w-full items-stretch border border-kg-navy lg:w-[124px] lg:shrink-0">
         <button

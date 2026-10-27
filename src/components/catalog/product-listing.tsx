@@ -18,7 +18,7 @@ import {
   type ListingView,
 } from "@/lib/catalog/listing";
 import type { ListingFilters } from "@/lib/catalog/types";
-import { colorFamilyLabels, profileTypeLabels } from "@/lib/catalog/types";
+import { colorFamilyLabels, productGroupLabels, profileTypeLabels, type ProductGroup } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 
 const COLOUR_PREVIEW = 8;
@@ -102,11 +102,21 @@ export function ProductListing({
     return event.button === 0 && !event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey;
   }
 
-  function onFilter(event: React.MouseEvent<HTMLAnchorElement>, patch: Partial<ListingFilters> & { brandSlug?: string | "" }) {
+  function onFilter(
+    event: React.MouseEvent<HTMLAnchorElement>,
+    patch: Omit<Partial<ListingFilters>, "productGroup" | "brandSlug"> & {
+      brandSlug?: string | "";
+      productGroup?: ProductGroup | null;
+    },
+  ) {
     if (!plainClick(event)) return;
     event.preventDefault();
-    const next: ListingFilters = { ...filters, ...patch };
-    if (patch.brandSlug === "") next.brandSlug = undefined;
+    const next: ListingFilters = {
+      ...filters,
+      ...patch,
+      brandSlug: patch.brandSlug === "" ? undefined : (patch.brandSlug ?? filters.brandSlug),
+      productGroup: patch.productGroup === null ? undefined : (patch.productGroup ?? filters.productGroup),
+    };
     void replaceFromApi(next, 1, presentation, true);
   }
 
@@ -147,7 +157,8 @@ export function ProductListing({
   const colourRest = facets.sheetColors.slice(COLOUR_PREVIEW);
   const showFilters =
     showStockChip ||
-    facets.profileTypes.length > 1 ||
+    facets.groups.length > 1 ||
+    facets.profileTypes.filter((item) => item.slug !== "overig").length > 1 ||
     facets.colorFamilies.length > 1 ||
     facets.sheetColors.length > 1 ||
     facets.rals.length > 1 ||
@@ -170,21 +181,46 @@ export function ProductListing({
             />
           </FilterSection>
         ) : null}
-        {facets.profileTypes.length > 1 ? (
+        {facets.groups.length > 1 ? (
           <FilterSection title="Producttype">
-            {facets.profileTypes.map((item) => {
-              const active = filters.profileType === item.slug;
+            {facets.groups.map((item) => {
+              const active = filters.productGroup === item.slug;
               return (
                 <FilterCheck
                   key={item.slug}
-                  href={listingHref(basePath, filters, { profileType: active ? undefined : item.slug }, presentation)}
+                  href={listingHref(
+                    basePath,
+                    filters,
+                    { productGroup: active ? null : item.slug, profileType: undefined },
+                    presentation,
+                  )}
                   active={active}
-                  label={profileTypeLabels[item.slug]}
+                  label={productGroupLabels[item.slug]}
                   count={item.count}
-                  onClick={(event) => onFilter(event, { profileType: active ? undefined : item.slug })}
+                  onClick={(event) =>
+                    onFilter(event, { productGroup: active ? null : item.slug, profileType: undefined })
+                  }
                 />
               );
             })}
+          </FilterSection>
+        ) : facets.profileTypes.filter((item) => item.slug !== "overig").length > 1 ? (
+          <FilterSection title="Producttype">
+            {facets.profileTypes
+              .filter((item) => item.slug !== "overig")
+              .map((item) => {
+                const active = filters.profileType === item.slug;
+                return (
+                  <FilterCheck
+                    key={item.slug}
+                    href={listingHref(basePath, filters, { profileType: active ? undefined : item.slug }, presentation)}
+                    active={active}
+                    label={profileTypeLabels[item.slug]}
+                    count={item.count}
+                    onClick={(event) => onFilter(event, { profileType: active ? undefined : item.slug })}
+                  />
+                );
+              })}
           </FilterSection>
         ) : null}
         {facets.colorFamilies.length > 1 ? (

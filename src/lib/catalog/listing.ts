@@ -5,7 +5,7 @@ import {
   listingHref,
   productHasPrice,
 } from "@/lib/catalog/helpers";
-import type { ListingFilters, Product, ProductImage } from "@/lib/catalog/types";
+import type { ListingFilters, Product, ProductGroup, ProductImage } from "@/lib/catalog/types";
 
 export const PAGE_SIZE = 10;
 export const CATEGORY_PAGE_SIZE = 16;
@@ -116,7 +116,18 @@ function swatchFrom(product: Product, name: string, hex: string, ral: string | u
   };
 }
 
+const GROUP_RANK: Record<ProductGroup, number> = {
+  gevelpaneel: 0,
+  afwerkprofiel: 1,
+  toebehoren: 2,
+};
+
 export function sortProducts(list: Product[], sort: ListingSort) {
+  if (sort === "relevantie") {
+    return [...list].sort(
+      (a, b) => (a.productGroup ? GROUP_RANK[a.productGroup] : 3) - (b.productGroup ? GROUP_RANK[b.productGroup] : 3),
+    );
+  }
   if (sort === "naam") {
     return [...list].sort((a, b) => a.name.localeCompare(b.name, "nl") || a.slug.localeCompare(b.slug, "nl"));
   }

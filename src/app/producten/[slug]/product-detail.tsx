@@ -14,6 +14,7 @@ import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import { findVariant, uniqueLengths } from "@/lib/catalog/derive";
+import { describeMeasure, isRealListedLength } from "@/lib/catalog/measures";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product, ProductVariant } from "@/lib/catalog/types";
 import { productHasPrice, profileRole } from "@/lib/catalog/helpers";
@@ -63,7 +64,7 @@ export function ProductDetail({
 }) {
   const router = useRouter();
   const fallback = getDefaultVariant(product);
-  const lengths = uniqueLengths(product).filter(Boolean);
+  const lengths = uniqueLengths(product).filter((value) => isRealListedLength(value));
   const showLength = lengths.length > 1;
   const [colorName, setColorName] = useState(fallback.colorName);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -96,6 +97,9 @@ export function ProductDetail({
   const sheetM2Incl = canBuy && sheet && product.sheetM2 ? selected.price / product.sheetM2 : undefined;
   const status = stockLabel(selected.inStock, selected.stockText);
   const skuShort = selected.sku.replace(/-3M$/, "");
+  const measure = describeMeasure(product.name, selected.length, product.workingWidthMm);
+  const measureText =
+    measure.text === "Stuk" ? "per stuk" : measure.label === "Lengte" ? measure.text : `${measure.label} ${measure.text}`;
 
   function onAdd(count = qty, goCart = true) {
     if (!canBuy) return;
@@ -112,7 +116,7 @@ export function ProductDetail({
       image: (selected.image ?? product.images[0])?.url,
       length: selected.length,
       areaM2: coverage ? count / coverage : undefined,
-      skuLabel: `Art. ${skuShort} · ${formatLengthMm(selected.length)}`,
+      skuLabel: `Art. ${skuShort} · ${measureText}`,
     });
     setAdded(true);
     if (goCart) router.push("/winkelwagen");
@@ -129,9 +133,9 @@ export function ProductDetail({
         ["RAL", selected.ral ?? ""],
       ].filter((row): row is [string, string] => Boolean(row[1]))
     : [
-        ["Werkende breedte", product.workingWidthMm ? `${product.workingWidthMm} mm` : ""],
+        ["Werkende breedte", measure.label === "Werkende breedte" ? "" : product.workingWidthMm ? `${product.workingWidthMm} mm` : ""],
         ["Dikte", product.specs.find((spec) => /dikte/i.test(spec.label))?.value ?? ""],
-        ["Lengte", formatLengthMm(selected.length)],
+        [measure.label, measure.text === "Stuk" ? "" : measure.text],
         ["Kleur", `${selected.colorName}${selected.ral ? ` ${selected.ral}` : ""}`],
         ["Brandklasse", product.specs.find((spec) => /brand/i.test(spec.label))?.value ?? ""],
       ].filter((row): row is [string, string] => Boolean(row[1]));

@@ -104,17 +104,20 @@ export function SiteHeader() {
         </nav>
 
         <form
+          action="/zoeken"
+          method="get"
           onSubmit={onSearch}
-          className="hidden h-10 max-w-[260px] min-w-0 flex-1 items-center gap-2 bg-white px-3 md:flex"
+          className="hidden h-10 w-[15rem] max-w-[240px] min-w-[11.5rem] shrink-0 items-center gap-2 bg-white px-3 md:flex"
         >
           <button type="submit" className="grid shrink-0 place-items-center" aria-label="Zoeken">
             <SearchIcon />
           </button>
           <input
             type="search"
+            name="q"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Zoek op product of artikelnummer"
+            placeholder="Kleur, artikel of naam"
             className="min-w-0 flex-1 bg-transparent text-[14px] text-kg-navy outline-none placeholder:text-kg-text-2"
           />
         </form>
@@ -198,6 +201,8 @@ export function SiteHeader() {
       ) : null}
 
       <form
+        action="/zoeken"
+        method="get"
         onSubmit={onSearch}
         className="flex items-center gap-2 border-t border-[var(--kg-line-dark)] bg-white px-6 py-2 text-[13px] md:hidden"
       >
@@ -206,9 +211,10 @@ export function SiteHeader() {
         </button>
         <input
           type="search"
+          name="q"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Zoek op product of artikelnummer"
+          placeholder="Kleur, artikel of naam"
           className="min-h-11 min-w-0 flex-1 bg-transparent text-kg-navy outline-none placeholder:text-kg-text-2"
         />
       </form>

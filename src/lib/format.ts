@@ -44,6 +44,12 @@ export function formatLengthMm(length: string) {
     const mm = Math.round(Number(meters[1].replace(",", ".")) * 1000);
     return `${mm.toLocaleString("nl-NL")} mm`;
   }
+  const mm = length.trim().match(/^(\d+(?:[.,]\d+)?)\s*mm$/i);
+  if (mm) {
+    const n = Number(mm[1].replace(",", "."));
+    if (!Number.isInteger(n)) return `${mm[1].replace(".", ",")} mm`;
+    return `${n.toLocaleString("nl-NL")} mm`;
+  }
   if (/^\d+$/.test(length.trim())) {
     return `${Number(length).toLocaleString("nl-NL")} mm`;
   }

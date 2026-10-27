@@ -6,10 +6,11 @@ import type {
   ColorFamily,
   ListingFilters,
   Product,
+  ProductGroup,
   ProductVariant,
   ProfileType,
 } from "./types";
-import { colorFamilies, profileTypes } from "./types";
+import { colorFamilies, productGroups, profileTypes } from "./types";
 
 const LISTING_SORTS = new Set<ListingSort>(["relevantie", "naam", "prijs-op", "prijs-af"]);
 
@@ -67,6 +68,7 @@ export function applyListingFilters(list: Product[], filters: ListingFilters) {
     if (filters.brandSlug && product.brandSlug !== filters.brandSlug) return false;
     if (filters.inStockOnly && !product.inStock) return false;
     if (filters.profileType && product.profileType !== filters.profileType) return false;
+    if (filters.productGroup && product.productGroup !== filters.productGroup) return false;
     if (filters.workingWidthMm && product.workingWidthMm !== filters.workingWidthMm) return false;
     if (filters.colorFamily && !product.colors.some((color) => color.family === filters.colorFamily)) {
       return false;
@@ -98,11 +100,13 @@ export function parseListingSearchParams(
   const brandSlug = firstParam(searchParams.merk);
   const voorraad = firstParam(searchParams.voorraad);
   const typeRaw = firstParam(searchParams.type);
+  const groupRaw = firstParam(searchParams.groep);
   const kleurRaw = firstParam(searchParams.kleur);
   const breedteRaw = firstParam(searchParams.breedte);
   const colorSlug = firstParam(searchParams.kleurnaam);
   const ralRaw = firstParam(searchParams.ral);
   const profileType = profileTypes.find((item) => item === typeRaw);
+  const productGroup = productGroups.find((item) => item === groupRaw);
   const colorFamily = colorFamilies.find((item) => item === kleurRaw);
   const workingWidthMm = breedteRaw && /^\d+$/.test(breedteRaw) ? Number(breedteRaw) : undefined;
   const ral = ralRaw && /^\d{4}$/.test(ralRaw) ? ralRaw : undefined;
@@ -111,6 +115,7 @@ export function parseListingSearchParams(
     brandSlug: brandSlug || undefined,
     inStockOnly: voorraad === "1",
     profileType,
+    productGroup,
     colorFamily,
     workingWidthMm,
     colorSlug: colorSlug || undefined,
@@ -123,6 +128,7 @@ export function hasActiveFilters(filters: ListingFilters) {
     filters.brandSlug ||
       filters.inStockOnly ||
       filters.profileType ||
+      filters.productGroup ||
       filters.colorFamily ||
       filters.workingWidthMm ||
       filters.colorSlug ||
@@ -133,19 +139,27 @@ export function hasActiveFilters(filters: ListingFilters) {
 export function listingHref(
   basePath: string,
   current: ListingFilters,
-  patch: Partial<ListingFilters> & { brandSlug?: string | "" },
+  patch: Omit<Partial<ListingFilters>, "productGroup" | "brandSlug"> & {
+    brandSlug?: string | "";
+    productGroup?: ProductGroup | null;
+  },
   presentation?: ListingPresentation,
 ) {
   const [path, existing] = basePath.split("?");
   const params = new URLSearchParams(existing);
-  const next: ListingFilters = { ...current, ...patch };
+  const next: ListingFilters = {
+    ...current,
+    ...patch,
+    productGroup: patch.productGroup === null ? undefined : (patch.productGroup ?? current.productGroup),
+  };
   const brand = patch.brandSlug === "" ? undefined : next.brandSlug;
-  ["merk", "voorraad", "type", "kleur", "breedte", "kleurnaam", "ral", "weergave", "sorteer", "pagina"].forEach((key) =>
-    params.delete(key),
+  ["merk", "voorraad", "type", "groep", "kleur", "breedte", "kleurnaam", "ral", "weergave", "sorteer", "pagina"].forEach(
+    (key) => params.delete(key),
   );
   if (brand) params.set("merk", brand);
   if (next.inStockOnly) params.set("voorraad", "1");
   if (next.profileType) params.set("type", next.profileType);
+  if (next.productGroup) params.set("groep", next.productGroup);
   if (next.colorFamily) params.set("kleur", next.colorFamily);
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
   if (next.colorSlug) params.set("kleurnaam", next.colorSlug);
@@ -158,6 +172,7 @@ export function listingHref(
 
 export function listingFacets(list: Product[]) {
   const types = new Map<ProfileType, number>();
+  const groups = new Map<ProductGroup, number>();
   const families = new Map<ColorFamily, { count: number; hex: string }>();
   const widths = new Map<number, number>();
   const sheetColors = new Map<string, { name: string; count: number; hex: string }>();
@@ -165,6 +180,7 @@ export function listingFacets(list: Product[]) {
 
   for (const product of list) {
     types.set(product.profileType, (types.get(product.profileType) ?? 0) + 1);
+    if (product.productGroup) groups.set(product.productGroup, (groups.get(product.productGroup) ?? 0) + 1);
     if (product.workingWidthMm) {
       widths.set(product.workingWidthMm, (widths.get(product.workingWidthMm) ?? 0) + 1);
     }
@@ -197,6 +213,9 @@ export function listingFacets(list: Product[]) {
     profileTypes: [...types.entries()]
       .map(([slug, count]) => ({ slug, count }))
       .sort((a, b) => b.count - a.count),
+    groups: productGroups
+      .map((slug) => ({ slug, count: groups.get(slug) ?? 0 }))
+      .filter((item) => item.count > 0),
     colorFamilies: [...families.entries()]
       .map(([slug, value]) => ({
         slug,
@@ -233,7 +252,14 @@ export function filterProductsByQuery(products: Product[], query: string) {
     ]
       .join(" ")
       .toLowerCase();
-    return haystack.includes(q);
+    if (haystack.includes(q)) return true;
+    const needle = q.replace(/[^a-z0-9]/g, "");
+    if (needle.length < 4) return false;
+    return product.variants.some((variant) => {
+      const sku = variant.sku.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const ean = variant.ean.toLowerCase().replace(/[^a-z0-9]/g, "");
+      return sku.includes(needle) || ean.includes(needle);
+    });
   });
 }
 

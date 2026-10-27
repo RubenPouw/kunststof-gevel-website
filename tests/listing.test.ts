@@ -76,7 +76,7 @@ test("prepareListing returns ten cards per page from the full list", () => {
   assert.ok(page.facets.profileTypes.length >= 1);
 });
 
-test("category page size is sixteen and relevantie keeps catalog order", () => {
+test("category page size is sixteen and relevantie keeps catalog order within a group", () => {
   const all = Array.from({ length: 20 }, (_, index) => product(index));
   const page = prepareListing(all, {}, 1, CATEGORY_PAGE_SIZE);
   assert.equal(page.cards.length, 16);
@@ -86,6 +86,17 @@ test("category page size is sixteen and relevantie keeps catalog order", () => {
   const byName = prepareListing(all, {}, 1, 20, "naam");
   assert.equal(byName.cards[0]?.slug, "product-0");
   assert.equal(byName.cards.at(-1)?.slug, "product-9");
+});
+
+test("relevantie puts panels before trim and accessories", () => {
+  const foil = { ...product(0), slug: "folie", name: "Profol PE Folie", productGroup: "toebehoren" as const };
+  const trim = { ...product(1), slug: "hoek", name: "Hoekprofiel", productGroup: "afwerkprofiel" as const };
+  const panel = { ...product(2), slug: "paneel", name: "Rabatdeel", productGroup: "gevelpaneel" as const };
+  const page = prepareListing([foil, trim, panel], {}, 1, 10);
+  assert.deepEqual(
+    page.cards.map((card) => card.slug),
+    ["paneel", "hoek", "folie"],
+  );
 });
 
 test("raster view rewrites and the default list does not", () => {
@@ -111,6 +122,11 @@ test("pagina and filters rewrite to a cacheable path and back", () => {
   const filters = parseListingSearchParams(Object.fromEntries(decoded.search.entries()));
   assert.equal(filters.profileType, "sponning");
   assert.equal(decoded.pagina, 2);
+
+  const grouped = listingRewriteTarget("/gevelbekleding", new URLSearchParams("groep=gevelpaneel"));
+  assert.equal(grouped, "/weergave/categorie/gevelbekleding/p/1/groep/gevelpaneel");
+  const groupState = decodeListingState("categorie", "gevelbekleding", ["p", "1", "groep", "gevelpaneel"]);
+  assert.equal(parseListingSearchParams(Object.fromEntries(groupState?.search.entries() ?? [])).productGroup, "gevelpaneel");
 });
 
 test("webhook hmac accepts the raw body and rejects a tampered one", () => {

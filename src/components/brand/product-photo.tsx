@@ -8,6 +8,12 @@ import type { ProductImage } from "@/lib/catalog/types";
 import { isShopifyImage, shopifyImageLoader } from "@/lib/shopify/image";
 import { cn } from "@/lib/utils";
 
+function pictureAlt(imageAlt: string | undefined, fallback: string) {
+  const value = imageAlt?.trim() ?? "";
+  if (!value || /https?:\/\//i.test(value) || /^www\./i.test(value)) return fallback;
+  return value;
+}
+
 /** Product photo on white (Shopify packshots are shot on white), or a flat colour tile without one. */
 export function ProductPhoto({
   image,
@@ -35,7 +41,7 @@ export function ProductPhoto({
   const content = image ? (
     <Image
       src={image.url}
-      alt={image.alt || alt}
+      alt={pictureAlt(image.alt, alt)}
       fill
       sizes={sizes}
       priority={priority}
