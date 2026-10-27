@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { BrandRow } from "@/components/catalog/brand-row";
 import { ProductListing } from "@/components/catalog/product-listing";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { DEFAULT_PRESENTATION, type ListingCardModel, type ListingFacets, type ListingPresentation } from "@/lib/catalog/listing";
@@ -61,10 +60,6 @@ export function CategoryPage({
         </div>
       ) : null}
 
-      {brandOptions.length > 1 ? (
-        <BrandRow brands={brandOptions} basePath={basePath} filters={filters} presentation={presentation} />
-      ) : null}
-
       <ProductListing
         cards={cards}
         total={total}
@@ -72,6 +67,7 @@ export function CategoryPage({
         facets={facets}
         page={page}
         pageSize={pageSize}
+        brands={brandOptions}
         filters={filters}
         basePath={basePath}
         view={presentation.view}

@@ -5,7 +5,7 @@ import {
   listingHref,
   productHasPrice,
 } from "@/lib/catalog/helpers";
-import type { ListingFilters, Product, ProductGroup, ProductImage } from "@/lib/catalog/types";
+import type { ColorFamily, ListingFilters, Product, ProductGroup, ProductImage } from "@/lib/catalog/types";
 
 export const PAGE_SIZE = 10;
 export const CATEGORY_PAGE_SIZE = 16;
@@ -35,6 +35,7 @@ export type ListingLengthOption = {
 export type ListingSwatch = {
   name: string;
   hex: string;
+  family?: ColorFamily;
   ral?: string;
   sampleId: string;
   sku: string;
@@ -55,6 +56,7 @@ export type ListingCardModel = {
   brandSlug: string;
   saleUnit?: "sheet";
   workingWidthMm?: number;
+  sheetM2?: number;
   sampleable: boolean;
   category: Product["category"];
   hasPrice: boolean;
@@ -81,7 +83,15 @@ function lengthOptions(product: Product, colorName: string): ListingLengthOption
   return options;
 }
 
-function swatchFrom(product: Product, name: string, hex: string, ral: string | undefined, sampleId: string, preferredLength?: string): ListingSwatch {
+function swatchFrom(
+  product: Product,
+  name: string,
+  hex: string,
+  ral: string | undefined,
+  sampleId: string,
+  preferredLength?: string,
+  family?: ColorFamily,
+): ListingSwatch {
   let lengths = lengthOptions(product, name);
   if (!lengths.length) {
     const fallback = product.variants.length ? getDefaultVariant(product) : undefined;
@@ -103,6 +113,7 @@ function swatchFrom(product: Product, name: string, hex: string, ral: string | u
   return {
     name,
     hex: picked ? product.variants.find((item) => item.sku === picked.sku)?.hex || hex : hex,
+    family,
     ral,
     sampleId,
     sku: picked?.sku ?? product.slug,
@@ -147,10 +158,12 @@ export function toListingCard(product: Product): ListingCardModel {
   const fallback = product.variants.length ? getDefaultVariant(product) : undefined;
   const colors = product.colors;
   const swatches: ListingSwatch[] = colors.map((color) =>
-    swatchFrom(product, color.name, color.hex, color.ral, color.sampleId, fallback?.length),
+    swatchFrom(product, color.name, color.hex, color.ral, color.sampleId, fallback?.length, color.family),
   );
   if (!swatches.length && fallback) {
-    swatches.push(swatchFrom(product, fallback.colorName, fallback.hex, fallback.ral, fallback.sampleId, fallback.length));
+    swatches.push(
+      swatchFrom(product, fallback.colorName, fallback.hex, fallback.ral, fallback.sampleId, fallback.length, fallback.colorFamily),
+    );
   }
   const activeIndex = Math.max(
     0,
@@ -163,6 +176,7 @@ export function toListingCard(product: Product): ListingCardModel {
     brandSlug: product.brandSlug,
     saleUnit: product.saleUnit,
     workingWidthMm: product.workingWidthMm,
+    sheetM2: product.sheetM2,
     sampleable: product.sampleable,
     category: product.category,
     hasPrice: productHasPrice(product),

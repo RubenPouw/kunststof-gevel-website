@@ -2,11 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { ColourName } from "@/components/catalog/colour-name";
+import { BrandRow } from "@/components/catalog/brand-row";
 import { ListingCard } from "@/components/catalog/listing-card";
+import { ActiveFilterChips, ListingFiltersPanel } from "@/components/catalog/listing-filters";
 import { ListingRow } from "@/components/catalog/listing-row";
 import { buttonVariants } from "@/components/ui/button";
-import { listingHref, parseListingPresentation, parseListingSearchParams } from "@/lib/catalog/helpers";
+import {
+  hasActiveFilters,
+  mergeListingFilters,
+  parseListingPresentation,
+  parseListingSearchParams,
+  type ListingFilterPatch,
+} from "@/lib/catalog/helpers";
 import {
   catalogusQuery,
   DEFAULT_PRESENTATION,
@@ -17,11 +24,8 @@ import {
   type ListingSort,
   type ListingView,
 } from "@/lib/catalog/listing";
-import type { ListingFilters } from "@/lib/catalog/types";
-import { colorFamilyLabels, productGroupLabels, profileTypeLabels, type ProductGroup } from "@/lib/catalog/types";
+import type { Brand, ListingFilters } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
-
-const COLOUR_PREVIEW = 8;
 
 export function ProductListing({
   cards: initialCards,
@@ -31,6 +35,7 @@ export function ProductListing({
   page,
   pageSize,
   filters: initialFilters,
+  brands = [],
   basePath,
   view: initialView = DEFAULT_PRESENTATION.view,
   sort: initialSort = DEFAULT_PRESENTATION.sort,
@@ -44,6 +49,7 @@ export function ProductListing({
   page: number;
   pageSize: number;
   filters: ListingFilters;
+  brands?: Brand[];
   basePath: string;
   view?: ListingView;
   sort?: ListingSort;
@@ -58,6 +64,7 @@ export function ProductListing({
   const [originPage, setOriginPage] = useState(page);
   const [nextPagina, setNextPagina] = useState(page + 1);
   const busy = useRef(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const presentation: ListingPresentation = { view, sort };
 
   const replaceFromApi = useCallback(
@@ -102,23 +109,31 @@ export function ProductListing({
     return event.button === 0 && !event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey;
   }
 
-  function onFilter(
-    event: React.MouseEvent<HTMLAnchorElement>,
-    patch: Omit<Partial<ListingFilters>, "productGroup" | "brandSlug"> & {
-      brandSlug?: string | "";
-      productGroup?: ProductGroup | null;
-    },
-  ) {
+  function onFilter(event: React.MouseEvent<HTMLAnchorElement>, patch: ListingFilterPatch) {
     if (!plainClick(event)) return;
     event.preventDefault();
-    const next: ListingFilters = {
-      ...filters,
-      ...patch,
-      brandSlug: patch.brandSlug === "" ? undefined : (patch.brandSlug ?? filters.brandSlug),
-      productGroup: patch.productGroup === null ? undefined : (patch.productGroup ?? filters.productGroup),
-    };
-    void replaceFromApi(next, 1, presentation, true);
+    void replaceFromApi(mergeListingFilters(filters, patch), 1, presentation, true);
   }
+
+  function clearFilters(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (!plainClick(event)) return;
+    event.preventDefault();
+    void replaceFromApi({}, 1, presentation, true);
+  }
+
+  useEffect(() => {
+    if (!filtersOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setFiltersOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [filtersOpen]);
 
   async function showMore(event: React.MouseEvent<HTMLAnchorElement>) {
     if (!plainClick(event)) return;
@@ -153,8 +168,6 @@ export function ProductListing({
   const remaining = Math.max(0, total - rangeEnd);
   const nextHref = listingPageHref(basePath, filters, nextPagina, presentation);
   const prevHref = originPage > 1 ? listingPageHref(basePath, filters, originPage - 1, presentation) : null;
-  const colourPreview = facets.sheetColors.slice(0, COLOUR_PREVIEW);
-  const colourRest = facets.sheetColors.slice(COLOUR_PREVIEW);
   const showFilters =
     showStockChip ||
     facets.groups.length > 1 ||
@@ -164,253 +177,162 @@ export function ProductListing({
     facets.rals.length > 1 ||
     facets.widths.length > 1;
 
+  const filterPanel = showFilters ? (
+    <ListingFiltersPanel
+      facets={facets}
+      filters={filters}
+      basePath={basePath}
+      presentation={presentation}
+      showStockChip={showStockChip}
+      onFilter={onFilter}
+    />
+  ) : null;
+  const productWord = total === 1 ? "product" : "producten";
+
   return (
-    <div className="mt-8 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
-      <aside className="order-2 h-fit lg:sticky lg:top-[128px] lg:order-none">
-        {showFilters ? (
-          <div className="kg-soft-card p-5">
-            <p className="font-mono text-[13px] text-kg-navy">Filters</p>
-            <div className="mt-2">
-        {showStockChip ? (
-          <FilterSection title="Voorraad">
-            <FilterCheck
-              href={listingHref(basePath, filters, { inStockOnly: !filters.inStockOnly }, presentation)}
-              active={Boolean(filters.inStockOnly)}
-              label="Op voorraad"
-              onClick={(event) => onFilter(event, { inStockOnly: !filters.inStockOnly })}
-            />
-          </FilterSection>
-        ) : null}
-        {facets.groups.length > 1 ? (
-          <FilterSection title="Producttype">
-            {facets.groups.map((item) => {
-              const active = filters.productGroup === item.slug;
-              return (
-                <FilterCheck
-                  key={item.slug}
-                  href={listingHref(
-                    basePath,
-                    filters,
-                    { productGroup: active ? null : item.slug, profileType: undefined },
-                    presentation,
-                  )}
-                  active={active}
-                  label={productGroupLabels[item.slug]}
-                  count={item.count}
-                  onClick={(event) =>
-                    onFilter(event, { productGroup: active ? null : item.slug, profileType: undefined })
-                  }
-                />
-              );
-            })}
-          </FilterSection>
-        ) : facets.profileTypes.filter((item) => item.slug !== "overig").length > 1 ? (
-          <FilterSection title="Producttype">
-            {facets.profileTypes
-              .filter((item) => item.slug !== "overig")
-              .map((item) => {
-                const active = filters.profileType === item.slug;
-                return (
-                  <FilterCheck
-                    key={item.slug}
-                    href={listingHref(basePath, filters, { profileType: active ? undefined : item.slug }, presentation)}
-                    active={active}
-                    label={profileTypeLabels[item.slug]}
-                    count={item.count}
-                    onClick={(event) => onFilter(event, { profileType: active ? undefined : item.slug })}
-                  />
-                );
-              })}
-          </FilterSection>
-        ) : null}
-        {facets.colorFamilies.length > 1 ? (
-          <FilterSection title="Kleurfamilie">
-            {facets.colorFamilies.map((item) => {
-              const active = filters.colorFamily === item.slug;
-              return (
-                <a
-                  key={item.slug}
-                  href={listingHref(basePath, filters, { colorFamily: active ? undefined : item.slug }, presentation)}
-                  onClick={(event) => onFilter(event, { colorFamily: active ? undefined : item.slug })}
-                  className="flex min-h-11 items-center gap-3 text-[15px] text-kg-navy no-underline hover:no-underline"
+    <div>
+      <BrandRow
+        brands={brands}
+        basePath={basePath}
+        filters={filters}
+        presentation={presentation}
+        onFilter={onFilter}
+      />
+      <div className="mt-8 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
+        <aside className="hidden h-fit lg:sticky lg:top-[128px] lg:block">
+          {showFilters ? (
+            <div className="kg-soft-card p-5">
+              <p className="font-mono text-[13px] text-kg-navy">Filters</p>
+              {filterPanel}
+            </div>
+          ) : null}
+        </aside>
+
+        <div className="lg:order-none pb-24 lg:pb-0">
+          <ActiveFilterChips
+            filters={filters}
+            facets={facets}
+            brands={brands}
+            basePath={basePath}
+            presentation={presentation}
+            onFilter={onFilter}
+            onClear={clearFilters}
+          />
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-2.5">
+            <p className="font-mono text-[14px] text-kg-text-2">
+              {total === 0
+                ? totalUnfiltered === 0
+                  ? "Geen artikelen"
+                  : "Geen producten met deze filters."
+                : `${rangeStart} - ${rangeEnd} van ${total} ${productWord}`}
+            </p>
+            <div className="flex items-center gap-2">
+              {showFilters ? (
+                <button
+                  type="button"
+                  className="h-11 border border-kg-navy bg-white px-3 font-mono text-[13px] text-kg-navy lg:hidden"
+                  onClick={() => setFiltersOpen(true)}
                 >
-                  <span
-                    className={cn(
-                      "size-4 border border-kg-lijn",
-                      active && "outline outline-2 outline-offset-1 outline-kg-navy",
-                    )}
-                    style={{ background: item.hex }}
-                  />
-                  {colorFamilyLabels[item.slug]}
-                  <span className="ml-auto font-mono text-[12px] text-kg-text-2">{item.count}</span>
-                </a>
-              );
-            })}
-          </FilterSection>
-        ) : null}
-        {facets.sheetColors.length > 1 ? (
-          <FilterSection title="Kleurnaam">
-            {colourPreview.map((item) => (
-              <ColourLink
-                key={item.slug}
-                item={item}
-                active={filters.colorSlug === item.slug}
-                href={listingHref(
-                  basePath,
-                  filters,
-                  { colorSlug: filters.colorSlug === item.slug ? "" : item.slug },
-                  presentation,
-                )}
-                onClick={(event) => onFilter(event, { colorSlug: filters.colorSlug === item.slug ? "" : item.slug })}
+                  Filters{hasActiveFilters(filters) ? " · aan" : ""}
+                </button>
+              ) : null}
+              <label className="block">
+                <span className="sr-only">Sorteren</span>
+                <select
+                  value={sort}
+                  onChange={(event) => onSort(event.target.value as ListingSort)}
+                  className="h-11 border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy"
+                >
+                  <option value="relevantie">Relevantie</option>
+                  <option value="naam">Naam</option>
+                  <option value="prijs-op">Prijs laag-hoog</option>
+                  <option value="prijs-af">Prijs hoog-laag</option>
+                </select>
+              </label>
+              <ViewToggle
+                view={view}
+                listHref={listingPageHref(basePath, filters, 1, { view: "lijst", sort })}
+                gridHref={listingPageHref(basePath, filters, 1, { view: "raster", sort })}
               />
-            ))}
-            {colourRest.length > 0 ? (
-              <details className="group">
-                <summary className="flex min-h-11 cursor-pointer list-none items-center font-mono text-[13px] text-kg-navy [&::-webkit-details-marker]:hidden">
-                  <span className="group-open:hidden">Toon meer</span>
-                  <span className="hidden group-open:inline">Toon minder</span>
-                </summary>
-                {colourRest.map((item) => (
-                  <ColourLink
-                    key={item.slug}
-                    item={item}
-                    active={filters.colorSlug === item.slug}
-                    href={listingHref(
-                      basePath,
-                      filters,
-                      { colorSlug: filters.colorSlug === item.slug ? "" : item.slug },
-                      presentation,
-                    )}
-                    onClick={(event) =>
-                      onFilter(event, { colorSlug: filters.colorSlug === item.slug ? "" : item.slug })
-                    }
-                  />
-                ))}
-              </details>
-            ) : null}
-          </FilterSection>
-        ) : null}
-        {facets.rals.length > 1 ? (
-          <FilterSection title="RAL">
-            <div className="flex max-h-64 flex-wrap gap-2 overflow-auto">
-              {facets.rals.map((item) => {
-                const active = filters.ral === item.code;
-                return (
-                  <a
-                    key={item.code}
-                    href={listingHref(basePath, filters, { ral: active ? "" : item.code }, presentation)}
-                    onClick={(event) => onFilter(event, { ral: active ? "" : item.code })}
-                    className={cn(
-                      "inline-flex h-10 min-h-10 items-center border px-3 font-mono text-[13px] no-underline hover:no-underline",
-                      active
-                        ? "border-kg-navy bg-kg-navy text-kg-kalk"
-                        : "border-kg-lijn bg-white text-kg-navy hover:bg-kg-kalk",
-                    )}
-                  >
-                    RAL {item.code}
-                  </a>
-                );
-              })}
-            </div>
-          </FilterSection>
-        ) : null}
-        {facets.widths.length > 1 ? (
-          <FilterSection title="Werkende breedte">
-            <div className="flex flex-wrap gap-2">
-              {facets.widths.map((item) => {
-                const active = filters.workingWidthMm === item.mm;
-                return (
-                  <a
-                    key={item.mm}
-                    href={listingHref(
-                      basePath,
-                      filters,
-                      { workingWidthMm: active ? undefined : item.mm },
-                      presentation,
-                    )}
-                    onClick={(event) => onFilter(event, { workingWidthMm: active ? undefined : item.mm })}
-                    className={cn(
-                      "inline-flex h-10 min-h-10 items-center border px-3 font-mono text-[13px] no-underline hover:no-underline",
-                      active
-                        ? "border-kg-navy bg-white text-kg-navy"
-                        : "border-kg-lijn bg-white text-kg-navy hover:bg-kg-kalk",
-                    )}
-                  >
-                    {item.mm} mm
-                  </a>
-                );
-              })}
-            </div>
-          </FilterSection>
-        ) : null}
             </div>
           </div>
-        ) : null}
-      </aside>
+          {cards.length === 0 ? (
+            <p className="kg-soft-card mt-4 px-6 py-12 text-center text-kg-text-2">
+              {emptyMessage ?? "Geen producten met deze filters."}
+            </p>
+          ) : view === "raster" ? (
+            <div className="mt-4 grid gap-3 lg:grid-cols-2">
+              {cards.map((card) => (
+                <ListingCard key={card.slug} card={card} />
+              ))}
+            </div>
+          ) : (
+            <div className="mt-4 flex flex-col gap-3">
+              {cards.map((card) => (
+                <ListingRow key={card.slug} card={card} />
+              ))}
+            </div>
+          )}
+          {prevHref ? (
+            <a href={prevHref} rel="prev" className="sr-only">
+              Vorige pagina
+            </a>
+          ) : null}
+          {remaining > 0 ? (
+            <a
+              href={nextHref}
+              rel="next"
+              onClick={showMore}
+              className={cn(buttonVariants({ variant: "outline" }), "mt-8 no-underline hover:no-underline")}
+            >
+              Toon de volgende {Math.min(pageSize, remaining)}
+            </a>
+          ) : null}
+        </div>
+      </div>
 
-      <div className="order-1 lg:order-none">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-2.5">
-          <p className="font-mono text-[14px] text-kg-text-2">
-            {total === 0
-              ? totalUnfiltered === 0
-                ? "Geen artikelen"
-                : "Geen producten met deze filters."
-              : `${rangeStart} - ${rangeEnd} van ${total} ${total === 1 ? "product" : "producten"}`}
-          </p>
-          <div className="flex items-center gap-2">
-            <label className="block">
-              <span className="sr-only">Sorteren</span>
-              <select
-                value={sort}
-                onChange={(event) => onSort(event.target.value as ListingSort)}
-                className="h-11 border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy"
+      {showFilters ? (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-kg-lijn bg-white p-3 pr-24 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setFiltersOpen(true)}
+            className={cn(buttonVariants({ variant: "primary", block: true }), "w-full")}
+          >
+            Toon {total} {productWord}
+          </button>
+        </div>
+      ) : null}
+
+      {filtersOpen && showFilters ? (
+        <div className="fixed inset-0 z-[60] lg:hidden">
+          <button type="button" className="absolute inset-0 bg-kg-navy/40" aria-label="Sluit filters" onClick={() => setFiltersOpen(false)} />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Filters"
+            className="absolute inset-x-0 bottom-0 top-12 flex flex-col bg-kg-kalk"
+          >
+            <div className="flex items-center justify-between border-b border-kg-lijn bg-white px-4 py-3">
+              <p className="font-mono text-[13px] text-kg-navy">Filters</p>
+              <button type="button" className="h-11 px-3 font-mono text-[13px] text-kg-navy" onClick={() => setFiltersOpen(false)}>
+                Sluiten
+              </button>
+            </div>
+            <div className="min-h-0 flex-1 overflow-auto px-4 py-4">
+              <div className="kg-soft-card p-5">{filterPanel}</div>
+            </div>
+            <div className="border-t border-kg-lijn bg-white p-4">
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(false)}
+                className={cn(buttonVariants({ variant: "primary", block: true }), "w-full")}
               >
-                <option value="relevantie">Relevantie</option>
-                <option value="naam">Naam</option>
-                <option value="prijs-op">Prijs laag-hoog</option>
-                <option value="prijs-af">Prijs hoog-laag</option>
-              </select>
-            </label>
-            <ViewToggle
-              view={view}
-              listHref={listingPageHref(basePath, filters, 1, { view: "lijst", sort })}
-              gridHref={listingPageHref(basePath, filters, 1, { view: "raster", sort })}
-            />
+                Toon {total} {productWord}
+              </button>
+            </div>
           </div>
         </div>
-        {cards.length === 0 ? (
-          <p className="kg-soft-card mt-4 px-6 py-12 text-center text-kg-text-2">
-            {emptyMessage ?? "Geen producten met deze filters."}
-          </p>
-        ) : view === "raster" ? (
-          <div className="mt-4 grid gap-3 lg:grid-cols-2">
-            {cards.map((card) => (
-              <ListingCard key={card.slug} card={card} />
-            ))}
-          </div>
-        ) : (
-          <div className="mt-4 flex flex-col gap-3">
-            {cards.map((card) => (
-              <ListingRow key={card.slug} card={card} />
-            ))}
-          </div>
-        )}
-        {prevHref ? (
-          <a href={prevHref} rel="prev" className="sr-only">
-            Vorige pagina
-          </a>
-        ) : null}
-        {remaining > 0 ? (
-          <a
-            href={nextHref}
-            rel="next"
-            onClick={showMore}
-            className={cn(buttonVariants({ variant: "outline" }), "mt-8 no-underline hover:no-underline")}
-          >
-            Toon de volgende {Math.min(pageSize, remaining)}
-          </a>
-        ) : null}
-      </div>
+      ) : null}
     </div>
   );
 }
@@ -445,78 +367,5 @@ function ViewToggle({ view, listHref, gridHref }: { view: ListingView; listHref:
         </svg>
       </a>
     </div>
-  );
-}
-
-function ColourLink({
-  item,
-  active,
-  href,
-  onClick,
-}: {
-  item: { slug: string; name: string; hex: string; count: number };
-  active: boolean;
-  href: string;
-  onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-}) {
-  return (
-    <a
-      href={href}
-      onClick={onClick}
-      className="flex min-h-11 items-center gap-3 text-[15px] text-kg-navy no-underline hover:no-underline"
-    >
-      <span
-        className={cn("size-4 shrink-0 border border-kg-lijn", active && "outline outline-2 outline-offset-1 outline-kg-navy")}
-        style={{ background: item.hex }}
-      />
-      <ColourName value={item.name} className="min-w-0 flex-1" />
-      <span className="font-mono text-[12px] text-kg-text-2">{item.count}</span>
-    </a>
-  );
-}
-
-function FilterCheck({
-  href,
-  active,
-  label,
-  count,
-  onClick,
-}: {
-  href: string;
-  active: boolean;
-  label: string;
-  count?: number;
-  onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-}) {
-  return (
-    <label className="flex min-h-11 items-center gap-3">
-      <a
-        href={href}
-        onClick={onClick}
-        className={cn(
-          "grid size-4 place-items-center border border-kg-navy text-[10px] text-white no-underline hover:no-underline",
-          active && "bg-kg-navy",
-        )}
-      >
-        {active ? "✓" : ""}
-      </a>
-      <a
-        href={href}
-        onClick={onClick}
-        className="flex flex-1 items-baseline justify-between gap-2 text-[15px] text-kg-navy no-underline hover:no-underline"
-      >
-        {label}
-        {typeof count === "number" ? <span className="font-mono text-[12px] text-kg-text-2">{count}</span> : null}
-      </a>
-    </label>
-  );
-}
-
-function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="mb-6 last:mb-0">
-      <p className="border-b border-kg-lijn pb-2 font-mono text-[13px] text-kg-navy">{title}</p>
-      <div className="mt-3">{children}</div>
-    </section>
   );
 }

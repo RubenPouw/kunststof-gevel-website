@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { ColourName } from "@/components/catalog/colour-name";
+import { CardSwatches } from "@/components/catalog/card-swatches";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { VatPrice } from "@/components/brand/vat-price";
+import { SquareMetrePrice } from "@/components/catalog/square-metre-price";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import type { ListingCardModel } from "@/lib/catalog/listing";
 import { describeMeasure } from "@/lib/catalog/measures";
+import { pricePerSquareMetre } from "@/lib/catalog/square-metre";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
@@ -26,7 +28,9 @@ function measureLine(card: ListingCardModel, length: string) {
 
 export function ListingCard({ card }: { card: ListingCardModel }) {
   const [index, setIndex] = useState(card.activeIndex);
-  const selected = card.swatches[index] ?? card.swatches[0];
+  const [hover, setHover] = useState<number | null>(null);
+  const shown = hover ?? index;
+  const selected = card.swatches[shown] ?? card.swatches[0];
   const status = stockLabel(selected?.inStock ?? false, selected?.stockText);
   const delivery = leadTimeLabel(
     selected?.inStock ? null : confirmedLeadTimeWeeks(card.category, card.slug),
@@ -35,6 +39,12 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
   const incl = selected?.price ?? 0;
   const sku = (selected?.sku ?? card.slug).replace(/-3M$/, "");
   const priced = card.hasPrice && (selected?.price ?? 0) > 0;
+  const perM2 = pricePerSquareMetre({
+    priceIncl: incl,
+    workingWidthMm: card.saleUnit === "sheet" ? undefined : card.workingWidthMm,
+    length: card.saleUnit === "sheet" ? undefined : selected?.length,
+    sheetM2: card.saleUnit === "sheet" ? card.sheetM2 : undefined,
+  });
 
   return (
     <article className="kg-soft-card grid gap-4 p-3.5 sm:grid-cols-[170px_1fr]">
@@ -65,23 +75,15 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
             {card.swatches.length} {card.swatches.length === 1 ? "kleur" : "kleuren"}
           </p>
         ) : null}
-        {card.swatches.length > 1 ? (
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {card.swatches.map((color, colorIndex) => {
-              const active = colorIndex === index;
-              return (
-                <button
-                  key={color.sampleId || color.name}
-                  type="button"
-                  onClick={() => setIndex(colorIndex)}
-                  className={cn("size-5", active && "outline outline-2 outline-offset-1 outline-kg-navy")}
-                  style={{ background: color.hex }}
-                  aria-label={color.name}
-                  aria-pressed={active}
-                />
-              );
-            })}
-            <ColourName value={selected?.name ?? ""} className="font-mono text-[12px] text-kg-text-2" />
+        {card.swatches.length > 0 ? (
+          <div className="mt-3">
+            <CardSwatches
+              card={card}
+              activeIndex={index}
+              onHover={setHover}
+              onPick={setIndex}
+              name={selected?.name ?? ""}
+            />
           </div>
         ) : null}
         <div className="mt-3 flex items-baseline justify-between border-t border-kg-lijn pt-2.5 font-mono text-[14px]">
@@ -90,7 +92,10 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
           </span>
           <span className="text-right">
             {priced ? (
-              <VatPrice incl={incl} suffix={card.saleUnit === "sheet" ? " /plaat" : ""} />
+              <>
+                <VatPrice incl={incl} suffix={card.saleUnit === "sheet" ? " /plaat" : ""} />
+                <SquareMetrePrice incl={perM2} />
+              </>
             ) : (
               "Prijs op aanvraag"
             )}

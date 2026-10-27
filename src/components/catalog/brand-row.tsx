@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 
-import { listingHref } from "@/lib/catalog/helpers";
+import { listingHref, selectedBrands, toggleValue, type ListingFilterPatch } from "@/lib/catalog/helpers";
 import { brandLogoSrc } from "@/lib/catalog/brand-logos";
 import type { ListingPresentation } from "@/lib/catalog/listing";
 import type { Brand, ListingFilters } from "@/lib/catalog/types";
@@ -28,11 +28,13 @@ export function BrandRow({
   basePath,
   filters,
   presentation,
+  onFilter,
 }: {
   brands: Brand[];
   basePath: string;
   filters: ListingFilters;
   presentation: ListingPresentation;
+  onFilter?: (event: React.MouseEvent<HTMLAnchorElement>, patch: ListingFilterPatch) => void;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const tiles = brands
@@ -63,19 +65,17 @@ export function BrandRow({
           className="flex min-w-0 flex-1 gap-3 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {tiles.map((brand) => {
-            const active = filters.brandSlug === brand.slug;
-            const href = listingHref(
-              basePath,
-              {},
-              { brandSlug: active ? "" : brand.slug },
-              presentation,
-            );
+            const selected = selectedBrands(filters);
+            const active = selected.includes(brand.slug);
+            const next = toggleValue(selected, brand.slug);
+            const href = listingHref(basePath, filters, { brandSlugs: next }, presentation);
             const logo = brandLogoSrc(brand.slug);
             return (
               <a
                 key={brand.slug}
                 href={href}
                 aria-current={active ? "true" : undefined}
+                onClick={(event) => onFilter?.(event, { brandSlugs: next })}
                 className="kg-soft-card flex h-[76px] w-[148px] shrink-0 items-center justify-center px-3 no-underline hover:no-underline"
               >
                 {logo ? (

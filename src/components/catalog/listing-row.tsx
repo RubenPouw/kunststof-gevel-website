@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { compareColourLabels, colourOptionText } from "@/components/catalog/colour-name";
+import { CardSwatches } from "@/components/catalog/card-swatches";
 import { ProductPhoto } from "@/components/brand/product-photo";
+import { SquareMetrePrice } from "@/components/catalog/square-metre-price";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import type { ListingCardModel, ListingLengthOption, ListingSwatch } from "@/lib/catalog/listing";
 import { describeMeasure, isRealListedLength } from "@/lib/catalog/measures";
+import { pricePerSquareMetre } from "@/lib/catalog/square-metre";
 import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
@@ -26,11 +28,13 @@ function selectedLength(swatch: ListingSwatch | undefined, length: string): List
 export function ListingRow({ card }: { card: ListingCardModel }) {
   const cart = useCart();
   const initial = card.swatches[card.activeIndex] ?? card.swatches[0];
-  const [colour, setColour] = useState(initial?.name ?? "");
+  const [index, setIndex] = useState(card.activeIndex);
+  const [hover, setHover] = useState<number | null>(null);
   const [length, setLength] = useState(firstRealLength(initial));
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
-  const swatch = card.swatches.find((item) => item.name === colour) ?? initial;
+  const shown = hover ?? index;
+  const swatch = card.swatches[shown] ?? initial;
   const variant = selectedLength(swatch, length);
   const incl = variant?.price ?? 0;
   const priced = card.hasPrice && incl > 0;
@@ -40,13 +44,19 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
     status.text,
   );
   const sku = (variant?.sku ?? card.slug).replace(/-3M$/, "");
+  const perM2 = pricePerSquareMetre({
+    priceIncl: incl,
+    workingWidthMm: card.saleUnit === "sheet" ? undefined : card.workingWidthMm,
+    length: card.saleUnit === "sheet" ? undefined : variant?.length,
+    sheetM2: card.saleUnit === "sheet" ? card.sheetM2 : undefined,
+  });
   const image = variant?.image ?? swatch?.image;
   const lengthChoices = (swatch?.lengths ?? []).filter((item) => isRealListedLength(item.length));
   const measure = describeMeasure(card.name, lengthChoices.length ? (variant?.length ?? "") : "stuk", card.workingWidthMm);
 
-  function onColour(next: string) {
-    setColour(next);
-    const match = card.swatches.find((item) => item.name === next);
+  function pickColour(nextIndex: number) {
+    const match = card.swatches[nextIndex];
+    setIndex(nextIndex);
     if (match && !match.lengths.some((item) => item.length === length && isRealListedLength(item.length))) {
       setLength(firstRealLength(match));
     }
@@ -103,22 +113,9 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
       </div>
 
       {card.swatches.length > 0 ? (
-        <label className="block w-full lg:w-[148px] lg:shrink-0">
-          <span className="sr-only">Kleur</span>
-          <select
-            value={swatch?.name ?? ""}
-            onChange={(event) => onColour(event.target.value)}
-            className="h-11 w-full border border-kg-navy bg-white px-2 text-[14px] text-kg-navy"
-          >
-            {[...card.swatches]
-              .sort((a, b) => compareColourLabels(a.name, b.name))
-              .map((item) => (
-                <option key={item.sampleId || item.name} value={item.name}>
-                  {colourOptionText(item.name)}
-                </option>
-              ))}
-          </select>
-        </label>
+        <div className="w-full lg:w-[220px] lg:shrink-0">
+          <CardSwatches card={card} activeIndex={index} onHover={setHover} onPick={pickColour} name={swatch?.name ?? ""} />
+        </div>
       ) : null}
 
       {lengthChoices.length > 0 ? (
@@ -187,6 +184,7 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
         ) : (
           <span className="text-[14px] text-kg-text-2">Prijs op aanvraag</span>
         )}
+        {priced ? <SquareMetrePrice incl={perM2} /> : null}
       </div>
 
       {priced ? (

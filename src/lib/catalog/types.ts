@@ -183,14 +183,21 @@ export type SampleColor = {
 };
 
 export type ListingFilters = {
+  /** One brand. A single `merk` value stays this field. */
   brandSlug?: string;
+  /** Two or more brands. Same `merk` param, comma-separated. */
+  brandSlugs?: string[];
   inStockOnly?: boolean;
   profileType?: ProfileType;
+  profileTypes?: ProfileType[];
   productGroup?: ProductGroup;
+  productGroups?: ProductGroup[];
   colorFamily?: ColorFamily;
   workingWidthMm?: number;
-  /** Exact colour name, slugified. Used for HPL sheets. */
+  /** Exact colour name, slugified. One `kleurnaam` value. */
   colorSlug?: string;
+  /** Two or more colour names. Same `kleurnaam` param, comma-separated. */
+  colorSlugs?: string[];
   /** RAL digits, for example 7016. */
   ral?: string;
 };
