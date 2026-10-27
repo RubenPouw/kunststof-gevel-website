@@ -145,10 +145,21 @@ export function ProductListing({
   const prevHref = originPage > 1 ? listingPageHref(basePath, filters, originPage - 1, presentation) : null;
   const colourPreview = facets.sheetColors.slice(0, COLOUR_PREVIEW);
   const colourRest = facets.sheetColors.slice(COLOUR_PREVIEW);
+  const showFilters =
+    showStockChip ||
+    facets.profileTypes.length > 1 ||
+    facets.colorFamilies.length > 1 ||
+    facets.sheetColors.length > 1 ||
+    facets.rals.length > 1 ||
+    facets.widths.length > 1;
 
   return (
     <div className="mt-8 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
       <aside className="order-2 h-fit lg:sticky lg:top-[128px] lg:order-none">
+        {showFilters ? (
+          <div className="kg-soft-card p-5">
+            <p className="font-mono text-[13px] text-kg-navy">Filters</p>
+            <div className="mt-2">
         {showStockChip ? (
           <FilterSection title="Voorraad">
             <FilterCheck
@@ -296,10 +307,13 @@ export function ProductListing({
             </div>
           </FilterSection>
         ) : null}
+            </div>
+          </div>
+        ) : null}
       </aside>
 
       <div className="order-1 lg:order-none">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-kg-navy pb-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-2.5">
           <p className="font-mono text-[14px] text-kg-text-2">
             {total === 0
               ? totalUnfiltered === 0
@@ -329,17 +343,17 @@ export function ProductListing({
           </div>
         </div>
         {cards.length === 0 ? (
-          <p className="mt-8 border border-kg-lijn bg-white px-6 py-12 text-center text-kg-text-2">
+          <p className="kg-soft-card mt-4 px-6 py-12 text-center text-kg-text-2">
             {emptyMessage ?? "Geen producten met deze filters."}
           </p>
         ) : view === "raster" ? (
-          <div className="mt-5 grid gap-4 lg:grid-cols-2">
+          <div className="mt-4 grid gap-3 lg:grid-cols-2">
             {cards.map((card) => (
               <ListingCard key={card.slug} card={card} />
             ))}
           </div>
         ) : (
-          <div className="divide-y divide-kg-lijn border-b border-kg-lijn">
+          <div className="mt-4 flex flex-col gap-3">
             {cards.map((card) => (
               <ListingRow key={card.slug} card={card} />
             ))}
@@ -464,8 +478,8 @@ function FilterCheck({
 
 function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mb-8">
-      <p className="border-b border-kg-navy pb-2 font-mono text-[13px] text-kg-navy">{title}</p>
+    <section className="mb-6 last:mb-0">
+      <p className="border-b border-kg-lijn pb-2 font-mono text-[13px] text-kg-navy">{title}</p>
       <div className="mt-3">{children}</div>
     </section>
   );

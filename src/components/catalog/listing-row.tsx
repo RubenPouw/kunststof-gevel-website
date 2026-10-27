@@ -66,7 +66,7 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
   }
 
   return (
-    <article className="flex flex-col gap-3 py-4 lg:flex-row lg:items-center lg:gap-3">
+    <article className="kg-soft-card flex flex-col gap-3 p-4 lg:flex-row lg:items-center lg:gap-3">
       <div className="flex min-w-0 gap-3 lg:contents">
         <Link href={`/producten/${card.slug}`} className="shrink-0 text-inherit no-underline hover:no-underline">
           <ProductPhoto

@@ -44,6 +44,7 @@ export function CategoryPage({
   sampleHref?: string;
 }) {
   return (
+    <div className="bg-kg-kalk">
     <div className="container-kg py-10 sm:py-12">
       <p className="font-mono text-[13px] text-kg-text-2">{kicker}</p>
       <h1 className="display-plp mt-2 max-w-3xl">{title}</h1>
@@ -78,6 +79,7 @@ export function CategoryPage({
         showStockChip={showStockChip}
         emptyMessage={emptyMessage}
       />
+    </div>
     </div>
   );
 }

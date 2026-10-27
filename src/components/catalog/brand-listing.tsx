@@ -26,7 +26,7 @@ export async function BrandListing({
   const view = prepareListing(all, filters, page, undefined, presentation.sort);
 
   return (
-    <div className="pb-8">
+    <div className="bg-kg-kalk pb-8">
       <BrandHero brand={brand} intro={story?.lead ?? brand.summary} />
       <div className="container-kg">
         <ProductListing

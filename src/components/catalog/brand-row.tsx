@@ -7,7 +7,6 @@ import { listingHref } from "@/lib/catalog/helpers";
 import { brandLogoSrc } from "@/lib/catalog/brand-logos";
 import type { ListingPresentation } from "@/lib/catalog/listing";
 import type { Brand, ListingFilters } from "@/lib/catalog/types";
-import { cn } from "@/lib/utils";
 
 function Arrow({ direction }: { direction: "left" | "right" }) {
   const left = direction === "left";
@@ -53,7 +52,7 @@ export function BrandRow({
       <div className="mt-3 flex items-center gap-2">
         <button
           type="button"
-          className="grid size-11 shrink-0 place-items-center border border-kg-lijn bg-white text-kg-navy"
+          className="kg-soft-card grid size-11 shrink-0 place-items-center text-kg-navy"
           aria-label="Vorige merken"
           onClick={() => scroll(-1)}
         >
@@ -61,7 +60,7 @@ export function BrandRow({
         </button>
         <div
           ref={scroller}
-          className="flex min-w-0 flex-1 gap-2 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex min-w-0 flex-1 gap-3 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {tiles.map((brand) => {
             const active = filters.brandSlug === brand.slug;
@@ -77,10 +76,7 @@ export function BrandRow({
                 key={brand.slug}
                 href={href}
                 aria-current={active ? "true" : undefined}
-                className={cn(
-                  "flex h-[76px] w-[148px] shrink-0 items-center justify-center border bg-white px-3 no-underline hover:no-underline",
-                  active ? "border-kg-navy" : "border-kg-lijn",
-                )}
+                className="kg-soft-card flex h-[76px] w-[148px] shrink-0 items-center justify-center px-3 no-underline hover:no-underline"
               >
                 {logo ? (
                   <Image
@@ -100,7 +96,7 @@ export function BrandRow({
         </div>
         <button
           type="button"
-          className="grid size-11 shrink-0 place-items-center border border-kg-lijn bg-white text-kg-navy"
+          className="kg-soft-card grid size-11 shrink-0 place-items-center text-kg-navy"
           aria-label="Volgende merken"
           onClick={() => scroll(1)}
         >

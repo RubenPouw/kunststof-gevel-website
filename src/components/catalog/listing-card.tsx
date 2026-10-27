@@ -28,7 +28,7 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
   const priced = card.hasPrice && (selected?.price ?? 0) > 0;
 
   return (
-    <article className="grid gap-4 border border-kg-lijn bg-white p-3.5 sm:grid-cols-[170px_1fr]">
+    <article className="kg-soft-card grid gap-4 p-3.5 sm:grid-cols-[170px_1fr]">
       <Link href={`/producten/${card.slug}`} className="relative block text-inherit no-underline hover:no-underline">
         <ProductPhoto
           image={selected?.image}
