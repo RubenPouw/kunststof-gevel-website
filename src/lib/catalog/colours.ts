@@ -81,6 +81,22 @@ export function colourSearchTokens(value: string): string[] {
   return [label, code, name ?? ""].filter(Boolean);
 }
 
+/**
+ * Filter search. A labelled code matches that code. A plain name such as
+ * Antraciet also matches a code whose supplier name is exactly that name,
+ * so A24 finds Antraciet. It does not guess a code for a longer name.
+ */
+export function colourFilterMatches(name: string, slug: string, query: string) {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return true;
+  const haystack = [slug, name, ...colourSearchTokens(name)].join(" ").toLowerCase();
+  if (haystack.includes(needle)) return true;
+  if (colourCodeIn(name)) return false;
+  if (!/^(?:[a-g]\d{2}|\d{3})$/i.test(needle)) return false;
+  const supplier = supplierColourName(needle)?.trim().toLowerCase();
+  return Boolean(supplier && name.trim().toLowerCase() === supplier);
+}
+
 /** Neutral chip when the hue is not published. Not a guessed wood tone. */
 export const UNKNOWN_COLOUR_HEX = "#C5C1B8";
 

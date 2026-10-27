@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import test from "node:test";
 
-import { colourSearchTokens } from "../src/lib/catalog/colours.ts";
+import { colourFilterMatches } from "../src/lib/catalog/colours.ts";
 import { slugKey } from "../src/lib/catalog/derive.ts";
 import { CATEGORY_PAGE_SIZE, prepareListing, toListingCard } from "../src/lib/catalog/listing.ts";
 import { decodeListingState, listingRewriteTarget } from "../src/lib/catalog/paths.ts";
@@ -219,10 +219,12 @@ test("colour facets stay in family order and a search can match the code", () =>
     facets.sheetColors.map((color) => color.slug),
     ["zwart", "creme", "wit", "eiken"],
   );
-  const labeled = "Antraciet (A24)";
-  const haystack = [slugKey(labeled), labeled, ...colourSearchTokens(labeled)].join(" ").toLowerCase();
-  assert.equal(haystack.includes("antraciet"), true);
-  assert.equal(haystack.includes("a24"), true);
+  assert.equal(colourFilterMatches("Antraciet (A24)", slugKey("Antraciet (A24)"), "antraciet"), true);
+  assert.equal(colourFilterMatches("Antraciet (A24)", slugKey("Antraciet (A24)"), "A24"), true);
+  assert.equal(colourFilterMatches("Antraciet (A24)", slugKey("Antraciet (A24)"), "A21"), false);
+  assert.equal(colourFilterMatches("Antraciet", "antraciet", "A24"), true);
+  assert.equal(colourFilterMatches("Antraciet wildverband", "antraciet-wildverband", "A24"), false);
+  assert.equal(colourFilterMatches("Wit", "wit", "A24"), false);
 });
 
 test("webhook hmac accepts the raw body and rejects a tampered one", () => {

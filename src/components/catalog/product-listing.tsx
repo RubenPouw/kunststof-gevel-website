@@ -291,7 +291,7 @@ export function ProductListing({
         </div>
       </div>
 
-      {showFilters ? (
+      {showFilters && !filtersOpen ? (
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-kg-lijn bg-white p-3 pr-24 lg:hidden">
           <button
             type="button"

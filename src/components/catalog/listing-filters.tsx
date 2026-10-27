@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import { ColourName } from "@/components/catalog/colour-name";
 import { ColourSwatch } from "@/components/catalog/colour-swatch";
-import { colourSearchTokens } from "@/lib/catalog/colours";
+import { colourFilterMatches } from "@/lib/catalog/colours";
 import {
   listingHref,
   selectedBrands,
@@ -301,10 +301,7 @@ function ColourFilter({
     const buckets = new Map<ColorFamily, ListingFacets["sheetColors"]>();
     for (const family of colorFamilies) buckets.set(family, []);
     for (const color of facets.sheetColors) {
-      if (needle) {
-        const haystack = [color.slug, color.name, ...colourSearchTokens(color.name)].join(" ").toLowerCase();
-        if (!haystack.includes(needle)) continue;
-      }
+      if (needle && !colourFilterMatches(color.name, color.slug, needle)) continue;
       buckets.get(color.family)?.push(color);
     }
     return colorFamilies
