@@ -95,6 +95,7 @@ export const migratedPosts: BlogPost[] = [
       },
     ],
     links: [
+      { href: "/hpl-plaat", label: "Kleur en structuur" },
       { href: "/hpl-platen", label: "HPL platen" },
       { href: "/gevelbekleding", label: "Gevelpanelen" },
     ],

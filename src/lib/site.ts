@@ -49,7 +49,7 @@ export const heroStats = [
 
 export const shopNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
-  { href: "/hpl-platen", label: "HPL platen" },
+  { href: "/hpl-plaat", label: "HPL platen" },
   { href: "/dakranden", label: "Dakranden" },
   { href: "/kunststof-kozijnen", label: "Kozijnen" },
   { href: "/merken", label: "Merken" },
@@ -62,7 +62,7 @@ export const footerColumns = [
     title: "Assortiment",
     links: [
       { href: "/gevelbekleding", label: "Gevelbekleding" },
-      { href: "/hpl-platen", label: "HPL platen" },
+      { href: "/hpl-plaat", label: "HPL platen" },
       { href: "/dakranden", label: "Dakranden" },
       { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
       { href: "/montage", label: "Bevestiging" },
@@ -104,6 +104,12 @@ export const legalNav = [
 export const footerNav: { href: string; label: string }[] = footerColumns.flatMap((column) => [
   ...column.links,
 ]);
+
+export function isShopNavActive(pathname: string, href: string) {
+  if (pathname === href || pathname.startsWith(`${href}/`)) return true;
+  if (href === "/hpl-plaat" && (pathname === "/hpl-platen" || pathname.startsWith("/hpl-platen/"))) return true;
+  return false;
+}
 
 export const nav = shopNav;
 

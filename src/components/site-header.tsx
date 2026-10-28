@@ -10,7 +10,7 @@ import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
-import { shopNav, site } from "@/lib/site";
+import { isShopNavActive, shopNav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 function VatBar() {
@@ -87,7 +87,7 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
           {shopNav.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            const active = isShopNavActive(pathname, item.href);
             return (
               <Link
                 key={item.href}

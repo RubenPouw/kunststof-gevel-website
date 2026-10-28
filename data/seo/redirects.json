@@ -61,9 +61,9 @@
   },
   {
     "from": "/hpl-plaat",
-    "to": "/hpl-platen",
-    "status": "301",
-    "reason": "hpl-categorie"
+    "to": "/hpl-plaat",
+    "status": "200",
+    "reason": "hpl-hub"
   },
   {
     "from": "/keralit-dakranden",
