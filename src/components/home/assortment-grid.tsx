@@ -36,9 +36,9 @@ const APPS = [
     bg: "#D9D5CB",
   },
   {
-    href: "/hpl-platen",
+    href: "/hpl-plaat",
     name: "HPL platen",
-    detail: "3050 × 1300 · hele plaat",
+    detail: "kleur · structuur",
     slug: "hpl-platen",
     bg: "#B7B1A4",
   },

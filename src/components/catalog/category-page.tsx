@@ -23,6 +23,7 @@ export function CategoryPage({
   sheetCalculator = false,
   emptyMessage,
   sampleHref,
+  belowIntro,
 }: {
   kicker: string;
   title: string;
@@ -41,6 +42,7 @@ export function CategoryPage({
   sheetCalculator?: boolean;
   emptyMessage?: string;
   sampleHref?: string;
+  belowIntro?: React.ReactNode;
 }) {
   return (
     <div className="bg-kg-kalk">
@@ -48,6 +50,7 @@ export function CategoryPage({
       <p className="font-mono text-[13px] text-kg-text-2">{kicker}</p>
       <h1 className="display-plp mt-2 max-w-3xl">{title}</h1>
       <p className="mt-4 max-w-2xl text-kg-text-2">{intro}</p>
+      {belowIntro}
       {sampleHref ? (
         <p className="mt-4">
           <Link href={sampleHref}>Gratis kleurstalen aanvragen</Link>

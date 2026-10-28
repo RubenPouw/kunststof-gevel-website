@@ -22,6 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/zierer-steenstrips",
     "/kunststof-vensterbank",
     "/hpl-platen",
+    "/hpl-plaat",
     "/dakranden",
     "/kozijnafwerking",
     "/kunststof-kozijnen",

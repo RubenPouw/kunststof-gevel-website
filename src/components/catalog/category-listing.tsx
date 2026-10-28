@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { CategoryPage } from "@/components/catalog/category-page";
 import { SeoArticle } from "@/components/seo/article";
 import { getCategoryStory } from "@/data/seo/categories";
@@ -44,6 +46,13 @@ export async function CategoryListing({
         showStockChip
         sheetCalculator={slug === "hpl-platen"}
         sampleHref={staalGroep ? `/staalaanvraag?groep=${staalGroep}` : undefined}
+        belowIntro={
+          slug === "hpl-platen" ? (
+            <p className="mt-4">
+              <Link href="/hpl-plaat">Kleur en structuur</Link>
+            </p>
+          ) : null
+        }
         emptyMessage={
           slug === "hpl-platen" && all.length === 0
             ? `De HPL platen komen uit de shopcollectie. Ziet u ze nog niet, bel ${site.phone}. Een plaat is 3050 × 1300 × 6 mm, hele plaat, 3,965 m².`

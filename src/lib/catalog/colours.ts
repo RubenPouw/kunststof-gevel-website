@@ -102,6 +102,11 @@ export const UNKNOWN_COLOUR_HEX = "#C5C1B8";
 
 const RULES: { test: RegExp; family: ColorFamily; hex: string; label: string }[] = [
   { test: /smokey shadow/, family: "houtlook", hex: UNKNOWN_COLOUR_HEX, label: "Smokey shadow" },
+  { test: /whitewash/, family: "houtlook", hex: "#E6E0D4", label: "Whitewash" },
+  { test: /corten/, family: "metaal", hex: "#8C4A2F", label: "Cortenstaal" },
+  { test: /zinklook/, family: "metaal", hex: "#B5B8BA", label: "Zinklook" },
+  { test: /betonlook/, family: "steen", hex: "#C5C1B6", label: "Betonlook" },
+  { test: /kalksteen/, family: "steen", hex: "#D4CFC4", label: "Kalksteen" },
   { test: /vergrijsd/, family: "houtlook", hex: "#A39480", label: "Vergrijsd eiken" },
   { test: /golden\s*oak|golden/, family: "houtlook", hex: "#C4A36A", label: "Golden oak" },
   { test: /california redwood|mahonie|chocolade|mocca|cappuccino/, family: "houtlook", hex: "#6B3A2A", label: "Houtlook" },

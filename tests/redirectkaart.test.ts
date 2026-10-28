@@ -16,6 +16,7 @@ const STATIC = new Set([
   "/",
   "/gevelbekleding",
   "/hpl-platen",
+  "/hpl-plaat",
   "/dakranden",
   "/kozijnafwerking",
   "/montage",

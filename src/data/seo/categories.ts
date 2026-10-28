@@ -189,6 +189,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       },
     ],
     links: [
+      { href: "/hpl-plaat", label: "Kleur en structuur" },
       { href: "/merken/hpl-compact-exterieur", label: "HPL Compact Exterieur" },
       { href: "/merken/hpl-fr", label: "FR brandvertragend" },
       { href: "/merken/renolit", label: "Renolit eenzijdig" },
