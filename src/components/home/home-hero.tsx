@@ -10,11 +10,8 @@ export function HomeHero() {
     <section className="container-kg pt-10 pb-4 lg:pt-14">
       <div className="grid items-end gap-5 lg:grid-cols-[7fr_5fr]">
         <div>
-          <h1 className="display-home text-balance">
-            {hero.title}
-            <br />
-            {hero.subtitle}
-          </h1>
+          <h1 className="display-home text-balance">{hero.title}</h1>
+          <p className="mt-3 text-[22px] font-medium tracking-[-0.03em]">{hero.subtitle}</p>
           <p className="mt-5 max-w-[560px] text-[17px] text-kg-text-2">{hero.body}</p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link href="/gevelbekleding" className={cn(buttonVariants({ variant: "primary" }))}>
