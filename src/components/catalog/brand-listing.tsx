@@ -2,10 +2,12 @@ import { BrandHero } from "@/components/catalog/brand-hero";
 import { GuaranteeBand } from "@/components/catalog/guarantee-band";
 import { ProductListing } from "@/components/catalog/product-listing";
 import { SeoArticle } from "@/components/seo/article";
+import { JsonLd } from "@/components/seo/json-ld";
 import { getBrandStory } from "@/data/seo/brands";
 import { getBrand, getProductsByBrand } from "@/lib/catalog";
 import { DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import type { ListingFilters } from "@/lib/catalog/types";
+import { breadcrumbJsonLd, collectionJsonLd } from "@/lib/seo/schema";
 import { site } from "@/lib/site";
 
 export async function BrandListing({
@@ -24,9 +26,24 @@ export async function BrandListing({
   const story = getBrandStory(brand.slug);
   const all = await getProductsByBrand(brand.slug);
   const view = prepareListing(all, filters, page, undefined, presentation.sort);
+  const path = `/merken/${brand.slug}`;
 
   return (
     <div className="bg-kg-kalk pb-8">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Merken", path: "/merken" },
+          { name: brand.name, path },
+        ])}
+      />
+      <JsonLd
+        data={collectionJsonLd(
+          brand.name,
+          path,
+          view.cards.map((card) => ({ name: card.name, path: `/producten/${card.slug}` })),
+        )}
+      />
       <BrandHero brand={brand} intro={story?.lead ?? brand.summary} />
       <div className="container-kg">
         <ProductListing

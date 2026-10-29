@@ -7,6 +7,7 @@ import { listProducts } from "@/lib/catalog";
 import { slugKey } from "@/lib/catalog/derive";
 import { toListingCard } from "@/lib/catalog/listing";
 import { resolveColour } from "@/lib/catalog/colours";
+import type { Product } from "@/lib/catalog/types";
 import { breadcrumbJsonLd } from "@/lib/seo/schema";
 import { site } from "@/lib/site";
 
@@ -21,13 +22,24 @@ export function kleurLabel(slug: string) {
   return ral ? `${name} RAL ${ral[1]}` : name;
 }
 
-function matchesKleur(colorName: string, ral: string | undefined, slug: string) {
+function tokenHit(key: string, nameSlug: string) {
+  const parts = key.split("-").filter(Boolean);
+  const wanted = nameSlug.split("-").filter(Boolean);
+  if (!wanted.length) return false;
+  for (let i = 0; i <= parts.length - wanted.length; i += 1) {
+    if (wanted.every((part, index) => parts[i + index] === part)) return true;
+  }
+  return false;
+}
+
+function matchesKleur(colorName: string, ral: string | undefined, slug: string, loose = false) {
   const wantedRal = slug.match(/ral-(\d{4})/i)?.[1];
   const nameSlug = slug.replace(/-ral-\d{4}$/i, "");
   const key = slugKey(colorName);
   const digits = ral?.replace(/\D/g, "");
   if (wantedRal) return digits === wantedRal && (key === nameSlug || key.includes(nameSlug) || nameSlug.includes(key));
-  return key === nameSlug;
+  if (key === nameSlug) return true;
+  return loose && tokenHit(key, nameSlug);
 }
 
 export async function KleurPage({
@@ -37,6 +49,10 @@ export async function KleurPage({
   parentHref,
   parentLabel,
   canonical,
+  heading,
+  intro,
+  loose = false,
+  productFilter,
 }: {
   slug: string;
   brandSlug?: string;
@@ -44,12 +60,17 @@ export async function KleurPage({
   parentHref: string;
   parentLabel: string;
   canonical: string;
+  heading?: string;
+  intro?: string;
+  loose?: boolean;
+  productFilter?: (product: Product) => boolean;
 }) {
   const label = kleurLabel(slug);
   const colour = resolveColour(label);
   const products = (await listProducts()).filter((product) => {
+    if (productFilter && !productFilter(product)) return false;
     if (brandSlug && product.brandSlug !== brandSlug) return false;
-    return product.colors.some((color) => matchesKleur(color.name, color.ral, slug));
+    return product.colors.some((color) => matchesKleur(color.name, color.ral, slug, loose));
   });
   const cards = products.map(toListingCard);
 
@@ -68,11 +89,11 @@ export async function KleurPage({
         </p>
         <div className="mt-4 flex items-center gap-3">
           <ColourSwatch name={label} hex={colour.hex} family={colour.family} size={36} />
-          <h1 className="display-plp">{label}</h1>
+          <h1 className="display-plp">{heading ?? label}</h1>
         </div>
         <p className="mt-4 max-w-2xl text-kg-text-2">
-          {brandLabel}. Artikelen in deze kleur uit het assortiment. Een staal legt u buiten tegen de gevel, niet alleen
-          op een scherm.
+          {intro ??
+            `${brandLabel}. Artikelen in deze kleur uit het assortiment. Een staal legt u buiten tegen de gevel, niet alleen op een scherm.`}
         </p>
         <p className="mt-4">
           <Link href="/stalen">Gratis kleurstalen aanvragen</Link>

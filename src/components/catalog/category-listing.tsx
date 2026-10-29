@@ -2,12 +2,14 @@ import Link from "next/link";
 
 import { CategoryPage } from "@/components/catalog/category-page";
 import { SeoArticle } from "@/components/seo/article";
+import { JsonLd } from "@/components/seo/json-ld";
 import { getCategoryStory } from "@/data/seo/categories";
 import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import { categoryStaalGroup } from "@/lib/staal/tree";
 import type { ListingFilters } from "@/lib/catalog/types";
+import { breadcrumbJsonLd, collectionJsonLd } from "@/lib/seo/schema";
 
 export async function CategoryListing({
   slug,
@@ -26,20 +28,34 @@ export async function CategoryListing({
   const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
   const story = getCategoryStory(slug);
   const staalGroep = categoryStaalGroup(slug);
+  const title =
+    slug === "gevelbekleding"
+      ? "Kunststof gevelbekleding"
+      : slug === "dakranden"
+        ? "Kunststof dakranden en boeidelen"
+        : slug === "montage"
+          ? "Montagemateriaal kunststof gevelbekleding"
+          : category.name;
+  const path = slug === "hpl-platen" ? "/hpl-plaat" : `/${slug}`;
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: title, path },
+        ])}
+      />
+      <JsonLd
+        data={collectionJsonLd(
+          title,
+          path,
+          view.cards.map((card) => ({ name: card.name, path: `/producten/${card.slug}` })),
+        )}
+      />
       <CategoryPage
         kicker="Assortiment"
-        title={
-          slug === "gevelbekleding"
-            ? "Kunststof gevelbekleding"
-            : slug === "dakranden"
-              ? "Kunststof dakranden en boeidelen"
-              : slug === "montage"
-                ? "Montagemateriaal kunststof gevelbekleding"
-                : category.name
-        }
+        title={title}
         intro={category.summary}
         cards={view.cards}
         total={view.total}
