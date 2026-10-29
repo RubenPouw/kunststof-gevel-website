@@ -11,7 +11,7 @@ import { SiteHeader } from "@/components/site-header";
 import { AccountProvider } from "@/lib/account";
 import { CartProvider } from "@/lib/cart";
 import { SampleTrayProvider } from "@/lib/samples";
-import { organizationJsonLd } from "@/lib/seo/schema";
+import { siteGraphJsonLd } from "@/lib/seo/schema";
 import { site } from "@/lib/site";
 import { CLICK_CAPTURE_SCRIPT } from "@/lib/tracking/capture-script";
 import { VAT_BOOT_SCRIPT } from "@/lib/vat-mode";
@@ -72,7 +72,7 @@ export default function RootLayout({
             </linearGradient>
           </defs>
         </svg>
-        <JsonLd data={organizationJsonLd()} />
+        <JsonLd data={siteGraphJsonLd()} />
         <AccountProvider>
           <CartProvider>
             <SampleTrayProvider>

@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: story?.metaTitle ?? brand.name,
     description: story?.description ?? brand.summary,
     alternates: { canonical: `/merken/${brand.slug}` },
+    ...(brand.slug === "overig" ? { robots: { index: false, follow: true } } : {}),
     ...(pages > 1 ? { pagination: { next: `/merken/${brand.slug}?pagina=2` } } : {}),
   };
 }
