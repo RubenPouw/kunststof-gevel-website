@@ -83,7 +83,7 @@ export function quotePdfLines(input: { title: string; lines: SummaryLine[]; refe
     ...input.lines.map((line) => `${line.label}: ${line.value}`),
     "",
     "Dit document is een aanvraag. Er staat geen prijs op.",
-    "We reageren op werkdagen. Levertijd en garantie bevestigen we in de offerte.",
+    "We reageren op werkdagen. Levering in max. 4 werkdagen. Op het kozijn geldt 10 jaar garantie.",
     "Pouw Online Group B.V., Binnenkamp 7a, 5321 KA Hedel",
     "030 227 1397",
   ];

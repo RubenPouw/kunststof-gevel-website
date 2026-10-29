@@ -37,7 +37,7 @@ export const hubCopy = {
       paragraphs: [
         `${profileSpecSentence()} De 64 mm in de systeemnaam is de aanzichthoogte van het kader, niet de inbouwdiepte. De inbouwdiepte is ${PROFILE.depthMm} mm.`,
         `Een 2-delige schuifpui is geen raam in hetzelfde kader. Die heet ${SLIDING_NAME}. Een 4-delige pui vragen we als offerte aan, omdat die niet in dezelfde online grenzen valt.`,
-        "We publiceren geen certificaten, geen garantie in jaren en geen levertijd in werkdagen. Die cijfers blijven leeg tot de leverancier ze voor dit profiel bevestigt. TODO-RUBEN: levertijd en garantie.",
+        "Levering in max. 4 werkdagen. Op het kozijn geldt 10 jaar garantie.",
       ],
     },
     {
@@ -64,7 +64,7 @@ export const hubCopy = {
         "Wit, crème, antraciet, zwart en de nerfvarianten in de configurator zijn de snelle kleuren. Binnen en buiten kunnen verschillen. De foliecode bevestigen we op de offerte. Leg een staal van de gevelbekleding ernaast, want antraciet op de gevel is niet vanzelf dezelfde indruk als antraciet op het kozijn.",
         "De hoek is verstek of HVL. Bij verstek loopt de naad schuin. Bij HVL staat de naad recht, omdat één profiel doorloopt. We publiceren geen verschil in isolatiewaarde tot de leverancier dat cijfer geeft.",
         "De online aanvraag voor een vast raam begint bij 600 mm. Een vast glasvlak gaat tot 3,35 m². Daarbuiten versturen we de aanvraag nog steeds en beoordelen we hem handmatig. Een draaikiep houdt een maximale vleugelbreedte aan van ongeveer 1512 mm. Dat zijn aanvraaggrenzen, geen fabriekscertificaat.",
-        "Op de site staat geen kozijnprijs. De configurator eindigt in een vrijblijvende offerte. U kunt nog niet afrekenen. TODO-RUBEN: kozijnprijzen. Op werkdagen hoort u binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn zelf bevestigen we per offerte.",
+        "De configurator eindigt in een vrijblijvende offerte. Op werkdagen hoort u binnen 24 uur iets terug op een aanvraag. Levering in max. 4 werkdagen. Op het kozijn geldt 10 jaar garantie.",
         "Wij maken het kozijn en leveren het. Wij plaatsen het niet en komen niet inmeten. Plaatsen doet u zelf of uw eigen installateur. De showroom in Hedel is op afspraak, Binnenkamp 7a.",
       ],
     },

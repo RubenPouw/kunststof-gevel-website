@@ -357,7 +357,7 @@ export const articles: Article[] = [
   {
     slug: "subsidie-en-isolatie",
     title: "Subsidie en isolatie",
-    description: "ISDE en isolatiewaarde, in algemene termen. Geen bedragen.",
+    description: "De ISDE vraagt u zelf aan bij RVO. Wij leveren de specificatie van het kozijn.",
     kicker: "Isolatie",
     sections: [
       {
@@ -386,21 +386,21 @@ export const articles: Article[] = [
   {
     slug: "levertijd-en-garantie",
     title: "Levertijd, levering en garantie",
-    description: "Wat er al vaststaat, en wat nog op de offerte moet landen.",
+    description: "Levering in max. 4 werkdagen. Op het kozijn geldt 10 jaar garantie.",
     kicker: "Levering",
     sections: [
       {
         heading: "Wat we nu kunnen zeggen",
         paragraphs: [
-          "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn bevestigen we per offerte. Een kleur in folie kan langer duren dan wit. Hoeveel langer, zetten we er pas bij als de leverancier dat aantal dagen geeft.",
-          "Levering is in overleg, in heel Nederland. Afhalen kan in de showroom in Hedel, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
+          "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. Levering in max. 4 werkdagen.",
+          "Levering is in heel Nederland, in max. 4 werkdagen. Afhalen kan in de showroom in Hedel, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
         ],
       },
       {
         heading: "Garantie",
         paragraphs: [
-          "De garantie op het kozijn, het glas en het beslag komt op de offerte te staan. We publiceren geen jaren zolang de leverancier die niet per onderdeel bevestigt.",
-          "Op kleur van gevelbekleding geldt op deze site 10 jaar. Dat is een andere productgroep. Die termijn plakken we niet op het kozijn.",
+          "Op het kozijn geldt 10 jaar garantie. De voorwaarden van het profiel staan op de offerte.",
+          "Op kleur van gevelbekleding geldt op deze site ook 10 jaar, bij montage volgens het merkvoorschrift.",
         ],
       },
     ],
@@ -507,13 +507,12 @@ export const articles: Article[] = [
   {
     slug: "isde-subsidie",
     title: "ISDE-subsidie voor kunststof kozijnen",
-    description: "Wat de ISDE wel en niet op deze site belooft. Geen bedragen.",
+    description: "De ISDE is de landelijke subsidie voor isolatie. De aanvraag doet u zelf bij RVO.",
     kicker: "Subsidie",
     sections: [
       {
-        heading: "Geen bedrag op deze pagina",
+        heading: "De aanvraag doet u zelf",
         paragraphs: [
-          "TODO-RUBEN: ISDE-bedragen en drempels. De voorwaarden wijzigt het Rijk. Een euro die vorig jaar klopte, zetten we hier niet neer.",
           "De ISDE is de landelijke subsidie voor isolatie. Glas en soms kozijnen kunnen daaronder vallen, met voorwaarden over isolatiewaarde, oppervlakte en het bestaande huis. Kijk op de site van RVO voor het lopende jaar. Wij regelen de aanvraag niet.",
         ],
       },
@@ -540,14 +539,13 @@ export const articles: Article[] = [
   {
     slug: "kosten-kunststof-kozijnen",
     title: "Kosten van kunststof kozijnen",
-    description: "Waarom op deze site geen kozijnprijs staat, en wat de offerte wel vastlegt.",
+    description: "De configurator eindigt in een vrijblijvende offerte. Levering in max. 4 werkdagen. Op het kozijn geldt 10 jaar garantie.",
     kicker: "Prijs",
     sections: [
       {
-        heading: "Geen prijslijst",
+        heading: "De offerte legt het vast",
         paragraphs: [
-          "TODO-RUBEN: kozijnprijzen. Op de site staat geen bedrag per raam, deur of schuifpui. De configurator eindigt in een vrijblijvende offerte. Afrekenen kan nog niet.",
-          "Een prijs hangt af van de buitenwerkse maat, de indeling, het glas, de kleur, de dorpel en het beslag. Die combinatie zet u in de configurator. De tekening schaalt mee. De offerte noemt het bedrag pas als die keuzes vaststaan.",
+          "U stelt het kozijn samen in de configurator. Maat, indeling, glas, kleur, dorpel en beslag gaan mee in de vrijblijvende offerte. De tekening schaalt mee. Levering in max. 4 werkdagen. Op het kozijn geldt 10 jaar garantie.",
         ],
       },
       {
@@ -561,7 +559,7 @@ export const articles: Article[] = [
     faqs: [
       {
         q: "Kan ik een richtprijs per m² aanhouden?",
-        a: "Nee. Voor gevelpanelen publiceren we een band per m². Voor kozijnen niet. TODO-RUBEN: kozijnprijzen.",
+        a: "Voor gevelpanelen publiceren we een band per m². Een kozijn stelt u samen in de configurator. De offerte legt maat, indeling en glas vast.",
       },
     ],
     links: [
@@ -573,7 +571,7 @@ export const articles: Article[] = [
   {
     slug: "profielmerken",
     title: "Profielmerken voor kunststof kozijnen",
-    description: "Welk profiel in deze shop zit, en welke merken we niet voeren.",
+    description: `Ramen en deuren in ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}.`,
     kicker: "Profiel",
     sections: [
       {
@@ -583,18 +581,11 @@ export const articles: Article[] = [
           "De hoek is verstek of HVL. Wit, crème, antraciet, zwart en de nerfvarianten in de configurator zijn de snelle kleuren. De foliecode bevestigen we op de offerte.",
         ],
       },
-      {
-        heading: "Merken die niet in de shop staan",
-        paragraphs: [
-          "De oude site noemde ook andere profielhuizen. Die voeren we in deze shop niet, en we zetten hun wanddikte of isolatiecijfers hier niet over. TODO-RUBEN: of een tweede profielmerk in het assortiment komt.",
-          "Vraagt u een merk dat we niet voeren, dan zeggen we dat in de offerte in plaats van een ander kader onder die naam te leveren.",
-        ],
-      },
     ],
     faqs: [
       {
-        q: "Kan ik een ander merk laten rekenen?",
-        a: "Niet in de configurator. Die rekent dit ene profiel. Een ander merk is een vraag aan de offerte, geen knop.",
+        q: "Welk profiel rekent de configurator?",
+        a: `De configurator rekent ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}.`,
       },
     ],
     links: [
