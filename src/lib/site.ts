@@ -33,8 +33,8 @@ export const site = {
 
 export const hero = {
   kicker: "Kunststof gevelbekleding · Keralit · VinyPlus · Eurotexx",
-  title: "Nooit meer schilderen.",
-  subtitle: "Vervang hout door kunststof.",
+  title: "Kunststof gevelbekleding kopen met heldere prijzen",
+  subtitle: "Nooit meer schilderen.",
   body: "Kunststof gevelbekleding, dakranden en kozijnafwerking. Showroom op afspraak in Hedel. Zelf monteren of montage via een offerte.",
   cta: "Bekijk voorraad",
   samples: "Kies gratis kleurstalen",

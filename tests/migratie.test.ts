@@ -1,8 +1,52 @@
 import assert from "node:assert/strict";
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
 
 import { isIndexableDestination, KERALIT_CANONICAL } from "../src/lib/seo/migratie.ts";
 import { lookupRedirect, normalizePath, resolveNavigation } from "../src/lib/seo/redirects.ts";
+
+const APP = new URL("../src/app/", import.meta.url);
+
+function routePatterns(dir = APP, prefix: string[] = []): string[][] {
+  const out: string[][] = [];
+  for (const name of readdirSync(dir)) {
+    const full = join(dir.pathname, name);
+    if (!statSync(full).isDirectory()) {
+      if (name === "page.tsx") out.push(prefix);
+      continue;
+    }
+    if (name.startsWith("_")) continue;
+    out.push(...routePatterns(new URL(`${name}/`, dir), [...prefix, name]));
+  }
+  return out;
+}
+
+const ROUTES = routePatterns();
+
+function hasPage(pathname: string) {
+  const parts = pathname.split("/").filter(Boolean);
+  function walk(index: number, candidates: string[][]): boolean {
+    if (index === parts.length) return candidates.some((route) => route.length === index);
+    const exact = candidates.filter((route) => route[index] === parts[index]);
+    const dynamic = candidates.filter(
+      (route) => route[index]?.startsWith("[") && !route[index].startsWith("[...") && !route[index].startsWith("[["),
+    );
+    const rest = candidates.filter((route) => route[index]?.startsWith("[...") || route[index]?.startsWith("[[..."));
+    if (exact.length && walk(index + 1, exact)) return true;
+    if (dynamic.length && walk(index + 1, dynamic)) return true;
+    return rest.length > 0;
+  }
+  return walk(0, ROUTES);
+}
+
+function csvUrls(text: string) {
+  return text
+    .trim()
+    .split("\n")
+    .slice(1)
+    .map((line) => line.split(",")[0].replace(/^"|"$/g, ""));
+}
 
 function settle(pathname: string) {
   const first = resolveNavigation({
@@ -53,4 +97,24 @@ test("ranking colour archives end on an indexable colour page in one hop", () =>
     assert.equal(isIndexableDestination(landed.path), true, from);
     assert.match(landed.path, /\/kleuren\//, from);
   }
+});
+
+test("every migration URL lands on a real indexable page in one hop", () => {
+  const urls = csvUrls(readFileSync(new URL("../docs/seo-basis/migratie-urls.csv", import.meta.url), "utf8"));
+  assert.equal(urls.length, 487);
+  const failures: string[] = [];
+  for (const url of urls) {
+    const pathname = new URL(url).pathname;
+    const landed = settle(pathname);
+    const from = normalizePath(pathname);
+    if (landed.hops > 1) failures.push(`${pathname} hops ${landed.hops}`);
+    if (landed.search) failures.push(`${pathname} keeps ${landed.search}`);
+    if (landed.path === "/") {
+      if (from !== "/" && from !== "/kunststof-gevelbekleding") failures.push(`${pathname} -> /`);
+      continue;
+    }
+    if (!isIndexableDestination(landed.path, landed.search)) failures.push(`${pathname} -> ${landed.path} noindex`);
+    if (!hasPage(landed.path)) failures.push(`${pathname} -> ${landed.path} missing page`);
+  }
+  assert.deepEqual(failures, []);
 });
