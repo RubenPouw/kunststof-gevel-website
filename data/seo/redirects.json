@@ -55,9 +55,9 @@
   },
   {
     "from": "/hpl-gevelplaat-toepassingen-montage",
-    "to": "/hpl-plaat",
+    "to": "/blog/hpl-plaat",
     "status": "301",
-    "reason": "hpl-categorie"
+    "reason": "rewritten-article"
   },
   {
     "from": "/hpl-plaat",

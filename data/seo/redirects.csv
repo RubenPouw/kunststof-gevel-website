@@ -8,7 +8,7 @@ from,to,status,reason
 /eurotexx-gevelbekleding,/merken/eurotexx,301,brand
 /eurotexx-montage,/montage/eurotexx,301,montage-brand
 /herroepingsrecht,/herroepingsrecht,200,same-url
-/hpl-gevelplaat-toepassingen-montage,/hpl-plaat,301,hpl-categorie
+/hpl-gevelplaat-toepassingen-montage,/blog/hpl-plaat,301,rewritten-article
 /hpl-plaat,/hpl-plaat,200,hpl-hub
 /keralit-dakranden,/dakranden/keralit,301,category-brand
 /keralit-montage,/montage/keralit,301,montage-brand

@@ -35,3 +35,17 @@ Deze vier eindigen in één 301 op een indexeerbare kleurpagina:
 | `/kleur-deel/mosgroen-ral-6005/` | `/gevelbekleding/kleuren/mosgroen-ral-6005` |
 | `/keralit-kleuren/antraciet-ral-7016/` | `/merken/keralit/kleuren/antraciet-ral-7016` |
 | `/keralit-kleuren/mosgroen/` | `/merken/keralit/kleuren/mosgroen` |
+
+## Vervolg op deze branch
+
+Migratie: 487/487, elke doel-URL heeft een `page.tsx` en is indexeerbaar, hoogstens één hop. Homepage-redirect alleen voor `/kunststof-gevelbekleding/`.
+
+Nieuwe routes: `/dakranden/[merk]`, `/montage/[merk]`, `/gevelbekleding/[type]`, `/kunststof-vensterbank/kleuren/[kleur]`, `/zierer-steenstrips/kleuren/[kleur]`, `/hpl-plaat/[kleur]`, plus gap-pagina's `/overzet-vensterbank`, `/boeidelen`, `/boeiboord`, `/schroten`, `/kunststof-plafond`, `/badkamerplafond`, `/hpl-plaat/6-mm`, `/hpl-plaat/boeiboord`, `/hpl-plaat/dakoverstek`, `/hpl-plaat/gevel`, `/hpl-plaat/balkon`, `/hpl-vs-trespa`. `/rabatdelen` 301't naar `/gevelbekleding/rabat`.
+
+Overgeslagen: andere HPL-diktes dan 6 mm (niet in de shop). Trespa-specificaties (we verkopen het niet).
+
+Homepage title (absolute): Kunststof gevelbekleding kopen | Heldere prijzen per plank. H1: Kunststof gevelbekleding kopen met heldere prijzen. H2: Op zoek naar de goedkoopste kunststof gevelbekleding?
+
+Kozijn-H1: Kunststof kozijnen op maat. Kennisbank erbij: stelkozijn, isde-subsidie, kosten-kunststof-kozijnen, profielmerken.
+
+Open: TODO-RUBEN voor levertijd, ISDE-bedragen, kozijnprijzen, een tweede profielmerk, HPL-diktes buiten 6 mm, balkonbevestiging en een Trespa-vergelijking.
