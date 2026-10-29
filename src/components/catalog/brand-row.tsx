@@ -74,6 +74,7 @@ export function BrandRow({
               <a
                 key={brand.slug}
                 href={href}
+                rel="nofollow"
                 aria-current={active ? "true" : undefined}
                 onClick={(event) => onFilter?.(event, { brandSlugs: next })}
                 className="kg-soft-card flex h-[76px] w-[148px] shrink-0 items-center justify-center px-3 no-underline hover:no-underline"

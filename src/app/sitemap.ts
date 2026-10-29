@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const paths = [
     "",
     "/gevelbekleding",
-    "/keralit-gevelbekleding",
+    "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding",
     "/zierer-steenstrips",
     "/kunststof-vensterbank",
     "/hpl-platen",

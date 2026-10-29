@@ -27,7 +27,9 @@ export function BrandHero({
             {" / "}
             {brand.name}
           </p>
-          <h1 className="display-plp mt-3">{brand.name}</h1>
+          <h1 className="display-plp mt-3">
+            {/gevelbekleding|dakrand|hpl|plaat|bank/i.test(brand.name) ? brand.name : `${brand.name} gevelbekleding`}
+          </h1>
           <p className="mt-4 max-w-lg text-[16px] text-kg-text-2">{intro}</p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link href="/#stalen" className={cn(buttonVariants({ variant: "primary" }), "no-underline hover:no-underline")}>
