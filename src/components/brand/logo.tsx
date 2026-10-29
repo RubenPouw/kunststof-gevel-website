@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Lockup } from "@/components/brand/lockup";
 import { cn } from "@/lib/utils";
 
 type LogoProps = {
@@ -20,18 +21,8 @@ export function Logo({
 }: LogoProps) {
   const dark = tone === "dark";
   const content = (
-    <span className={cn("inline-flex w-max flex-col items-stretch gap-0.5", className)}>
-      <span
-        className="whitespace-nowrap font-bold"
-        style={{
-          fontSize: size,
-          lineHeight: 1,
-          letterSpacing: "-0.03em",
-          color: dark ? "var(--kg-kalk)" : "var(--kg-navy)",
-        }}
-      >
-        kunststof-gevel.nl
-      </span>
+    <span className={cn("inline-flex w-max max-w-full flex-col items-start", className)}>
+      <Lockup size={size} tone={tone} />
       {tagline ? (
         <span
           className="mt-3 max-w-xs"
@@ -52,8 +43,8 @@ export function Logo({
   return (
     <Link
       href={href}
-      className="inline-flex w-max text-inherit no-underline hover:text-inherit hover:no-underline"
-      aria-label="kunststof-gevel.nl, naar home"
+      className="inline-flex w-max max-w-full text-inherit no-underline hover:text-inherit hover:no-underline"
+      aria-label="kunststof-gevel.nl, onderdeel van Cavesupplies, naar home"
     >
       {content}
     </Link>

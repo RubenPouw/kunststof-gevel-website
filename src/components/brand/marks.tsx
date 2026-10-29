@@ -1,3 +1,4 @@
+import { cavesuppliesMarkPath, MARK_UNITS } from "@/lib/brand/lockup";
 import { cn } from "@/lib/utils";
 
 type MarkProps = {
@@ -7,25 +8,25 @@ type MarkProps = {
   title?: string;
 };
 
+/** One-colour Cavesupplies C. No gradient. At least 12px tall. */
 export function CavesuppliesMark({
-  size = 11,
+  size = 12,
   fill = "currentColor",
   className,
-  title = "kunststof-gevel.nl",
+  title,
 }: MarkProps) {
+  const height = Math.max(12, size);
   return (
     <svg
-      viewBox="0 0 100 100"
-      width={size}
-      height={size}
-      className={cn("shrink-0", className)}
-      aria-hidden={!title}
+      viewBox={`0 0 ${MARK_UNITS} ${MARK_UNITS}`}
+      width={height}
+      height={height}
+      className={cn("block shrink-0", className)}
+      aria-hidden={title ? undefined : true}
       role={title ? "img" : undefined}
     >
       {title ? <title>{title}</title> : null}
-      <path d="M12 10 H78 L88 20 V32 H12 Z" fill={fill} />
-      <rect x="12" y="35" width="22" height="33" fill={fill} />
-      <rect x="12" y="68" width="76" height="22" fill={fill} />
+      <path d={cavesuppliesMarkPath()} fill={fill} />
     </svg>
   );
 }
