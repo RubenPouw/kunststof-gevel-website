@@ -7,6 +7,7 @@ import { projects } from "../src/data/projects.ts";
 import { landingMatches, landingSlugs } from "../src/data/seo/landings.ts";
 import { articles } from "../src/lib/kozijnen/kennis.ts";
 import { allLayouts, GROUPS, layoutPath } from "../src/lib/kozijnen/layouts.ts";
+import { isIndexableDestination } from "../src/lib/seo/migratie.ts";
 import { lookupRedirect, resolveNavigation } from "../src/lib/seo/redirects.ts";
 import brands from "../src/data/catalog/brands.json" with { type: "json" };
 import handles from "../data/seo/catalog-handles.json" with { type: "json" };
@@ -58,7 +59,7 @@ for (const clean of Object.values(duplicatePublicSlugs as Record<string, string>
 function served(pathname: string) {
   if (STATIC.has(pathname)) return true;
   if (pathname.startsWith("/producten/")) return productSlugs.has(pathname.slice("/producten/".length));
-  return false;
+  return isIndexableDestination(pathname);
 }
 
 function parseCsv(text: string) {
@@ -177,7 +178,15 @@ test("every old URL in the redirect map reaches a 200 in one hop", () => {
 });
 
 test("the three ranking slugs are 200 and the decided redirects stay one hop", () => {
-  assert.equal(lookupRedirect("/keralit-gevelbekleding").status, "200");
+  assert.equal(
+    lookupRedirect("/keralit-gevelbekleding").to,
+    "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding",
+  );
+  assert.equal(lookupRedirect("/keralit-gevelbekleding").status, "301");
+  assert.equal(
+    lookupRedirect("/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding").status,
+    "200",
+  );
   assert.equal(lookupRedirect("/zierer-steenstrips").to, "/zierer-steenstrips");
   assert.equal(lookupRedirect("/kunststof-vensterbank").to, "/kunststof-vensterbank");
   assert.equal(lookupRedirect("/kunststof-gevelbekleding").to, "/");
@@ -190,7 +199,7 @@ test("the three ranking slugs are 200 and the decided redirects stay one hop", (
   });
   assert.equal(slash.action, "redirect");
   if (slash.action !== "redirect") return;
-  assert.equal(slash.pathname, "/keralit-gevelbekleding");
+  assert.equal(slash.pathname, "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding");
   assert.equal(slash.host, null);
 
   const apex = resolveNavigation({

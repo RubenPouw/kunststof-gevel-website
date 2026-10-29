@@ -55,7 +55,7 @@ test("unknown old product paths fall back to a brand or category, not the homepa
   });
   assert.equal(decision.action, "redirect");
   if (decision.action !== "redirect") return;
-  assert.equal(decision.pathname, "/merken/keralit");
+  assert.equal(decision.pathname, "/product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding");
   assert.equal(decision.host, null);
 });
 

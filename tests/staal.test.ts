@@ -369,16 +369,18 @@ test("rate limit allows five posts per ten minutes", () => {
   assert.equal(rateLimitStaal("203.0.113.5", 1_000 + 10 * 60 * 1000), true);
 });
 
-test("/staalaanvraag is the page, not a redirect to /stalen", () => {
+test("/staalaanvraag redirects in one hop to /stalen", () => {
   const row = lookupRedirect("/staalaanvraag");
-  assert.equal(row.to, "/staalaanvraag");
-  assert.equal(row.status, "200");
+  assert.equal(row.to, "/stalen");
+  assert.equal(row.status, "301");
   const decision = resolveNavigation({
     host: "www.kunststof-gevel.nl",
     pathname: "/staalaanvraag",
     search: "",
   });
-  assert.equal(decision.action, "next");
+  assert.equal(decision.action, "redirect");
+  if (decision.action !== "redirect") return;
+  assert.equal(decision.pathname, "/stalen");
 });
 
 test("customer mail uses the thank-you sentence and the published phone numbers", () => {
