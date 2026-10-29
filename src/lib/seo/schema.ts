@@ -147,16 +147,27 @@ export function productMetaTitle(name: string, extra?: string) {
 
 function shippingDetails() {
   const destination = { "@type": "DefinedRegion", addressCountry: "NL" };
+  const deliveryTime = {
+    "@type": "ShippingDeliveryTime",
+    handlingTime: {
+      "@type": "QuantitativeValue",
+      maxValue: 4,
+      unitCode: "DAY",
+      unitText: "werkdagen",
+    },
+  };
   return [
     {
       "@type": "OfferShippingDetails",
       shippingDestination: destination,
       shippingRate: { "@type": "MonetaryAmount", value: SHIPPING_FLAT.toFixed(2), currency: "EUR" },
+      deliveryTime,
     },
     {
       "@type": "OfferShippingDetails",
       shippingDestination: destination,
       shippingRate: { "@type": "MonetaryAmount", value: "0.00", currency: "EUR" },
+      deliveryTime,
       eligibleTransactionVolume: {
         "@type": "PriceSpecification",
         minPrice: FREE_SHIPPING_FROM,

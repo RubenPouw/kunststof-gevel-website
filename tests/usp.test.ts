@@ -77,6 +77,8 @@ test("kozijn copy does not sell installation, stock or a colour guarantee", () =
     JSON.stringify(articles),
     readFileSync(new URL("../src/app/kunststof-kozijnen/kennisbank/page.tsx", import.meta.url), "utf8"),
   ].join("\n");
-  assert.equal(/uit voorraad|kleurgarantie|garantie op kleur|10 jaar garantie/i.test(blob), false);
-  assert.equal(/\d+\s*(werk)?dag/i.test(blob), false);
+  assert.equal(/uit voorraad|kleurgarantie|garantie op kleur|SKG/i.test(blob), false);
+  assert.match(blob, /10 jaar garantie/);
+  assert.match(blob, /max\. 4 werkdagen/);
+  assert.equal(/\d+\s*(werk)?dag/i.test(blob.replaceAll("max. 4 werkdagen", "")), false);
 });
