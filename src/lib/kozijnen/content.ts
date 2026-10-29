@@ -1,5 +1,6 @@
 import { PROFILE, SLIDING_NAME, profileSpecSentence } from "./config";
 import type { KozijnGroup, Layout } from "./layouts";
+import restoredKozijn from "@/data/seo/restored-kozijnen.json" with { type: "json" };
 
 export type CopyBlock = { heading: string; paragraphs: string[] };
 export type CopyFaq = { q: string; a: string };
@@ -28,6 +29,43 @@ export const hubCopy = {
       paragraphs: [
         "U vult de buitenwerkse breedte en hoogte in. De configurator zegt meteen of die maat binnen de online grenzen valt. Daarbuiten versturen we de aanvraag nog steeds, en beoordelen we hem handmatig.",
         "Daarna indeling, hoek, kleur binnen en buiten, glas, ventilatie, dorpel en beslag. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
+      ],
+    },
+    ...(restoredKozijn as CopyBlock[]),
+    {
+      heading: "Het profiel dat in de configurator staat",
+      paragraphs: [
+        `${profileSpecSentence()} De 64 mm in de systeemnaam is de aanzichthoogte van het kader, niet de inbouwdiepte. De inbouwdiepte is ${PROFILE.depthMm} mm.`,
+        `Een 2-delige schuifpui is geen raam in hetzelfde kader. Die heet ${SLIDING_NAME}. Een 4-delige pui vragen we als offerte aan, omdat die niet in dezelfde online grenzen valt.`,
+        "We publiceren geen certificaten, geen garantie in jaren en geen levertijd in werkdagen. Die cijfers blijven leeg tot de leverancier ze voor dit profiel bevestigt. TODO-RUBEN: levertijd en garantie.",
+      ],
+    },
+    {
+      heading: "Ramen, schuifpuien en deuren",
+      paragraphs: [
+        "Ramen: vast, draai, draaikiep en combinaties. Een vast raam heeft geen scharnier en geen kruk. Draai en draaikiep hebben een kruk. Combinaties zetten een draaideel naast vast glas, of vast glas tussen twee draaideuren.",
+        "Schuifpuien: twee delen online, vier delen via de offerte. Gelaagd glas staat bij een pui aan beide kanten voor, omdat een pui een deur is die mensen raken. De onderdorpel houden we laag. De exacte dorpelhoogte publiceren we pas als de leverancier die bevestigt.",
+        "Deuren: achterdeur en tuindeur, enkel of dubbel. De vulling is een paneel, half glas of vol glas. Standaard draait de deur naar binnen. Naar buiten kan, als de stoep of het pad dat toelaat.",
+        "Elke indeling heeft een eigen pagina met een tekening. De tekening schaalt mee met de maat die u invult. De link in de adresbalk is te delen. Een account is niet nodig.",
+      ],
+    },
+    {
+      heading: "Glas en de 85 cm",
+      paragraphs: [
+        `HR++ is dubbel isolatieglas. Triple heeft drie ruiten en is dikker en zwaarder. ${PROFILE.name} neemt glas tot ${PROFILE.glassMaxMm} mm. In de berekening komt dit kozijn op Uw ${String(PROFILE.uwDouble).replace(".", ",")} met dubbel glas, op Uw ${String(PROFILE.uwTriple).replace(".", ",")} met triple, en op Uw ${String(PROFILE.uwWithVent).replace(".", ",")} met een ventilatierooster.`,
+        "Gelaagd glas blijft in de folie hangen als het breekt. Onder de 85 cm vanaf de vloer, en bij deuren en schuifpuien, zetten we dat voor. NEN 3569 kijkt naar de hele situatie. Een tekenaar of de gemeente kan een zwaardere eis stellen.",
+        "Mat glas voor een badkamer zet u in de opmerking. We noemen geen decibel voor geluid, omdat dat per pakket verschilt.",
+      ],
+    },
+    {
+      heading: "Meten, kleur en offerte",
+      paragraphs: [
+        "U bestelt op de buitenwerkse maat, in millimeters. Breedte boven, midden en onder. Hoogte links, midden en rechts. De kleinste maat gaat de aanvraag in. De twee diagonalen laten zien of de opening haaks is. Een stelkozijn dat blijft zitten, meet u aan de binnenopening, niet aan de buitenkant van het hout. Het formulier vraagt die zes maten, plus de diagonalen als de opening scheef oogt.",
+        "Wit, crème, antraciet, zwart en de nerfvarianten in de configurator zijn de snelle kleuren. Binnen en buiten kunnen verschillen. De foliecode bevestigen we op de offerte. Leg een staal van de gevelbekleding ernaast, want antraciet op de gevel is niet vanzelf dezelfde indruk als antraciet op het kozijn.",
+        "De hoek is verstek of HVL. Bij verstek loopt de naad schuin. Bij HVL staat de naad recht, omdat één profiel doorloopt. We publiceren geen verschil in isolatiewaarde tot de leverancier dat cijfer geeft.",
+        "De online aanvraag voor een vast raam begint bij 600 mm. Een vast glasvlak gaat tot 3,35 m². Daarbuiten versturen we de aanvraag nog steeds en beoordelen we hem handmatig. Een draaikiep houdt een maximale vleugelbreedte aan van ongeveer 1512 mm. Dat zijn aanvraaggrenzen, geen fabriekscertificaat.",
+        "Op de site staat geen kozijnprijs. De configurator eindigt in een vrijblijvende offerte. U kunt nog niet afrekenen. TODO-RUBEN: kozijnprijzen. Op werkdagen hoort u binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn zelf bevestigen we per offerte.",
+        "Wij maken het kozijn en leveren het. Wij plaatsen het niet en komen niet inmeten. Plaatsen doet u zelf of uw eigen installateur. De showroom in Hedel is op afspraak, Binnenkamp 7a.",
       ],
     },
   ] as CopyBlock[],

@@ -37,6 +37,9 @@ const COLLAPSE: Record<string, string> = {
   "/staalaanvraag": "/stalen",
   "/kozijnen": "/kunststof-kozijnen",
   "/assortiment": "/gevelbekleding",
+  "/rabatdelen": "/gevelbekleding/rabat",
+  "/keralit-boeideel-dakrand-afwerken": "/blog/keralit-boeideel-dakrand-afwerken",
+  "/kunststof-gevel-schoonmaken-onderhoud": "/blog/kunststof-gevel-schoonmaken",
 };
 
 const COLOR_BASE: Record<string, string> = {

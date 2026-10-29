@@ -464,6 +464,144 @@ export const articles: Article[] = [
       ...sharedLinks,
     ],
   },
+  {
+    slug: "stelkozijn",
+    title: "Stelkozijn bij een kunststof kozijn",
+    description: "Wanneer het oude hout blijft zitten, wat u dan meet, en of het stelkozijn in de aanvraag zit.",
+    kicker: "Meten",
+    sections: [
+      {
+        heading: "Wat een stelkozijn is",
+        paragraphs: [
+          "Een stelkozijn is een vast kader in de sparing. Het nieuwe kozijn valt daarin, of ervoor. Bij renovatie is dat vaak het oude houten kozijn dat u laat zitten. Bij nieuwbouw staat er soms al een stelkozijn in het metselwerk.",
+          "De dagmaat is de vrije opening. De sparing is het gat in de muur. Die twee geeft u niet dezelfde millimeters. Meet u het hout dat blijft zitten, dan meet u de opening daarbinnen, niet de buitenmaat van het hout.",
+        ],
+      },
+      {
+        heading: "Hoe u die opening meet",
+        paragraphs: [
+          "Breedte boven, op het midden en onder. Hoogte links, op het midden en rechts. De kleinste breedte en de kleinste hoogte gaan de aanvraag in. Een grotere maat past niet.",
+          "Tussen het nieuwe kozijn en het stelkozijn hoort speling, zodat u kunt stellen en kitten. Hoeveel millimeter bij uw aansluiting hoort, hangt af van aanslag en dorpel. We noemen hier geen vaste aftrek alsof die voor elk huis geldt. Stuur de zes maten en een foto mee als u twijfelt.",
+          "Meet ook de twee diagonalen. Een kozijn is haaks. Een scheve opening vangt u op in de speling, niet door het kozijn scheef te bestellen.",
+        ],
+      },
+      {
+        heading: "Zit het stelkozijn in de bestelling?",
+        paragraphs: [
+          "In de standaard aanvraag zit het nieuwe kozijn met glas, beslag en kruk. Ankers en een nieuw stelkozijn zitten er alleen bij als de offerte dat zegt. Wij leveren het kozijn. Wij plaatsen het niet en komen niet inmeten.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan het oude kozijn blijven zitten?",
+        a: "Ja, als het hout droog en recht genoeg is om als stelkozijn te dienen. Rot hout haalt u eerst weg. Dan meet u de sparing in de muur.",
+      },
+    ],
+    links: [
+      { href: "/kunststof-kozijnen/kennisbank/hoe-moet-je-meten", label: "Hele meetinstructie" },
+      { href: "/kunststof-kozijnen/kennisbank/montage", label: "Zelf plaatsen" },
+      ...sharedLinks,
+    ],
+  },
+  {
+    slug: "isde-subsidie",
+    title: "ISDE-subsidie voor kunststof kozijnen",
+    description: "Wat de ISDE wel en niet op deze site belooft. Geen bedragen.",
+    kicker: "Subsidie",
+    sections: [
+      {
+        heading: "Geen bedrag op deze pagina",
+        paragraphs: [
+          "TODO-RUBEN: ISDE-bedragen en drempels. De voorwaarden wijzigt het Rijk. Een euro die vorig jaar klopte, zetten we hier niet neer.",
+          "De ISDE is de landelijke subsidie voor isolatie. Glas en soms kozijnen kunnen daaronder vallen, met voorwaarden over isolatiewaarde, oppervlakte en het bestaande huis. Kijk op de site van RVO voor het lopende jaar. Wij regelen de aanvraag niet.",
+        ],
+      },
+      {
+        heading: "Welk cijfer u kunt vergelijken",
+        paragraphs: [
+          `${profileSpecSentence()} Dat is de berekende Uw van dit kozijn, geen subsidiebedrag. Op de offerte kunnen we aangeven welk glas u aanvraagt, zodat u dat naast de voorwaarden legt.`,
+          "Kieren rond oud hout zijn vaak een groter verlies dan de keuze tussen twee coatings. Stellen en afdichten hoort bij de winst, los van de subsidie.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Regelen jullie de ISDE?",
+        a: "Nee. U vraagt de subsidie zelf aan. Wij leveren de specificatie van het kozijn dat u bestelt, zodra die vaststaat.",
+      },
+    ],
+    links: [
+      { href: "/kunststof-kozijnen/kennisbank/subsidie-en-isolatie", label: "Subsidie en isolatie" },
+      { href: "/kunststof-kozijnen/kennisbank/glas", label: "Glas" },
+      ...sharedLinks,
+    ],
+  },
+  {
+    slug: "kosten-kunststof-kozijnen",
+    title: "Kosten van kunststof kozijnen",
+    description: "Waarom op deze site geen kozijnprijs staat, en wat de offerte wel vastlegt.",
+    kicker: "Prijs",
+    sections: [
+      {
+        heading: "Geen prijslijst",
+        paragraphs: [
+          "TODO-RUBEN: kozijnprijzen. Op de site staat geen bedrag per raam, deur of schuifpui. De configurator eindigt in een vrijblijvende offerte. Afrekenen kan nog niet.",
+          "Een prijs hangt af van de buitenwerkse maat, de indeling, het glas, de kleur, de dorpel en het beslag. Die combinatie zet u in de configurator. De tekening schaalt mee. De offerte noemt het bedrag pas als die keuzes vaststaan.",
+        ],
+      },
+      {
+        heading: "Wat niet in een kale raamprijs zit",
+        paragraphs: [
+          "Plaatsen doen wij niet. Een installateur, het stelkozijn, ankers en het afvoeren van het oude kozijn zitten niet in de standaard aanvraag. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
+          "Gevelbekleding en de vensterbank bestelt u apart. Ze kunnen wel in hetzelfde gesprek, met dezelfde kleur als vertrekpunt.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan ik een richtprijs per m² aanhouden?",
+        a: "Nee. Voor gevelpanelen publiceren we een band per m². Voor kozijnen niet. TODO-RUBEN: kozijnprijzen.",
+      },
+    ],
+    links: [
+      { href: "/kunststof-kozijnen", label: "Configurator" },
+      { href: "/offerte", label: "Offerte" },
+      ...sharedLinks,
+    ],
+  },
+  {
+    slug: "profielmerken",
+    title: "Profielmerken voor kunststof kozijnen",
+    description: "Welk profiel in deze shop zit, en welke merken we niet voeren.",
+    kicker: "Profiel",
+    sections: [
+      {
+        heading: "Eén raamprofiel",
+        paragraphs: [
+          `Ramen en deuren in deze shop zijn ${PROFILE.name}. ${profileSpecSentence()} Een 2-delige schuifpui is een ${SLIDING_NAME}, een ander systeem. Een 4-delige pui rekenen we in de offerte.`,
+          "De hoek is verstek of HVL. Wit, crème, antraciet, zwart en de nerfvarianten in de configurator zijn de snelle kleuren. De foliecode bevestigen we op de offerte.",
+        ],
+      },
+      {
+        heading: "Merken die niet in de shop staan",
+        paragraphs: [
+          "De oude site noemde ook andere profielhuizen. Die voeren we in deze shop niet, en we zetten hun wanddikte of isolatiecijfers hier niet over. TODO-RUBEN: of een tweede profielmerk in het assortiment komt.",
+          "Vraagt u een merk dat we niet voeren, dan zeggen we dat in de offerte in plaats van een ander kader onder die naam te leveren.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan ik een ander merk laten rekenen?",
+        a: "Niet in de configurator. Die rekent dit ene profiel. Een ander merk is een vraag aan de offerte, geen knop.",
+      },
+    ],
+    links: [
+      { href: "/kunststof-kozijnen/kennisbank/profielen-en-kleuren", label: "Profiel en kleur" },
+      ...sharedLinks,
+    ],
+  },
 ];
 
 export function getArticle(slug: string) {
