@@ -18,8 +18,15 @@ export default function OffertemandPage() {
   const [sending, setSending] = useState(false);
 
   useEffect(() => {
-    setItems(readBasket());
-    setReady(true);
+    let active = true;
+    queueMicrotask(() => {
+      if (!active) return;
+      setItems(readBasket());
+      setReady(true);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   function remove(item: BasketItem) {

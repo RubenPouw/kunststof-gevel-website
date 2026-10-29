@@ -35,7 +35,7 @@ export default function KozijnenHubPage() {
           {" / Kozijnen"}
         </p>
         <p className="kicker mt-6">{PROFILE.name}</p>
-        <h1 className="display-plp mt-2 max-w-3xl">Kunststof kozijnen, in één profiel.</h1>
+        <h1 className="display-plp mt-2 max-w-3xl">Kunststof kozijnen op maat</h1>
         <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-text-2">{hubCopy.lead}</p>
       </header>
 
