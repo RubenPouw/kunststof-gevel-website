@@ -52,10 +52,10 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     title: "Keralit gevelbekleding",
     metaTitle: "Keralit gevelbekleding kopen | Vanaf €90,49, gratis staal",
     description:
-      "Keralit gevelbekleding kopen: panelen in sponning 143, 167 en 190 mm en potdeksel 177 mm, plus alle profielen. Gratis kleurstaal. Voorraad in max. 4 werkdagen.",
+      "Keralit gevelbekleding kopen: panelen in sponning 143, 167 en 190 mm en potdeksel 177 mm, plus alle profielen. Gratis kleurstaal.",
     intro:
       "Keralit gevelbekleding geeft de gevel de uitstraling van hout, zonder schilderwerk of houtrot. U bestelt het complete systeem: de panelen, de montageprofielen, de schroeven en de reiniger. Alles in één bestelling.",
-    sampleHref: "/staalaanvraag?groep=gevel",
+    sampleHref: "/stalen",
     sections: [
       {
         heading: "Keralit panelen in vier modellen",
@@ -80,7 +80,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Kleur kiezen en bestellen",
         paragraphs: [
-          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfelt u, vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Producten op voorraad heeft u binnen maximaal 4 werkdagen in huis en vanaf € 499 is de verzending gratis. Een groot project vraagt u aan als offerte.",
+          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfelt u, vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Vanaf € 499 is de verzending gratis. TODO-RUBEN: levertijd is nog niet bevestigd. Een groot project vraagt u aan als offerte.",
         ],
       },
     ],
@@ -103,14 +103,14 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Hoe snel heb ik mijn Keralit in huis?",
-        a: "Producten op voorraad heeft u binnen maximaal 4 werkdagen. Vanaf € 499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
+        a: "TODO-RUBEN: levertijd is nog niet bevestigd. Vanaf € 499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
       },
     ],
     links: [
       { href: "/blog/keralit-of-vinyplus", label: "Keralit of VinyPlus" },
-      { href: "/montage?merk=keralit", label: "Montageprofielen Keralit" },
-      { href: "/dakranden?merk=keralit", label: "Keralit dakranden" },
-      { href: "/staalaanvraag?groep=gevel", label: "Gratis kleurstaal" },
+      { href: "/montage/keralit", label: "Montageprofielen Keralit" },
+      { href: "/dakranden/keralit", label: "Keralit dakranden" },
+      { href: "/stalen", label: "Gratis kleurstaal" },
     ],
   },
   "zierer-steenstrips": {
@@ -122,7 +122,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       "Kunststof steenstrips van Zierer: wildverband en grof, 3,4 m2 per pak. Ideaal als afwerking onder chalet of woonwagen.",
     intro:
       "De kunststof steenstrips van Zierer geven de gevel, plint of onderbouw de uitstraling van baksteen, zonder metselwerk en zonder zwaar gewicht. Ze passen als afwerking onder een chalet, woonwagen of tuinhuis, en ook op een schuur of als gemetselde look aan de binnenkant.",
-    sampleHref: "/staalaanvraag?groep=gevel",
+    sampleHref: "/stalen",
     sections: [
       {
         heading: "Wildverband of grof",
@@ -198,7 +198,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Bestellen",
         paragraphs: [
-          "Producten op voorraad heeft u binnen maximaal 4 werkdagen in huis. Vanaf € 499 is de verzending gratis en op de kunststof zit 10 jaar garantie. Wilt u de kleur eerst zien, vraag een staal aan. Een groot project vraagt u aan als prijs op maat.",
+          "Vanaf € 499 is de verzending gratis en op de kunststof zit 10 jaar garantie. TODO-RUBEN: levertijd is nog niet bevestigd. Wilt u de kleur eerst zien, vraag een staal aan. Een groot project vraagt u aan als prijs op maat.",
         ],
       },
     ],

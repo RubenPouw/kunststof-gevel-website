@@ -1,3 +1,5 @@
+import restoredBrands from "./restored-brands.json" with { type: "json" };
+
 export type SeoSection = {
   heading: string;
   paragraphs: string[];
@@ -23,7 +25,7 @@ export type BrandStory = {
   links: SeoLink[];
 };
 
-export const brandStories: BrandStory[] = [
+const brandStorySource: BrandStory[] = [
   {
     slug: "keralit",
     metaTitle: "Keralit gevelbekleding",
@@ -406,6 +408,18 @@ export const brandStories: BrandStory[] = [
     links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
   },
 ];
+
+const restoredBrandCopy = restoredBrands as Record<string, { sections: SeoSection[]; faqs: SeoFaq[] }>;
+
+export const brandStories: BrandStory[] = brandStorySource.map((story) => {
+  const extra = restoredBrandCopy[story.slug];
+  if (!extra) return story;
+  return {
+    ...story,
+    sections: [...story.sections, ...extra.sections],
+    faqs: extra.faqs.length ? [...story.faqs, ...extra.faqs] : story.faqs,
+  };
+});
 
 export function getBrandStory(slug: string) {
   return brandStories.find((story) => story.slug === slug);

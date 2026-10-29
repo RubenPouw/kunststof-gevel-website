@@ -1,5 +1,8 @@
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 
+import liveRestored from "./live-restored.json" with { type: "json" };
+import restoredMigrated from "./restored-migrated.json" with { type: "json" };
+
 import { migratedPosts } from "./migrated";
 
 export type BlogPost = {
@@ -206,7 +209,27 @@ const corePosts: BlogPost[] = [
   },
 ];
 
-export const blogPosts: BlogPost[] = [...corePosts, ...migratedPosts];
+const restoredBySlug = restoredMigrated as Record<
+  string,
+  { title: string; description: string; sections: BlogPost["sections"] }
+>;
+
+function withLiveBody(post: BlogPost): BlogPost {
+  const extra = restoredBySlug[post.slug];
+  if (!extra) return post;
+  return {
+    ...post,
+    title: extra.title,
+    description: extra.description,
+    sections: extra.sections,
+  };
+}
+
+export const blogPosts: BlogPost[] = [
+  ...corePosts,
+  ...migratedPosts.map(withLiveBody),
+  ...(liveRestored as BlogPost[]),
+];
 
 export function getBlogPost(slug: string) {
   return blogPosts.find((post) => post.slug === slug);
