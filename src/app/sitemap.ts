@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 
 import { blogPosts } from "@/data/blog/posts";
+import { indexableSlicePaths } from "@/data/seo/slices";
+import { gapPaths } from "@/components/seo/gap-listing";
 import { projects } from "@/data/projects";
 import { articles } from "@/lib/kozijnen/kennis";
 import { allLayouts, GROUPS, layoutPath } from "@/lib/kozijnen/layouts";
@@ -57,6 +59,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...paths.map((path) => ({
       url: `${base}${path || "/"}`,
+      lastModified: contentDate,
+    })),
+    ...indexableSlicePaths().map((path) => ({
+      url: `${base}${path}`,
+      lastModified: contentDate,
+    })),
+    ...gapPaths().map((path) => ({
+      url: `${base}${path}`,
       lastModified: contentDate,
     })),
     ...[...brands.values()].map((brand) => ({
