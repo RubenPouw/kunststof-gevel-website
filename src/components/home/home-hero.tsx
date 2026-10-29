@@ -35,7 +35,7 @@ export function HomeHero() {
             VinyPlus rondkant 150 mm · antraciet
             <br />
             <span className="text-[22px] font-medium tracking-[-0.02em] sm:text-[26px]">
-              levertijd in overleg
+              max. 4 werkdagen
             </span>
           </div>
         </Bevel>

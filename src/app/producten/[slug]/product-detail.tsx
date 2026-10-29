@@ -405,7 +405,9 @@ export function ProductDetail({
             </p>
           ) : (
             <p className="font-mono text-[13px] text-kg-text-2">
-              {sheet ? "Hele plaat. Je zaagwerk doen wij niet." : "10 jaar garantie op kleur, volgens het merkvoorschrift."}
+              {sheet
+                ? "Hele plaat. Je zaagwerk doen wij niet. Levering in max. 4 werkdagen."
+                : "10 jaar garantie op kleur, volgens het merkvoorschrift. Levering in max. 4 werkdagen."}
             </p>
           )}
         </div>

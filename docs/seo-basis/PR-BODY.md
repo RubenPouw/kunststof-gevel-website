@@ -48,4 +48,4 @@ Homepage title (absolute): Kunststof gevelbekleding kopen | Heldere prijzen per 
 
 Kozijn-H1: Kunststof kozijnen op maat. Kennisbank erbij: stelkozijn, isde-subsidie, kosten-kunststof-kozijnen, profielmerken.
 
-Open: TODO-RUBEN voor levertijd, ISDE-bedragen, kozijnprijzen, een tweede profielmerk, HPL-diktes buiten 6 mm, balkonbevestiging en een Trespa-vergelijking.
+Besluit 29 okt: levertijd is max. 4 werkdagen. Op het kozijn geldt 10 jaar garantie. Montage blijft zoals die stond, niet als standaard plaatsing.
