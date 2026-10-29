@@ -50,7 +50,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     slug: "keralit-gevelbekleding",
     kicker: "Keralit",
     title: "Keralit gevelbekleding",
-    metaTitle: "Keralit gevelbekleding kopen",
+    metaTitle: "Keralit gevelbekleding kopen | Vanaf €90,49, gratis staal",
     description:
       "Keralit gevelbekleding kopen: panelen in sponning 143, 167 en 190 mm en potdeksel 177 mm, plus alle profielen. Gratis kleurstaal. Voorraad in max. 4 werkdagen.",
     intro:

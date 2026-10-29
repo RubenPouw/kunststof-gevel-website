@@ -1,4 +1,5 @@
 import { isLandingSlug } from "@/data/seo/landings";
+import { KERALIT_CANONICAL } from "@/lib/seo/migratie";
 import { categorySlugs, type CategorySlug } from "@/lib/catalog/types";
 
 const CATEGORY_PATHS = new Set(categorySlugs.map((slug) => `/${slug}`));
@@ -36,8 +37,9 @@ export function listingRewriteTarget(pathname: string, search: URLSearchParams) 
   if (CATEGORY_PATHS.has(pathname)) {
     return encodeListingPath("categorie", pathname.slice(1), search);
   }
-  if (isLandingSlug(pathname.slice(1))) {
-    return encodeListingPath("land", pathname.slice(1), search);
+  if (pathname === KERALIT_CANONICAL || isLandingSlug(pathname.slice(1))) {
+    const slug = pathname === KERALIT_CANONICAL ? "keralit-gevelbekleding" : pathname.slice(1);
+    return encodeListingPath("land", slug, search);
   }
   const brand = pathname.match(/^\/merken\/([^/]+)$/);
   if (!brand) return null;
@@ -83,6 +85,7 @@ export function parseBasis(basis: string): { kind: "categorie" | "merk" | "zoeke
   const path = basis.split("?")[0] || "";
   if (path === "/zoeken") return { kind: "zoeken", slug: "" };
   const category = path.replace(/^\//, "");
+  if (path === KERALIT_CANONICAL) return { kind: "land", slug: "keralit-gevelbekleding" };
   if (isLandingSlug(category) && path === `/${category}`) return { kind: "land", slug: category };
   if ((categorySlugs as readonly string[]).includes(category) && path === `/${category}`) {
     return { kind: "categorie", slug: category };

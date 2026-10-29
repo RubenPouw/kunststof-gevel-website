@@ -19,7 +19,7 @@ export type CategoryStory = {
 export const categoryStories: Record<CategorySlug, CategoryStory> = {
   gevelbekleding: {
     slug: "gevelbekleding",
-    metaTitle: "Kunststof gevelbekleding",
+    metaTitle: "Kunststof gevelbekleding kopen | Keralit, VinyPlus en meer",
     description:
       "Kunststof gevelbekleding van Keralit, VinyPlus, Eurotexx en Kerrafront. Rabat, sponning en potdeksel, met m²-calculator en gratis kleurstalen.",
     sections: [
@@ -60,7 +60,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
   },
   dakranden: {
     slug: "dakranden",
-    metaTitle: "Kunststof dakranden",
+    metaTitle: "Kunststof dakranden en boeidelen",
     description:
       "Kunststof dakranden, boeidelen en hoeken in kleur bij de gevel. Milexx, VinyPlus en bijpassende aansluitprofielen.",
     sections: [
@@ -110,7 +110,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
   },
   montage: {
     slug: "montage",
-    metaTitle: "Montagemateriaal",
+    metaTitle: "Montagemateriaal kunststof gevelbekleding",
     description:
       "Startprofielen, eindprofielen, hoeken, schroeven en verbinders voor kunststof gevelbekleding. Per merk, niet door elkaar.",
     sections: [
@@ -217,9 +217,11 @@ export function categoryViewMetadata(
 ): Metadata {
   const base = categoryMetadata(slug);
   const path = `/${slug}`;
+  const filtered = hasActiveFilters(filters);
   return {
     ...base,
-    robots: hasActiveFilters(filters) ? { index: false, follow: true } : undefined,
+    alternates: filtered ? undefined : base.alternates,
+    robots: filtered ? { index: false, follow: true } : undefined,
     pagination: {
       previous: pagina > 1 ? listingPageHref(path, filters, pagina - 1) : undefined,
       next: pagina < pages ? listingPageHref(path, filters, pagina + 1) : undefined,
@@ -234,8 +236,12 @@ export function getCategoryStory(slug: string) {
 
 export function categoryMetadata(slug: CategorySlug): Metadata {
   const story = categoryStories[slug];
+  const title =
+    slug === "gevelbekleding"
+      ? { absolute: story.metaTitle }
+      : story.metaTitle;
   return {
-    title: story.metaTitle,
+    title,
     description: story.description,
     alternates: { canonical: `/${slug}` },
   };
