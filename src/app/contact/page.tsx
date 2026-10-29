@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { QuoteForm } from "@/components/quote-form";
+import { JsonLd } from "@/components/seo/json-ld";
 import { buttonVariants } from "@/components/ui/button";
+import { localBusinessJsonLd } from "@/lib/seo/schema";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="container-kg py-12 sm:py-16">
+      <JsonLd data={localBusinessJsonLd()} />
       <p className="kicker">Contact</p>
       <h1 className="mt-2 max-w-2xl">Bel, mail of stuur de gevel mee.</h1>
       <p className="mt-4 max-w-xl text-[var(--color-text-soft)]">
