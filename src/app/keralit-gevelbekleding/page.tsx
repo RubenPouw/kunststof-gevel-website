@@ -1,12 +1,8 @@
-import { LandingListing } from "@/components/catalog/landing-listing";
-import { landingMetadata } from "@/data/seo/landings";
+import { permanentRedirect } from "next/navigation";
 
-export const revalidate = 3600;
+import { KERALIT_CANONICAL } from "@/lib/seo/migratie";
 
-export function generateMetadata() {
-  return landingMetadata("keralit-gevelbekleding");
-}
-
-export default function KeralitGevelbekledingPage() {
-  return <LandingListing slug="keralit-gevelbekleding" filters={{}} page={1} />;
+/** Live canonical is the product-category URL. This slug only redirects. */
+export default function KeralitShortPage() {
+  permanentRedirect(KERALIT_CANONICAL);
 }

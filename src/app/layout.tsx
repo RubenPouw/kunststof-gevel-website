@@ -37,7 +37,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: {
     default: `${site.name}, ${site.tagline}`,
-    template: `%s · ${site.name}`,
+    template: `%s | Kunststof-gevel.nl`,
   },
   description: site.description,
   metadataBase: new URL(site.origin),
