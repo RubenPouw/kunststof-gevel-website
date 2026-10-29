@@ -117,20 +117,12 @@ export const gapPages = {
     path: "/hpl-plaat/6-mm",
     title: "HPL plaat 6 mm",
     h1: "HPL plaat 6 mm",
-    intro: `De shop voert HPL als hele plaat van 6 mm. ${hplSheet} Andere diktes staan niet in het assortiment.`,
+    intro: `De shop voert HPL als hele plaat van 6 mm. ${hplSheet}`,
     kicker: "HPL",
     parentHref: "/hpl-plaat",
     parentLabel: "HPL plaat",
     listing: true,
     match: (product) => product.category === "hpl-platen",
-    sections: [
-      {
-        heading: "Alleen 6 mm",
-        paragraphs: [
-          "TODO-RUBEN: of er later andere plaatdiktes bijkomen. Tot die tijd is 4 mm, 8 mm of 10 mm geen artikel in deze shop.",
-        ],
-      },
-    ],
     links: [{ href: "/hpl-plaat", label: "Kleur en structuur" }],
   },
   hplBoei: {
@@ -190,20 +182,12 @@ export const gapPages = {
     path: "/hpl-plaat/balkon",
     title: "HPL plaat voor balkon",
     h1: "HPL plaat voor een balkon",
-    intro: `Een balkonafwerking met HPL is dezelfde hele plaat als op de gevel. ${hplSheet} Hoe de plaat aan een hek of borstwering moet, bevestigt de leverancier per klus. Dat schrijven we hier niet als vaste maat.`,
+    intro: `Een balkonafwerking met HPL is dezelfde hele plaat als op de gevel. ${hplSheet} De plaat hoort op een geventileerde achterconstructie.`,
     kicker: "HPL",
     parentHref: "/hpl-plaat",
     parentLabel: "HPL plaat",
     listing: true,
     match: (product) => product.category === "hpl-platen",
-    sections: [
-      {
-        heading: "Geen balkonmaat op deze pagina",
-        paragraphs: [
-          "TODO-RUBEN: balkonbevestiging en plaatverdeling. Tot die tijd geldt alleen de hele plaat en een geventileerde achterconstructie, net als op de gevel.",
-        ],
-      },
-    ],
     links: [{ href: "/hpl-plaat/gevel", label: "HPL op de gevel" }],
   },
   trespa: {
@@ -211,7 +195,7 @@ export const gapPages = {
     title: "HPL of Trespa",
     h1: "HPL plaat, niet Trespa",
     intro:
-      "In deze shop koopt u HPL als hele plaat van 6 mm. Trespa voeren wij niet, en we zetten geen Trespa-dikte, garantie of kleurlijst op deze pagina.",
+      "In deze shop koopt u HPL als hele plaat van 6 mm. Trespa voeren wij niet.",
     kicker: "HPL",
     parentHref: "/hpl-plaat",
     parentLabel: "HPL plaat",
@@ -221,7 +205,6 @@ export const gapPages = {
         heading: "Wat u hier wel bestelt",
         paragraphs: [
           `${hplSheet} De kleur kiest u op de HPL-pagina. Wij zagen niet op maat.`,
-          "TODO-RUBEN: een specificatievergelijking met Trespa, als die ooit in het assortiment komt.",
         ],
       },
     ],

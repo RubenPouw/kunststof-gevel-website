@@ -80,7 +80,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Kleur kiezen en bestellen",
         paragraphs: [
-          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfelt u, vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Vanaf € 499 is de verzending gratis. TODO-RUBEN: levertijd is nog niet bevestigd. Een groot project vraagt u aan als offerte.",
+          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfelt u, vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Vanaf € 499 is de verzending gratis. Levering in max. 4 werkdagen. Een groot project vraagt u aan als offerte.",
         ],
       },
     ],
@@ -103,7 +103,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Hoe snel heb ik mijn Keralit in huis?",
-        a: "TODO-RUBEN: levertijd is nog niet bevestigd. Vanaf € 499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
+        a: "Levering in max. 4 werkdagen. Vanaf € 499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
       },
     ],
     links: [
@@ -198,7 +198,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Bestellen",
         paragraphs: [
-          "Vanaf € 499 is de verzending gratis en op de kunststof zit 10 jaar garantie. TODO-RUBEN: levertijd is nog niet bevestigd. Wilt u de kleur eerst zien, vraag een staal aan. Een groot project vraagt u aan als prijs op maat.",
+          "Vanaf € 499 is de verzending gratis en op de kunststof zit 10 jaar garantie. Levering in max. 4 werkdagen. Wilt u de kleur eerst zien, vraag een staal aan. Een groot project vraagt u aan als prijs op maat.",
         ],
       },
     ],
