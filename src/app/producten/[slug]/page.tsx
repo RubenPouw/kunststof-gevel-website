@@ -5,7 +5,7 @@ import { ProductDetail } from "@/app/producten/[slug]/product-detail";
 import { ReviewScoreStrip } from "@/components/reviews/score-strip";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getCategory, getProduct, getRelatedProducts, listProducts } from "@/lib/catalog";
-import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd, productJsonLd, productMetaTitle } from "@/lib/seo/schema";
 import { getReviewSnapshot } from "@/lib/reviews/read";
 import { staalTarget } from "@/lib/staal/tree";
 
@@ -27,12 +27,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProduct(slug);
   if (!product) return { title: "Product" };
   const description = product.description.replace(/\s+/g, " ").trim().slice(0, 160);
+  const products = await listProducts();
+  const duplicate = products.some((item) => item.slug !== product.slug && item.name === product.name);
+  const extra = duplicate ? product.colors[0]?.name || product.variants[0]?.sku : undefined;
+  const title = productMetaTitle(product.name, extra);
   return {
-    title: product.name,
+    title,
     description,
     alternates: { canonical: `/producten/${product.slug}` },
     openGraph: {
-      title: product.name,
+      title,
       description,
       url: `/producten/${product.slug}`,
       type: "website",
@@ -48,6 +52,7 @@ export default async function ProductPage({ params }: Props) {
   const related = await getRelatedProducts(product);
   const category = await getCategory(product.category);
 
+  const categoryPath = product.category === "hpl-platen" ? "/hpl-plaat" : `/${product.category}`;
   const categoryName = category?.name ?? product.category;
   const staal = staalTarget(product);
   const staalHref = staal ? `/staalaanvraag?groep=${staal.groupId}&product=${product.slug}` : undefined;
@@ -58,7 +63,7 @@ export default async function ProductPage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: categoryName, path: `/${product.category}` },
+          { name: categoryName, path: categoryPath },
           { name: product.name, path: `/producten/${product.slug}` },
         ])}
       />
