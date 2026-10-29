@@ -125,6 +125,6 @@ test("a sheet does not get the gevel panel calculator", () => {
 });
 
 test("old HPL urls fall forward to the sheet category", () => {
-  assert.equal(fallbackTarget("/product/hpl-compact-exterieur-ral-7016"), "/hpl-platen");
+  assert.equal(fallbackTarget("/product/hpl-compact-exterieur-ral-7016"), "/hpl-plaat");
   assert.equal(fallbackTarget("/product/hpl-reiniger-1000-ml"), "/gevelbekleding");
 });

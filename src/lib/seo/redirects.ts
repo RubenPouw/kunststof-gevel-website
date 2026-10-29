@@ -1,6 +1,7 @@
 import rows from "../../../data/seo/redirects.json" with { type: "json" };
 
 import { preserveClickSearch } from "../tracking/clicks";
+import { archiveTarget, collapseIndexable, forcedRedirect } from "./migratie";
 
 export type RedirectRow = {
   from: string;
@@ -46,12 +47,16 @@ function brandOf(value: string) {
 
 /** Patterns for old URLs that were not in the crawled sitemap. */
 export function fallbackTarget(path: string) {
+  const archive = archiveTarget(path);
+  if (archive) return collapseIndexable(archive);
   if (path.startsWith("/product/")) {
     const slug = path.slice("/product/".length);
     const brand = brandOf(slug);
-    if (slug.includes("hpl") && !slug.includes("reiniger")) return "/hpl-platen";
+    if (slug.includes("hpl") && !slug.includes("reiniger")) return "/hpl-plaat";
     if (slug.includes("dakrand") || slug.includes("boei")) {
-      return brand ? `/dakranden?merk=${brand}` : "/dakranden";
+      return brand && ["keralit", "vinyplus", "milexx", "unipanel"].includes(brand)
+        ? `/dakranden/${brand}`
+        : "/dakranden";
     }
     if (slug.includes("vensterbank")) return "/kunststof-vensterbank";
     if (slug.includes("plafond")) return "/merken/florence";
@@ -60,14 +65,20 @@ export function fallbackTarget(path: string) {
   }
   if (path.startsWith("/product-categorie/")) {
     const brand = brandOf(path);
-    if (path.includes("hpl") && !path.includes("reiniger")) return "/hpl-platen";
+    if (path.includes("hpl") && !path.includes("reiniger")) return "/hpl-plaat";
     if (path.includes("dakrand") || path.includes("boei")) {
-      return brand ? `/dakranden?merk=${brand}` : "/dakranden";
+      return brand && ["keralit", "vinyplus", "milexx", "unipanel"].includes(brand)
+        ? `/dakranden/${brand}`
+        : "/dakranden";
     }
     if (path.includes("plaatmateriaal")) return "/kozijnafwerking";
     if (path.includes("vensterbank")) return "/kunststof-vensterbank";
     if (path.includes("plafond") || path.includes("overstek")) return "/merken/florence";
-    if (path.includes("montage")) return brand ? `/montage?merk=${brand}` : "/montage";
+    if (path.includes("montage")) {
+      return brand && ["keralit", "vinyplus", "eurotexx", "kerrafront", "milexx", "profex", "unipanel", "zierer"].includes(brand)
+        ? `/montage/${brand}`
+        : "/montage";
+    }
     if (brand) return `/merken/${brand}`;
     return "/gevelbekleding";
   }
@@ -81,13 +92,30 @@ export function fallbackTarget(path: string) {
 
 export function lookupRedirect(pathname: string): RedirectRow {
   const path = normalizePath(pathname);
+  const paged = path.match(/^(.*)\/page\/\d+$/);
+  if (paged) {
+    const base = paged[1] || "/";
+    if (base === "/kunststof-nieuwtjes" || base.startsWith("/laatste-nieuws")) {
+      return { from: path, to: "/blog", status: "301", reason: "pagination" };
+    }
+    const parent = lookupRedirect(base);
+    const to = collapseIndexable(parent.to);
+    return { from: path, to, status: "301", reason: "pagination" };
+  }
   const known = byFrom.get(path);
-  if (known) return known;
+  if (known) {
+    const to = collapseIndexable(known.to);
+    if (to === path && known.status === "200") return known;
+    if (to === known.to) return known;
+    return { ...known, to, status: to === path ? "200" : "301", reason: known.reason };
+  }
+  const forced = forcedRedirect(path);
+  if (forced) return { from: path, to: forced, status: "301", reason: "collapse" };
   const fallback = fallbackTarget(path);
   if (!fallback || fallback === path) {
     return { from: path, to: path, status: "200", reason: "unchanged" };
   }
-  return { from: path, to: fallback, status: "301", reason: "fallback" };
+  return { from: path, to: collapseIndexable(fallback), status: "301", reason: "fallback" };
 }
 
 export type NavDecision =
