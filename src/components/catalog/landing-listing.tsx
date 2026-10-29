@@ -5,6 +5,7 @@ import { brandsInProducts } from "@/lib/catalog";
 import { productsForLanding } from "@/lib/catalog/landing-products";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import type { ListingFilters } from "@/lib/catalog/types";
+import { KERALIT_CANONICAL } from "@/lib/seo/migratie";
 import { site } from "@/lib/site";
 
 export async function LandingListing({
@@ -37,7 +38,7 @@ export async function LandingListing({
         page={view.page}
         pageSize={view.pageSize}
         brandOptions={await brandsInProducts(all)}
-        basePath={`/${slug}`}
+        basePath={slug === "keralit-gevelbekleding" ? KERALIT_CANONICAL : `/${slug}`}
         filters={filters}
         presentation={presentation}
         showStockChip

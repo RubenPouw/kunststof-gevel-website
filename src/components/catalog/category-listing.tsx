@@ -31,7 +31,15 @@ export async function CategoryListing({
     <>
       <CategoryPage
         kicker="Assortiment"
-        title={category.name}
+        title={
+          slug === "gevelbekleding"
+            ? "Kunststof gevelbekleding"
+            : slug === "dakranden"
+              ? "Kunststof dakranden en boeidelen"
+              : slug === "montage"
+                ? "Montagemateriaal kunststof gevelbekleding"
+                : category.name
+        }
         intro={category.summary}
         cards={view.cards}
         total={view.total}

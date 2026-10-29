@@ -134,7 +134,7 @@ export function ActiveFilterChips({
       {chips.map((chip) => (
         <a
           key={chip.key}
-          href={chip.href}
+          rel="nofollow" href={chip.href}
           onClick={(event) => onFilter(event, chip.patch)}
           className="inline-flex h-9 items-center gap-2 border border-kg-navy bg-white px-2.5 font-mono text-[13px] text-kg-navy no-underline hover:no-underline"
         >
@@ -144,7 +144,7 @@ export function ActiveFilterChips({
         </a>
       ))}
       <a
-        href={clearHref}
+        rel="nofollow" href={clearHref}
         onClick={onClear}
         className="inline-flex h-9 items-center px-1 font-mono text-[13px] text-kg-navy underline underline-offset-4"
       >
@@ -240,7 +240,7 @@ export function ListingFiltersPanel({
               return (
                 <a
                   key={item.code}
-                  href={listingHref(basePath, filters, { ral: active ? "" : item.code }, presentation)}
+                  rel="nofollow" href={listingHref(basePath, filters, { ral: active ? "" : item.code }, presentation)}
                   onClick={(event) => onFilter(event, { ral: active ? "" : item.code })}
                   className={cn(
                     "inline-flex h-10 min-h-10 items-center border px-3 font-mono text-[13px] no-underline hover:no-underline",
@@ -262,7 +262,7 @@ export function ListingFiltersPanel({
               return (
                 <a
                   key={item.mm}
-                  href={listingHref(basePath, filters, { workingWidthMm: active ? undefined : item.mm }, presentation)}
+                  rel="nofollow" href={listingHref(basePath, filters, { workingWidthMm: active ? undefined : item.mm }, presentation)}
                   onClick={(event) => onFilter(event, { workingWidthMm: active ? undefined : item.mm })}
                   className={cn(
                     "inline-flex h-10 min-h-10 items-center border px-3 font-mono text-[13px] no-underline hover:no-underline",
@@ -336,7 +336,7 @@ function ColourFilter({
                   return (
                     <a
                       key={item.slug}
-                      href={listingHref(basePath, filters, { colorSlugs: next }, presentation)}
+                      rel="nofollow" href={listingHref(basePath, filters, { colorSlugs: next }, presentation)}
                       onClick={(event) => onFilter(event, { colorSlugs: next })}
                       className="flex min-h-11 items-center gap-3 text-[15px] text-kg-navy no-underline hover:no-underline"
                     >
@@ -371,7 +371,7 @@ function FilterCheck({
   return (
     <label className="flex min-h-11 items-center gap-3">
       <a
-        href={href}
+        rel="nofollow" href={href}
         onClick={onClick}
         className={cn(
           "grid size-4 place-items-center border border-kg-navy text-[10px] text-white no-underline hover:no-underline",
@@ -381,7 +381,7 @@ function FilterCheck({
         {active ? "✓" : ""}
       </a>
       <a
-        href={href}
+        rel="nofollow" href={href}
         onClick={onClick}
         className="flex flex-1 items-baseline justify-between gap-2 text-[15px] text-kg-navy no-underline hover:no-underline"
       >
