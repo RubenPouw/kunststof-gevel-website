@@ -83,6 +83,32 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       { href: "/offerte", label: "Gevel en dakrand laten rekenen" },
     ],
   },
+  plafondpanelen: {
+    slug: "plafondpanelen",
+    metaTitle: "Plafondpanelen",
+    description:
+      "Florence plafondpanelen voor binnen en buiten, met profielen en plinten. Lengtes staan bij het artikel.",
+    sections: [
+      {
+        heading: "Plafond, geen gevel",
+        paragraphs: [
+          "Een plafond of overstek vraagt een vlak paneel. Florence is daarvoor. De gevel zelf blijft een rabat, sponning of potdeksel.",
+          "Profielen, plinten en verbindingen van dezelfde lijn bestelt u op deze pagina, niet tussen de gevelpanelen.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Kan ik Florence buiten gebruiken?",
+        a: "Er is een buitenplafondpaneel. Gebruik dat voor een overstek. Een binnenpaneel hoort binnen.",
+      },
+    ],
+    links: [
+      { href: "/merken/florence", label: "Florence" },
+      { href: "/dakranden", label: "Dakranden" },
+      { href: "/offerte", label: "Plafond laten rekenen" },
+    ],
+  },
   kozijnafwerking: {
     slug: "kozijnafwerking",
     metaTitle: "Kozijnafwerking",

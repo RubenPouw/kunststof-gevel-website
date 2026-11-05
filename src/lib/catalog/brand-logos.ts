@@ -10,7 +10,6 @@ export const brandLogoFile: Record<string, string> = {
   heering: "/brand/merken/heering.svg",
   keralit: "/brand/merken/keralit.svg",
   kerrafront: "/brand/merken/kerrafront.svg",
-  linerio: "/brand/merken/linerio.svg",
   milexx: "/brand/merken/milexx.svg",
   milin: "/brand/merken/milin.svg",
   milinboard: "/brand/merken/milinboard.svg",

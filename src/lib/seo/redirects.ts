@@ -79,8 +79,21 @@ export function fallbackTarget(path: string) {
   return null;
 }
 
+/** Linerio is off the shop. Wonderboard stays in Shopify for the other site. */
+export function retiredKgTarget(path: string): string | null {
+  if (path === "/merken/linerio" || path === "/merken/wonderboard") return "/gevelbekleding";
+  if (!path.startsWith("/producten/")) return null;
+  const slug = path.slice("/producten/".length);
+  if (/linerio|wonderboard/i.test(slug)) return "/gevelbekleding";
+  return null;
+}
+
 export function lookupRedirect(pathname: string): RedirectRow {
   const path = normalizePath(pathname);
+  const retired = retiredKgTarget(path);
+  if (retired) {
+    return { from: path, to: retired, status: "301", reason: "niet-op-kunststof-gevel" };
+  }
   const known = byFrom.get(path);
   if (known) return known;
   const fallback = fallbackTarget(path);

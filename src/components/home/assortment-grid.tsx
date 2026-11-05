@@ -50,6 +50,13 @@ const APPS = [
     bg: "#C9C4B8",
   },
   {
+    href: "/plafondpanelen",
+    name: "Plafondpanelen",
+    detail: "binnen · buiten",
+    slug: "plafondpanelen",
+    bg: "#D3CFC6",
+  },
+  {
     href: "/kunststof-kozijnen",
     name: "Kunststof kozijnen",
     detail: "op maat · vrijblijvende offerte",

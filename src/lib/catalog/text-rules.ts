@@ -15,7 +15,6 @@ const PRODUCT_LINES: { slug: string; re: RegExp }[] = [
   { slug: "profex", re: /\b(?:profex|duafort)\b/i },
   { slug: "unipanel", re: /\bunipanel\b/i },
   { slug: "florence", re: /\bflorence\b/i },
-  { slug: "linerio", re: /\blinerio\b/i },
   { slug: "fronto", re: /\bfronto\b/i },
   { slug: "werzalit", re: /\bwerzalit\b/i },
   { slug: "thomdeck", re: /\bthomdeck\b/i },

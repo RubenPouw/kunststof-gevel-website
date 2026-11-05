@@ -1,6 +1,7 @@
 export const categorySlugs = [
   "gevelbekleding",
   "dakranden",
+  "plafondpanelen",
   "kozijnafwerking",
   "montage",
   "hpl-platen",

@@ -24,6 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/hpl-platen",
     "/hpl-plaat",
     "/dakranden",
+    "/plafondpanelen",
     "/kozijnafwerking",
     "/kunststof-kozijnen",
     "/montage",

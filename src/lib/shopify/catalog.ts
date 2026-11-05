@@ -1,5 +1,6 @@
 import categoriesJson from "@/data/catalog/categories.json";
 import { dedupeProducts } from "@/lib/catalog/dedupe";
+import { isHiddenOnKunststofGevel } from "@/lib/catalog/visibility";
 
 import type { Brand, Category, Product } from "@/lib/catalog/types";
 
@@ -118,8 +119,9 @@ export function assembleCatalog(
   rawProducts: ShopifyProduct[],
   collections: { handle: string }[],
 ): ShopifyCatalog {
+  const visible = rawProducts.filter((product) => !isHiddenOnKunststofGevel(product));
   const products = dedupeProducts(
-    rawProducts
+    visible
       .map((product) =>
         mapShopifyProduct(
           product,

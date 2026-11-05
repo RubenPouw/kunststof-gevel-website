@@ -3,11 +3,12 @@ import { cache } from "react";
 import { enrichProduct } from "@/lib/catalog/derive";
 import { findListedProduct } from "@/lib/catalog/dedupe";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
+import { isHiddenOnKunststofGevel } from "@/lib/catalog/visibility";
 import { databaseUrl } from "@/lib/db/client";
 import { readStoredProducts } from "@/lib/db/store";
 import { isShopifyConfigured } from "@/lib/shopify/config";
 import { fetchShopifySearchHandles, loadShopifyCatalog } from "@/lib/shopify/catalog";
-import { brandsFromProducts } from "@/lib/shopify/map";
+import { brandsFromProducts, resolvePublicCategory } from "@/lib/shopify/map";
 
 import {
   applyListingFilters,
@@ -132,8 +133,12 @@ async function loadCatalog(): Promise<CatalogData> {
 }
 
 function withColourLabels(data: CatalogData): CatalogData {
-  // Re-apply name mapping on stored rows so an old width or "Overig" type does not stick.
-  return { ...data, products: data.products.map((product) => enrichProduct(product)) };
+  // Re-apply name mapping on stored rows so an old width, type or category does not stick.
+  const products = data.products
+    .filter((product) => !isHiddenOnKunststofGevel(product))
+    .map((product) => enrichProduct({ ...product, category: resolvePublicCategory(product) }));
+  if (data.source === "static") return { ...data, products };
+  return { ...data, products, brands: brandsFromProducts(products) };
 }
 
 export const getCatalog = cache(async (): Promise<CatalogData> => {

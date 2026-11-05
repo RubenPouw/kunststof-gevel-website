@@ -85,7 +85,7 @@ export function SiteHeader() {
       <div className="container-kg flex h-[72px] items-center gap-4 lg:gap-6">
         <Logo size={20} tone="dark" />
 
-        <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
+        <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk min-[1344px]:flex">
           {shopNav.map((item) => {
             const active = isShopNavActive(pathname, item.href);
             return (
@@ -154,7 +154,7 @@ export function SiteHeader() {
           </Link>
           <button
             type="button"
-            className="grid size-11 place-items-center lg:hidden"
+            className="grid size-11 place-items-center min-[1344px]:hidden"
             aria-label={menuOpen ? "Menu sluiten" : "Menu openen"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((value) => !value)}
@@ -170,7 +170,7 @@ export function SiteHeader() {
       <VatBar />
 
       {menuOpen ? (
-        <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 lg:hidden">
+        <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 min-[1344px]:hidden">
           <nav className="flex flex-col">
             {shopNav.map((item) => (
               <Link

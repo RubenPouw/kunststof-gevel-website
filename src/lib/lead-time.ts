@@ -8,6 +8,7 @@ import type { CategorySlug } from "@/lib/catalog/types";
 export const leadTimeWeeksByCategory: Record<CategorySlug | "kozijnen", number | null> = {
   gevelbekleding: null,
   dakranden: null,
+  plafondpanelen: null,
   kozijnafwerking: null,
   montage: null,
   "hpl-platen": null,

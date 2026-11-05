@@ -55,8 +55,11 @@ Routes mappen op Shopify-collecties en `productType` waar die bestaan:
 |---|---|
 | `/gevelbekleding` | Gevelbekleding, Rabatdelen, Sponningdelen, Wandpanelen |
 | `/dakranden` | Dakrand, Dakranden |
+| `/plafondpanelen` | Plafondpaneel, Plafondpanelen |
 | `/kozijnafwerking` | Kozijnafwerking |
 | `/montage` | Kunststof profielen, Montage |
+
+Linerio staat niet meer op de site. `/merken/linerio` en `/producten/linerio-*` wijzen naar `/gevelbekleding`. Wonderboard en het producttype Hygienische wandbekleding blijven uit de catalogus (andere site). Unipanel bouwpanelen en de sierlijst vallen onder dakranden. Florence valt onder plafondpanelen.
 
 Merken komen uit Shopify `vendor`, anders uit de producttitel (Milin, Heering, VinyPlus, …). Productdetail toont titel, varianten (kleur/lengte), prijs in EUR, SKU, leverancier en afbeeldingen als Shopify die heeft.
 
@@ -86,7 +89,7 @@ Registreer in Shopify (Settings, Notifications, Webhooks) deze onderwerpen, API-
 
 Voorraadwebhooks worden aangenomen. De Storefront API kent het inventory-item-id niet, dus de voorraad op de site volgt `products/update` en de nachtcontrole. De site gebruikt geen Shopify-metafields. Specificaties komen uit titel, producttype, opties en tags. De kolom `shopify_product.metafields` blijft leeg tot een metafield met bekende namespace en key in de Storefront-query staat.
 
-Lijstpagina's (`/gevelbekleding`, `/dakranden`, `/kozijnafwerking`, `/montage`, `/hpl-platen`, `/merken/...`) sturen alleen de eerste 10 kaarten mee. "Toon de volgende" en filters halen `/api/catalogus` op. `?pagina=2` blijft een echte link voor crawlers. Canonical van die URL wijst naar de basis-URL. De basis-URL's en productpagina's worden van tevoren gebouwd (`revalidate` 3600). Een webhook bouwt de geraakte pagina's opnieuw.
+Lijstpagina's (`/gevelbekleding`, `/dakranden`, `/plafondpanelen`, `/kozijnafwerking`, `/montage`, `/hpl-platen`, `/merken/...`) sturen alleen de eerste 10 kaarten mee. "Toon de volgende" en filters halen `/api/catalogus` op. `?pagina=2` blijft een echte link voor crawlers. Canonical van die URL wijst naar de basis-URL. De basis-URL's en productpagina's worden van tevoren gebouwd (`revalidate` 3600). Een webhook bouwt de geraakte pagina's opnieuw.
 
 ## Shopify-omgevingsvariabelen
 
