@@ -13,6 +13,7 @@ import {
   splitColorAndLength,
   withoutTrespa,
 } from "@/lib/catalog/text-rules";
+import { isBlankSampleName, sampleLineLabel, tidySampleName } from "@/lib/staal/labels";
 
 import type {
   ColorFamily,
@@ -296,12 +297,13 @@ export function listSampleColors(products: Product[]): SampleColor[] {
   for (const product of products) {
     if (!product.sampleable) continue;
     for (const color of product.colors) {
-      if (byId.has(color.sampleId)) continue;
+      if (byId.has(color.sampleId) || isBlankSampleName(color.name)) continue;
+      const colorName = labelColour(tidySampleName(color.name));
       byId.set(color.sampleId, {
         id: color.sampleId,
         brandSlug: product.brandSlug,
-        brandName: product.brand,
-        colorName: color.name,
+        brandName: sampleLineLabel(colorName, product.name, product.brand),
+        colorName,
         hex: color.hex,
         ral: color.ral,
       });

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { StaalWizard } from "@/components/staal/wizard";
+import { StaalPicker } from "@/components/staal/picker";
 import { getCatalog } from "@/lib/catalog";
 import { buildStaalTree } from "@/lib/staal/tree";
 
@@ -21,7 +21,7 @@ export default async function StaalaanvraagPage({ searchParams }: Props) {
   const tree = buildStaalTree(catalog.products);
   return (
     <div className="container-kg py-8 sm:py-12">
-      <StaalWizard tree={tree} groep={params.groep} product={params.product} />
+      <StaalPicker tree={tree} groep={params.groep} product={params.product} />
     </div>
   );
 }
