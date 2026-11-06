@@ -6,7 +6,7 @@ import { articles } from "@/lib/kozijnen/kennis";
 import { allLayouts, GROUPS, layoutPath } from "@/lib/kozijnen/layouts";
 import { staticBrands } from "@/lib/catalog/static";
 import { getCatalog } from "@/lib/catalog";
-import { categoryPath } from "@/data/seo/category-pages";
+import { categoryPath, pageSeo } from "@/data/seo/category-pages";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
 
 export const revalidate = 3600;
@@ -21,17 +21,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     categoryPath("gevelbekleding"),
     "/keralit-gevelbekleding",
     "/zierer-steenstrips",
-    "/kunststof-vensterbank",
     categoryPath("hpl-platen"),
-    "/hpl-plaat",
     categoryPath("dakranden"),
+    pageSeo.boeiKeralit.path,
+    pageSeo.boeiVinyplus.path,
+    pageSeo.boeiMilexx.path,
     categoryPath("plafondpanelen"),
+    pageSeo.plafondBadkamer.path,
+    pageSeo.plafondOverstek.path,
+    pageSeo.rabatdelen.path,
     categoryPath("kozijnafwerking"),
     categoryPath("vensterbanken"),
     "/kunststof-kozijnen",
     categoryPath("montage"),
     "/merken",
-    "/stalen",
     "/staalaanvraag",
     "/offerte",
     "/contact",

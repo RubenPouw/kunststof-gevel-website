@@ -53,8 +53,8 @@ export const heroStats = [
 export const productNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
   { href: "/plafondpanelen", label: "Plafondpanelen" },
-  { href: "/dakranden", label: "Dakranden" },
-  { href: "/hpl-plaat", label: "HPL platen" },
+  { href: categoryPath("dakranden"), label: "Dakranden" },
+  { href: categoryPath("hpl-platen"), label: "HPL platen" },
   { href: "/montage", label: "Bevestiging" },
 ] as const;
 
@@ -77,7 +77,7 @@ export const footerColumns = [
     links: [
       { href: "/gevelbekleding", label: "Gevelbekleding" },
       { href: "/hpl-plaat", label: "HPL platen" },
-      { href: "/dakranden", label: "Dakranden" },
+      { href: categoryPath("dakranden"), label: "Dakranden" },
       { href: "/plafondpanelen", label: "Plafondpanelen" },
       { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
       { href: "/montage", label: "Bevestiging" },
@@ -89,7 +89,7 @@ export const footerColumns = [
     links: [
       { href: "/contact", label: "Contact" },
       { href: "/offerte", label: "Offerte" },
-      { href: "/stalen", label: "Kleurstalen" },
+      { href: "/staalaanvraag", label: "Kleurstalen" },
       { href: "/staalaanvraag", label: "Staalaanvraag" },
       { href: "/blog", label: "Kennis" },
       { href: "/kunststof-kozijnen/kennisbank", label: "Kozijnen kennisbank" },

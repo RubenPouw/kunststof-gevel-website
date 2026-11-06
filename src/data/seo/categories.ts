@@ -283,7 +283,7 @@ export function getCategoryStory(slug: string) {
 export function categoryMetadata(slug: CategorySlug): Metadata {
   const seo = categoryPageSeo[slug];
   return {
-    title: seo.title,
+    title: { absolute: seo.title },
     description: seo.description,
     alternates: { canonical: categoryPath(slug) },
   };

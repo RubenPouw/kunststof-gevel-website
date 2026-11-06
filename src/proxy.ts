@@ -1,10 +1,25 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { categoryInternalRewrite } from "@/data/seo/category-pages";
+import { boeiBrandSlugs, categoryInternalRewrite } from "@/data/seo/category-pages";
 import { listingRewriteTarget } from "@/lib/catalog/paths";
 import { normalizePath, resolveNavigation } from "@/lib/seo/redirects";
 
+const BOEI_BRANDS = new Set<string>(boeiBrandSlugs);
+
 export function proxy(request: NextRequest) {
+  const path = normalizePath(request.nextUrl.pathname);
+  const merk = request.nextUrl.searchParams.get("merk");
+  const onlyBrand =
+    merk &&
+    BOEI_BRANDS.has(merk) &&
+    [...request.nextUrl.searchParams.keys()].every((key) => key === "merk" || key === "pagina");
+  if ((path === "/dakranden" || path === "/boeidelen") && onlyBrand) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/boeidelen/${merk}`;
+    url.search = "";
+    return NextResponse.redirect(url, 301);
+  }
+
   const decision = resolveNavigation({
     host: request.headers.get("host") ?? "",
     pathname: request.nextUrl.pathname,

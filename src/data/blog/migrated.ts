@@ -34,7 +34,7 @@ export const migratedPosts: BlogPost[] = [
     ],
     links: [
       { href: "/merken/vinyplus", label: "VinyPlus bekijken" },
-      { href: "/stalen", label: "Kleurstaal aanvragen" },
+      { href: "/staalaanvraag", label: "Kleurstaal aanvragen" },
     ],
   },
   {
@@ -98,7 +98,7 @@ export const migratedPosts: BlogPost[] = [
     ],
     links: [
       { href: "/hpl-plaat", label: "Kleur en structuur" },
-      { href: "/hpl-platen", label: "HPL platen" },
+      { href: "/hpl-plaat", label: "HPL platen" },
       { href: "/gevelbekleding", label: "Gevelpanelen" },
     ],
   },

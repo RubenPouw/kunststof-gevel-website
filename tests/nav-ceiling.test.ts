@@ -11,8 +11,8 @@ import { sortProducts } from "../src/lib/catalog/listing.ts";
 import type { Product } from "../src/lib/catalog/types.ts";
 import { kozijnNav, productNav, shopNav } from "../src/lib/site.ts";
 
-const PRODUCT_HREFS = ["/gevelbekleding", "/plafondpanelen", "/dakranden", "/hpl-plaat", "/montage"];
-const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking", "/vensterbanken"];
+const PRODUCT_HREFS = ["/gevelbekleding", "/plafondpanelen", "/boeidelen", "/hpl-plaat", "/montage"];
+const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking", "/kunststof-vensterbank"];
 
 test("categories sit under Producten and kozijnen has its own menu", () => {
   const underProducts = productNav.map((item) => item.href);

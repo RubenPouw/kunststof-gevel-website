@@ -20,7 +20,7 @@ export type Article = {
 const sharedLinks: LinkItem[] = [
   { href: "/kunststof-kozijnen", label: "Alle kozijnen" },
   { href: "/gevelbekleding", label: "Gevelbekleding" },
-  { href: "/dakranden", label: "Dakranden" },
+  { href: categoryPath("dakranden"), label: "Dakranden" },
   { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
   { href: "/staalaanvraag", label: "Kleurstalen gevel" },
 ];

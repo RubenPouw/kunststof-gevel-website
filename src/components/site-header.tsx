@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import { FormEvent, useEffect, useId, useRef, useState, type AriaAttributes, type KeyboardEvent as ReactKeyboardEvent, type ReactNode, type Ref } from "react";
 
 import { Logo } from "@/components/brand/logo";
 import { VatSwitch } from "@/components/brand/vat-switch";
@@ -23,19 +23,65 @@ function VatBar() {
   );
 }
 
+function Control({
+  href,
+  controlRef,
+  className,
+  children,
+  onClick,
+  onKeyDown,
+  ...aria
+}: {
+  href?: string;
+  controlRef: { current: HTMLButtonElement | HTMLAnchorElement | null };
+  className: string;
+  children: ReactNode;
+  onClick: () => void;
+  onKeyDown: (event: ReactKeyboardEvent) => void;
+} & AriaAttributes) {
+  if (href) {
+    return (
+      <Link
+        href={href}
+        ref={controlRef as Ref<HTMLAnchorElement>}
+        className={className}
+        onClick={onClick}
+        onKeyDown={onKeyDown}
+        {...aria}
+      >
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <button
+      ref={controlRef as Ref<HTMLButtonElement>}
+      type="button"
+      className={className}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      {...aria}
+    >
+      {children}
+    </button>
+  );
+}
+
 function NavMenu({
   label,
   items,
   pathname,
+  href,
 }: {
   label: string;
   items: readonly { href: string; label: string }[];
   pathname: string;
+  href?: string;
 }) {
   const [open, setOpen] = useState(false);
   const pinned = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
   const menuId = useId();
   const active = items.some((item) => isShopNavActive(pathname, item.href));
 
@@ -88,17 +134,19 @@ function NavMenu({
         if (!event.currentTarget.contains(event.relatedTarget as Node)) close();
       }}
     >
-      <button
-        ref={buttonRef}
-        type="button"
+      <Control
+        href={href}
+        controlRef={buttonRef}
         className={cn(
-          "px-1.5 py-2 text-kg-kalk transition-colors duration-150 hover:bg-kg-navy-2 focus-visible:outline-[var(--kg-kalk)] xl:px-2",
-          (open || active) && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
+          "px-1.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline focus-visible:outline-[var(--kg-kalk)] xl:px-2",
+          (open || active || (href && isShopNavActive(pathname, href))) &&
+            "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
         )}
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={menuId}
         onClick={() => {
+          if (href) return;
           const next = !open;
           pinned.current = next;
           if (next) claim();
@@ -115,7 +163,7 @@ function NavMenu({
         }}
       >
         {label}
-      </button>
+      </Control>
       {open ? (
         <ul id={menuId} aria-label={label} className="absolute left-0 top-full z-30 min-w-56 border border-kg-navy bg-white py-1">
           {items.map((item) => {
@@ -208,7 +256,7 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-0.5 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex xl:gap-1" aria-label="Hoofdmenu">
           <NavMenu label="Producten" items={productNav} pathname={pathname} />
-          <NavMenu label="Kozijnen" items={kozijnNav} pathname={pathname} />
+          <NavMenu label="Kozijnen" href="/kunststof-kozijnen" items={kozijnNav} pathname={pathname} />
           {shopNav.map((item) => {
             const active = isShopNavActive(pathname, item.href);
             return (
@@ -322,18 +370,21 @@ export function SiteHeader() {
                 ))}
               </div>
             ) : null}
-            <button
-              type="button"
-              className="flex min-h-11 items-center justify-between text-left text-[15px] font-medium text-kg-kalk"
-              aria-expanded={kozijnenOpen}
-              aria-controls="kozijnen-mobiel"
-              onClick={() => setKozijnenOpen((value) => !value)}
-            >
-              Kozijnen
-              <span aria-hidden className="font-mono text-[13px]">
+            <div className="flex min-h-11 items-center justify-between gap-3">
+              <Link href="/kunststof-kozijnen" onClick={() => setMenuOpen(false)} className="text-[15px] font-medium text-kg-kalk no-underline">
+                Kozijnen
+              </Link>
+              <button
+                type="button"
+                className="grid size-11 place-items-center font-mono text-[13px] text-kg-kalk"
+                aria-expanded={kozijnenOpen}
+                aria-controls="kozijnen-mobiel"
+                aria-label={kozijnenOpen ? "Kozijnen sluiten" : "Kozijnen openen"}
+                onClick={() => setKozijnenOpen((value) => !value)}
+              >
                 {kozijnenOpen ? "−" : "+"}
-              </span>
-            </button>
+              </button>
+            </div>
             {kozijnenOpen ? (
               <div id="kozijnen-mobiel" className="flex flex-col pb-2 pl-3">
                 {kozijnNav.map((item) => (

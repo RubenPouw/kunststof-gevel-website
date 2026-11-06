@@ -39,6 +39,11 @@ export function normalizePath(pathname: string) {
   return path;
 }
 
+function dakrandFallback(brand: string | undefined) {
+  if (brand === "keralit" || brand === "vinyplus" || brand === "milexx") return `/boeidelen/${brand}`;
+  return brand ? `/boeidelen?merk=${brand}` : "/boeidelen";
+}
+
 function brandOf(value: string) {
   const text = value.toLowerCase();
   if (text.includes("duafort") || text.includes("canexel")) return "profex";
@@ -50,9 +55,9 @@ export function fallbackTarget(path: string) {
   if (path.startsWith("/product/")) {
     const slug = path.slice("/product/".length);
     const brand = brandOf(slug);
-    if (slug.includes("hpl") && !slug.includes("reiniger")) return "/hpl-platen";
+    if (slug.includes("hpl") && !slug.includes("reiniger")) return "/hpl-plaat";
     if (slug.includes("dakrand") || slug.includes("boei")) {
-      return brand ? `/dakranden?merk=${brand}` : "/dakranden";
+      return dakrandFallback(brand);
     }
     if (slug.includes("vensterbank")) return "/kunststof-vensterbank";
     if (slug.includes("plafond")) return "/merken/florence";
@@ -61,9 +66,9 @@ export function fallbackTarget(path: string) {
   }
   if (path.startsWith("/product-categorie/")) {
     const brand = brandOf(path);
-    if (path.includes("hpl") && !path.includes("reiniger")) return "/hpl-platen";
+    if (path.includes("hpl") && !path.includes("reiniger")) return "/hpl-plaat";
     if (path.includes("dakrand") || path.includes("boei")) {
-      return brand ? `/dakranden?merk=${brand}` : "/dakranden";
+      return dakrandFallback(brand);
     }
     if (path.includes("plaatmateriaal")) return "/kozijnafwerking";
     if (path.includes("vensterbank")) return "/kunststof-vensterbank";
@@ -130,13 +135,14 @@ export function resolveNavigation(
   const apex = hostname === "kunststof-gevel.nl";
   const slash = input.pathname.length > 1 && input.pathname.endsWith("/");
   const pathChanged = target.pathname !== normalized;
+  const carryQuery = row.reason === "categorie-slug" && !target.search;
   if (!apex && !pathChanged && !slash && !target.search) {
     return { action: "next", noindex };
   }
   return {
     action: "redirect",
     pathname: target.pathname,
-    search: preserveClickSearch(target.search || (pathChanged ? "" : input.search), input.search),
+    search: preserveClickSearch(target.search || (pathChanged && !carryQuery ? "" : input.search), input.search),
     host: apex ? "www.kunststof-gevel.nl" : null,
     noindex,
   };

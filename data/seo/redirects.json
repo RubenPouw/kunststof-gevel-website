@@ -55,7 +55,7 @@
   },
   {
     "from": "/hpl-gevelplaat-toepassingen-montage",
-    "to": "/hpl-platen",
+    "to": "/hpl-plaat",
     "status": "301",
     "reason": "hpl-categorie"
   },
@@ -67,7 +67,7 @@
   },
   {
     "from": "/keralit-dakranden",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "category-brand"
   },
@@ -115,13 +115,13 @@
   },
   {
     "from": "/kunststof-binnenplafonds",
-    "to": "/merken/florence",
+    "to": "/plafondpanelen/badkamer",
     "status": "301",
     "reason": "plafond-merk"
   },
   {
     "from": "/kunststof-dakranden",
-    "to": "/dakranden",
+    "to": "/boeidelen",
     "status": "301",
     "reason": "category"
   },
@@ -157,7 +157,7 @@
   },
   {
     "from": "/kunststof-rabatdelen",
-    "to": "/gevelbekleding?type=rabat",
+    "to": "/rabatdelen",
     "status": "301",
     "reason": "category-profile"
   },
@@ -241,7 +241,7 @@
   },
   {
     "from": "/milexx-dakranden",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "category-brand"
   },
@@ -265,7 +265,7 @@
   },
   {
     "from": "/overstek-en-plafondpanelen",
-    "to": "/merken/florence",
+    "to": "/plafondpanelen/overstek",
     "status": "301",
     "reason": "plafond-merk"
   },
@@ -295,13 +295,13 @@
   },
   {
     "from": "/product-categorie/binnenplafonds",
-    "to": "/merken/florence",
+    "to": "/plafondpanelen/badkamer",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/buitenplafonds",
-    "to": "/merken/florence",
+    "to": "/plafondpanelen/overstek",
     "status": "301",
     "reason": "category"
   },
@@ -325,55 +325,55 @@
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/keralit-dakranden",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/milexx-dakranden",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/milexx-dakranden/dakrandpanelen-milexx",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/milexx-dakranden/montage-materialen-milexx",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/overstek-plafondpanelen",
-    "to": "/merken/florence",
+    "to": "/plafondpanelen/overstek",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/unipanel-bouwpaneel",
-    "to": "/dakranden?merk=unipanel",
+    "to": "/boeidelen?merk=unipanel",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/vinyplus",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/vinyplus/dakrandpanelen-vinyplus",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "category"
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/vinyplus/montage-materialen-vinyplus-kunststof-dakranden-boei-delen",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "category"
   },
@@ -661,7 +661,7 @@
   },
   {
     "from": "/product/h-verbindingprofiel-10mm-keralit-dakrand",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -709,7 +709,7 @@
   },
   {
     "from": "/product/keralit-dakrand-eindprofiel-10-mm",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -721,7 +721,7 @@
   },
   {
     "from": "/product/keralit-dakrand-montage-profiel-17-mm-kopie",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -751,13 +751,13 @@
   },
   {
     "from": "/product/keralit-dakrand-trim-kraal-aansluitprofiel",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "dakrand-family"
   },
   {
     "from": "/product/keralit-dakrand-tussenstuk-350-mm",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -787,7 +787,7 @@
   },
   {
     "from": "/product/keralit-hoekstuk-dakrand-klassiek",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -1021,7 +1021,7 @@
   },
   {
     "from": "/product/milexx-big-board-dakrandpaneel",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -1063,7 +1063,7 @@
   },
   {
     "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -1099,7 +1099,7 @@
   },
   {
     "from": "/product/milyt-hpl-plaat",
-    "to": "/hpl-platen",
+    "to": "/hpl-plaat",
     "status": "301",
     "reason": "hpl-sheet"
   },
@@ -1219,7 +1219,7 @@
   },
   {
     "from": "/product/trim-kraal-vent-keralit-dakrand-600-cm",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -1279,19 +1279,19 @@
   },
   {
     "from": "/product/vinyplus-dakrand-montageprofiel",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "dakrand-family"
   },
   {
     "from": "/product/vinyplus-dakrandpaneel-200-x-35-x-16-mm",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "dakrand-family"
   },
   {
     "from": "/product/vinyplus-dakrandpaneel-295-35-16mm",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "dakrand-family"
   },
@@ -3331,7 +3331,7 @@
   },
   {
     "from": "/vinyplus-dakranden",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "category-brand"
   },
@@ -3361,19 +3361,19 @@
   },
   {
     "from": "/wp-content/uploads/2021/06/logo.png",
-    "to": "/dakranden",
+    "to": "/boeidelen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2021/07/473-dakrandpaneel.jpg",
-    "to": "/dakranden",
+    "to": "/boeidelen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2021/07/Schermafbeelding-2022-10-28-om-07.08.15.png",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -3391,7 +3391,7 @@
   },
   {
     "from": "/wp-content/uploads/2021/08/0368-bevestigingsclip-1.jpg",
-    "to": "/dakranden?merk=vinyplus",
+    "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -3685,19 +3685,19 @@
   },
   {
     "from": "/wp-content/uploads/2022/08/project2.jpg",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2022/08/project4-scaled-scaled.jpg",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2022/08/project7-1-scaled-scaled.jpg",
-    "to": "/dakranden?merk=milexx",
+    "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -3889,13 +3889,13 @@
   },
   {
     "from": "/wp-content/uploads/2023/07/project10-scaled-scaled.jpg",
-    "to": "/hpl-platen",
+    "to": "/hpl-plaat",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2023/07/project2-scaled-scaled.jpg",
-    "to": "/hpl-platen",
+    "to": "/hpl-plaat",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4207,7 +4207,7 @@
   },
   {
     "from": "/wp-content/uploads/2024/10/PR3092BI17036_2852_Hoekstuk_sierlijst_klassiek_SZ2.webp",
-    "to": "/dakranden?merk=keralit",
+    "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4225,7 +4225,7 @@
   },
   {
     "from": "/wp-content/uploads/2024/12/Plaatmateriaal.jpeg",
-    "to": "/hpl-platen",
+    "to": "/hpl-plaat",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4357,7 +4357,7 @@
   },
   {
     "from": "/wp-content/uploads/2025/02/project8-scaled.jpg",
-    "to": "/hpl-platen",
+    "to": "/hpl-plaat",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4513,7 +4513,7 @@
   },
   {
     "from": "/wp-content/uploads/2025/10/kunststof-dakranden.webp",
-    "to": "/dakranden",
+    "to": "/boeidelen",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4759,7 +4759,7 @@
   },
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen",
-    "to": "/dakranden",
+    "to": "/boeidelen",
     "status": "301",
     "reason": "category"
   },
@@ -4768,5 +4768,11 @@
     "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "vensterbank-page"
+  },
+  {
+    "from": "/stalen",
+    "to": "/staalaanvraag",
+    "status": "301",
+    "reason": "staalaanvraag"
   }
 ]

@@ -17,11 +17,13 @@ export async function CategoryListing({
   filters,
   page,
   presentation = DEFAULT_PRESENTATION,
+  heading,
 }: {
   slug: CategorySlug;
   filters: ListingFilters;
   page: number;
   presentation?: ListingPresentation;
+  heading?: { h1: string; path: string; description: string; intro: string };
 }) {
   const category = await getCategory(slug);
   if (!category) return null;
@@ -29,7 +31,9 @@ export async function CategoryListing({
   const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
   const story = getCategoryStory(slug);
   const seo = categoryPageSeo[slug];
-  const path = categoryPath(slug);
+  const path = heading?.path ?? categoryPath(slug);
+  const h1 = heading?.h1 ?? seo.h1;
+  const description = heading?.description ?? seo.description;
   const staalGroep = categoryStaalGroup(slug);
 
   return (
@@ -37,14 +41,14 @@ export async function CategoryListing({
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: seo.h1, path },
+          { name: h1, path },
         ])}
       />
-      <JsonLd data={collectionPageJsonLd({ name: seo.h1, description: seo.description, path })} />
+      <JsonLd data={collectionPageJsonLd({ name: h1, description, path })} />
       <CategoryPage
         kicker="Assortiment"
-        title={seo.h1}
-        intro={category.summary}
+        title={h1}
+        intro={heading?.intro ?? category.summary}
         cards={view.cards}
         total={view.total}
         totalUnfiltered={view.totalUnfiltered}
