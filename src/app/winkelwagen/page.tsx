@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { CavemenMark } from "@/components/brand/marks";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { ColourName } from "@/components/catalog/colour-name";
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
@@ -126,7 +127,10 @@ export default function CartPage() {
 
           <div className="mt-8 flex flex-col gap-5 bg-kg-navy p-6 text-kg-kalk sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-mono text-[13px] text-kg-grind">Montage</p>
+              <div className="flex items-center gap-2 text-[15px] font-bold">
+                <CavemenMark size={18} />
+                Montage door een Caveman
+              </div>
               <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em]">Materiaal geregeld. Handen erbij?</h2>
               <p className="mt-2 font-mono text-[13px] text-kg-grind">
                 {gevelM2
