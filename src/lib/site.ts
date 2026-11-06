@@ -1,3 +1,5 @@
+import { categoryPath } from "@/data/seo/category-pages";
+
 export const site = {
   name: "kunststof-gevel.nl",
   shortName: "kunststof-gevel.nl",
@@ -47,15 +49,20 @@ export const heroStats = [
   { value: "24 u", label: "bericht" },
 ] as const;
 
-/** Category routes. They live under the Producten menu, not as loose top links. */
+/** Category routes under the Producten menu, not as loose top links. */
 export const productNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
   { href: "/plafondpanelen", label: "Plafondpanelen" },
-  { href: "/dakranden", label: "Dakranden" },
-  { href: "/hpl-plaat", label: "HPL platen" },
-  { href: "/kunststof-kozijnen", label: "Kozijnen" },
-  { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+  { href: categoryPath("dakranden"), label: "Dakranden" },
+  { href: categoryPath("hpl-platen"), label: "HPL platen" },
   { href: "/montage", label: "Bevestiging" },
+] as const;
+
+/** Kozijnen is its own top item, next to Producten. */
+export const kozijnNav = [
+  { href: "/kunststof-kozijnen", label: "Kozijnen (overzicht)" },
+  { href: categoryPath("kozijnafwerking"), label: "Kozijnafwerking" },
+  { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
 ] as const;
 
 export const shopNav = [
@@ -70,7 +77,7 @@ export const footerColumns = [
     links: [
       { href: "/gevelbekleding", label: "Gevelbekleding" },
       { href: "/hpl-plaat", label: "HPL platen" },
-      { href: "/dakranden", label: "Dakranden" },
+      { href: categoryPath("dakranden"), label: "Dakranden" },
       { href: "/plafondpanelen", label: "Plafondpanelen" },
       { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
       { href: "/montage", label: "Bevestiging" },
@@ -82,7 +89,7 @@ export const footerColumns = [
     links: [
       { href: "/contact", label: "Contact" },
       { href: "/offerte", label: "Offerte" },
-      { href: "/stalen", label: "Kleurstalen" },
+      { href: "/staalaanvraag", label: "Kleurstalen" },
       { href: "/staalaanvraag", label: "Staalaanvraag" },
       { href: "/blog", label: "Kennis" },
       { href: "/kunststof-kozijnen/kennisbank", label: "Kozijnen kennisbank" },

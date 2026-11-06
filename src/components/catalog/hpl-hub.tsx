@@ -92,7 +92,7 @@ export function HplHub({
         </p>
         <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
           <Link href="/staalaanvraag?groep=hpl">Gratis kleurstalen aanvragen</Link>
-          <Link href="/hpl-platen">Lijst met filters</Link>
+          <Link href="/hpl-plaat">HPL plaat</Link>
         </p>
 
         {showRelatedTab ? (

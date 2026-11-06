@@ -1,3 +1,5 @@
+import { categoryPath } from "@/data/seo/category-pages";
+
 export type SeoSection = {
   heading: string;
   paragraphs: string[];
@@ -58,7 +60,7 @@ export const brandStories: BrandStory[] = [
     ],
     links: [
       { href: "/blog/keralit-of-vinyplus", label: "Vergelijk Keralit en VinyPlus" },
-      { href: "/stalen", label: "Kleurstalen aanvragen" },
+      { href: "/staalaanvraag", label: "Kleurstalen aanvragen" },
       { href: "/offerte", label: "Offerte met montage" },
     ],
   },
@@ -160,7 +162,7 @@ export const brandStories: BrandStory[] = [
     ],
     links: [
       { href: "/blog/montage-kunststof-gevelbekleding", label: "Montage en ventilatie" },
-      { href: "/stalen", label: "Staal van de steenkleur" },
+      { href: "/staalaanvraag", label: "Staal van de steenkleur" },
     ],
   },
   {
@@ -212,7 +214,7 @@ export const brandStories: BrandStory[] = [
     ],
     links: [
       { href: "/blog/levensduur-kunststof-gevel", label: "Levensduur en onderhoud" },
-      { href: "/stalen", label: "Staal aanvragen" },
+      { href: "/staalaanvraag", label: "Staal aanvragen" },
     ],
   },
   {
@@ -237,7 +239,7 @@ export const brandStories: BrandStory[] = [
       },
     ],
     links: [
-      { href: "/dakranden", label: "Dakranden bekijken" },
+      { href: categoryPath("dakranden"), label: "Dakranden bekijken" },
       { href: "/offerte", label: "Gevel en dakrand in één offerte" },
     ],
   },
@@ -263,7 +265,7 @@ export const brandStories: BrandStory[] = [
       },
     ],
     links: [
-      { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+      { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
       { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
     ],
   },
@@ -288,7 +290,7 @@ export const brandStories: BrandStory[] = [
     ],
     links: [
       { href: "/offerte", label: "Offerte voor overstek" },
-      { href: "/dakranden", label: "Dakranden" },
+      { href: categoryPath("dakranden"), label: "Dakranden" },
     ],
   },
   {
@@ -337,8 +339,8 @@ export const brandStories: BrandStory[] = [
       },
     ],
     links: [
-      { href: "/hpl-platen", label: "Alle HPL platen" },
-      { href: "/stalen", label: "Staal aanvragen" },
+      { href: "/hpl-plaat", label: "Alle HPL platen" },
+      { href: "/staalaanvraag", label: "Staal aanvragen" },
     ],
   },
   {
@@ -361,7 +363,7 @@ export const brandStories: BrandStory[] = [
         a: "Ja. 3050 × 1300 × 6 mm. Het verschil zit in de brandvertragende opbouw, niet in de rekenmaat.",
       },
     ],
-    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+    links: [{ href: "/hpl-plaat", label: "Alle HPL platen" }],
   },
   {
     slug: "renolit",
@@ -383,7 +385,7 @@ export const brandStories: BrandStory[] = [
         a: "Nee. Eenzijdig betekent één decorzijde.",
       },
     ],
-    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+    links: [{ href: "/hpl-plaat", label: "Alle HPL platen" }],
   },
   {
     slug: "abet",
@@ -404,7 +406,7 @@ export const brandStories: BrandStory[] = [
         a: "Nee. U bestelt de hele plaat.",
       },
     ],
-    links: [{ href: "/hpl-platen", label: "Alle HPL platen" }],
+    links: [{ href: "/hpl-plaat", label: "Alle HPL platen" }],
   },
 ];
 

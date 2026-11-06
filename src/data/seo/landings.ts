@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { categoryPageSeo, categoryPath, pageSeo } from "@/data/seo/category-pages";
+
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
 
 export const landingSlugs = [
@@ -49,8 +51,8 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
   "keralit-gevelbekleding": {
     slug: "keralit-gevelbekleding",
     kicker: "Keralit",
-    title: "Keralit gevelbekleding",
-    metaTitle: "Keralit gevelbekleding kopen",
+    title: pageSeo.keralit.h1,
+    metaTitle: pageSeo.keralit.title,
     description:
       "Keralit gevelbekleding kopen: panelen in sponning 143, 167 en 190 mm en potdeksel 177 mm, plus alle profielen. Gratis kleurstaal. Voorraad in max. 4 werkdagen.",
     intro:
@@ -109,7 +111,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     links: [
       { href: "/blog/keralit-of-vinyplus", label: "Keralit of VinyPlus" },
       { href: "/montage?merk=keralit", label: "Montageprofielen Keralit" },
-      { href: "/dakranden?merk=keralit", label: "Keralit dakranden" },
+      { href: "/boeidelen/keralit", label: "Keralit dakranden" },
       { href: "/staalaanvraag?groep=gevel", label: "Gratis kleurstaal" },
     ],
   },
@@ -162,8 +164,8 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
   "kunststof-vensterbank": {
     slug: "kunststof-vensterbank",
     kicker: "Vensterbank",
-    title: "Kunststof vensterbank en overzet vensterbank (binnen en buiten)",
-    metaTitle: "Kunststof vensterbank en overzet vensterbank",
+    title: categoryPageSeo.vensterbanken.h1,
+    metaTitle: categoryPageSeo.vensterbanken.title,
     description:
       "Kunststof vensterbank of overzet vensterbank buiten? Milinboard 380 mm in wit of creme, met eindkappen. Over de oude bank, in 1 dagdeel geplaatst.",
     intro:
@@ -226,7 +228,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     ],
     links: [
       { href: "/blog/overzet-vensterbank-meten", label: "Overzet vensterbank meten en monteren" },
-      { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+      { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
       { href: "/staalaanvraag?groep=vensterbank", label: "Gratis staal" },
     ],
   },
@@ -239,7 +241,7 @@ export function getLandingStory(slug: string) {
 export function landingMetadata(slug: LandingSlug): Metadata {
   const story = landingStories[slug];
   return {
-    title: story.metaTitle,
+    title: { absolute: story.metaTitle },
     description: story.description,
     alternates: { canonical: `/${slug}` },
   };

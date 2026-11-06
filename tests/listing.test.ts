@@ -101,6 +101,50 @@ test("relevantie puts panels before trim and accessories", () => {
   );
 });
 
+test("facet counts follow the page, not the rest of the catalogue", () => {
+  const panel = {
+    ...product(0),
+    slug: "keralit-paneel",
+    brandSlug: "keralit",
+    category: "dakranden" as const,
+    profileType: "dakrand" as const,
+    productGroup: "gevelpaneel" as const,
+  };
+  const trim = {
+    ...product(1),
+    slug: "keralit-profiel",
+    brandSlug: "keralit",
+    category: "dakranden" as const,
+    profileType: "dakrand" as const,
+    productGroup: "afwerkprofiel" as const,
+  };
+  const other = {
+    ...product(2),
+    slug: "vinyplus-paneel",
+    brand: "VinyPlus",
+    brandSlug: "vinyplus",
+    category: "dakranden" as const,
+    profileType: "dakrand" as const,
+    productGroup: "gevelpaneel" as const,
+  };
+  const gevel = {
+    ...product(3),
+    slug: "gevel-paneel",
+    category: "gevelbekleding" as const,
+    productGroup: "gevelpaneel" as const,
+  };
+  const page = prepareListing([panel, trim, other], { brandSlug: "keralit" }, 1, 10);
+  assert.equal(page.total, 2);
+  assert.equal(page.facets.groups.find((item) => item.slug === "gevelpaneel")?.count, 1);
+  assert.equal(page.facets.groups.find((item) => item.slug === "afwerkprofiel")?.count, 1);
+  const rabat = prepareListing([panel, trim, gevel], { profileType: "rabat" }, 1, 10);
+  assert.equal(rabat.facets.groups.reduce((sum, item) => sum + item.count, 0) <= rabat.totalUnfiltered, true);
+  assert.equal(
+    rabat.facets.groups.reduce((sum, item) => sum + item.count, 0),
+    [panel, trim, gevel].filter((item) => item.profileType === "rabat").length,
+  );
+});
+
 test("raster view rewrites and the default list does not", () => {
   assert.equal(
     listingRewriteTarget("/gevelbekleding", new URLSearchParams("weergave=raster")),

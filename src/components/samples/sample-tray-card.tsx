@@ -65,7 +65,7 @@ export function SampleTrayCard({ className }: { className?: string }) {
         })}
       </ul>
       <Link
-        href="/stalen"
+        href="/staalaanvraag"
         className={cn(
           "mt-5 flex h-12 items-center justify-center bg-kg-signal text-[15px] font-medium text-kg-navy no-underline hover:no-underline",
           count === 0 && "pointer-events-none opacity-45",

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { KozijnDrawing } from "@/components/kozijnen/drawing";
 import { KozijnFaqs, KozijnLinks } from "@/components/kozijnen/links";
 import { JsonLd } from "@/components/seo/json-ld";
+import { categoryPath, pageSeo } from "@/data/seo/category-pages";
 import { hubCopy } from "@/lib/kozijnen/content";
 import { PROFILE } from "@/lib/kozijnen/config";
 import { GROUPS, allLayouts, layoutPath } from "@/lib/kozijnen/layouts";
@@ -12,9 +13,9 @@ import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo/schema";
 export const revalidate = 3600;
 
 export const metadata = {
-  title: hubCopy.title,
+  title: { absolute: pageSeo.kozijnen.title },
   description: hubCopy.description,
-  alternates: { canonical: "/kunststof-kozijnen" },
+  alternates: { canonical: pageSeo.kozijnen.path },
 };
 
 export default function KozijnenHubPage() {
@@ -34,12 +35,34 @@ export default function KozijnenHubPage() {
           </Link>
           {" / Kozijnen"}
         </p>
+        <nav aria-label="Kozijnen" className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[15px] font-medium">
+          {GROUPS.map((group) => (
+            <Link key={group.id} href={group.href}>
+              {group.title}
+            </Link>
+          ))}
+          <Link href={categoryPath("kozijnafwerking")}>Kozijnafwerking</Link>
+          <Link href={categoryPath("vensterbanken")}>Vensterbanken</Link>
+        </nav>
         <p className="kicker mt-6">{PROFILE.name}</p>
-        <h1 className="display-plp mt-2 max-w-3xl">Kunststof kozijnen, in één profiel.</h1>
+        <h1 className="display-plp mt-2 max-w-3xl">{pageSeo.kozijnen.h1}</h1>
         <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-text-2">{hubCopy.lead}</p>
+        <div className="mt-6 max-w-2xl border border-kg-lijn bg-white p-5">
+          <h2 className="text-[22px] font-bold tracking-[-0.03em]">Prijs</h2>
+          <p className="mt-3 text-[16px] leading-normal text-kg-text-2">
+            Op de site staat nog geen bedrag. U stelt het kozijn samen op buitenwerkse maat. De configurator eindigt in een vrijblijvende offerte.
+          </p>
+          <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+            {GROUPS.map((group) => (
+              <Link key={group.id} href={group.href}>
+                {group.title}
+              </Link>
+            ))}
+          </p>
+        </div>
       </header>
 
-      <section className="container-kg grid gap-3 pb-12 md:grid-cols-3">
+      <section className="container-kg grid gap-3 md:grid-cols-3">
         {GROUPS.map((group) => (
           <Link key={group.id} href={group.href} className="border border-kg-lijn bg-white p-5 no-underline hover:no-underline">
             <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">{group.title}</h2>
@@ -47,6 +70,18 @@ export default function KozijnenHubPage() {
             <p className="mt-6 font-mono text-[13px]">Samenstellen</p>
           </Link>
         ))}
+      </section>
+      <section className="container-kg grid gap-3 pt-3 pb-12 sm:grid-cols-2">
+        <Link href={categoryPath("kozijnafwerking")} className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
+          <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Kozijnafwerking</h2>
+          <p className="mt-3 text-[15px] text-kg-grind">Aansluitprofielen en afwerking rond het kozijn.</p>
+          <p className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</p>
+        </Link>
+        <Link href={categoryPath("vensterbanken")} className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
+          <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Vensterbanken</h2>
+          <p className="mt-3 text-[15px] text-kg-grind">De bank zelf, daarna eindkappen en bevestiging, per merk.</p>
+          <p className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</p>
+        </Link>
       </section>
 
       <section className="container-kg pb-14">

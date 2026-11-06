@@ -439,7 +439,7 @@
       "name": "Milinboard Overzetvensterbank 380 mm",
       "vendor": "Milinboard",
       "brandSlug": "milinboard",
-      "category": "kozijnafwerking",
+      "category": "vensterbanken",
       "description": "Overzetvensterbank 380 mm over een bestaande steenachtige bank. Inclusief bijpassende eindkap 400 mm.",
       "specs": [
         { "label": "Breedte", "value": "380 mm" },
@@ -458,7 +458,7 @@
       "name": "Eindkap 400 mm Overzet Vensterbank",
       "vendor": "Milinboard",
       "brandSlug": "milinboard",
-      "category": "kozijnafwerking",
+      "category": "vensterbanken",
       "description": "Eindkap 400 mm voor de Milinboard overzetvensterbank.",
       "specs": [
         { "label": "Breedte", "value": "400 mm" },
@@ -476,7 +476,7 @@
       "name": "Eindkap Steenlook vensterbank 500 mm",
       "vendor": "Milinboard",
       "brandSlug": "milinboard",
-      "category": "kozijnafwerking",
+      "category": "vensterbanken",
       "description": "Eindkap 500 mm voor steenlook vensterbanken.",
       "specs": [
         { "label": "Breedte", "value": "500 mm" },

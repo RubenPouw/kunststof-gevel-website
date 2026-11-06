@@ -94,7 +94,7 @@ const corePosts: BlogPost[] = [
     links: [
       { href: "/merken/keralit", label: "Keralit" },
       { href: "/merken/vinyplus", label: "VinyPlus" },
-      { href: "/stalen", label: "Stalen aanvragen" },
+      { href: "/staalaanvraag", label: "Stalen aanvragen" },
     ],
   },
   {
@@ -200,7 +200,7 @@ const corePosts: BlogPost[] = [
       },
     ],
     links: [
-      { href: "/stalen", label: "Stalen aanvragen" },
+      { href: "/staalaanvraag", label: "Stalen aanvragen" },
       { href: "/blog/keralit-of-vinyplus", label: "Eerst het merk kiezen" },
     ],
   },

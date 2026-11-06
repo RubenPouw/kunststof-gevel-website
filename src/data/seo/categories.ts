@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
 import { getProductsByCategory } from "@/lib/catalog";
 import { hasActiveFilters } from "@/lib/catalog/helpers";
 import { CATEGORY_PAGE_SIZE, listingPageHref } from "@/lib/catalog/listing";
@@ -19,9 +20,8 @@ export type CategoryStory = {
 export const categoryStories: Record<CategorySlug, CategoryStory> = {
   gevelbekleding: {
     slug: "gevelbekleding",
-    metaTitle: "Kunststof gevelbekleding",
-    description:
-      "Kunststof gevelbekleding van Keralit, VinyPlus, Eurotexx en Kerrafront. Rabat, sponning en potdeksel, met m²-calculator en gratis kleurstalen.",
+    metaTitle: categoryPageSeo.gevelbekleding.title,
+    description: categoryPageSeo.gevelbekleding.description,
     sections: [
       {
         heading: "Kunststof gevelbekleding kopen",
@@ -60,9 +60,8 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
   },
   dakranden: {
     slug: "dakranden",
-    metaTitle: "Kunststof dakranden",
-    description:
-      "Kunststof dakranden, boeidelen en hoeken in kleur bij de gevel. Milexx, VinyPlus en bijpassende aansluitprofielen.",
+    metaTitle: categoryPageSeo.dakranden.title,
+    description: categoryPageSeo.dakranden.description,
     sections: [
       {
         heading: "Dakrand mee met de gevel",
@@ -85,9 +84,8 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
   },
   plafondpanelen: {
     slug: "plafondpanelen",
-    metaTitle: "Plafondpanelen",
-    description:
-      "Florence plafondpanelen voor binnen en buiten, met profielen en plinten. Lengtes staan bij het artikel.",
+    metaTitle: categoryPageSeo.plafondpanelen.title,
+    description: categoryPageSeo.plafondpanelen.description,
     sections: [
       {
         heading: "Plafond, geen gevel",
@@ -105,21 +103,44 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
     ],
     links: [
       { href: "/merken/florence", label: "Florence" },
-      { href: "/dakranden", label: "Dakranden" },
+      { href: categoryPath("dakranden"), label: "Dakranden" },
       { href: "/offerte", label: "Plafond laten rekenen" },
     ],
   },
   kozijnafwerking: {
     slug: "kozijnafwerking",
-    metaTitle: "Kozijnafwerking",
-    description:
-      "Kunststof vensterbanken, eindkappen en aansluitprofielen. Milinboard overzetbanken en afwerking rond het kozijn.",
+    metaTitle: categoryPageSeo.kozijnafwerking.title,
+    description: categoryPageSeo.kozijnafwerking.description,
     sections: [
       {
         heading: "Rond het kozijn",
         paragraphs: [
-          "Vensterbanken, eindkappen en aansluitprofielen maken de dagkant af als de gevel nieuw is. Een overzetbank dekt een bestaande bank als de maat het toelaat.",
+          "Dagstukken, koplatten en aansluitprofielen maken de dagkant af. De vensterbank zelf kiest u bij Vensterbanken.",
           "Nieuwe kozijnen zelf configureert u apart. De afwerking op deze pagina is het materiaal rondom, niet het kozijn.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Waar bestel ik de vensterbank?",
+        a: "Op de pagina Vensterbanken. Hier blijft de afwerking rond het kozijn, zoals aansluitprofielen.",
+      },
+    ],
+    links: [
+      { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
+      { href: "/kunststof-kozijnen", label: "Kozijnen configureren" },
+    ],
+  },
+  vensterbanken: {
+    slug: "vensterbanken",
+    metaTitle: categoryPageSeo.vensterbanken.title,
+    description: categoryPageSeo.vensterbanken.description,
+    sections: [
+      {
+        heading: "Eerst de bank",
+        paragraphs: [
+          "Per merk staan de vensterbanken eerst. Eindkappen en profielen volgen, en daarna de bevestiging.",
+          "Een overzetbank dekt een bestaande bank als de maat het toelaat. Een vaste bank vervangt het blad. Kozijnen stelt u apart samen.",
         ],
       },
     ],
@@ -130,15 +151,14 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       },
     ],
     links: [
-      { href: "/merken/milinboard", label: "Milinboard banken" },
-      { href: "/kunststof-kozijnen", label: "Kozijnen configureren" },
+      { href: categoryPath("kozijnafwerking"), label: "Kozijnafwerking" },
+      { href: "/kunststof-kozijnen", label: "Kozijnen" },
     ],
   },
   montage: {
     slug: "montage",
-    metaTitle: "Montagemateriaal",
-    description:
-      "Startprofielen, eindprofielen, hoeken, schroeven en verbinders voor kunststof gevelbekleding. Per merk, niet door elkaar.",
+    metaTitle: categoryPageSeo.montage.title,
+    description: categoryPageSeo.montage.description,
     sections: [
       {
         heading: "Hulpstukken per systeem",
@@ -161,9 +181,8 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
   },
   "hpl-platen": {
     slug: "hpl-platen",
-    metaTitle: "HPL platen",
-    description:
-      "HPL platen van 3050 × 1300 × 6 mm. Hele plaat, 3,965 m². Compact exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur en RAL.",
+    metaTitle: categoryPageSeo["hpl-platen"].title,
+    description: categoryPageSeo["hpl-platen"].description,
     sections: [
       {
         heading: "HPL platen kopen",
@@ -221,7 +240,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       { href: "/merken/renolit", label: "Renolit eenzijdig" },
       { href: "/merken/abet", label: "Abet" },
       { href: "/blog/hpl-plaat", label: "Plaat of gevelpaneel" },
-      { href: "/gevelbekleding", label: "Gevelpanelen" },
+      { href: categoryPath("gevelbekleding"), label: "Gevelpanelen" },
     ],
   },
 };
@@ -242,10 +261,13 @@ export function categoryViewMetadata(
   pages: number,
 ): Metadata {
   const base = categoryMetadata(slug);
-  const path = `/${slug}`;
+  const path = categoryPath(slug);
+  const filtered = hasActiveFilters(filters);
+  const canonical = !filtered && pagina > 1 ? listingPageHref(path, {}, pagina) : path;
   return {
     ...base,
-    robots: hasActiveFilters(filters) ? { index: false, follow: true } : undefined,
+    alternates: { canonical },
+    robots: filtered ? { index: false, follow: true } : undefined,
     pagination: {
       previous: pagina > 1 ? listingPageHref(path, filters, pagina - 1) : undefined,
       next: pagina < pages ? listingPageHref(path, filters, pagina + 1) : undefined,
@@ -259,10 +281,10 @@ export function getCategoryStory(slug: string) {
 }
 
 export function categoryMetadata(slug: CategorySlug): Metadata {
-  const story = categoryStories[slug];
+  const seo = categoryPageSeo[slug];
   return {
-    title: story.metaTitle,
-    description: story.description,
-    alternates: { canonical: `/${slug}` },
+    title: { absolute: seo.title },
+    description: seo.description,
+    alternates: { canonical: categoryPath(slug) },
   };
 }

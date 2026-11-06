@@ -43,7 +43,7 @@ const APPS = [
     bg: "#B7B1A4",
   },
   {
-    href: "/dakranden",
+    href: "/boeidelen",
     name: "Dakranden",
     detail: "boeidelen · hoeken",
     slug: "dakranden",

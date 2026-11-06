@@ -2,8 +2,8 @@ import Link from "next/link";
 
 const LINKS = [
   { href: "/gevelbekleding", label: "Gevelbekleding", note: "Panelen in dezelfde kleurlijn" },
-  { href: "/dakranden", label: "Dakranden", note: "Boei, hoek en daktrim" },
-  { href: "/kozijnafwerking", label: "Vensterbanken", note: "Bank en eindkappen" },
+  { href: "/boeidelen", label: "Dakranden", note: "Boei, hoek en daktrim" },
+  { href: "/kozijnafwerking", label: "Kozijnafwerking", note: "Bank en eindkappen" },
   { href: "/staalaanvraag", label: "Kleurstalen", note: "Gevelstaal naast het kozijn" },
 ] as const;
 

@@ -133,11 +133,26 @@ const GROUP_RANK: Record<ProductGroup, number> = {
   toebehoren: 2,
 };
 
+/** On /vensterbanken: the sill, then caps and profiles, then fastening. */
+export function vensterbankRole(product: Pick<Product, "name" | "slug" | "productType">) {
+  const text = `${product.name} ${product.slug.replace(/-/g, " ")} ${product.productType ?? ""}`.toLowerCase();
+  if (/schroef|\bplug\b|\bkit\b|\bclip\b|\blijm\b|bevestig/.test(text)) return 2;
+  if (/eindkap|profiel|aansluit|dagstuk|koplat/.test(text)) return 1;
+  return 0;
+}
+
 export function sortProducts(list: Product[], sort: ListingSort) {
   if (sort === "relevantie") {
-    return [...list].sort(
-      (a, b) => (a.productGroup ? GROUP_RANK[a.productGroup] : 3) - (b.productGroup ? GROUP_RANK[b.productGroup] : 3),
-    );
+    return [...list].sort((a, b) => {
+      if (a.category === "vensterbanken" && b.category === "vensterbanken") {
+        const brand = a.brand.localeCompare(b.brand, "nl") || a.brandSlug.localeCompare(b.brandSlug, "nl");
+        if (brand) return brand;
+        const role = vensterbankRole(a) - vensterbankRole(b);
+        if (role) return role;
+        return a.name.localeCompare(b.name, "nl") || a.slug.localeCompare(b.slug, "nl");
+      }
+      return (a.productGroup ? GROUP_RANK[a.productGroup] : 3) - (b.productGroup ? GROUP_RANK[b.productGroup] : 3);
+    });
   }
   if (sort === "naam") {
     return [...list].sort((a, b) => a.name.localeCompare(b.name, "nl") || a.slug.localeCompare(b.slug, "nl"));
@@ -185,6 +200,38 @@ export function toListingCard(product: Product): ListingCardModel {
   };
 }
 
+function withoutFilters(filters: ListingFilters, keys: (keyof ListingFilters)[]): ListingFilters {
+  const next = { ...filters };
+  for (const key of keys) delete next[key];
+  return next;
+}
+
+/** Facet counts describe this page's products. Each facet ignores only its own filter, so the other options stay visible. */
+function facetsForPage(all: Product[], filters: ListingFilters) {
+  const groups = listingFacets(
+    applyListingFilters(all, withoutFilters(filters, ["productGroup", "productGroups"])),
+  );
+  const types = listingFacets(
+    applyListingFilters(all, withoutFilters(filters, ["profileType", "profileTypes"])),
+  );
+  const widths = listingFacets(applyListingFilters(all, withoutFilters(filters, ["workingWidthMm"])));
+  const colors = listingFacets(
+    applyListingFilters(all, withoutFilters(filters, ["colorFamily", "colorSlug", "colorSlugs", "ral"])),
+  );
+  const places = listingFacets(
+    applyListingFilters(all, withoutFilters(filters, ["ceilingPlace", "ceilingPlaces"])),
+  );
+  return {
+    ...groups,
+    profileTypes: types.profileTypes,
+    widths: widths.widths,
+    colorFamilies: colors.colorFamilies,
+    sheetColors: colors.sheetColors,
+    rals: colors.rals,
+    places: places.places,
+  };
+}
+
 export function prepareListing(
   all: Product[],
   filters: ListingFilters,
@@ -196,14 +243,7 @@ export function prepareListing(
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize) || 1);
   const safePage = Math.min(Math.max(1, page || 1), pages);
   const start = (safePage - 1) * pageSize;
-  const placed = applyListingFilters(all, {
-    ceilingPlace: filters.ceilingPlace,
-    ceilingPlaces: filters.ceilingPlaces,
-  });
-  const facets = listingFacets(placed);
-  facets.places = listingFacets(
-    applyListingFilters(all, { ...filters, ceilingPlace: undefined, ceilingPlaces: undefined }),
-  ).places;
+  const facets = facetsForPage(all, filters);
   return {
     cards: filtered.slice(start, start + pageSize).map(toListingCard),
     total: filtered.length,

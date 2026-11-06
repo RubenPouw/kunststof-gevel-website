@@ -3,6 +3,7 @@ export const categorySlugs = [
   "dakranden",
   "plafondpanelen",
   "kozijnafwerking",
+  "vensterbanken",
   "montage",
   "hpl-platen",
 ] as const;
@@ -37,7 +38,21 @@ export const productGroupLabels: Record<ProductGroup, string> = {
 
 /** On the ceiling listing the panel group is not a gevel. */
 export function labelForProductGroup(group: ProductGroup, basePath?: string) {
-  if (basePath === "/plafondpanelen" && group === "gevelpaneel") return "Plafondpanelen";
+  const path = basePath?.split("?")[0] ?? "";
+  if ((path === "/plafondpanelen" || path.startsWith("/plafondpanelen/")) && group === "gevelpaneel") {
+    return "Plafondpanelen";
+  }
+  if (path === "/boeidelen" || path.startsWith("/boeidelen/")) {
+    if (group === "gevelpaneel") return "Dakrandpanelen";
+    if (group === "afwerkprofiel") return "Profielen";
+    if (group === "toebehoren") return "Bevestiging";
+  }
+  if (path === "/rabatdelen" && group === "gevelpaneel") return "Rabatdelen";
+  if (path === "/kunststof-vensterbank") {
+    if (group === "gevelpaneel") return "Vensterbanken";
+    if (group === "afwerkprofiel") return "Profielen en eindkappen";
+    if (group === "toebehoren") return "Bevestiging";
+  }
   return productGroupLabels[group];
 }
 

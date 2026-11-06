@@ -53,6 +53,7 @@ const CATEGORY_GROUP: Record<string, StaalGroupId> = {
   dakranden: "dakrand",
   "hpl-platen": "hpl",
   kozijnafwerking: "vensterbank",
+  vensterbanken: "vensterbank",
 };
 
 const KIND_ORDER = ["potdeksel", "sponning", "multisponning", "steenstrip"] as const;
@@ -343,7 +344,11 @@ function isVensterbank(product: Product) {
   if (isHardware(product.name)) return false;
   const text = product.name.toLowerCase();
   if (!/vensterbank|overzetbank|overzet\s*vensterbank/.test(text)) return false;
-  return product.category === "kozijnafwerking" || /vensterbank|overzetbank/.test(text);
+  return (
+    product.category === "kozijnafwerking" ||
+    product.category === "vensterbanken" ||
+    /vensterbank|overzetbank/.test(text)
+  );
 }
 
 function isHplSample(product: Product) {

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { categoryPageSeo } from "@/data/seo/category-pages";
+
 import { slugKey } from "@/lib/catalog/derive";
 import { colorFamilies, colorFamilyLabels, type ColorFamily, type Product } from "@/lib/catalog/types";
 
@@ -324,7 +326,7 @@ export function hplHubHref(basePath: string, query: HplHubQuery) {
 
 export function hplHubMetadata(query: HplHubQuery, options?: { alias?: boolean }): Metadata {
   return {
-    title: HPL_HUB_TITLE,
+    title: { absolute: categoryPageSeo["hpl-platen"].title },
     description: HPL_HUB_DESCRIPTION,
     alternates: { canonical: HPL_HUB_PATH },
     robots: options?.alias || hasHplHubFilters(query) ? { index: false, follow: true } : undefined,

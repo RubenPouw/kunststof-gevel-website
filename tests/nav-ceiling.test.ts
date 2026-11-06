@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { ceilingPlaceOf } from "../src/lib/catalog/ceiling.ts";
@@ -6,25 +7,29 @@ import { applyListingFilters, listingFacets, listingHref, parseListingSearchPara
 import { prepareListing } from "../src/lib/catalog/listing.ts";
 import { listingRewriteTarget } from "../src/lib/catalog/paths.ts";
 import { labelForProductGroup, type Product } from "../src/lib/catalog/types.ts";
-import { productNav, shopNav } from "../src/lib/site.ts";
+import { sortProducts } from "../src/lib/catalog/listing.ts";
+import type { Product } from "../src/lib/catalog/types.ts";
+import { kozijnNav, productNav, shopNav } from "../src/lib/site.ts";
 
-const CATEGORY_HREFS = [
-  "/gevelbekleding",
-  "/plafondpanelen",
-  "/dakranden",
-  "/hpl-plaat",
-  "/kunststof-kozijnen",
-  "/kozijnafwerking",
-  "/montage",
-];
+const PRODUCT_HREFS = ["/gevelbekleding", "/plafondpanelen", "/boeidelen", "/hpl-plaat", "/montage"];
+const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking", "/kunststof-vensterbank"];
 
-test("categories sit under Producten and are not loose top links", () => {
+test("categories sit under Producten and kozijnen has its own menu", () => {
   const underProducts = productNav.map((item) => item.href);
-  for (const href of CATEGORY_HREFS) {
-    assert.equal(underProducts.includes(href), true, href);
+  assert.deepEqual(underProducts, PRODUCT_HREFS);
+  for (const href of KOZIJN_HREFS) {
+    assert.equal(underProducts.includes(href), false, href);
   }
+  assert.deepEqual(
+    kozijnNav.map((item) => item.href),
+    KOZIJN_HREFS,
+  );
+  assert.deepEqual(
+    kozijnNav.map((item) => item.label),
+    ["Kozijnen (overzicht)", "Kozijnafwerking", "Vensterbanken"],
+  );
   const top = shopNav.map((item) => item.href);
-  for (const href of CATEGORY_HREFS) {
+  for (const href of [...PRODUCT_HREFS, ...KOZIJN_HREFS]) {
     assert.equal(top.includes(href), false, href);
   }
   assert.deepEqual(top, ["/merken", "/projecten", "/zakelijk"]);
@@ -32,6 +37,65 @@ test("categories sit under Producten and are not loose top links", () => {
   assert.equal(productNav[1]?.label, "Plafondpanelen");
   assert.equal(productNav[2]?.label, "Dakranden");
   assert.equal(productNav[3]?.label, "HPL platen");
+  assert.equal(productNav.at(-1)?.label, "Bevestiging");
+});
+
+test("the kozijnen hub links to kozijnafwerking in the subnav and as a tile", () => {
+  const source = readFileSync(new URL("../src/app/kunststof-kozijnen/page.tsx", import.meta.url), "utf8");
+  const finishing = source.match(/categoryPath\("kozijnafwerking"\)/g) ?? [];
+  const sills = source.match(/categoryPath\("vensterbanken"\)/g) ?? [];
+  assert.equal(finishing.length, 2);
+  assert.equal(sills.length, 2);
+  assert.match(source, /aria-label="Kozijnen"/);
+  assert.match(source, />Kozijnafwerking</);
+  assert.match(source, />Vensterbanken</);
+});
+
+test("the header puts Kozijnen beside Producten, with its own mobile group", () => {
+  const header = readFileSync(new URL("../src/components/site-header.tsx", import.meta.url), "utf8");
+  const producten = header.indexOf('label="Producten"');
+  const kozijnen = header.indexOf('label="Kozijnen"');
+  const merken = header.indexOf("{shopNav.map");
+  assert.ok(producten >= 0 && kozijnen > producten && merken > kozijnen);
+  const mobileProducts = header.indexOf('aria-controls="producten-mobiel"');
+  const mobileKozijnen = header.indexOf('aria-controls="kozijnen-mobiel"');
+  const mobileRest = header.lastIndexOf("{shopNav.map");
+  assert.ok(mobileProducts >= 0 && mobileKozijnen > mobileProducts && mobileRest > mobileKozijnen);
+});
+
+test("vensterbanken list the sill before caps and fastening, per brand", () => {
+  const item = (slug: string, name: string, brand: string): Product =>
+    ({
+      slug,
+      name,
+      brand,
+      brandSlug: brand.toLowerCase(),
+      category: "vensterbanken",
+      vendor: brand,
+      description: "",
+      specs: [],
+      relatedSlugs: [],
+      variants: [],
+      price: 10,
+      inStock: true,
+      meta: "",
+      palette: [],
+      colors: [],
+      length: "stuk",
+      images: [],
+      profileType: "vensterbank",
+      sampleable: false,
+    }) as Product;
+  const sorted = sortProducts(
+    [
+      item("milin-schroef", "Milinboard vensterbank schroef", "Milinboard"),
+      item("werzalit-bank", "Werzalit vensterbank 250 mm", "Werzalit"),
+      item("milin-kap", "Eindkap Milinboard vensterbank", "Milinboard"),
+      item("milin-bank", "Milinboard vensterbank 300 mm", "Milinboard"),
+    ],
+    "relevantie",
+  ).map((product) => product.slug);
+  assert.deepEqual(sorted, ["milin-bank", "milin-kap", "milin-schroef", "werzalit-bank"]);
 });
 
 test("plafond panel group is labeled Plafondpanelen", () => {

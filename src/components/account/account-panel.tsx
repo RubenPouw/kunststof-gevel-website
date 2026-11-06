@@ -111,7 +111,7 @@ export function AccountPanel() {
         {requests.length === 0 ? (
           <p className="mt-3 text-[15px] text-kg-text-2">
             Nog geen offerte of stalen op dit apparaat.{" "}
-            <Link href="/offerte">Vraag een offerte aan</Link> of <Link href="/stalen">kies stalen</Link>.
+            <Link href="/offerte">Vraag een offerte aan</Link> of <Link href="/staalaanvraag">kies stalen</Link>.
           </p>
         ) : (
           <ul className="mt-4 divide-y divide-kg-lijn border-y border-kg-lijn">

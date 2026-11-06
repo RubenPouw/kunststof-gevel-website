@@ -1,11 +1,14 @@
 import Link from "next/link";
 
 import { CategoryPage } from "@/components/catalog/category-page";
+import { JsonLd } from "@/components/seo/json-ld";
 import { SeoArticle } from "@/components/seo/article";
+import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
 import { getCategoryStory } from "@/data/seo/categories";
 import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
+import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/seo/schema";
 import { categoryStaalGroup } from "@/lib/staal/tree";
 import type { ListingFilters } from "@/lib/catalog/types";
 
@@ -14,25 +17,38 @@ export async function CategoryListing({
   filters,
   page,
   presentation = DEFAULT_PRESENTATION,
+  heading,
 }: {
   slug: CategorySlug;
   filters: ListingFilters;
   page: number;
   presentation?: ListingPresentation;
+  heading?: { h1: string; path: string; description: string; intro: string };
 }) {
   const category = await getCategory(slug);
   if (!category) return null;
   const all = await getProductsByCategory(slug);
   const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
   const story = getCategoryStory(slug);
+  const seo = categoryPageSeo[slug];
+  const path = heading?.path ?? categoryPath(slug);
+  const h1 = heading?.h1 ?? seo.h1;
+  const description = heading?.description ?? seo.description;
   const staalGroep = categoryStaalGroup(slug);
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: h1, path },
+        ])}
+      />
+      <JsonLd data={collectionPageJsonLd({ name: h1, description, path })} />
       <CategoryPage
         kicker="Assortiment"
-        title={category.name}
-        intro={category.summary}
+        title={h1}
+        intro={heading?.intro ?? category.summary}
         cards={view.cards}
         total={view.total}
         totalUnfiltered={view.totalUnfiltered}
@@ -40,7 +56,7 @@ export async function CategoryListing({
         page={view.page}
         pageSize={view.pageSize}
         brandOptions={await brandsInProducts(all)}
-        basePath={`/${slug}`}
+        basePath={path}
         filters={filters}
         presentation={presentation}
         showStockChip

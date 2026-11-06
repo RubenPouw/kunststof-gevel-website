@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import { FormEvent, useEffect, useId, useRef, useState, type AriaAttributes, type KeyboardEvent as ReactKeyboardEvent, type ReactNode, type Ref } from "react";
 
 import { Logo } from "@/components/brand/logo";
 import { VatSwitch } from "@/components/brand/vat-switch";
@@ -10,7 +10,7 @@ import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
-import { isShopNavActive, productNav, shopNav, site } from "@/lib/site";
+import { isShopNavActive, kozijnNav, productNav, shopNav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 function VatBar() {
@@ -23,18 +23,85 @@ function VatBar() {
   );
 }
 
-function ProductMenu({ pathname }: { pathname: string }) {
+function Control({
+  href,
+  controlRef,
+  className,
+  children,
+  onClick,
+  onKeyDown,
+  ...aria
+}: {
+  href?: string;
+  controlRef: { current: HTMLButtonElement | HTMLAnchorElement | null };
+  className: string;
+  children: ReactNode;
+  onClick: () => void;
+  onKeyDown: (event: ReactKeyboardEvent) => void;
+} & AriaAttributes) {
+  if (href) {
+    return (
+      <Link
+        href={href}
+        ref={controlRef as Ref<HTMLAnchorElement>}
+        className={className}
+        onClick={onClick}
+        onKeyDown={onKeyDown}
+        {...aria}
+      >
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <button
+      ref={controlRef as Ref<HTMLButtonElement>}
+      type="button"
+      className={className}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      {...aria}
+    >
+      {children}
+    </button>
+  );
+}
+
+function NavMenu({
+  label,
+  items,
+  pathname,
+  href,
+}: {
+  label: string;
+  items: readonly { href: string; label: string }[];
+  pathname: string;
+  href?: string;
+}) {
   const [open, setOpen] = useState(false);
   const pinned = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
   const menuId = useId();
-  const active = productNav.some((item) => isShopNavActive(pathname, item.href));
+  const active = items.some((item) => isShopNavActive(pathname, item.href));
 
   function close() {
     pinned.current = false;
     setOpen(false);
   }
+
+  function claim() {
+    window.dispatchEvent(new CustomEvent("kg-nav", { detail: label }));
+    setOpen(true);
+  }
+
+  useEffect(() => {
+    function onOther(event: Event) {
+      if ((event as CustomEvent<string>).detail !== label) close();
+    }
+    window.addEventListener("kg-nav", onOther);
+    return () => window.removeEventListener("kg-nav", onOther);
+  }, [label]);
 
   useEffect(() => {
     if (!open) return;
@@ -59,7 +126,7 @@ function ProductMenu({ pathname }: { pathname: string }) {
     <div
       ref={rootRef}
       className="relative"
-      onMouseEnter={() => setOpen(true)}
+      onMouseEnter={() => claim()}
       onMouseLeave={() => {
         if (!pinned.current) setOpen(false);
       }}
@@ -67,36 +134,39 @@ function ProductMenu({ pathname }: { pathname: string }) {
         if (!event.currentTarget.contains(event.relatedTarget as Node)) close();
       }}
     >
-      <button
-        ref={buttonRef}
-        type="button"
+      <Control
+        href={href}
+        controlRef={buttonRef}
         className={cn(
-          "px-2 py-2 text-kg-kalk transition-colors duration-150 hover:bg-kg-navy-2 focus-visible:outline-[var(--kg-kalk)]",
-          (open || active) && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
+          "px-1.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline focus-visible:outline-[var(--kg-kalk)] xl:px-2",
+          (open || active || (href && isShopNavActive(pathname, href))) &&
+            "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
         )}
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={menuId}
         onClick={() => {
+          if (href) return;
           const next = !open;
           pinned.current = next;
-          setOpen(next);
+          if (next) claim();
+          else setOpen(false);
         }}
         onKeyDown={(event) => {
           if (event.key !== "ArrowDown") return;
           event.preventDefault();
           pinned.current = true;
-          setOpen(true);
+          claim();
           requestAnimationFrame(() => {
             rootRef.current?.querySelector<HTMLAnchorElement>(`#${CSS.escape(menuId)} a`)?.focus();
           });
         }}
       >
-        Producten
-      </button>
+        {label}
+      </Control>
       {open ? (
-        <ul id={menuId} aria-label="Producten" className="absolute left-0 top-full z-30 min-w-56 border border-kg-navy bg-white py-1">
-          {productNav.map((item) => {
+        <ul id={menuId} aria-label={label} className="absolute left-0 top-full z-30 min-w-56 border border-kg-navy bg-white py-1">
+          {items.map((item) => {
             const itemActive = isShopNavActive(pathname, item.href);
             return (
               <li key={item.href}>
@@ -138,6 +208,7 @@ export function SiteHeader() {
   const { items, count: sampleCount } = useSamples();
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
+  const [kozijnenOpen, setKozijnenOpen] = useState(false);
   const [trayOpen, setTrayOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -180,11 +251,12 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
-      <div className="container-kg flex min-h-[72px] items-center gap-4 py-2 lg:gap-6">
+        <div className="container-kg flex min-h-[72px] items-center gap-3 py-2 xl:gap-6">
         <Logo size={20} tone="dark" lockup />
 
-        <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex" aria-label="Hoofdmenu">
-          <ProductMenu pathname={pathname} />
+        <nav className="hidden items-center gap-0.5 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex xl:gap-1" aria-label="Hoofdmenu">
+          <NavMenu label="Producten" items={productNav} pathname={pathname} />
+          <NavMenu label="Kozijnen" href="/kunststof-kozijnen" items={kozijnNav} pathname={pathname} />
           {shopNav.map((item) => {
             const active = isShopNavActive(pathname, item.href);
             return (
@@ -192,7 +264,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-2 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline",
+                  "px-1.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline xl:px-2",
                   active && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
                 )}
               >
@@ -206,7 +278,7 @@ export function SiteHeader() {
           action="/zoeken"
           method="get"
           onSubmit={onSearch}
-          className="hidden h-10 w-[15rem] max-w-[240px] min-w-[11.5rem] shrink-0 items-center gap-2 bg-white px-3 md:flex"
+          className="hidden h-10 min-w-[6.5rem] max-w-[15rem] flex-1 items-center gap-2 bg-white px-3 md:flex xl:min-w-[9rem]"
         >
           <button type="submit" className="grid shrink-0 place-items-center" aria-label="Zoeken">
             <SearchIcon />
@@ -237,11 +309,11 @@ export function SiteHeader() {
                 />
               ))}
             </span>
-            Stalen <span className="font-mono">{sampleCount}/4</span>
+            <span className="hidden xl:inline">Stalen</span> <span className="font-mono">{sampleCount}/4</span>
           </button>
           <Link
             href={accountHref}
-            className="hidden h-10 items-center px-3 font-mono text-[13px] text-kg-grind no-underline hover:text-kg-kalk hover:no-underline sm:inline-flex"
+            className="hidden h-10 items-center px-3 font-mono text-[13px] text-kg-grind no-underline hover:text-kg-kalk hover:no-underline min-[1360px]:inline-flex"
           >
             Account
           </Link>
@@ -286,6 +358,36 @@ export function SiteHeader() {
             {productsOpen ? (
               <div id="producten-mobiel" className="flex flex-col pb-2 pl-3">
                 {productNav.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk"
+                    aria-current={isShopNavActive(pathname, item.href) ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+            <div className="flex min-h-11 items-center justify-between gap-3">
+              <Link href="/kunststof-kozijnen" onClick={() => setMenuOpen(false)} className="text-[15px] font-medium text-kg-kalk no-underline">
+                Kozijnen
+              </Link>
+              <button
+                type="button"
+                className="grid size-11 place-items-center font-mono text-[13px] text-kg-kalk"
+                aria-expanded={kozijnenOpen}
+                aria-controls="kozijnen-mobiel"
+                aria-label={kozijnenOpen ? "Kozijnen sluiten" : "Kozijnen openen"}
+                onClick={() => setKozijnenOpen((value) => !value)}
+              >
+                {kozijnenOpen ? "−" : "+"}
+              </button>
+            </div>
+            {kozijnenOpen ? (
+              <div id="kozijnen-mobiel" className="flex flex-col pb-2 pl-3">
+                {kozijnNav.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
