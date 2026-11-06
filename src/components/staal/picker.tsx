@@ -5,12 +5,12 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { ColourName, colourOptionText } from "@/components/catalog/colour-name";
 import { SectionHead } from "@/components/brand/section-head";
 import { buttonVariants } from "@/components/ui/button";
+import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import {
-  addStaalPick,
   picksToLines,
-  removeStaalPick,
-  STAAL_PICK_LIMIT,
+  sampleFromStaal,
   staalPickerSections,
+  swatchFromSample,
   type StaalSwatch,
 } from "@/lib/staal/picker";
 import {
@@ -57,10 +57,10 @@ function Tray({
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="font-mono text-[12px] whitespace-nowrap text-kg-grind">
-              Uw stalen {slots.length} van {STAAL_PICK_LIMIT}
+              Uw stalen {slots.length} van {SAMPLE_LIMIT}
             </p>
             <ul className="mt-1 flex gap-1">
-              {Array.from({ length: STAAL_PICK_LIMIT }, (_, index) => {
+              {Array.from({ length: SAMPLE_LIMIT }, (_, index) => {
                 const item = slots[index];
                 if (!item) {
                   return (
@@ -101,11 +101,11 @@ function Tray({
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-[22px] font-bold tracking-[-0.03em]">Uw stalen</h2>
         <p className="font-mono text-[13px] text-kg-grind">
-          {slots.length} van {STAAL_PICK_LIMIT}
+          {slots.length} van {SAMPLE_LIMIT}
         </p>
       </div>
       <ul className="mt-5 grid gap-2">
-        {Array.from({ length: STAAL_PICK_LIMIT }, (_, index) => {
+        {Array.from({ length: SAMPLE_LIMIT }, (_, index) => {
           const item = slots[index];
           if (!item) {
             return (
@@ -164,7 +164,8 @@ export function StaalPicker({
   product?: string;
 }) {
   const sections = useMemo(() => staalPickerSections(tree), [tree]);
-  const [slots, setSlots] = useState<StaalSwatch[]>([]);
+  const samples = useSamples();
+  const slots = useMemo(() => samples.items.map(swatchFromSample), [samples.items]);
   const [formOpen, setFormOpen] = useState(false);
   const [wantsQuote, setWantsQuote] = useState<boolean | null>(null);
   const [contact, setContact] = useState<Contact>(emptyContact);
@@ -196,10 +197,7 @@ export function StaalPicker({
 
   function choose(swatch: StaalSwatch) {
     setError("");
-    setSlots((current) => {
-      if (current.some((slot) => slot.id === swatch.id)) return removeStaalPick(current, swatch.id);
-      return addStaalPick(current, swatch);
-    });
+    samples.toggle(sampleFromStaal(swatch));
   }
 
   async function submit() {
@@ -213,7 +211,7 @@ export function StaalPicker({
       setError("Kies of u een prijsindicatie wilt.");
       return;
     }
-    const lines = picksToLines(slots);
+    const lines = picksToLines(slots.filter((slot) => slot.path.length));
     if (!lines.length) {
       setError("Kies minstens één kleur.");
       return;
@@ -237,6 +235,7 @@ export function StaalPicker({
         return;
       }
       sessionStorage.removeItem(STORAGE_KEY);
+      samples.clear();
       setDone(body.reference || "");
     } catch {
       setError("De aanvraag is niet aangekomen. Probeer het opnieuw.");
@@ -256,7 +255,7 @@ export function StaalPicker({
           type="button"
           onClick={() => {
             setDone(null);
-            setSlots([]);
+            samples.clear();
             setFormOpen(false);
             setWantsQuote(null);
             setContact(emptyContact());
@@ -293,7 +292,7 @@ export function StaalPicker({
                       {group.swatches.map((swatch) => {
                         const selected = slots.some((slot) => slot.id === swatch.id);
                         const pos = slots.findIndex((slot) => slot.id === swatch.id);
-                        const blocked = !selected && slots.length >= STAAL_PICK_LIMIT;
+                        const blocked = !selected && slots.length >= SAMPLE_LIMIT;
                         const label = swatch.code ? `${swatch.name} (${swatch.code})` : swatch.name;
                         return (
                           <button
@@ -330,7 +329,7 @@ export function StaalPicker({
         </div>
         <Tray
           slots={slots}
-          onRemove={(id) => setSlots((current) => removeStaalPick(current, id))}
+          onRemove={(id) => samples.remove(id)}
           onAsk={() => {
             setFormOpen(true);
             document.getElementById("staal-formulier")?.scrollIntoView({ block: "start" });
@@ -341,7 +340,7 @@ export function StaalPicker({
       <Tray
         compact
         slots={slots}
-        onRemove={(id) => setSlots((current) => removeStaalPick(current, id))}
+        onRemove={(id) => samples.remove(id)}
         onAsk={() => {
           setFormOpen(true);
           document.getElementById("staal-formulier")?.scrollIntoView({ block: "start" });

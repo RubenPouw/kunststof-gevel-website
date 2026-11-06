@@ -1,4 +1,5 @@
 import { colourParts, labelColour } from "@/lib/catalog/colours";
+import type { SampleColor } from "@/lib/catalog/types";
 
 import { isBlankSampleName, sampleLineLabel, tidySampleName } from "./labels";
 import type { StaalNode, StaalTree } from "./tree";
@@ -91,6 +92,34 @@ export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
     if (groups.length) sections.push({ id: group.id, title: group.label, groups });
   }
   return sections;
+}
+
+export function sampleFromStaal(swatch: StaalSwatch): SampleColor {
+  return {
+    id: swatch.id,
+    brandSlug: swatch.lineLabel.toLowerCase().replace(/\s+/g, "-"),
+    brandName: swatch.lineLabel,
+    colorName: swatch.code ? `${swatch.name} (${swatch.code})` : swatch.name,
+    hex: swatch.hex || "#C5C1B8",
+    path: swatch.path,
+    colorId: swatch.colorId,
+    lineLabel: swatch.lineLabel,
+    code: swatch.code,
+    productSlugs: swatch.productSlugs,
+  };
+}
+
+export function swatchFromSample(item: SampleColor): StaalSwatch {
+  return {
+    id: item.id,
+    path: item.path ?? [],
+    colorId: item.colorId ?? "",
+    name: item.colorName,
+    code: item.code,
+    lineLabel: item.lineLabel || item.brandName,
+    hex: item.hex,
+    productSlugs: item.productSlugs ?? [],
+  };
 }
 
 export function addStaalPick<T extends { id: string }>(slots: T[], pick: T, limit = STAAL_PICK_LIMIT): T[] {

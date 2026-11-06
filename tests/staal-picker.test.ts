@@ -5,7 +5,7 @@ import { labelColour } from "../src/lib/catalog/colours.ts";
 import { listSampleColors } from "../src/lib/catalog/derive.ts";
 import type { Product, ProductVariant } from "../src/lib/catalog/types.ts";
 import { isBlankSampleName, sampleLineLabel, tidySampleName } from "../src/lib/staal/labels.ts";
-import { addStaalPick, picksToLines, removeStaalPick, STAAL_PICK_LIMIT, staalPickerSections, type StaalSwatch } from "../src/lib/staal/picker.ts";
+import { addStaalPick, picksToLines, removeStaalPick, sampleFromStaal, STAAL_PICK_LIMIT, staalPickerSections, swatchFromSample, type StaalSwatch } from "../src/lib/staal/picker.ts";
 import { buildStaalTree } from "../src/lib/staal/tree.ts";
 
 function swatch(id: string, path: string[] = ["gevel", id], colorId = id): StaalSwatch {
@@ -38,6 +38,22 @@ test("a sample fills the next slot and stops at four", () => {
   assert.deepEqual(slots.map((slot) => slot.id), ["a", "c", "d"]);
   slots = addStaalPick(slots, swatch("e"));
   assert.deepEqual(slots.map((slot) => slot.id), ["a", "c", "d", "e"]);
+});
+
+test("a picker colour is the same sample the header stores", () => {
+  const stored = JSON.parse(JSON.stringify(sampleFromStaal(swatch("antraciet", ["gevel", "keralit"], "antraciet"))));
+  assert.equal(stored.id, "antraciet");
+  assert.equal(stored.hex.length > 0, true);
+  const restored = swatchFromSample(stored);
+  assert.deepEqual(picksToLines([restored]), [{ path: ["gevel", "keralit"], colorIds: ["antraciet"] }]);
+  const fromHeader = swatchFromSample({
+    id: "home-wit",
+    brandSlug: "keralit",
+    brandName: "Keralit",
+    colorName: "Wit",
+    hex: "#F4F2ED",
+  });
+  assert.equal(picksToLines([fromHeader].filter((slot) => slot.path.length)).length, 0);
 });
 
 test("slots of one product line become one aanvraag line", () => {

@@ -189,6 +189,12 @@ export type SampleColor = {
   colorName: string;
   hex: string;
   ral?: string;
+  /** Staalaanvraag line. The header tray only needs the colour fields. */
+  path?: string[];
+  colorId?: string;
+  lineLabel?: string;
+  code?: string;
+  productSlugs?: string[];
 };
 
 export type ListingFilters = {
