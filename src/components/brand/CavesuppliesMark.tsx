@@ -1,21 +1,21 @@
+import { cn } from "@/lib/utils";
+
 type CavesuppliesMarkProps = {
-  /** Square side, in px. The lockup uses 58% of the wordmark size. */
-  size?: number;
   className?: string;
 };
 
 /**
  * Cavesupplies mark: a square C made of a cap and an L.
  * The cap's top-right corner is cut at 45 degrees.
+ * The viewBox is the ink, so a height of 1cap matches the neighbouring capitals.
  * In the lockup the mark is one colour, the same as the type next to it.
  */
-export function CavesuppliesMark({ size = 16, className }: CavesuppliesMarkProps) {
+export function CavesuppliesMark({ className }: CavesuppliesMarkProps) {
   return (
     <svg
-      viewBox="0 0 100 100"
-      width={size}
-      height={size}
-      className={className}
+      viewBox="12 10 76 80"
+      className={cn("block h-[0.7em] w-[0.665em] shrink-0", className)}
+      style={{ height: "1cap", width: "calc(1cap * 76 / 80)" }}
       role="img"
       aria-label="Cavesupplies"
     >

@@ -181,7 +181,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
       <div className="container-kg flex min-h-[72px] items-center gap-4 py-2 lg:gap-6">
-        <Logo size={20} tone="dark" lockup lockupRow />
+        <Logo size={20} tone="dark" lockup />
 
         <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex" aria-label="Hoofdmenu">
           <ProductMenu pathname={pathname} />
