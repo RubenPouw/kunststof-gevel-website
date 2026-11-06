@@ -41,6 +41,21 @@ export function organizationJsonLd() {
   };
 }
 
+export function collectionPageJsonLd(input: { name: string; description: string; path: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: input.name,
+    description: input.description,
+    url: absoluteUrl(input.path),
+    isPartOf: {
+      "@type": "WebSite",
+      name: site.name,
+      url: `${site.origin}/`,
+    },
+  };
+}
+
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   return {
     "@context": "https://schema.org",

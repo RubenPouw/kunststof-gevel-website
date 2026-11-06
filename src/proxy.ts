@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { categoryInternalRewrite } from "@/data/seo/category-pages";
 import { listingRewriteTarget } from "@/lib/catalog/paths";
 import { normalizePath, resolveNavigation } from "@/lib/seo/redirects";
 
@@ -19,6 +20,14 @@ export function proxy(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.pathname = target;
       url.search = "";
+      const response = NextResponse.rewrite(url);
+      if (decision.noindex) response.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return response;
+    }
+    const internal = categoryInternalRewrite(normalizePath(request.nextUrl.pathname));
+    if (internal) {
+      const url = request.nextUrl.clone();
+      url.pathname = internal;
       const response = NextResponse.rewrite(url);
       if (decision.noindex) response.headers.set("X-Robots-Tag", "noindex, nofollow");
       return response;

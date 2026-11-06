@@ -1,3 +1,5 @@
+import { categoryPath } from "@/data/seo/category-pages";
+
 import type { BlogPost } from "./posts";
 
 /** Rewritten from old ranking URLs. Same keyword focus, one H1, no stuffed duplicates. */
@@ -130,7 +132,7 @@ export const migratedPosts: BlogPost[] = [
     ],
     links: [
       { href: "/blog/overzet-vensterbank-meten", label: "Overzetbank meten" },
-      { href: "/vensterbanken", label: "Vensterbanken" },
+      { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
     ],
   },
   {
@@ -161,7 +163,7 @@ export const migratedPosts: BlogPost[] = [
       },
     ],
     links: [
-      { href: "/vensterbanken", label: "Banken en eindkappen" },
+      { href: categoryPath("vensterbanken"), label: "Banken en eindkappen" },
       { href: "/offerte", label: "Maten laten controleren" },
     ],
   },

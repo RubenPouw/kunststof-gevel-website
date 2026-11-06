@@ -3,6 +3,7 @@ import Link from "next/link";
 import { KozijnDrawing } from "@/components/kozijnen/drawing";
 import { KozijnFaqs, KozijnLinks } from "@/components/kozijnen/links";
 import { JsonLd } from "@/components/seo/json-ld";
+import { categoryPath } from "@/data/seo/category-pages";
 import { hubCopy } from "@/lib/kozijnen/content";
 import { PROFILE } from "@/lib/kozijnen/config";
 import { GROUPS, allLayouts, layoutPath } from "@/lib/kozijnen/layouts";
@@ -40,8 +41,8 @@ export default function KozijnenHubPage() {
               {group.title}
             </Link>
           ))}
-          <Link href="/kozijnafwerking">Kozijnafwerking</Link>
-          <Link href="/vensterbanken">Vensterbanken</Link>
+          <Link href={categoryPath("kozijnafwerking")}>Kozijnafwerking</Link>
+          <Link href={categoryPath("vensterbanken")}>Vensterbanken</Link>
         </nav>
         <p className="kicker mt-6">{PROFILE.name}</p>
         <h1 className="display-plp mt-2 max-w-3xl">Kunststof kozijnen, in één profiel.</h1>
@@ -58,12 +59,12 @@ export default function KozijnenHubPage() {
         ))}
       </section>
       <section className="container-kg grid gap-3 pt-3 pb-12 sm:grid-cols-2">
-        <Link href="/kozijnafwerking" className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
+        <Link href={categoryPath("kozijnafwerking")} className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
           <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Kozijnafwerking</h2>
           <p className="mt-3 text-[15px] text-kg-grind">Aansluitprofielen en afwerking rond het kozijn.</p>
           <p className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</p>
         </Link>
-        <Link href="/vensterbanken" className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
+        <Link href={categoryPath("vensterbanken")} className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
           <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Vensterbanken</h2>
           <p className="mt-3 text-[15px] text-kg-grind">De bank zelf, daarna eindkappen en bevestiging, per merk.</p>
           <p className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</p>

@@ -1,3 +1,4 @@
+import { categoryRedirectTarget } from "@/data/seo/category-pages";
 import rows from "../../../data/seo/redirects.json" with { type: "json" };
 
 import { preserveClickSearch } from "../tracking/clicks";
@@ -96,6 +97,10 @@ export function lookupRedirect(pathname: string): RedirectRow {
   }
   const known = byFrom.get(path);
   if (known) return known;
+  const categoryHop = categoryRedirectTarget(path);
+  if (categoryHop) {
+    return { from: path, to: categoryHop, status: "301", reason: "categorie-slug" };
+  }
   const fallback = fallbackTarget(path);
   if (!fallback || fallback === path) {
     return { from: path, to: path, status: "200", reason: "unchanged" };

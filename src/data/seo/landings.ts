@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { categoryPath } from "@/data/seo/category-pages";
+
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
 
 export const landingSlugs = [
@@ -226,7 +228,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     ],
     links: [
       { href: "/blog/overzet-vensterbank-meten", label: "Overzet vensterbank meten en monteren" },
-      { href: "/vensterbanken", label: "Vensterbanken" },
+      { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
       { href: "/staalaanvraag?groep=vensterbank", label: "Gratis staal" },
     ],
   },

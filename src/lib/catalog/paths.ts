@@ -1,7 +1,6 @@
+import { categoryIdFromPublicPath } from "@/data/seo/category-pages";
 import { isLandingSlug } from "@/data/seo/landings";
 import { categorySlugs, type CategorySlug } from "@/lib/catalog/types";
-
-const CATEGORY_PATHS = new Set(categorySlugs.map((slug) => `/${slug}`));
 
 export const LISTING_QUERY_KEYS = [
   "merk",
@@ -34,8 +33,9 @@ export function listingQueryActive(search: URLSearchParams) {
 
 export function listingRewriteTarget(pathname: string, search: URLSearchParams) {
   if (!listingQueryActive(search)) return null;
-  if (CATEGORY_PATHS.has(pathname)) {
-    return encodeListingPath("categorie", pathname.slice(1), search);
+  const categoryId = categoryIdFromPublicPath(pathname);
+  if (categoryId) {
+    return encodeListingPath("categorie", categoryId, search);
   }
   if (isLandingSlug(pathname.slice(1))) {
     return encodeListingPath("land", pathname.slice(1), search);
@@ -85,9 +85,8 @@ export function parseBasis(basis: string): { kind: "categorie" | "merk" | "zoeke
   if (path === "/zoeken") return { kind: "zoeken", slug: "" };
   const category = path.replace(/^\//, "");
   if (isLandingSlug(category) && path === `/${category}`) return { kind: "land", slug: category };
-  if ((categorySlugs as readonly string[]).includes(category) && path === `/${category}`) {
-    return { kind: "categorie", slug: category };
-  }
+  const categoryId = categoryIdFromPublicPath(path);
+  if (categoryId) return { kind: "categorie", slug: categoryId };
   const brand = path.match(/^\/merken\/([^/]+)$/);
   if (!brand) return null;
   return { kind: "merk", slug: decodeURIComponent(brand[1]) };

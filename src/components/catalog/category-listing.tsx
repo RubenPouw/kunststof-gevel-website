@@ -1,11 +1,14 @@
 import Link from "next/link";
 
 import { CategoryPage } from "@/components/catalog/category-page";
+import { JsonLd } from "@/components/seo/json-ld";
 import { SeoArticle } from "@/components/seo/article";
+import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
 import { getCategoryStory } from "@/data/seo/categories";
 import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
+import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/seo/schema";
 import { categoryStaalGroup } from "@/lib/staal/tree";
 import type { ListingFilters } from "@/lib/catalog/types";
 
@@ -25,13 +28,22 @@ export async function CategoryListing({
   const all = await getProductsByCategory(slug);
   const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
   const story = getCategoryStory(slug);
+  const seo = categoryPageSeo[slug];
+  const path = categoryPath(slug);
   const staalGroep = categoryStaalGroup(slug);
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: seo.h1, path },
+        ])}
+      />
+      <JsonLd data={collectionPageJsonLd({ name: seo.h1, description: seo.description, path })} />
       <CategoryPage
         kicker="Assortiment"
-        title={category.name}
+        title={seo.h1}
         intro={category.summary}
         cards={view.cards}
         total={view.total}
@@ -40,7 +52,7 @@ export async function CategoryListing({
         page={view.page}
         pageSize={view.pageSize}
         brandOptions={await brandsInProducts(all)}
-        basePath={`/${slug}`}
+        basePath={path}
         filters={filters}
         presentation={presentation}
         showStockChip

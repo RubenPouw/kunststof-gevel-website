@@ -1,3 +1,5 @@
+import { categoryPath } from "@/data/seo/category-pages";
+
 export type SeoSection = {
   heading: string;
   paragraphs: string[];
@@ -263,7 +265,7 @@ export const brandStories: BrandStory[] = [
       },
     ],
     links: [
-      { href: "/vensterbanken", label: "Vensterbanken" },
+      { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
       { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
     ],
   },

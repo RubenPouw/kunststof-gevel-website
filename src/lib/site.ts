@@ -1,3 +1,5 @@
+import { categoryPath } from "@/data/seo/category-pages";
+
 export const site = {
   name: "kunststof-gevel.nl",
   shortName: "kunststof-gevel.nl",
@@ -59,8 +61,8 @@ export const productNav = [
 /** Kozijnen is its own top item, next to Producten. */
 export const kozijnNav = [
   { href: "/kunststof-kozijnen", label: "Kozijnen (overzicht)" },
-  { href: "/kozijnafwerking", label: "Kozijnafwerking" },
-  { href: "/vensterbanken", label: "Vensterbanken" },
+  { href: categoryPath("kozijnafwerking"), label: "Kozijnafwerking" },
+  { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
 ] as const;
 
 export const shopNav = [

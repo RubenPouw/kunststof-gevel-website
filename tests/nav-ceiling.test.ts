@@ -42,8 +42,8 @@ test("categories sit under Producten and kozijnen has its own menu", () => {
 
 test("the kozijnen hub links to kozijnafwerking in the subnav and as a tile", () => {
   const source = readFileSync(new URL("../src/app/kunststof-kozijnen/page.tsx", import.meta.url), "utf8");
-  const finishing = source.match(/href="\/kozijnafwerking"/g) ?? [];
-  const sills = source.match(/href="\/vensterbanken"/g) ?? [];
+  const finishing = source.match(/categoryPath\("kozijnafwerking"\)/g) ?? [];
+  const sills = source.match(/categoryPath\("vensterbanken"\)/g) ?? [];
   assert.equal(finishing.length, 2);
   assert.equal(sills.length, 2);
   assert.match(source, /aria-label="Kozijnen"/);

@@ -1,3 +1,5 @@
+import { categoryPath } from "@/data/seo/category-pages";
+
 import { PROFILE, SLIDING_NAME, profileSpecSentence } from "./config";
 
 export type Block = { heading: string; paragraphs: string[] };
@@ -19,7 +21,7 @@ const sharedLinks: LinkItem[] = [
   { href: "/kunststof-kozijnen", label: "Alle kozijnen" },
   { href: "/gevelbekleding", label: "Gevelbekleding" },
   { href: "/dakranden", label: "Dakranden" },
-  { href: "/vensterbanken", label: "Vensterbanken" },
+  { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
   { href: "/staalaanvraag", label: "Kleurstalen gevel" },
 ];
 
