@@ -38,6 +38,14 @@ test("categories sit under Producten and kozijnen has its own menu", () => {
   assert.equal(productNav.at(-1)?.label, "Bevestiging");
 });
 
+test("the kozijnen hub links to kozijnafwerking in the subnav and as a tile", () => {
+  const source = readFileSync(new URL("../src/app/kunststof-kozijnen/page.tsx", import.meta.url), "utf8");
+  const links = source.match(/href="\/kozijnafwerking"/g) ?? [];
+  assert.equal(links.length, 2);
+  assert.match(source, /aria-label="Kozijnen"/);
+  assert.match(source, />Kozijnafwerking</);
+});
+
 test("the header puts Kozijnen beside Producten, with its own mobile group", () => {
   const header = readFileSync(new URL("../src/components/site-header.tsx", import.meta.url), "utf8");
   const producten = header.indexOf('label="Producten"');

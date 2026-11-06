@@ -34,12 +34,20 @@ export default function KozijnenHubPage() {
           </Link>
           {" / Kozijnen"}
         </p>
+        <nav aria-label="Kozijnen" className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[15px] font-medium">
+          {GROUPS.map((group) => (
+            <Link key={group.id} href={group.href}>
+              {group.title}
+            </Link>
+          ))}
+          <Link href="/kozijnafwerking">Kozijnafwerking</Link>
+        </nav>
         <p className="kicker mt-6">{PROFILE.name}</p>
         <h1 className="display-plp mt-2 max-w-3xl">Kunststof kozijnen, in één profiel.</h1>
         <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-text-2">{hubCopy.lead}</p>
       </header>
 
-      <section className="container-kg grid gap-3 pb-12 md:grid-cols-3">
+      <section className="container-kg grid gap-3 pb-12 sm:grid-cols-2 xl:grid-cols-4">
         {GROUPS.map((group) => (
           <Link key={group.id} href={group.href} className="border border-kg-lijn bg-white p-5 no-underline hover:no-underline">
             <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">{group.title}</h2>
@@ -47,6 +55,11 @@ export default function KozijnenHubPage() {
             <p className="mt-6 font-mono text-[13px]">Samenstellen</p>
           </Link>
         ))}
+        <Link href="/kozijnafwerking" className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
+          <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Kozijnafwerking</h2>
+          <p className="mt-3 text-[15px] text-kg-grind">Vensterbanken, eindkappen en aansluitprofielen rond het kozijn.</p>
+          <p className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</p>
+        </Link>
       </section>
 
       <section className="container-kg pb-14">
