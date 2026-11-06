@@ -150,6 +150,13 @@ test("preview titles no longer feed 1 to 40 mm into the width filter", () => {
   }
 });
 
+test("abbreviated profiles land on afwerkprofiel, not toebehoren or a panel", () => {
+  assert.equal(item("Startpr. aluminium 51 mm").productGroup, "afwerkprofiel");
+  assert.equal(item("Verb.st. wit").productGroup, "afwerkprofiel");
+  assert.equal(item("Omrandingprof. 10mm").productGroup, "afwerkprofiel");
+  assert.equal(item("Ventilatierooster 100 mm").productGroup, "afwerkprofiel");
+});
+
 test("a url alt falls back to the product name", () => {
   assert.equal(
     productImageAlt("https://cdn.shopify.com/s/files/profol.jpg", "Profol PE Folie 150mu"),

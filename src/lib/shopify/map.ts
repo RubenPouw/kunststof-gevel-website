@@ -2,6 +2,7 @@ import { resolveColour } from "@/lib/catalog/colours";
 import { enrichProduct, inferProfileType } from "@/lib/catalog/derive";
 import { initialLength, isRealListedLength, parseWorkingWidthMm } from "@/lib/catalog/measures";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
+import { isHiddenOnKunststofGevel } from "@/lib/catalog/visibility";
 import {
   DISTRIBUTOR_BRAND_SLUGS,
   isHplSheetText,
@@ -30,6 +31,7 @@ const EXCLUDED_TITLE = /verzendkosten|pakketservice/i;
 export const CATEGORY_COLLECTION_HANDLES: Record<CategorySlug, string[]> = {
   gevelbekleding: ["gevelbekleding", "rabatdelen", "sponningdelen", "wandpanelen"],
   dakranden: ["dakranden", "dakrand"],
+  plafondpanelen: ["plafondpanelen", "plafondpaneel"],
   kozijnafwerking: ["kozijnafwerking"],
   montage: ["montage", "kunststof-profielen", "kunststof-profiel"],
   "hpl-platen": ["hpl-platen", "hpl-plaat", "hpl platen"],
@@ -45,6 +47,8 @@ export const PRODUCT_TYPE_TO_CATEGORY: Record<string, CategorySlug> = {
   wandpaneel: "gevelbekleding",
   dakrand: "dakranden",
   dakranden: "dakranden",
+  plafondpaneel: "plafondpanelen",
+  plafondpanelen: "plafondpanelen",
   kozijnafwerking: "kozijnafwerking",
   "kunststof profielen": "montage",
   "kunststof profiel": "montage",
@@ -67,7 +71,6 @@ const KNOWN_BRANDS: Brand[] = [
   { slug: "zierer", name: "Zierer", summary: "Steenstrips en hoekstukken voor plint, aanbouw en latei." },
   { slug: "profex", name: "Profex", summary: "Duafort rabat als Canexel-vervanger, licht en onderhoudsarm." },
   { slug: "milexx", name: "Milexx", summary: "Volschuim dakranden en hoeken, passend bij kunststof overstek." },
-  { slug: "linerio", name: "Linerio", summary: "Wandpanelen en binnenafwerking." },
   { slug: "fronto", name: "Fronto", summary: "Kunststof gevel- en afwerkprofielen." },
   { slug: "werzalit", name: "Werzalit", summary: "Vensterbanken en plaatmateriaal." },
   { slug: "thomdeck", name: "ThomDeck", summary: "Kunststof dek- en afwerkproducten." },
@@ -138,7 +141,9 @@ export function categoryFromTitle(title: string): CategorySlug | undefined {
   const t = title.toLowerCase();
   if (isHplSheetText(t)) return "hpl-platen";
   if (/(vensterbank|overzetbank|overzetvensterbank)/.test(t)) return "kozijnafwerking";
+  if (/\bunipanel\b/.test(t) && /(bouwpaneel|sierlijst)/.test(t)) return "dakranden";
   if (/(dakrand|boeideel)/.test(t)) return "dakranden";
+  if (/\bflorence\b/.test(t) || /(plafond\s*paneel|buitenplafond|binnenplafond)/.test(t)) return "plafondpanelen";
   if (
     /(rabat|sponning|gevelpaneel|wandpaneel|potdeksel|steenstrip|leisteen|gevelbekleding|rondkant|quattro|vario|gevel)/.test(
       t,
@@ -151,11 +156,18 @@ export function categoryFromTitle(title: string): CategorySlug | undefined {
   return undefined;
 }
 
+/**
+ * Dakranden and plafondpanelen win over a stale gevel- or montage type, and over
+ * a gevel collection. Hygienische wandbekleding is not a category here.
+ */
 export function inferCategory(
-  product: Pick<ShopifyProduct, "productType" | "title" | "tags">,
+  product: Pick<ShopifyProduct, "productType" | "title" | "tags" | "handle">,
   collectionHandles: string[] = [],
 ): CategorySlug {
   const fromType = categoryFromProductType(product.productType);
+  const fromTitle = categoryFromTitle(`${product.title} ${product.handle.replace(/-/g, " ")}`);
+  if (fromType === "dakranden" || fromType === "plafondpanelen") return fromType;
+  if (fromTitle === "dakranden" || fromTitle === "plafondpanelen") return fromTitle;
   if (fromType) return fromType;
 
   for (const handle of collectionHandles) {
@@ -168,7 +180,19 @@ export function inferCategory(
     if (fromTag) return fromTag;
   }
 
-  return categoryFromTitle(product.title) ?? "montage";
+  return fromTitle ?? "montage";
+}
+
+/** Stored rows keep their category unless type or title now says dakrand or plafond. */
+export function resolvePublicCategory(
+  product: Pick<Product, "category" | "productType" | "name" | "slug" | "brandSlug">,
+): CategorySlug {
+  const fromType = product.productType ? categoryFromProductType(product.productType) : undefined;
+  const fromTitle = categoryFromTitle(`${product.name} ${product.slug.replace(/-/g, " ")} ${product.brandSlug}`);
+  if (fromType === "dakranden" || fromType === "plafondpanelen") return fromType;
+  if (fromTitle === "dakranden" || fromTitle === "plafondpanelen") return fromTitle;
+  if (fromType) return fromType;
+  return product.category;
 }
 
 function slugify(value: string) {
@@ -309,7 +333,7 @@ export function mapShopifyProduct(
   product: ShopifyProduct,
   collectionHandles: string[] = [],
 ): Product | null {
-  if (isExcludedShopifyProduct(product)) return null;
+  if (isExcludedShopifyProduct(product) || isHiddenOnKunststofGevel(product)) return null;
 
   const brand = inferBrand(product);
   const category = inferCategory(product, collectionHandles);
@@ -353,6 +377,7 @@ export function mapShopifyProduct(
     length,
     images,
     productType: product.productType || undefined,
+    tags: product.tags,
     source: "shopify",
     profileType,
     sampleable: false,
@@ -375,7 +400,9 @@ export function brandsFromProducts(products: Product[], extras: Brand[] = []): B
     }
   }
   const used = new Set(products.map((product) => product.brandSlug));
-  return [...bySlug.values()].filter((brand) => used.has(brand.slug));
+  return [...bySlug.values()].filter(
+    (brand) => used.has(brand.slug) && brand.slug !== "linerio" && brand.slug !== "wonderboard",
+  );
 }
 
 export { KNOWN_BRANDS };

@@ -11,7 +11,7 @@ const ACCESSORY =
   /folie|loodvervanger|\blamina\b|schroef|kitspuit|\bkit\b|cleaner|ontvetter|\bschaar\b|maskingtape|\btape\b|lijm|spuitkop|plafondtegel|sealer|\breiniger\b/i;
 
 const TRIM =
-  /profiel|hoekstuk|\bhoek\b|stootvoeg|eindkap|verbind|buitenhoek|binnenhoek|afdeklijst|afdekgevel|tussenstuk|afwatering|\btrim\b|\bkraal\b|afdicht/i;
+  /profiel|hoekstuk|\bhoek\b|stootvoeg|eindkap|verbind|buitenhoek|binnenhoek|afdeklijst|afdekgevel|tussenstuk|afwatering|\btrim\b|\bkraal\b|afdicht|startpr\.?|verb\.?\s*st\.?|omrandingprof\.?|ventilatierooster/i;
 
 const PANEL =
   /rabat|sponningschroot|sponningdeel|\bsponning\b|potdeksel|rondkant|quattro|\bvario\b|platpaneel|wandpaneel|steenstrip|leisteen|unipanel|bouwpaneel|paneelvulling|paneelplus|foodcare|extra stabil|plafond\s*paneel|buitenplafond|binnenplafond|gevelpaneel|dakrand\s*paneel|wonderboard|\bpaneel\b/i;

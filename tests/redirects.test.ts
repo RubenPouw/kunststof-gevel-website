@@ -13,6 +13,12 @@ test("every crawled URL is a one-hop redirect or the same canonical URL", () => 
   const targets = new Map(redirectRows.map((row) => [row.from, row.to.split("?")[0]]));
   for (const row of redirectRows) {
     const found = lookupRedirect(row.from);
+    if (/\/producten\/[^/]*(linerio|wonderboard)/i.test(row.from)) {
+      assert.equal(found.status, "301", row.from);
+      assert.equal(found.to, "/gevelbekleding", row.from);
+      assert.equal(lookupRedirect("/gevelbekleding").status, "200", row.from);
+      continue;
+    }
     assert.equal(found.to, row.to, row.from);
     assert.equal(found.status, row.status);
     const destination = row.to.split("?")[0];
@@ -66,7 +72,6 @@ test("active -1 product urls 301 to the clean slug", () => {
     const from = `/producten/${duplicate}`;
     const to = `/producten/${clean}`;
     assert.equal(targets.get(from), to, from);
-    assert.equal(targets.has(to), false, `${to} must stay a 200`);
     const decision = resolveNavigation({
       host: "www.kunststof-gevel.nl",
       pathname: from,
@@ -74,9 +79,39 @@ test("active -1 product urls 301 to the clean slug", () => {
     });
     assert.equal(decision.action, "redirect");
     if (decision.action !== "redirect") return;
+    if (/linerio|wonderboard/i.test(duplicate)) {
+      assert.equal(decision.pathname, "/gevelbekleding", from);
+      assert.equal(lookupRedirect(to).to, "/gevelbekleding", to);
+      assert.equal(lookupRedirect(to).status, "301", to);
+      continue;
+    }
+    assert.equal(targets.has(to), false, `${to} must stay a 200`);
     assert.equal(decision.pathname, to);
   }
   const kept = lookupRedirect("/producten/h-verbindingprofiel-4mm-1");
   assert.equal(kept.status, "200");
   assert.equal(kept.to, "/producten/h-verbindingprofiel-4mm-1");
+});
+
+test("linerio and wonderboard urls land on gevelbekleding in one hop", () => {
+  for (const path of [
+    "/merken/linerio",
+    "/merken/linerio/",
+    "/merken/wonderboard",
+    "/producten/linerio-wandpaneel-s-115mm",
+    "/producten/wonderboard-2500x1200x2-3-mm-structuur",
+  ]) {
+    const row = lookupRedirect(path);
+    assert.equal(row.status, "301", path);
+    assert.equal(row.to, "/gevelbekleding", path);
+    const decision = resolveNavigation({
+      host: "www.kunststof-gevel.nl",
+      pathname: path,
+      search: "",
+    });
+    assert.equal(decision.action, "redirect", path);
+    if (decision.action !== "redirect") return;
+    assert.equal(decision.pathname, "/gevelbekleding", path);
+  }
+  assert.equal(lookupRedirect("/gevelbekleding").status, "200");
 });

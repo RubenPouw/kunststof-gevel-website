@@ -1,6 +1,7 @@
 export const categorySlugs = [
   "gevelbekleding",
   "dakranden",
+  "plafondpanelen",
   "kozijnafwerking",
   "montage",
   "hpl-platen",
@@ -33,6 +34,12 @@ export const productGroupLabels: Record<ProductGroup, string> = {
   afwerkprofiel: "Afwerkprofielen",
   toebehoren: "Toebehoren",
 };
+
+/** On the ceiling listing the panel group is not a gevel. */
+export function labelForProductGroup(group: ProductGroup, basePath?: string) {
+  if (basePath === "/plafondpanelen" && group === "gevelpaneel") return "Plafondpanelen";
+  return productGroupLabels[group];
+}
 
 export const colorFamilies = [
   "donker",
@@ -154,6 +161,8 @@ export type Product = {
   images: ProductImage[];
   productType?: string;
   source?: "static" | "shopify";
+  /** Shopify tags, when the catalog row came from the Storefront API. */
+  tags?: string[];
   workingWidthMm?: number;
   /** Front-end group for the product-type filter and the default sort. */
   productGroup?: ProductGroup;
@@ -200,4 +209,8 @@ export type ListingFilters = {
   colorSlugs?: string[];
   /** RAL digits, for example 7016. */
   ral?: string;
+  /** One place. A single `plek` value stays this field. */
+  ceilingPlace?: "binnen" | "buiten";
+  /** Two places. Same `plek` param, comma-separated. */
+  ceilingPlaces?: ("binnen" | "buiten")[];
 };

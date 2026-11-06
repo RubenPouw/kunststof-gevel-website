@@ -31,7 +31,7 @@ export function ProductListing({
   cards: initialCards,
   total: initialTotal,
   totalUnfiltered,
-  facets,
+  facets: initialFacets,
   page,
   pageSize,
   filters: initialFilters,
@@ -58,6 +58,7 @@ export function ProductListing({
 }) {
   const [cards, setCards] = useState(initialCards);
   const [total, setTotal] = useState(initialTotal);
+  const [facets, setFacets] = useState(initialFacets);
   const [filters, setFilters] = useState(initialFilters);
   const [view, setView] = useState(initialView);
   const [sort, setSort] = useState(initialSort);
@@ -78,9 +79,11 @@ export function ProductListing({
         cards: ListingCardModel[];
         total: number;
         page: number;
+        facets?: ListingFacets;
       };
       setCards(body.cards);
       setTotal(body.total);
+      if (body.facets) setFacets(body.facets);
       setFilters(nextFilters);
       setView(nextPresentation.view);
       setSort(nextPresentation.sort);
@@ -170,6 +173,7 @@ export function ProductListing({
   const prevHref = originPage > 1 ? listingPageHref(basePath, filters, originPage - 1, presentation) : null;
   const showFilters =
     showStockChip ||
+    facets.places.length > 0 ||
     facets.groups.length > 1 ||
     facets.profileTypes.filter((item) => item.slug !== "overig").length > 1 ||
     facets.colorFamilies.length > 1 ||

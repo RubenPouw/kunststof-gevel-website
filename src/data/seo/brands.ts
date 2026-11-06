@@ -311,6 +311,7 @@ export const brandStories: BrandStory[] = [
       },
     ],
     links: [
+      { href: "/plafondpanelen", label: "Plafondpanelen" },
       { href: "/offerte", label: "Plafond laten rekenen" },
       { href: "/contact", label: "Contact" },
     ],

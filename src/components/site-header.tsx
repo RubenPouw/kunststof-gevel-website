@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useId, useRef, useState } from "react";
 
 import { Logo } from "@/components/brand/logo";
 import { VatSwitch } from "@/components/brand/vat-switch";
@@ -10,7 +10,7 @@ import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
-import { isShopNavActive, shopNav, site } from "@/lib/site";
+import { isShopNavActive, productNav, shopNav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 function VatBar() {
@@ -19,6 +19,103 @@ function VatBar() {
       <div className="container-kg flex h-11 items-center justify-end">
         <VatSwitch />
       </div>
+    </div>
+  );
+}
+
+function ProductMenu({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false);
+  const pinned = useRef(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
+  const active = productNav.some((item) => isShopNavActive(pathname, item.href));
+
+  function close() {
+    pinned.current = false;
+    setOpen(false);
+  }
+
+  useEffect(() => {
+    if (!open) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        close();
+        buttonRef.current?.focus();
+      }
+    }
+    function onPointer(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) close();
+    }
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onPointer);
+    };
+  }, [open]);
+
+  return (
+    <div
+      ref={rootRef}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => {
+        if (!pinned.current) setOpen(false);
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node)) close();
+      }}
+    >
+      <button
+        ref={buttonRef}
+        type="button"
+        className={cn(
+          "px-2 py-2 text-kg-kalk transition-colors duration-150 hover:bg-kg-navy-2 focus-visible:outline-[var(--kg-kalk)]",
+          (open || active) && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
+        )}
+        aria-expanded={open}
+        aria-haspopup="true"
+        aria-controls={menuId}
+        onClick={() => {
+          const next = !open;
+          pinned.current = next;
+          setOpen(next);
+        }}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowDown") return;
+          event.preventDefault();
+          pinned.current = true;
+          setOpen(true);
+          requestAnimationFrame(() => {
+            rootRef.current?.querySelector<HTMLAnchorElement>(`#${CSS.escape(menuId)} a`)?.focus();
+          });
+        }}
+      >
+        Producten
+      </button>
+      {open ? (
+        <ul id={menuId} aria-label="Producten" className="absolute left-0 top-full z-30 min-w-56 border border-kg-navy bg-white py-1">
+          {productNav.map((item) => {
+            const itemActive = isShopNavActive(pathname, item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "flex min-h-11 items-center px-3 text-[15px] font-medium text-kg-navy no-underline hover:bg-kg-kalk hover:text-kg-navy hover:no-underline",
+                    itemActive && "bg-kg-kalk",
+                  )}
+                  aria-current={itemActive ? "page" : undefined}
+                  onClick={() => close()}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
     </div>
   );
 }
@@ -40,6 +137,7 @@ export function SiteHeader() {
   const accountHref = user ? "/account" : "/inloggen";
   const { items, count: sampleCount } = useSamples();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
   const [trayOpen, setTrayOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -69,8 +167,8 @@ export function SiteHeader() {
   if (bare) {
     return (
       <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
-        <div className="container-kg flex h-[72px] items-center justify-between gap-4">
-          <Logo size={20} tone="dark" />
+        <div className="container-kg flex min-h-[72px] items-center justify-between gap-4 py-2">
+          <Logo size={20} tone="dark" lockup />
           <a href={site.phoneHref} className="font-mono text-[14px] text-kg-kalk no-underline">
             {site.phone}
           </a>
@@ -82,10 +180,11 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
-      <div className="container-kg flex h-[72px] items-center gap-4 lg:gap-6">
-        <Logo size={20} tone="dark" />
+      <div className="container-kg flex min-h-[72px] items-center gap-4 py-2 lg:gap-6">
+        <Logo size={20} tone="dark" lockup />
 
-        <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex">
+        <nav className="hidden items-center gap-1 whitespace-nowrap text-[15px] font-medium text-kg-kalk lg:flex" aria-label="Hoofdmenu">
+          <ProductMenu pathname={pathname} />
           {shopNav.map((item) => {
             const active = isShopNavActive(pathname, item.href);
             return (
@@ -171,7 +270,34 @@ export function SiteHeader() {
 
       {menuOpen ? (
         <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 lg:hidden">
-          <nav className="flex flex-col">
+          <nav className="flex flex-col" aria-label="Hoofdmenu">
+            <button
+              type="button"
+              className="flex min-h-11 items-center justify-between text-left text-[15px] font-medium text-kg-kalk"
+              aria-expanded={productsOpen}
+              aria-controls="producten-mobiel"
+              onClick={() => setProductsOpen((value) => !value)}
+            >
+              Producten
+              <span aria-hidden className="font-mono text-[13px]">
+                {productsOpen ? "−" : "+"}
+              </span>
+            </button>
+            {productsOpen ? (
+              <div id="producten-mobiel" className="flex flex-col pb-2 pl-3">
+                {productNav.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk"
+                    aria-current={isShopNavActive(pathname, item.href) ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
             {shopNav.map((item) => (
               <Link
                 key={item.href}

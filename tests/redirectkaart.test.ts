@@ -18,6 +18,7 @@ const STATIC = new Set([
   "/hpl-platen",
   "/hpl-plaat",
   "/dakranden",
+  "/plafondpanelen",
   "/kozijnafwerking",
   "/montage",
   "/kunststof-kozijnen",

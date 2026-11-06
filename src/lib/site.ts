@@ -47,11 +47,18 @@ export const heroStats = [
   { value: "24 u", label: "bericht" },
 ] as const;
 
-export const shopNav = [
+/** Category routes. They live under the Producten menu, not as loose top links. */
+export const productNav = [
   { href: "/gevelbekleding", label: "Gevelbekleding" },
-  { href: "/hpl-plaat", label: "HPL platen" },
+  { href: "/plafondpanelen", label: "Plafondpanelen" },
   { href: "/dakranden", label: "Dakranden" },
+  { href: "/hpl-plaat", label: "HPL platen" },
   { href: "/kunststof-kozijnen", label: "Kozijnen" },
+  { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+  { href: "/montage", label: "Bevestiging" },
+] as const;
+
+export const shopNav = [
   { href: "/merken", label: "Merken" },
   { href: "/projecten", label: "Projecten" },
   { href: "/zakelijk", label: "Zakelijk" },
@@ -64,6 +71,7 @@ export const footerColumns = [
       { href: "/gevelbekleding", label: "Gevelbekleding" },
       { href: "/hpl-plaat", label: "HPL platen" },
       { href: "/dakranden", label: "Dakranden" },
+      { href: "/plafondpanelen", label: "Plafondpanelen" },
       { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
       { href: "/montage", label: "Bevestiging" },
       { href: "/merken", label: "Merken" },

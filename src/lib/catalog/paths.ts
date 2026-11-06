@@ -12,6 +12,7 @@ export const LISTING_QUERY_KEYS = [
   "breedte",
   "kleurnaam",
   "ral",
+  "plek",
   "pagina",
   "weergave",
   "sorteer",

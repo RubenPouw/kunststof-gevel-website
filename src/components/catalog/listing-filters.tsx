@@ -10,6 +10,7 @@ import {
   selectedBrands,
   selectedColorSlugs,
   selectedGroups,
+  selectedPlaces,
   selectedProfileTypes,
   toggleValue,
   type ListingFilterPatch,
@@ -18,7 +19,7 @@ import type { ListingFacets, ListingPresentation } from "@/lib/catalog/listing";
 import {
   colorFamilies,
   colorFamilyLabels,
-  productGroupLabels,
+  labelForProductGroup,
   profileTypeLabels,
   type Brand,
   type ColorFamily,
@@ -65,7 +66,7 @@ export function ActiveFilterChips({
   for (const slug of selectedGroups(filters)) {
     chips.push({
       key: `groep-${slug}`,
-      label: productGroupLabels[slug],
+      label: labelForProductGroup(slug, basePath),
       href: listingHref(basePath, filters, { productGroups: toggleValue(selectedGroups(filters), slug) }, presentation),
       patch: { productGroups: toggleValue(selectedGroups(filters), slug) },
     });
@@ -103,6 +104,15 @@ export function ActiveFilterChips({
       patch: { ral: "" },
     });
   }
+  for (const place of selectedPlaces(filters)) {
+    const label = place === "binnen" ? "Binnen" : "Buiten";
+    chips.push({
+      key: `plek-${place}`,
+      label,
+      href: listingHref(basePath, filters, { ceilingPlaces: toggleValue(selectedPlaces(filters), place) }, presentation),
+      patch: { ceilingPlaces: toggleValue(selectedPlaces(filters), place) },
+    });
+  }
   if (filters.workingWidthMm) {
     chips.push({
       key: `breedte-${filters.workingWidthMm}`,
@@ -125,6 +135,7 @@ export function ActiveFilterChips({
       colorSlugs: null,
       ral: "",
       workingWidthMm: undefined,
+      ceilingPlaces: null,
     },
     presentation,
   );
@@ -172,11 +183,32 @@ export function ListingFiltersPanel({
   const groups = selectedGroups(filters);
   const types = selectedProfileTypes(filters);
   const colorSlugs = selectedColorSlugs(filters);
+  const places = selectedPlaces(filters);
   const showGroups = facets.groups.length > 1;
   const profileChoices = facets.profileTypes.filter((item) => item.slug !== "overig");
+  const showPlaces = basePath.split("?")[0] === "/plafondpanelen" && facets.places.some((item) => item.count > 0);
 
   return (
     <div className="mt-2">
+      {showPlaces ? (
+        <FilterSection title="Toepassing">
+          {facets.places.map((item) => {
+            const active = places.includes(item.slug);
+            const next = toggleValue(places, item.slug);
+            const label = item.slug === "binnen" ? "Binnen" : "Buiten";
+            return (
+              <FilterCheck
+                key={item.slug}
+                href={listingHref(basePath, filters, { ceilingPlaces: next }, presentation)}
+                active={active}
+                label={label}
+                count={item.count}
+                onClick={(event) => onFilter(event, { ceilingPlaces: next })}
+              />
+            );
+          })}
+        </FilterSection>
+      ) : null}
       {showStockChip ? (
         <FilterSection title="Voorraad">
           <FilterCheck
@@ -197,7 +229,7 @@ export function ListingFiltersPanel({
                 key={item.slug}
                 href={listingHref(basePath, filters, { productGroups: next }, presentation)}
                 active={active}
-                label={productGroupLabels[item.slug]}
+                label={labelForProductGroup(item.slug, basePath)}
                 count={item.count}
                 onClick={(event) => onFilter(event, { productGroups: next })}
               />

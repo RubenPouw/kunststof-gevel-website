@@ -38,6 +38,7 @@ export async function GET(request: Request) {
       totalUnfiltered: view.totalUnfiltered,
       page: view.page,
       pages: view.pages,
+      facets: view.facets,
     },
     { headers: { "cache-control": "private, no-store" } },
   );
