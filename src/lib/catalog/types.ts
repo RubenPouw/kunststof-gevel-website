@@ -3,6 +3,7 @@ export const categorySlugs = [
   "dakranden",
   "plafondpanelen",
   "kozijnafwerking",
+  "vensterbanken",
   "montage",
   "hpl-platen",
 ] as const;

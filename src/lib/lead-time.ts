@@ -10,6 +10,7 @@ export const leadTimeWeeksByCategory: Record<CategorySlug | "kozijnen", number |
   dakranden: null,
   plafondpanelen: null,
   kozijnafwerking: null,
+  vensterbanken: null,
   montage: null,
   "hpl-platen": null,
   kozijnen: null,

@@ -19,7 +19,7 @@ const sharedLinks: LinkItem[] = [
   { href: "/kunststof-kozijnen", label: "Alle kozijnen" },
   { href: "/gevelbekleding", label: "Gevelbekleding" },
   { href: "/dakranden", label: "Dakranden" },
-  { href: "/kozijnafwerking", label: "Vensterbanken" },
+  { href: "/vensterbanken", label: "Vensterbanken" },
   { href: "/staalaanvraag", label: "Kleurstalen gevel" },
 ];
 

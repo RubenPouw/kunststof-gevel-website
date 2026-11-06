@@ -226,7 +226,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     ],
     links: [
       { href: "/blog/overzet-vensterbank-meten", label: "Overzet vensterbank meten en monteren" },
-      { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+      { href: "/vensterbanken", label: "Vensterbanken" },
       { href: "/staalaanvraag?groep=vensterbank", label: "Gratis staal" },
     ],
   },

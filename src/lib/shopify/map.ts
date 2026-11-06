@@ -33,6 +33,7 @@ export const CATEGORY_COLLECTION_HANDLES: Record<CategorySlug, string[]> = {
   dakranden: ["dakranden", "dakrand"],
   plafondpanelen: ["plafondpanelen", "plafondpaneel"],
   kozijnafwerking: ["kozijnafwerking"],
+  vensterbanken: ["vensterbanken", "vensterbank"],
   montage: ["montage", "kunststof-profielen", "kunststof-profiel"],
   "hpl-platen": ["hpl-platen", "hpl-plaat", "hpl platen"],
 };
@@ -50,6 +51,8 @@ export const PRODUCT_TYPE_TO_CATEGORY: Record<string, CategorySlug> = {
   plafondpaneel: "plafondpanelen",
   plafondpanelen: "plafondpanelen",
   kozijnafwerking: "kozijnafwerking",
+  vensterbank: "vensterbanken",
+  vensterbanken: "vensterbanken",
   "kunststof profielen": "montage",
   "kunststof profiel": "montage",
   montage: "montage",
@@ -140,7 +143,7 @@ export function categoryFromCollectionHandle(handle: string): CategorySlug | und
 export function categoryFromTitle(title: string): CategorySlug | undefined {
   const t = title.toLowerCase();
   if (isHplSheetText(t)) return "hpl-platen";
-  if (/(vensterbank|overzetbank|overzetvensterbank)/.test(t)) return "kozijnafwerking";
+  if (/(vensterbank|overzetbank|overzetvensterbank)/.test(t)) return "vensterbanken";
   if (/\bunipanel\b/.test(t) && /(bouwpaneel|sierlijst)/.test(t)) return "dakranden";
   if (/(dakrand|boeideel)/.test(t)) return "dakranden";
   if (/\bflorence\b/.test(t) || /(plafond\s*paneel|buitenplafond|binnenplafond)/.test(t)) return "plafondpanelen";
@@ -168,6 +171,7 @@ export function inferCategory(
   const fromTitle = categoryFromTitle(`${product.title} ${product.handle.replace(/-/g, " ")}`);
   if (fromType === "dakranden" || fromType === "plafondpanelen") return fromType;
   if (fromTitle === "dakranden" || fromTitle === "plafondpanelen") return fromTitle;
+  if (fromType === "vensterbanken" || fromTitle === "vensterbanken") return "vensterbanken";
   if (fromType) return fromType;
 
   for (const handle of collectionHandles) {
@@ -191,6 +195,7 @@ export function resolvePublicCategory(
   const fromTitle = categoryFromTitle(`${product.name} ${product.slug.replace(/-/g, " ")} ${product.brandSlug}`);
   if (fromType === "dakranden" || fromType === "plafondpanelen") return fromType;
   if (fromTitle === "dakranden" || fromTitle === "plafondpanelen") return fromTitle;
+  if (fromType === "vensterbanken" || fromTitle === "vensterbanken") return "vensterbanken";
   if (fromType) return fromType;
   return product.category;
 }

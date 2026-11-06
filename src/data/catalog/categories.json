@@ -17,7 +17,12 @@
   {
     "slug": "kozijnafwerking",
     "name": "Kozijnafwerking",
-    "summary": "Vensterbanken, eindkappen en afdichtingsprofielen rondom het kozijn."
+    "summary": "Aansluitprofielen en afwerking rond het kozijn. De vensterbanken staan apart."
+  },
+  {
+    "slug": "vensterbanken",
+    "name": "Vensterbanken",
+    "summary": "Kunststof vensterbanken en overzetbanken, per merk, met eindkappen en bevestiging erachter."
   },
   {
     "slug": "montage",

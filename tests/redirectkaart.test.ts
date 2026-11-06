@@ -20,6 +20,7 @@ const STATIC = new Set([
   "/dakranden",
   "/plafondpanelen",
   "/kozijnafwerking",
+  "/vensterbanken",
   "/montage",
   "/kunststof-kozijnen",
   "/merken",

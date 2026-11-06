@@ -263,7 +263,7 @@ export const brandStories: BrandStory[] = [
       },
     ],
     links: [
-      { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+      { href: "/vensterbanken", label: "Vensterbanken" },
       { href: "/kunststof-kozijnen", label: "Kunststof kozijnen" },
     ],
   },

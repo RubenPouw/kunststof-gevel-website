@@ -26,6 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/dakranden",
     "/plafondpanelen",
     "/kozijnafwerking",
+    "/vensterbanken",
     "/kunststof-kozijnen",
     "/montage",
     "/merken",

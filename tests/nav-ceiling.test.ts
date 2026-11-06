@@ -7,10 +7,12 @@ import { applyListingFilters, listingFacets, listingHref, parseListingSearchPara
 import { prepareListing } from "../src/lib/catalog/listing.ts";
 import { listingRewriteTarget } from "../src/lib/catalog/paths.ts";
 import { labelForProductGroup, type Product } from "../src/lib/catalog/types.ts";
+import { sortProducts } from "../src/lib/catalog/listing.ts";
+import type { Product } from "../src/lib/catalog/types.ts";
 import { kozijnNav, productNav, shopNav } from "../src/lib/site.ts";
 
 const PRODUCT_HREFS = ["/gevelbekleding", "/plafondpanelen", "/dakranden", "/hpl-plaat", "/montage"];
-const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking"];
+const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking", "/vensterbanken"];
 
 test("categories sit under Producten and kozijnen has its own menu", () => {
   const underProducts = productNav.map((item) => item.href);
@@ -24,7 +26,7 @@ test("categories sit under Producten and kozijnen has its own menu", () => {
   );
   assert.deepEqual(
     kozijnNav.map((item) => item.label),
-    ["Kozijnen (overzicht)", "Kozijnafwerking"],
+    ["Kozijnen (overzicht)", "Kozijnafwerking", "Vensterbanken"],
   );
   const top = shopNav.map((item) => item.href);
   for (const href of [...PRODUCT_HREFS, ...KOZIJN_HREFS]) {
@@ -40,10 +42,13 @@ test("categories sit under Producten and kozijnen has its own menu", () => {
 
 test("the kozijnen hub links to kozijnafwerking in the subnav and as a tile", () => {
   const source = readFileSync(new URL("../src/app/kunststof-kozijnen/page.tsx", import.meta.url), "utf8");
-  const links = source.match(/href="\/kozijnafwerking"/g) ?? [];
-  assert.equal(links.length, 2);
+  const finishing = source.match(/href="\/kozijnafwerking"/g) ?? [];
+  const sills = source.match(/href="\/vensterbanken"/g) ?? [];
+  assert.equal(finishing.length, 2);
+  assert.equal(sills.length, 2);
   assert.match(source, /aria-label="Kozijnen"/);
   assert.match(source, />Kozijnafwerking</);
+  assert.match(source, />Vensterbanken</);
 });
 
 test("the header puts Kozijnen beside Producten, with its own mobile group", () => {
@@ -56,6 +61,41 @@ test("the header puts Kozijnen beside Producten, with its own mobile group", () 
   const mobileKozijnen = header.indexOf('aria-controls="kozijnen-mobiel"');
   const mobileRest = header.lastIndexOf("{shopNav.map");
   assert.ok(mobileProducts >= 0 && mobileKozijnen > mobileProducts && mobileRest > mobileKozijnen);
+});
+
+test("vensterbanken list the sill before caps and fastening, per brand", () => {
+  const item = (slug: string, name: string, brand: string): Product =>
+    ({
+      slug,
+      name,
+      brand,
+      brandSlug: brand.toLowerCase(),
+      category: "vensterbanken",
+      vendor: brand,
+      description: "",
+      specs: [],
+      relatedSlugs: [],
+      variants: [],
+      price: 10,
+      inStock: true,
+      meta: "",
+      palette: [],
+      colors: [],
+      length: "stuk",
+      images: [],
+      profileType: "vensterbank",
+      sampleable: false,
+    }) as Product;
+  const sorted = sortProducts(
+    [
+      item("milin-schroef", "Milinboard vensterbank schroef", "Milinboard"),
+      item("werzalit-bank", "Werzalit vensterbank 250 mm", "Werzalit"),
+      item("milin-kap", "Eindkap Milinboard vensterbank", "Milinboard"),
+      item("milin-bank", "Milinboard vensterbank 300 mm", "Milinboard"),
+    ],
+    "relevantie",
+  ).map((product) => product.slug);
+  assert.deepEqual(sorted, ["milin-bank", "milin-kap", "milin-schroef", "werzalit-bank"]);
 });
 
 test("plafond panel group is labeled Plafondpanelen", () => {

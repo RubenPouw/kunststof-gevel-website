@@ -112,14 +112,38 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
   kozijnafwerking: {
     slug: "kozijnafwerking",
     metaTitle: "Kozijnafwerking",
-    description:
-      "Kunststof vensterbanken, eindkappen en aansluitprofielen. Milinboard overzetbanken en afwerking rond het kozijn.",
+    description: "Aansluitprofielen en afwerking rond het kozijn. De vensterbanken staan op een eigen pagina.",
     sections: [
       {
         heading: "Rond het kozijn",
         paragraphs: [
-          "Vensterbanken, eindkappen en aansluitprofielen maken de dagkant af als de gevel nieuw is. Een overzetbank dekt een bestaande bank als de maat het toelaat.",
+          "Dagstukken, koplatten en aansluitprofielen maken de dagkant af. De vensterbank zelf kiest u bij Vensterbanken.",
           "Nieuwe kozijnen zelf configureert u apart. De afwerking op deze pagina is het materiaal rondom, niet het kozijn.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Waar bestel ik de vensterbank?",
+        a: "Op de pagina Vensterbanken. Hier blijft de afwerking rond het kozijn, zoals aansluitprofielen.",
+      },
+    ],
+    links: [
+      { href: "/vensterbanken", label: "Vensterbanken" },
+      { href: "/kunststof-kozijnen", label: "Kozijnen configureren" },
+    ],
+  },
+  vensterbanken: {
+    slug: "vensterbanken",
+    metaTitle: "Vensterbanken",
+    description:
+      "Kunststof vensterbanken en overzetbanken. Per merk eerst de bank, dan eindkappen en profielen, dan de bevestiging.",
+    sections: [
+      {
+        heading: "Eerst de bank",
+        paragraphs: [
+          "Per merk staan de vensterbanken eerst. Eindkappen en profielen volgen, en daarna de bevestiging.",
+          "Een overzetbank dekt een bestaande bank als de maat het toelaat. Een vaste bank vervangt het blad. Kozijnen stelt u apart samen.",
         ],
       },
     ],
@@ -130,8 +154,8 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       },
     ],
     links: [
-      { href: "/merken/milinboard", label: "Milinboard banken" },
-      { href: "/kunststof-kozijnen", label: "Kozijnen configureren" },
+      { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+      { href: "/kunststof-kozijnen", label: "Kozijnen" },
     ],
   },
   montage: {

@@ -60,6 +60,7 @@ export const productNav = [
 export const kozijnNav = [
   { href: "/kunststof-kozijnen", label: "Kozijnen (overzicht)" },
   { href: "/kozijnafwerking", label: "Kozijnafwerking" },
+  { href: "/vensterbanken", label: "Vensterbanken" },
 ] as const;
 
 export const shopNav = [

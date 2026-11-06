@@ -140,6 +140,62 @@ test("unipanel panels and florence leave gevel, even when the stored type still 
   );
 });
 
+test("a vensterbank leaves kozijnafwerking, by type, title or handle", () => {
+  assert.equal(categoryFromProductType("Vensterbank"), "vensterbanken");
+  assert.equal(categoryFromProductType("Vensterbanken"), "vensterbanken");
+  assert.equal(
+    inferCategory(
+      shop({
+        handle: "milinboard-vensterbank-type-b-250-mm-1",
+        title: "Milinboard vensterbank type B 250 mm",
+        productType: "Kozijnafwerking",
+      }),
+      ["kozijnafwerking"],
+    ),
+    "vensterbanken",
+  );
+  assert.equal(
+    inferCategory(
+      shop({
+        handle: "eindkap-werzalit-vensterbank-1",
+        title: "Eindkap Werzalit",
+        productType: "Montage",
+      }),
+    ),
+    "vensterbanken",
+  );
+  assert.equal(
+    inferCategory(
+      shop({
+        handle: "novaboard-eindkap-links",
+        title: "Novaboard eindkap links",
+        productType: "Kozijnafwerking",
+      }),
+    ),
+    "kozijnafwerking",
+  );
+  assert.equal(
+    resolvePublicCategory({
+      category: "kozijnafwerking",
+      productType: "Kozijnafwerking",
+      name: "Milinboard Overzetvensterbank 380 mm",
+      slug: "milinboard-overzetvensterbank-380",
+      brandSlug: "milinboard",
+    }),
+    "vensterbanken",
+  );
+  assert.equal(
+    resolvePublicCategory({
+      category: "kozijnafwerking",
+      productType: "Kozijnafwerking",
+      name: "Afdichtingsprofiel PVC 45 mm",
+      slug: "afdichtingsprofiel-pvc-45",
+      brandSlug: "profex",
+    }),
+    "kozijnafwerking",
+  );
+});
+
 test("linerio and wonderboard stay out of the kunststof-gevel catalog", () => {
   assert.equal(KNOWN_BRANDS.some((brand) => brand.slug === "linerio"), false);
   assert.equal(brandLogoSrc("linerio"), undefined);

@@ -130,7 +130,7 @@ export const migratedPosts: BlogPost[] = [
     ],
     links: [
       { href: "/blog/overzet-vensterbank-meten", label: "Overzetbank meten" },
-      { href: "/kozijnafwerking", label: "Vensterbanken" },
+      { href: "/vensterbanken", label: "Vensterbanken" },
     ],
   },
   {
@@ -161,7 +161,7 @@ export const migratedPosts: BlogPost[] = [
       },
     ],
     links: [
-      { href: "/kozijnafwerking", label: "Banken en eindkappen" },
+      { href: "/vensterbanken", label: "Banken en eindkappen" },
       { href: "/offerte", label: "Maten laten controleren" },
     ],
   },
