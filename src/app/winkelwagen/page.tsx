@@ -129,7 +129,7 @@ export default function CartPage() {
             <div>
               <div className="flex items-center gap-2 text-[15px] font-bold">
                 <CavemenMark size={18} />
-                Montage door een Caveman
+                Montage door Cavemen
               </div>
               <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em]">Materiaal geregeld. Handen erbij?</h2>
               <p className="mt-2 font-mono text-[13px] text-kg-grind">
