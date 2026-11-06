@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { ceilingPlaceOf } from "../src/lib/catalog/ceiling.ts";
@@ -6,25 +7,27 @@ import { applyListingFilters, listingFacets, listingHref, parseListingSearchPara
 import { prepareListing } from "../src/lib/catalog/listing.ts";
 import { listingRewriteTarget } from "../src/lib/catalog/paths.ts";
 import { labelForProductGroup, type Product } from "../src/lib/catalog/types.ts";
-import { productNav, shopNav } from "../src/lib/site.ts";
+import { kozijnNav, productNav, shopNav } from "../src/lib/site.ts";
 
-const CATEGORY_HREFS = [
-  "/gevelbekleding",
-  "/plafondpanelen",
-  "/dakranden",
-  "/hpl-plaat",
-  "/kunststof-kozijnen",
-  "/kozijnafwerking",
-  "/montage",
-];
+const PRODUCT_HREFS = ["/gevelbekleding", "/plafondpanelen", "/dakranden", "/hpl-plaat", "/montage"];
+const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking"];
 
-test("categories sit under Producten and are not loose top links", () => {
+test("categories sit under Producten and kozijnen has its own menu", () => {
   const underProducts = productNav.map((item) => item.href);
-  for (const href of CATEGORY_HREFS) {
-    assert.equal(underProducts.includes(href), true, href);
+  assert.deepEqual(underProducts, PRODUCT_HREFS);
+  for (const href of KOZIJN_HREFS) {
+    assert.equal(underProducts.includes(href), false, href);
   }
+  assert.deepEqual(
+    kozijnNav.map((item) => item.href),
+    KOZIJN_HREFS,
+  );
+  assert.deepEqual(
+    kozijnNav.map((item) => item.label),
+    ["Kozijnen (overzicht)", "Kozijnafwerking"],
+  );
   const top = shopNav.map((item) => item.href);
-  for (const href of CATEGORY_HREFS) {
+  for (const href of [...PRODUCT_HREFS, ...KOZIJN_HREFS]) {
     assert.equal(top.includes(href), false, href);
   }
   assert.deepEqual(top, ["/merken", "/projecten", "/zakelijk"]);
@@ -32,6 +35,19 @@ test("categories sit under Producten and are not loose top links", () => {
   assert.equal(productNav[1]?.label, "Plafondpanelen");
   assert.equal(productNav[2]?.label, "Dakranden");
   assert.equal(productNav[3]?.label, "HPL platen");
+  assert.equal(productNav.at(-1)?.label, "Bevestiging");
+});
+
+test("the header puts Kozijnen beside Producten, with its own mobile group", () => {
+  const header = readFileSync(new URL("../src/components/site-header.tsx", import.meta.url), "utf8");
+  const producten = header.indexOf('label="Producten"');
+  const kozijnen = header.indexOf('label="Kozijnen"');
+  const merken = header.indexOf("{shopNav.map");
+  assert.ok(producten >= 0 && kozijnen > producten && merken > kozijnen);
+  const mobileProducts = header.indexOf('aria-controls="producten-mobiel"');
+  const mobileKozijnen = header.indexOf('aria-controls="kozijnen-mobiel"');
+  const mobileRest = header.lastIndexOf("{shopNav.map");
+  assert.ok(mobileProducts >= 0 && mobileKozijnen > mobileProducts && mobileRest > mobileKozijnen);
 });
 
 test("plafond panel group is labeled Plafondpanelen", () => {
