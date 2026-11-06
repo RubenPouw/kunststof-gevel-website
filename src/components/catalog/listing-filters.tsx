@@ -10,6 +10,7 @@ import {
   selectedBrands,
   selectedColorSlugs,
   selectedGroups,
+  selectedPlaces,
   selectedProfileTypes,
   toggleValue,
   type ListingFilterPatch,
@@ -103,13 +104,13 @@ export function ActiveFilterChips({
       patch: { ral: "" },
     });
   }
-  if (filters.ceilingPlace) {
-    const label = filters.ceilingPlace === "binnen" ? "Binnen" : "Buiten";
+  for (const place of selectedPlaces(filters)) {
+    const label = place === "binnen" ? "Binnen" : "Buiten";
     chips.push({
-      key: "plek",
+      key: `plek-${place}`,
       label,
-      href: listingHref(basePath, filters, { ceilingPlace: "" }, presentation),
-      patch: { ceilingPlace: "" },
+      href: listingHref(basePath, filters, { ceilingPlaces: toggleValue(selectedPlaces(filters), place) }, presentation),
+      patch: { ceilingPlaces: toggleValue(selectedPlaces(filters), place) },
     });
   }
   if (filters.workingWidthMm) {
@@ -134,7 +135,7 @@ export function ActiveFilterChips({
       colorSlugs: null,
       ral: "",
       workingWidthMm: undefined,
-      ceilingPlace: "",
+      ceilingPlaces: null,
     },
     presentation,
   );
@@ -182,11 +183,32 @@ export function ListingFiltersPanel({
   const groups = selectedGroups(filters);
   const types = selectedProfileTypes(filters);
   const colorSlugs = selectedColorSlugs(filters);
+  const places = selectedPlaces(filters);
   const showGroups = facets.groups.length > 1;
   const profileChoices = facets.profileTypes.filter((item) => item.slug !== "overig");
+  const showPlaces = basePath.split("?")[0] === "/plafondpanelen" && facets.places.some((item) => item.count > 0);
 
   return (
     <div className="mt-2">
+      {showPlaces ? (
+        <FilterSection title="Toepassing">
+          {facets.places.map((item) => {
+            const active = places.includes(item.slug);
+            const next = toggleValue(places, item.slug);
+            const label = item.slug === "binnen" ? "Binnen" : "Buiten";
+            return (
+              <FilterCheck
+                key={item.slug}
+                href={listingHref(basePath, filters, { ceilingPlaces: next }, presentation)}
+                active={active}
+                label={label}
+                count={item.count}
+                onClick={(event) => onFilter(event, { ceilingPlaces: next })}
+              />
+            );
+          })}
+        </FilterSection>
+      ) : null}
       {showStockChip ? (
         <FilterSection title="Voorraad">
           <FilterCheck

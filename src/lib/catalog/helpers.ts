@@ -26,7 +26,8 @@ export type ListingFilterPatch = {
   colorSlug?: string | "";
   colorSlugs?: string[] | null;
   ral?: string | "";
-  ceilingPlace?: CeilingPlace | "";
+  ceilingPlace?: CeilingPlace | "" | null;
+  ceilingPlaces?: CeilingPlace[] | null;
 };
 
 function splitCsv(value: string | undefined) {
@@ -80,6 +81,10 @@ export function selectedColorSlugs(filters: ListingFilters) {
   return filters.colorSlugs?.length ? filters.colorSlugs : filters.colorSlug ? [filters.colorSlug] : [];
 }
 
+export function selectedPlaces(filters: ListingFilters): CeilingPlace[] {
+  return filters.ceilingPlaces?.length ? filters.ceilingPlaces : filters.ceilingPlace ? [filters.ceilingPlace] : [];
+}
+
 export function toggleValue<T extends string>(current: readonly T[], value: T): T[] {
   return current.includes(value) ? current.filter((item) => item !== value) : [...current, value];
 }
@@ -93,6 +98,9 @@ export function mergeListingFilters(current: ListingFilters, patch: ListingFilte
     pickList<ProfileType>(patch, "profileTypes", "profileType", current.profileTypes, current.profileType),
   );
   const colors = assignList(pickList<string>(patch, "colorSlugs", "colorSlug", current.colorSlugs, current.colorSlug));
+  const places = assignList(
+    pickList<CeilingPlace>(patch, "ceilingPlaces", "ceilingPlace", current.ceilingPlaces, current.ceilingPlace),
+  );
   return {
     brandSlug: brands.one,
     brandSlugs: brands.many,
@@ -106,7 +114,8 @@ export function mergeListingFilters(current: ListingFilters, patch: ListingFilte
     colorSlug: colors.one,
     colorSlugs: colors.many,
     ral: "ral" in patch ? patch.ral || undefined : current.ral,
-    ceilingPlace: "ceilingPlace" in patch ? patch.ceilingPlace || undefined : current.ceilingPlace,
+    ceilingPlace: places.one,
+    ceilingPlaces: places.many,
   };
 }
 
@@ -184,7 +193,8 @@ export function applyListingFilters(list: Product[], filters: ListingFilters) {
     if (filters.ral && !product.colors.some((color) => color.ral?.replace(/\D/g, "") === filters.ral)) {
       return false;
     }
-    if (filters.ceilingPlace && ceilingPlaceOf(product) !== filters.ceilingPlace) return false;
+    const places = selectedPlaces(filters);
+    if (places.length && !places.includes(ceilingPlaceOf(product) as CeilingPlace)) return false;
     return true;
   });
 }
@@ -222,8 +232,10 @@ export function parseListingSearchParams(
   const colorFamily = colorFamilies.find((item) => item === kleurRaw);
   const workingWidthMm = breedteRaw && /^\d+$/.test(breedteRaw) ? Number(breedteRaw) : undefined;
   const ral = ralRaw && /^\d{4}$/.test(ralRaw) ? ralRaw : undefined;
-  const plek = firstParam(searchParams.plek);
-  const ceilingPlace = plek === "binnen" || plek === "buiten" ? plek : undefined;
+  const plekParts = splitCsv(firstParam(searchParams.plek)).filter(
+    (item): item is CeilingPlace => item === "binnen" || item === "buiten",
+  );
+  const places = assignList(plekParts);
 
   return {
     brandSlug: brands.one,
@@ -238,7 +250,8 @@ export function parseListingSearchParams(
     colorSlug: colors.one,
     colorSlugs: colors.many,
     ral,
-    ceilingPlace,
+    ceilingPlace: places.one,
+    ceilingPlaces: places.many,
   };
 }
 
@@ -252,7 +265,7 @@ export function hasActiveFilters(filters: ListingFilters) {
       filters.workingWidthMm ||
       selectedColorSlugs(filters).length ||
       filters.ral ||
-      filters.ceilingPlace,
+      selectedPlaces(filters).length,
   );
 }
 
@@ -280,7 +293,7 @@ export function listingHref(
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
   writeList(params, "kleurnaam", selectedColorSlugs(next));
   if (next.ral) params.set("ral", next.ral);
-  if (next.ceilingPlace) params.set("plek", next.ceilingPlace);
+  writeList(params, "plek", selectedPlaces(next));
   if (presentation?.view === "raster") params.set("weergave", "raster");
   if (presentation?.sort && presentation.sort !== "relevantie") params.set("sorteer", presentation.sort);
   const query = params.toString();
@@ -294,8 +307,11 @@ export function listingFacets(list: Product[]) {
   const widths = new Map<number, number>();
   const sheetColors = new Map<string, { name: string; count: number; hex: string; family: ColorFamily }>();
   const rals = new Map<string, number>();
+  const places = new Map<CeilingPlace, number>();
 
   for (const product of list) {
+    const place = ceilingPlaceOf(product);
+    if (place) places.set(place, (places.get(place) ?? 0) + 1);
     types.set(product.profileType, (types.get(product.profileType) ?? 0) + 1);
     if (product.productGroup) groups.set(product.productGroup, (groups.get(product.productGroup) ?? 0) + 1);
     if (product.workingWidthMm) {
@@ -328,6 +344,9 @@ export function listingFacets(list: Product[]) {
   }
 
   return {
+    places: (["binnen", "buiten"] as const)
+      .map((slug) => ({ slug, count: places.get(slug) ?? 0 }))
+      .filter((item) => item.count > 0),
     profileTypes: [...types.entries()]
       .map(([slug, count]) => ({ slug, count }))
       .sort((a, b) => b.count - a.count),

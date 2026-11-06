@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { ceilingPlaceOf } from "../src/lib/catalog/ceiling.ts";
-import { applyListingFilters, listingHref, parseListingSearchParams } from "../src/lib/catalog/helpers.ts";
+import { applyListingFilters, listingFacets, listingHref, parseListingSearchParams } from "../src/lib/catalog/helpers.ts";
+import { prepareListing } from "../src/lib/catalog/listing.ts";
 import { listingRewriteTarget } from "../src/lib/catalog/paths.ts";
 import { labelForProductGroup, type Product } from "../src/lib/catalog/types.ts";
 import { productNav, shopNav } from "../src/lib/site.ts";
@@ -114,4 +115,28 @@ test("plek filters the ceiling list and round-trips in the url", () => {
   assert.equal(path, "/weergave/categorie/plafondpanelen/p/1/plek/buiten");
   assert.equal(parseListingSearchParams({ plek: "buiten" }).ceilingPlace, "buiten");
   assert.equal(parseListingSearchParams({ plek: "ergens" }).ceilingPlace, undefined);
+});
+
+test("Toepassing counts stay visible and other facets follow the chosen place", () => {
+  const binnenPaneel = ceilingProduct("florence-binnenplafond-paneel-250x10mm", "Florence binnenplafond paneel", {
+    productGroup: "gevelpaneel",
+  });
+  const binnenProfiel = ceilingProduct("florence-omrandingprofiel-10mm-2-delig", "Florence omrandingprofiel 10mm", {
+    productGroup: "afwerkprofiel",
+  });
+  const buiten = ceilingProduct("florence-buitenplafond-paneel-250x16-5-mm", "Florence buitenplafond paneel", {
+    productGroup: "gevelpaneel",
+  });
+  const view = prepareListing([binnenPaneel, binnenProfiel, buiten], { ceilingPlace: "binnen" }, 1, 10);
+  assert.deepEqual(view.facets.places, [
+    { slug: "binnen", count: 2 },
+    { slug: "buiten", count: 1 },
+  ]);
+  assert.deepEqual(
+    view.facets.groups.map((item) => item.slug),
+    ["gevelpaneel", "afwerkprofiel"],
+  );
+  assert.equal(view.facets.groups.find((item) => item.slug === "gevelpaneel")?.count, 1);
+  assert.equal(view.facets.groups.find((item) => item.slug === "afwerkprofiel")?.count, 1);
+  assert.equal(listingFacets([buiten]).places[0]?.slug, "buiten");
 });

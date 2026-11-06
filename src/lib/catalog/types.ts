@@ -209,6 +209,8 @@ export type ListingFilters = {
   colorSlugs?: string[];
   /** RAL digits, for example 7016. */
   ral?: string;
-  /** Ceiling listing only. `plek` in the query. */
+  /** One place. A single `plek` value stays this field. */
   ceilingPlace?: "binnen" | "buiten";
+  /** Two places. Same `plek` param, comma-separated. */
+  ceilingPlaces?: ("binnen" | "buiten")[];
 };

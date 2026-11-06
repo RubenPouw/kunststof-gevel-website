@@ -196,11 +196,19 @@ export function prepareListing(
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize) || 1);
   const safePage = Math.min(Math.max(1, page || 1), pages);
   const start = (safePage - 1) * pageSize;
+  const placed = applyListingFilters(all, {
+    ceilingPlace: filters.ceilingPlace,
+    ceilingPlaces: filters.ceilingPlaces,
+  });
+  const facets = listingFacets(placed);
+  facets.places = listingFacets(
+    applyListingFilters(all, { ...filters, ceilingPlace: undefined, ceilingPlaces: undefined }),
+  ).places;
   return {
     cards: filtered.slice(start, start + pageSize).map(toListingCard),
     total: filtered.length,
     totalUnfiltered: all.length,
-    facets: listingFacets(all),
+    facets,
     page: safePage,
     pages,
     pageSize,
