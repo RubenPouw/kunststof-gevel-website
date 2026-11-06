@@ -377,6 +377,7 @@ export function mapShopifyProduct(
     length,
     images,
     productType: product.productType || undefined,
+    tags: product.tags,
     source: "shopify",
     profileType,
     sampleable: false,

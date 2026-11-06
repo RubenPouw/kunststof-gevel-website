@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { BrandRow } from "@/components/catalog/brand-row";
+import { CeilingPlaceToggle } from "@/components/catalog/ceiling-toggle";
 import { ListingCard } from "@/components/catalog/listing-card";
 import { ActiveFilterChips, ListingFiltersPanel } from "@/components/catalog/listing-filters";
 import { ListingRow } from "@/components/catalog/listing-row";
@@ -177,6 +178,19 @@ export function ProductListing({
     facets.rals.length > 1 ||
     facets.widths.length > 1;
 
+  const showCeiling = basePath.split("?")[0] === "/plafondpanelen";
+  function ceilingToggle() {
+    if (!showCeiling) return null;
+    return (
+      <CeilingPlaceToggle
+        filters={filters}
+        basePath={basePath}
+        presentation={presentation}
+        onFilter={onFilter}
+      />
+    );
+  }
+
   const filterPanel = showFilters ? (
     <ListingFiltersPanel
       facets={facets}
@@ -199,9 +213,10 @@ export function ProductListing({
         onFilter={onFilter}
       />
       <div className="mt-8 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
-        <aside className="hidden h-fit lg:sticky lg:top-[128px] lg:block">
+        <aside className={cn("h-fit lg:sticky lg:top-[128px]", !showCeiling && "hidden lg:block")}>
+          {ceilingToggle()}
           {showFilters ? (
-            <div className="kg-soft-card p-5">
+            <div className={cn("kg-soft-card hidden p-5 lg:block", showCeiling && "mt-4")}>
               <p className="font-mono text-[13px] text-kg-navy">Filters</p>
               {filterPanel}
             </div>
@@ -319,6 +334,7 @@ export function ProductListing({
               </button>
             </div>
             <div className="min-h-0 flex-1 overflow-auto px-4 py-4">
+              {showCeiling ? <div className="mb-4">{ceilingToggle()}</div> : null}
               <div className="kg-soft-card p-5">{filterPanel}</div>
             </div>
             <div className="border-t border-kg-lijn bg-white p-4">

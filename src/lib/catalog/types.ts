@@ -35,6 +35,12 @@ export const productGroupLabels: Record<ProductGroup, string> = {
   toebehoren: "Toebehoren",
 };
 
+/** On the ceiling listing the panel group is not a gevel. */
+export function labelForProductGroup(group: ProductGroup, basePath?: string) {
+  if (basePath === "/plafondpanelen" && group === "gevelpaneel") return "Plafondpanelen";
+  return productGroupLabels[group];
+}
+
 export const colorFamilies = [
   "donker",
   "licht",
@@ -155,6 +161,8 @@ export type Product = {
   images: ProductImage[];
   productType?: string;
   source?: "static" | "shopify";
+  /** Shopify tags, when the catalog row came from the Storefront API. */
+  tags?: string[];
   workingWidthMm?: number;
   /** Front-end group for the product-type filter and the default sort. */
   productGroup?: ProductGroup;
@@ -201,4 +209,6 @@ export type ListingFilters = {
   colorSlugs?: string[];
   /** RAL digits, for example 7016. */
   ral?: string;
+  /** Ceiling listing only. `plek` in the query. */
+  ceilingPlace?: "binnen" | "buiten";
 };

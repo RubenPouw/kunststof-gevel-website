@@ -18,7 +18,7 @@ import type { ListingFacets, ListingPresentation } from "@/lib/catalog/listing";
 import {
   colorFamilies,
   colorFamilyLabels,
-  productGroupLabels,
+  labelForProductGroup,
   profileTypeLabels,
   type Brand,
   type ColorFamily,
@@ -65,7 +65,7 @@ export function ActiveFilterChips({
   for (const slug of selectedGroups(filters)) {
     chips.push({
       key: `groep-${slug}`,
-      label: productGroupLabels[slug],
+      label: labelForProductGroup(slug, basePath),
       href: listingHref(basePath, filters, { productGroups: toggleValue(selectedGroups(filters), slug) }, presentation),
       patch: { productGroups: toggleValue(selectedGroups(filters), slug) },
     });
@@ -103,6 +103,15 @@ export function ActiveFilterChips({
       patch: { ral: "" },
     });
   }
+  if (filters.ceilingPlace) {
+    const label = filters.ceilingPlace === "binnen" ? "Binnen" : "Buiten";
+    chips.push({
+      key: "plek",
+      label,
+      href: listingHref(basePath, filters, { ceilingPlace: "" }, presentation),
+      patch: { ceilingPlace: "" },
+    });
+  }
   if (filters.workingWidthMm) {
     chips.push({
       key: `breedte-${filters.workingWidthMm}`,
@@ -125,6 +134,7 @@ export function ActiveFilterChips({
       colorSlugs: null,
       ral: "",
       workingWidthMm: undefined,
+      ceilingPlace: "",
     },
     presentation,
   );
@@ -197,7 +207,7 @@ export function ListingFiltersPanel({
                 key={item.slug}
                 href={listingHref(basePath, filters, { productGroups: next }, presentation)}
                 active={active}
-                label={productGroupLabels[item.slug]}
+                label={labelForProductGroup(item.slug, basePath)}
                 count={item.count}
                 onClick={(event) => onFilter(event, { productGroups: next })}
               />

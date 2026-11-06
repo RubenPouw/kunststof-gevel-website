@@ -1,3 +1,4 @@
+import { ceilingPlaceOf, type CeilingPlace } from "./ceiling";
 import { colourCodeIn, colourSearchTokens, labelColour, supplierColourName } from "./colours";
 import type { ListingPresentation, ListingSort, ListingView } from "./listing";
 import { slugKey } from "./derive";
@@ -25,6 +26,7 @@ export type ListingFilterPatch = {
   colorSlug?: string | "";
   colorSlugs?: string[] | null;
   ral?: string | "";
+  ceilingPlace?: CeilingPlace | "";
 };
 
 function splitCsv(value: string | undefined) {
@@ -104,6 +106,7 @@ export function mergeListingFilters(current: ListingFilters, patch: ListingFilte
     colorSlug: colors.one,
     colorSlugs: colors.many,
     ral: "ral" in patch ? patch.ral || undefined : current.ral,
+    ceilingPlace: "ceilingPlace" in patch ? patch.ceilingPlace || undefined : current.ceilingPlace,
   };
 }
 
@@ -181,6 +184,7 @@ export function applyListingFilters(list: Product[], filters: ListingFilters) {
     if (filters.ral && !product.colors.some((color) => color.ral?.replace(/\D/g, "") === filters.ral)) {
       return false;
     }
+    if (filters.ceilingPlace && ceilingPlaceOf(product) !== filters.ceilingPlace) return false;
     return true;
   });
 }
@@ -218,6 +222,8 @@ export function parseListingSearchParams(
   const colorFamily = colorFamilies.find((item) => item === kleurRaw);
   const workingWidthMm = breedteRaw && /^\d+$/.test(breedteRaw) ? Number(breedteRaw) : undefined;
   const ral = ralRaw && /^\d{4}$/.test(ralRaw) ? ralRaw : undefined;
+  const plek = firstParam(searchParams.plek);
+  const ceilingPlace = plek === "binnen" || plek === "buiten" ? plek : undefined;
 
   return {
     brandSlug: brands.one,
@@ -232,6 +238,7 @@ export function parseListingSearchParams(
     colorSlug: colors.one,
     colorSlugs: colors.many,
     ral,
+    ceilingPlace,
   };
 }
 
@@ -244,7 +251,8 @@ export function hasActiveFilters(filters: ListingFilters) {
       filters.colorFamily ||
       filters.workingWidthMm ||
       selectedColorSlugs(filters).length ||
-      filters.ral,
+      filters.ral ||
+      filters.ceilingPlace,
   );
 }
 
@@ -261,7 +269,7 @@ export function listingHref(
   const [path, existing] = basePath.split("?");
   const params = new URLSearchParams(existing);
   const next = mergeListingFilters(current, patch);
-  ["merk", "voorraad", "type", "groep", "kleur", "breedte", "kleurnaam", "ral", "weergave", "sorteer", "pagina"].forEach(
+  ["merk", "voorraad", "type", "groep", "kleur", "breedte", "kleurnaam", "ral", "plek", "weergave", "sorteer", "pagina"].forEach(
     (key) => params.delete(key),
   );
   writeList(params, "merk", selectedBrands(next));
@@ -272,6 +280,7 @@ export function listingHref(
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
   writeList(params, "kleurnaam", selectedColorSlugs(next));
   if (next.ral) params.set("ral", next.ral);
+  if (next.ceilingPlace) params.set("plek", next.ceilingPlace);
   if (presentation?.view === "raster") params.set("weergave", "raster");
   if (presentation?.sort && presentation.sort !== "relevantie") params.set("sorteer", presentation.sort);
   const query = params.toString();

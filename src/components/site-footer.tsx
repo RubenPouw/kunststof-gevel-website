@@ -14,7 +14,7 @@ export function SiteFooter() {
       <div className="h-1.5" style={{ background: "var(--gradient-signal)" }} />
       <div className="container-kg grid gap-10 py-14 lg:grid-cols-[5fr_2fr_2fr_3fr] lg:gap-5">
         <div>
-          <Logo size={20} tone="dark" href="/" />
+          <Logo size={20} tone="dark" lockup href="/" />
           <p className="mt-4 max-w-sm text-[15px] text-kg-grind">
             Nooit meer schilderen. Vervang hout door kunststof.
           </p>
