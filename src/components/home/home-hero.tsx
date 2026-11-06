@@ -1,9 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Bevel } from "@/components/brand/section-head";
 import { buttonVariants } from "@/components/ui/button";
 import { hero } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+const HERO_PHOTO = {
+  src: "/home/vinyplus-rondkant-turners-eiken-shadow.webp",
+  alt: "Overstek en gevel in VinyPlus rondkantpaneel Turners eiken shadow, met downlight in het plafond",
+};
 
 export function HomeHero() {
   return (
@@ -26,16 +32,17 @@ export function HomeHero() {
             <span className="ml-2 font-mono text-[13px] text-kg-text-2">{hero.micro}</span>
           </div>
         </div>
-        <Bevel size={24} className="relative h-[240px] lg:h-[380px]" style={{ background: "#4a4f52" }}>
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(27,40,56,.15), rgba(27,40,56,.35)), repeating-linear-gradient(90deg, #3b3f42 0 8px, #4a4f52 8px 18px)",
-            }}
+        <Bevel size={24} className="relative h-[240px] bg-kg-navy lg:h-[380px]">
+          <Image
+            src={HERO_PHOTO.src}
+            alt={HERO_PHOTO.alt}
+            fill
+            priority
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            className="object-cover object-[center_40%]"
           />
-          <div className="absolute top-0 left-0 bg-kg-navy px-[18px] py-3.5 font-mono text-[13px] leading-[1.5] text-kg-kalk">
-            VinyPlus rondkant 150 mm · antraciet
+          <div className="absolute top-0 left-0 z-10 bg-kg-navy px-[18px] py-3.5 font-mono text-[13px] leading-[1.5] text-kg-kalk">
+            VinyPlus rondkant Turners eiken shadow
             <br />
             <span className="text-[22px] font-medium tracking-[-0.02em] sm:text-[26px]">
               levertijd in overleg
