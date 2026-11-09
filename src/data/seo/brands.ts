@@ -1,4 +1,5 @@
 import { categoryPath } from "@/data/seo/category-pages";
+import { ZIERER_MANUAL } from "@/lib/catalog/manuals";
 
 export type SeoSection = {
   heading: string;
@@ -187,6 +188,7 @@ export const brandStories: BrandStory[] = [
       },
     ],
     links: [
+      { href: ZIERER_MANUAL.href, label: `${ZIERER_MANUAL.label} (PDF)` },
       { href: "/offerte", label: "Offerte voor plint en gevel" },
       { href: "/gevelbekleding", label: "Naar gevelbekleding" },
     ],

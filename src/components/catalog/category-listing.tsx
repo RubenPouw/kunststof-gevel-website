@@ -9,6 +9,7 @@ import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/seo/schema";
+import { ZIERER_MANUAL } from "@/lib/catalog/manuals";
 import { categoryStaalGroup } from "@/lib/staal/tree";
 import type { ListingFilters } from "@/lib/catalog/types";
 
@@ -66,6 +67,10 @@ export async function CategoryListing({
           slug === "hpl-platen" ? (
             <p className="mt-4">
               <Link href="/hpl-plaat">Kleur en structuur</Link>
+            </p>
+          ) : slug === "montage" && (filters.brandSlug === "zierer" || filters.brandSlugs?.includes("zierer")) ? (
+            <p className="mt-4">
+              <Link href={ZIERER_MANUAL.href}>{ZIERER_MANUAL.label} (PDF)</Link>
             </p>
           ) : null
         }

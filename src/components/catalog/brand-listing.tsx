@@ -1,9 +1,12 @@
+import Link from "next/link";
+
 import { BrandHero } from "@/components/catalog/brand-hero";
 import { GuaranteeBand } from "@/components/catalog/guarantee-band";
 import { ProductListing } from "@/components/catalog/product-listing";
 import { SeoArticle } from "@/components/seo/article";
 import { getBrandStory } from "@/data/seo/brands";
 import { getBrand, getProductsByBrand } from "@/lib/catalog";
+import { ZIERER_MANUAL } from "@/lib/catalog/manuals";
 import { DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import type { ListingFilters } from "@/lib/catalog/types";
 import { site } from "@/lib/site";
@@ -29,6 +32,11 @@ export async function BrandListing({
     <div className="bg-kg-kalk pb-8">
       <BrandHero brand={brand} intro={story?.lead ?? brand.summary} />
       <div className="container-kg">
+        {slug === "zierer" ? (
+          <p className="mb-6 text-[15px]">
+            <Link href={ZIERER_MANUAL.href}>{ZIERER_MANUAL.label} (PDF)</Link>
+          </p>
+        ) : null}
         <ProductListing
           cards={view.cards}
           total={view.total}

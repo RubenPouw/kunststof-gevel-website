@@ -1,6 +1,7 @@
 import { cache } from "react";
 
 import { enrichProduct } from "@/lib/catalog/derive";
+import { withManuals } from "@/lib/catalog/manuals";
 import { findListedProduct } from "@/lib/catalog/dedupe";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
 import { isHiddenOnKunststofGevel } from "@/lib/catalog/visibility";
@@ -136,7 +137,7 @@ function withColourLabels(data: CatalogData): CatalogData {
   // Re-apply name mapping on stored rows so an old width, type or category does not stick.
   const products = data.products
     .filter((product) => !isHiddenOnKunststofGevel(product))
-    .map((product) => enrichProduct({ ...product, category: resolvePublicCategory(product) }));
+    .map((product) => withManuals(enrichProduct({ ...product, category: resolvePublicCategory(product) })));
   if (data.source === "static") return { ...data, products };
   return { ...data, products, brands: brandsFromProducts(products) };
 }
