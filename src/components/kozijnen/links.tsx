@@ -9,16 +9,17 @@ const LINKS = [
 
 export function KozijnLinks() {
   return (
-    <section className="border-t border-kg-lijn bg-kg-kalk">
+    <section className="bg-kg-navy">
+      <div className="h-2" style={{ background: "var(--gradient-signal)" }} />
       <div className="container-kg py-12">
-        <h2 className="text-[22px] font-bold tracking-[-0.03em]">Kozijn en gevel samen</h2>
-        <p className="mt-3 max-w-2xl text-[16px] leading-normal text-kg-text-2">
+        <h2 className="text-[22px] font-bold tracking-[-0.03em] text-kg-kalk">Kozijn en gevel samen</h2>
+        <p className="mt-3 max-w-2xl text-[16px] leading-normal text-kg-grind">
           Het kozijn staat niet los van de gevel. Leg een staal van de bekleding naast de kleur van het kader, en bestel de bank en de dakrand in dezelfde ronde.
         </p>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {LINKS.map((item) => (
             <li key={item.href}>
-              <Link href={item.href} className="block border border-kg-lijn bg-white p-4 no-underline hover:no-underline">
+              <Link href={item.href} className="kg-soft-card block p-4 no-underline hover:no-underline">
                 <span className="block font-medium text-kg-navy">{item.label}</span>
                 <span className="mt-1 block font-mono text-[13px] text-kg-text-2">{item.note}</span>
               </Link>
@@ -34,7 +35,7 @@ export function KozijnFaqs({ faqs }: { faqs: { q: string; a: string }[] }) {
   return (
     <dl className="grid gap-3">
       {faqs.map((faq) => (
-        <div key={faq.q} className="border border-kg-lijn bg-white p-4">
+        <div key={faq.q} className="kg-soft-card p-4 text-kg-navy">
           <dt className="font-medium">{faq.q}</dt>
           <dd className="mt-2 text-[15px] leading-normal text-kg-text-2">{faq.a}</dd>
         </div>

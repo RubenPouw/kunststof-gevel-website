@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { KozijnDrawing } from "@/components/kozijnen/drawing";
 import { KozijnFaqs, KozijnLinks } from "@/components/kozijnen/links";
+import { buttonVariants } from "@/components/ui/button";
 import { JsonLd } from "@/components/seo/json-ld";
 import { categoryPath, pageSeo } from "@/data/seo/category-pages";
 import { hubCopy } from "@/lib/kozijnen/content";
@@ -28,7 +29,8 @@ export default function KozijnenHubPage() {
         ])}
       />
       <JsonLd data={faqJsonLd(hubCopy.faqs)} />
-      <header className="container-kg pt-10 pb-6">
+      <header className="bg-white">
+        <div className="container-kg pt-10 pb-8">
         <p className="font-mono text-[13px] text-kg-text-2">
           <Link href="/" className="underline underline-offset-[3px]">
             Home
@@ -47,75 +49,94 @@ export default function KozijnenHubPage() {
         <p className="kicker mt-6">{PROFILE.name}</p>
         <h1 className="display-plp mt-2 max-w-3xl">{pageSeo.kozijnen.h1}</h1>
         <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-text-2">{hubCopy.lead}</p>
-        <div className="mt-6 max-w-2xl border border-kg-lijn bg-white p-5">
+        <div className="kg-soft-card mt-6 max-w-2xl p-5">
           <h2 className="text-[22px] font-bold tracking-[-0.03em]">Prijs</h2>
           <p className="mt-3 text-[16px] leading-normal text-kg-text-2">
             Op de site staat nog geen bedrag. U stelt het kozijn samen op buitenwerkse maat. De configurator eindigt in een vrijblijvende offerte.
           </p>
-          <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+          <p className="mt-4 flex flex-wrap gap-3">
             {GROUPS.map((group) => (
-              <Link key={group.id} href={group.href}>
+              <Link key={group.id} href={group.href} className={buttonVariants({ size: "sm" })}>
                 {group.title}
               </Link>
             ))}
           </p>
         </div>
+        </div>
       </header>
 
-      <section className="container-kg grid gap-3 md:grid-cols-3">
+      <div className="h-2" style={{ background: "var(--gradient-signal)" }} />
+
+      <section className="bg-kg-kalk">
+        <div className="container-kg grid gap-5 py-10 md:grid-cols-3">
         {GROUPS.map((group) => (
-          <Link key={group.id} href={group.href} className="border border-kg-lijn bg-white p-5 no-underline hover:no-underline">
+          <Link key={group.id} href={group.href} className="kg-soft-card flex flex-col p-6 no-underline hover:no-underline">
             <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">{group.title}</h2>
             <p className="mt-3 text-[15px] text-kg-text-2">{group.lead}</p>
-            <p className="mt-6 font-mono text-[13px]">Samenstellen</p>
+            <span className={buttonVariants({ size: "sm", className: "mt-6 w-fit" })}>Samenstellen</span>
           </Link>
         ))}
+        </div>
       </section>
-      <section className="container-kg grid gap-3 pt-3 pb-12 sm:grid-cols-2">
-        <Link href={categoryPath("kozijnafwerking")} className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
+      <section className="bg-kg-navy">
+        <div className="container-kg grid gap-5 py-10 sm:grid-cols-2">
+        <Link href={categoryPath("kozijnafwerking")} className="flex flex-col border-t-4 border-kg-signal bg-kg-navy-2 p-6 text-kg-kalk no-underline shadow-[0_8px_24px_rgb(0_0_0/0.18)] hover:no-underline">
           <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Kozijnafwerking</h2>
           <p className="mt-3 text-[15px] text-kg-grind">Aansluitprofielen en afwerking rond het kozijn.</p>
-          <p className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</p>
+          <span className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</span>
         </Link>
-        <Link href={categoryPath("vensterbanken")} className="flex flex-col border border-kg-navy bg-kg-navy p-5 text-kg-kalk no-underline hover:no-underline">
+        <Link href={categoryPath("vensterbanken")} className="flex flex-col border-t-4 border-kg-signal bg-kg-navy-2 p-6 text-kg-kalk no-underline shadow-[0_8px_24px_rgb(0_0_0/0.18)] hover:no-underline">
           <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Vensterbanken</h2>
           <p className="mt-3 text-[15px] text-kg-grind">De bank zelf, daarna eindkappen en bevestiging, per merk.</p>
-          <p className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</p>
+          <span className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</span>
         </Link>
+        </div>
       </section>
 
-      <section className="container-kg pb-14">
-        <h2 className="text-[22px] font-bold tracking-[-0.03em]">Indelingen</h2>
-        <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="bg-white">
+        <div className="container-kg py-14">
+        <p className="font-mono text-[13px] text-kg-text-2">Kies een indeling</p>
+        <h2 className="mt-2 text-[28px] font-bold tracking-[-0.03em]">Indelingen</h2>
+        <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {allLayouts().map((layout) => (
             <li key={layout.slug}>
-              <Link href={layoutPath(layout)} className="block border border-kg-lijn bg-kg-kalk p-4 no-underline hover:no-underline">
-                <KozijnDrawing layout={layout} config={defaultConfig(layout)} caption={false} />
-                <p className="mt-3 font-medium text-kg-navy">{layout.title}</p>
-                <p className="mt-1 text-[14px] text-kg-text-2">{layout.summary}</p>
+              <Link href={layoutPath(layout)} className="kg-soft-card flex h-full flex-col overflow-hidden no-underline hover:no-underline">
+                <span className="flex h-44 items-center justify-center border-b border-kg-lijn bg-white px-4">
+                  <KozijnDrawing layout={layout} config={defaultConfig(layout)} caption={false} fit plain />
+                </span>
+                <span className="flex flex-1 flex-col p-4">
+                  <span className="font-medium text-kg-navy">{layout.title}</span>
+                  <span className="mt-1 text-[14px] text-kg-text-2">{layout.summary}</span>
+                  <span className={buttonVariants({ size: "sm", className: "mt-4 w-fit" })}>Samenstellen</span>
+                </span>
               </Link>
             </li>
           ))}
         </ul>
+        </div>
       </section>
 
-      <section className="container-kg grid gap-10 border-t border-kg-lijn py-14 lg:grid-cols-[minmax(0,40rem)_minmax(0,22rem)]">
+      <div className="h-2" style={{ background: "var(--gradient-signal)" }} />
+
+      <section className="bg-kg-navy text-kg-kalk">
+        <div className="container-kg grid gap-10 py-14 lg:grid-cols-[minmax(0,40rem)_minmax(0,22rem)]">
         <div className="space-y-8">
           {hubCopy.sections.map((section) => (
             <div key={section.heading}>
               <h2 className="text-[22px] font-bold tracking-[-0.03em]">{section.heading}</h2>
               {section.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="mt-3 text-[16px] leading-normal text-kg-text-2">
+                <p key={paragraph} className="mt-3 text-[16px] leading-normal text-kg-grind">
                   {paragraph}
                 </p>
               ))}
             </div>
           ))}
           <p>
-            <Link href="/kunststof-kozijnen/kennisbank">Kennisbank kozijnen</Link>
+            <Link href="/kunststof-kozijnen/kennisbank" className="text-kg-signal">Kennisbank kozijnen</Link>
           </p>
         </div>
         <KozijnFaqs faqs={hubCopy.faqs} />
+        </div>
       </section>
       <KozijnLinks />
     </>

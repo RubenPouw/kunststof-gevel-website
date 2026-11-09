@@ -43,12 +43,12 @@ export function drawnPanes(layout: Layout, config: KozijnConfig): DrawnPane[] {
   });
 }
 
-export function drawingBox(config: KozijnConfig) {
+export function drawingBox(config: KozijnConfig, plain = false) {
   const font = Math.max(22, config.width * 0.05);
-  const padL = font * 4.4;
-  const padR = font * 3.8;
-  const padT = font * 3.6;
-  const padB = font * 3.8;
+  const padL = plain ? font * 0.55 : font * 4.4;
+  const padR = plain ? font * 0.55 : font * 3.8;
+  const padT = plain ? font * 0.45 : font * 3.6;
+  const padB = plain ? font * 0.45 : font * 3.8;
   return {
     font,
     padL,
@@ -60,8 +60,8 @@ export function drawingBox(config: KozijnConfig) {
   };
 }
 
-export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix = "w") {
-  const box = drawingBox(config);
+export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix = "w", plain = false) {
+  const box = drawingBox(config, plain);
   const panes = drawnPanes(layout, config);
   const faceKnown = frameFaceMm(layout.slug);
   const face = faceKnown ?? Math.max(36, Math.round(Math.min(config.width, config.height) * 0.04));
@@ -130,31 +130,33 @@ export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix =
 
   parts.push(corners(ox, oy, W, H, face, config.corner === "hvl", ink, thin));
 
-  const label = (value: number) => String(Math.round(value));
-  parts.push(
-    hDim(ox, ox + W, oy + H + box.font * 1.7, label(W), box.font, thin, ink, oy + H, oy + H + box.font * 2),
-  );
-  parts.push(vDim(box.font * 1.15, oy, oy + H, label(H), box.font, thin, ink, ox, box.font * 0.4));
-  panes.forEach((pane) => {
+  if (!plain) {
+    const label = (value: number) => String(Math.round(value));
     parts.push(
-      hDim(
-        ox + pane.x,
-        ox + pane.x + pane.width,
-        oy - box.font * 1.55,
-        label(pane.width),
-        box.font,
-        thin,
-        ink,
-        oy,
-        oy - box.font * 1.9,
-      ),
+      hDim(ox, ox + W, oy + H + box.font * 1.7, label(W), box.font, thin, ink, oy + H, oy + H + box.font * 2),
     );
-  });
-  parts.push(vDim(ox + W + box.font * 1.7, oy, oy + H, label(H), box.font, thin, ink, ox + W, ox + W + box.font * 2.1));
-  if (faceKnown != null) {
-    parts.push(
-      hDim(ox, ox + faceKnown, oy + H + box.font * 3.05, label(faceKnown), box.font * 0.82, thin, ink, oy + H, oy + H + box.font * 3.2),
-    );
+    parts.push(vDim(box.font * 1.15, oy, oy + H, label(H), box.font, thin, ink, ox, box.font * 0.4));
+    panes.forEach((pane) => {
+      parts.push(
+        hDim(
+          ox + pane.x,
+          ox + pane.x + pane.width,
+          oy - box.font * 1.55,
+          label(pane.width),
+          box.font,
+          thin,
+          ink,
+          oy,
+          oy - box.font * 1.9,
+        ),
+      );
+    });
+    parts.push(vDim(ox + W + box.font * 1.7, oy, oy + H, label(H), box.font, thin, ink, ox + W, ox + W + box.font * 2.1));
+    if (faceKnown != null) {
+      parts.push(
+        hDim(ox, ox + faceKnown, oy + H + box.font * 3.05, label(faceKnown), box.font * 0.82, thin, ink, oy + H, oy + H + box.font * 3.2),
+      );
+    }
   }
 
   parts.push(`</svg>`);
