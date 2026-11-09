@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { StaalPicker } from "@/components/staal/picker";
 import { getCatalog } from "@/lib/catalog";
+import { applyFillout } from "@/lib/staal/fillout";
 import { buildStaalTree } from "@/lib/staal/tree";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ type Props = {
 export default async function StaalaanvraagPage({ searchParams }: Props) {
   const params = await searchParams;
   const catalog = await getCatalog();
-  const tree = buildStaalTree(catalog.products);
+  const tree = applyFillout(buildStaalTree(catalog.products));
   return (
     <div className="container-kg py-8 sm:py-12">
       <StaalPicker tree={tree} groep={params.groep} product={params.product} />

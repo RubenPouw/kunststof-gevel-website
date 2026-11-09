@@ -1,5 +1,6 @@
-import { syncActiveCampaignContact } from "@/lib/activecampaign";
-import { sendLeadEmail } from "@/lib/mail";
+import { missingActiveCampaignEnv, syncActiveCampaignContact } from "@/lib/activecampaign";
+import { missingMailEnv, sendLeadEmail } from "@/lib/mail";
+import { buildDealflowPayload, missingDealflowEnv, postDealflow } from "@/lib/staal/dealflow";
 import {
   estimateRange,
   validateQuote,
@@ -16,7 +17,13 @@ import type { StaalTree } from "@/lib/staal/tree";
 import { site } from "@/lib/site";
 
 export type SampleLeadResult =
-  | { ok: true; reference: string }
+  | {
+      ok: true;
+      reference: string;
+      dryRun?: boolean;
+      dealflow?: ReturnType<typeof buildDealflowPayload>;
+      missing?: { mail: string[]; activecampaign: string[]; dealflow: string[] };
+    }
   | { ok: false; error: string };
 
 function splitName(name: string) {
@@ -32,10 +39,17 @@ function reference(prefix: "KG" | "ST") {
 }
 
 export function leadDeliveryError() {
-  return `De aanvraag is niet aangekomen. Bel ${site.phone} of WhatsApp ${site.mobileDisplay}, dan nemen we hem zelf op.`;
+  const missing = [...missingMailEnv(), ...missingActiveCampaignEnv()];
+  const reach = `Bel ${site.phone} of WhatsApp ${site.mobileDisplay}, dan nemen we hem zelf op.`;
+  if (!missing.length) return `De aanvraag is niet aangekomen. ${reach}`;
+  return `De aanvraag is niet aangekomen. Ontbrekend: ${missing.join(", ")}. ${reach}`;
 }
 
-export async function submitStaalAanvraag(input: StaalRequest, tree: StaalTree): Promise<SampleLeadResult> {
+export async function submitStaalAanvraag(
+  input: StaalRequest,
+  tree: StaalTree,
+  options?: { dryRun?: boolean },
+): Promise<SampleLeadResult> {
   const described = input.lines.map((line) => {
     const resolved = resolveStaalLine(tree, line);
     if ("error" in resolved) return line.path.join(" / ");
@@ -48,6 +62,34 @@ export async function submitStaalAanvraag(input: StaalRequest, tree: StaalTree):
   const note = `Staalaanvraag ${ref}. ${described.join("; ")}. ${input.postcode.trim()} ${input.houseNumber.trim()}. Prijsindicatie ${input.wantsQuote ? "ja" : "nee"}.`;
   console.info("[staalaanvraag]", { reference: ref, count: described.length });
 
+  const dealflow = buildDealflowPayload({
+    reference: ref,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    postcode: input.postcode,
+    houseNumber: input.houseNumber,
+    wantsQuote: input.wantsQuote,
+    dimensions: input.dimensions,
+    photoName: input.photoName,
+    lines: described,
+  });
+  if (options?.dryRun) {
+    return {
+      ok: true,
+      reference: ref,
+      dryRun: true,
+      dealflow,
+      missing: {
+        mail: missingMailEnv(),
+        activecampaign: missingActiveCampaignEnv(),
+        dealflow: missingDealflowEnv(),
+      },
+    };
+  }
+  const posted = await postDealflow(dealflow);
+  if (!posted.ok) return { ok: false, error: posted.error };
+
   const shopText = shopStaalText({
     reference: ref,
     lines: described,
@@ -57,6 +99,8 @@ export async function submitStaalAanvraag(input: StaalRequest, tree: StaalTree):
     postcode: input.postcode,
     houseNumber: input.houseNumber,
     wantsQuote: input.wantsQuote,
+    dimensions: input.dimensions,
+    photoName: input.photoName,
   });
   const customerText = customerStaalText({
     reference: ref,
@@ -66,6 +110,7 @@ export async function submitStaalAanvraag(input: StaalRequest, tree: StaalTree):
     postcode: input.postcode,
     houseNumber: input.houseNumber,
     wantsQuote: input.wantsQuote,
+    dimensions: input.dimensions,
   });
 
   const [email, customer, ac] = await Promise.all([

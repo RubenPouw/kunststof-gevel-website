@@ -19,7 +19,7 @@ export type LeadEmailResult =
 type Provider = "resend" | "mailersend" | "smtp";
 
 function providerName(value: string | undefined): Provider | "auto" | "invalid" {
-  const name = value?.trim().toLowerCase() || "auto";
+  const name = value?.trim().toLowerCase() || "smtp";
   if (name === "auto" || name === "resend" || name === "mailersend" || name === "smtp") return name;
   return "invalid";
 }
@@ -45,6 +45,14 @@ function smtpPort() {
   return Number.isFinite(port) && port > 0 ? port : 587;
 }
 
+/** SMTP_SECURE=true is implicit TLS (Gmail port 465). Unset follows the port: 465 on, otherwise STARTTLS. */
+export function smtpSecure() {
+  const raw = process.env.SMTP_SECURE?.trim().toLowerCase();
+  if (raw === "true" || raw === "1") return true;
+  if (raw === "false" || raw === "0") return false;
+  return smtpPort() === 465;
+}
+
 function providerReady(provider: Provider) {
   if (provider === "resend") return Boolean(process.env.RESEND_API_KEY?.trim());
   if (provider === "mailersend") return Boolean(process.env.MAILERSEND_API_KEY?.trim());
@@ -61,7 +69,22 @@ function detectProvider(): Provider | null {
   return null;
 }
 
-/** Resolved lead-mail settings. SMTP through Google Workspace is the default once SMTP_PASS is set. */
+/** Env names that still block sending. Empty when the chosen provider is ready. */
+export function missingMailEnv(): string[] {
+  const explicit = providerName(process.env.LEAD_EMAIL_PROVIDER);
+  if (explicit === "invalid") return ["LEAD_EMAIL_PROVIDER"];
+  if (explicit === "resend") return process.env.RESEND_API_KEY?.trim() ? [] : ["RESEND_API_KEY"];
+  if (explicit === "mailersend") return process.env.MAILERSEND_API_KEY?.trim() ? [] : ["MAILERSEND_API_KEY"];
+  if (explicit === "smtp") return process.env.SMTP_PASS?.trim() ? [] : ["SMTP_PASS"];
+  if (providerReady("smtp") || providerReady("resend") || providerReady("mailersend")) return [];
+  return ["SMTP_PASS"];
+}
+
+/**
+ * Gmail SMTP is the default. The names Render sets are SMTP_HOST, SMTP_PORT,
+ * SMTP_SECURE, SMTP_USER and SMTP_PASS. LEAD_EMAIL_FROM and LEAD_EMAIL_TO
+ * fall back to info@kunststof-gevel.nl when they are empty.
+ */
 export function leadMailPlan() {
   const provider = detectProvider();
   return {
@@ -70,6 +93,7 @@ export function leadMailPlan() {
     to: toAddress(),
     host: smtpHost(),
     port: smtpPort(),
+    secure: smtpSecure(),
     user: smtpUser(),
     ready: provider ? providerReady(provider) : false,
   };
@@ -156,19 +180,32 @@ function smtpCommand(socket: net.Socket | tls.TLSSocket, command: string) {
   });
 }
 
+function logSmtpFailure(host: string, port: number, secure: boolean, detail: string) {
+  console.error(
+    `[smtp] verzenden mislukt naar ${host}:${port} (SMTP_SECURE=${secure}). ${detail}. Render free kan uitgaande SMTP-poorten 465 en 587 blokkeren.`,
+  );
+}
+
 async function sendSmtp(message: LeadEmail, from: string, to: string): Promise<LeadEmailResult> {
   const host = smtpHost();
   const port = smtpPort();
   const user = smtpUser();
   const pass = process.env.SMTP_PASS?.trim() ?? "";
-  const secure = port === 465;
+  const secure = smtpSecure();
 
-  const socket = await new Promise<net.Socket | tls.TLSSocket>((resolve, reject) => {
-    const next = secure
-      ? tls.connect({ host, port, servername: host }, () => resolve(next))
-      : net.connect({ host, port }, () => resolve(next));
-    next.once("error", reject);
-  });
+  let socket: net.Socket | tls.TLSSocket;
+  try {
+    socket = await new Promise<net.Socket | tls.TLSSocket>((resolve, reject) => {
+      const next = secure
+        ? tls.connect({ host, port, servername: host }, () => resolve(next))
+        : net.connect({ host, port }, () => resolve(next));
+      next.once("error", reject);
+    });
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : "SMTP verbinding mislukt";
+    logSmtpFailure(host, port, secure, detail);
+    return { ok: false, error: detail.slice(0, 180) };
+  }
 
   try {
     await smtpCommand(socket, "");
@@ -207,6 +244,7 @@ async function sendSmtp(message: LeadEmail, from: string, to: string): Promise<L
   } catch (error) {
     socket.destroy();
     const detail = error instanceof Error ? error.message : "SMTP mislukt";
+    logSmtpFailure(host, port, secure, detail);
     return { ok: false, error: detail.slice(0, 180) };
   }
 }

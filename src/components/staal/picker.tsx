@@ -16,6 +16,7 @@ import {
 import {
   STAAL_BOTH_NOTE,
   STAAL_CONTACT_HINT,
+  STAAL_GROUP_QUESTION,
   STAAL_HEADING,
   STAAL_MULTI_NOTE,
   STAAL_PRICE_NO,
@@ -77,7 +78,9 @@ function Tray({
                       className="block size-8 border border-[var(--kg-line-dark)]"
                       style={{ background: item.hex || "#C5C1B8" }}
                       aria-label={`${colourOptionText(item.name)} verwijderen`}
-                    />
+                    >
+                      {item.image ? <img src={item.image} alt="" className="h-full w-full object-cover" /> : null}
+                    </button>
                   </li>
                 );
               })}
@@ -120,7 +123,9 @@ function Tray({
           }
           return (
             <li key={item.id} className="flex min-h-14 items-center gap-3 bg-kg-navy-2 px-3">
-              <span className="size-[30px] border border-[var(--kg-line-dark)]" style={{ background: item.hex || "#C5C1B8" }} />
+              <span className="size-[30px] overflow-hidden border border-[var(--kg-line-dark)]" style={{ background: item.hex || "#C5C1B8" }}>
+                {item.image ? <img src={item.image} alt="" className="h-full w-full object-cover" /> : null}
+              </span>
               <span className="min-w-0 flex-1">
                 <ColourName
                   value={item.code ? `${item.name} (${item.code})` : item.name}
@@ -173,6 +178,9 @@ export function StaalPicker({
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [honeypot, setHoneypot] = useState("");
+  const [dimensions, setDimensions] = useState("");
+  const [photoName, setPhotoName] = useState("");
+  const [photoDataUrl, setPhotoDataUrl] = useState("");
   const [done, setDone] = useState<string | null>(null);
   const bannerOpen = useSyncExternalStore(
     (onStoreChange) => {
@@ -227,6 +235,9 @@ export function StaalPicker({
           wantsQuote,
           ...contact,
           lines,
+          dimensions,
+          photoName,
+          photoDataUrl,
         }),
       });
       const body = (await response.json()) as { ok?: boolean; error?: string; reference?: string };
@@ -262,7 +273,7 @@ export function StaalPicker({
           }}
           className={cn(buttonVariants({ variant: "primary" }), "mt-8")}
         >
-          Klik hier voor nog een staal aanvraag
+          Nog een aanvraag
         </button>
       </div>
     );
@@ -274,6 +285,7 @@ export function StaalPicker({
         <div>
           <SectionHead title="Kies je kleur" aside="Gratis · maximaal 4 stalen" />
           <h1 className="sr-only">{STAAL_HEADING}</h1>
+          <p className="mb-2 max-w-[560px] text-kg-text-2">{STAAL_GROUP_QUESTION}</p>
           <p className="mb-2 max-w-[560px] text-kg-text-2">{STAAL_MULTI_NOTE}</p>
           <p className="mb-6 max-w-[560px] text-kg-text-2">{STAAL_BOTH_NOTE}</p>
           <div className="grid gap-8">
@@ -309,6 +321,9 @@ export function StaalPicker({
                               )}
                               style={{ background: swatch.hex || "#C5C1B8" }}
                             >
+                              {swatch.image ? (
+                                <img src={swatch.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                              ) : null}
                               {selected ? (
                                 <span className="absolute top-1.5 right-1.5 bg-kg-navy px-1.5 py-0.5 font-mono text-[11px] text-kg-signal">
                                   {String(pos + 1).padStart(2, "0")}
@@ -367,7 +382,8 @@ export function StaalPicker({
             </label>
           </div>
           <fieldset className="mt-6">
-            <legend className="text-[18px] leading-snug font-medium">{STAAL_PRICE_QUESTION}</legend>
+            <legend className="text-[18px] leading-snug font-medium">Eventueel offerte?</legend>
+            <p className="mt-2 text-[15px]">{STAAL_PRICE_QUESTION}</p>
             <div className="mt-4 grid gap-3">
               {(
                 [
@@ -388,6 +404,48 @@ export function StaalPicker({
               ))}
             </div>
           </fieldset>
+          <label className="mt-6 grid gap-1 text-[15px]" htmlFor="staal-afmetingen">
+            <span>Afmetingen / m²</span>
+            <textarea
+              id="staal-afmetingen"
+              name="dimensions"
+              rows={3}
+              value={dimensions}
+              onChange={(event) => setDimensions(event.target.value)}
+              className="border border-kg-lijn bg-white px-3 py-2"
+            />
+          </label>
+          <label className="mt-4 grid gap-1 text-[15px]" htmlFor="staal-foto">
+            <span>Foto (optioneel)</span>
+            <input
+              id="staal-foto"
+              name="photo"
+              type="file"
+              accept="image/*"
+              className="border border-kg-lijn bg-white px-3 py-2"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (!file) {
+                  setPhotoName("");
+                  setPhotoDataUrl("");
+                  return;
+                }
+                if (file.size > 1_500_000) {
+                  setPhotoName("");
+                  setPhotoDataUrl("");
+                  setError("De foto is te groot. Kies een foto tot 1,5 MB.");
+                  return;
+                }
+                setError("");
+                const reader = new FileReader();
+                reader.onload = () => {
+                  setPhotoName(file.name);
+                  setPhotoDataUrl(typeof reader.result === "string" ? reader.result : "");
+                };
+                reader.readAsDataURL(file);
+              }}
+            />
+          </label>
           <div className="mt-6 grid gap-4">
             {(
               [
@@ -426,9 +484,14 @@ export function StaalPicker({
               {error}
             </p>
           ) : null}
-          <button type="submit" disabled={submitting} className={cn(buttonVariants({ variant: "primary" }), "mt-6")}>
-            {submitting ? "Versturen" : "Stalen aanvragen"}
-          </button>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button type="submit" disabled={submitting} className={buttonVariants({ variant: "primary" })}>
+              {submitting ? "Versturen" : "Stalen aanvragen"}
+            </button>
+            <button type="button" className={buttonVariants({ variant: "secondary" })} onClick={() => setFormOpen(false)}>
+              Bijbestellen
+            </button>
+          </div>
           <p className="mt-3 text-[13px] text-kg-text-2">Binnen een dag verstuurd. Geen verplichting.</p>
         </form>
       ) : null}

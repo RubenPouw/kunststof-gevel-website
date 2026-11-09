@@ -14,6 +14,9 @@ export type StaalRequest = {
   postcode: string;
   houseNumber: string;
   lines: StaalLine[];
+  dimensions: string;
+  photoName: string;
+  photoDataUrl: string;
 };
 
 export type StaalContactKey = "name" | "email" | "phone" | "postcode" | "houseNumber";
@@ -79,6 +82,8 @@ export function validateStaalRequest(input: StaalRequest, tree: StaalTree): stri
   const first = Object.values(contact)[0];
   if (first) return first;
   if (typeof input.wantsQuote !== "boolean") return "Kies of u een prijsindicatie wilt.";
+  if ((input.dimensions ?? "").trim().length > 400) return "De afmetingen zijn te lang.";
+  if ((input.photoDataUrl ?? "").length > 2_000_000) return "De foto is te groot.";
   if (!input.lines.length) return "Kies een product uit de catalogus.";
   if (input.lines.length > 8) return "U kunt maximaal 8 stalen in één aanvraag zetten.";
   for (const line of input.lines) {
@@ -113,5 +118,8 @@ export function parseStaalRequest(body: unknown): StaalRequest | null {
     postcode: text(raw.postcode),
     houseNumber: text(raw.houseNumber),
     lines,
+    dimensions: text(raw.dimensions),
+    photoName: text(raw.photoName).slice(0, 180),
+    photoDataUrl: text(raw.photoDataUrl),
   };
 }

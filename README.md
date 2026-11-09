@@ -111,7 +111,8 @@ LEAD_EMAIL_PROVIDER=smtp
 RESEND_API_KEY=
 MAILERSEND_API_KEY=
 SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
+SMTP_PORT=465
+SMTP_SECURE=true
 SMTP_USER=info@kunststof-gevel.nl
 SMTP_PASS=
 SHOPIFY_ADMIN_ACCESS_TOKEN=
@@ -120,9 +121,9 @@ NOINDEX=
 
 `ACTIVECAMPAIGN_API_URL` is het accountadres zonder `/api/3`. `ACTIVECAMPAIGN_LIST_ID` is het numerieke lijst-id; leeg laten mag. De API-key komt uit ActiveCampaign → Settings → Developer. Zet de drie keys op Render met sync vanuit het dashboard (`render.yaml` declareert ze als `sync: false`). Commit de waarden niet.
 
-Offerte- en staalmail gaat via Google Workspace. `SMTP_HOST` is `smtp.gmail.com`, poort `587` (STARTTLS) of `465` (TLS). Afzender en ontvanger zijn allebei `info@kunststof-gevel.nl`. `SMTP_PASS` is een Google-appwachtwoord en blijft `sync: false`. Zonder dat wachtwoord én zonder ActiveCampaign toont het formulier een fout. `RESEND_API_KEY` en `MAILERSEND_API_KEY` zijn alleen nodig als `LEAD_EMAIL_PROVIDER` op `resend` of `mailersend` staat.
+Offerte- en staalmail gaat via Gmail SMTP. Een lege `LEAD_EMAIL_PROVIDER` is `smtp`. De namen op Render zijn `SMTP_HOST` (`smtp.gmail.com`), `SMTP_PORT` (`465`), `SMTP_SECURE` (`true` is SSL, `false` is STARTTLS), `SMTP_USER` en `SMTP_PASS` (Google-appwachtwoord, `sync: false`). `LEAD_EMAIL_FROM` en `LEAD_EMAIL_TO` zijn niet verplicht: leeg betekent allebei `info@kunststof-gevel.nl`. Zonder `SMTP_PASS` én zonder ActiveCampaign toont het formulier een fout die `SMTP_PASS` noemt. Een mislukte SMTP-verbinding schrijft een logregel met host, poort en de kans dat Render free poort 465 of 587 blokkeert. `RESEND_API_KEY` en `MAILERSEND_API_KEY` zijn alleen nodig als `LEAD_EMAIL_PROVIDER` op `resend` of `mailersend` staat.
 
-`/staalaanvraag` gebruikt dezelfde variabelen. De winkelmail gaat naar `LEAD_EMAIL_TO` en de klant krijgt een bevestiging op het adres uit het formulier. ActiveCampaign krijgt het contact plus de tags Staalaanvraag, de productgroep en Prijsindicatie. Zonder `ACTIVECAMPAIGN_API_URL` en `ACTIVECAMPAIGN_API_KEY` slaat de site dat over. Er zijn geen extra env vars voor dit formulier.
+`/staalaanvraag` gebruikt dezelfde variabelen. De winkelmail gaat naar `info@kunststof-gevel.nl`. De bevestiging naar de klant gaat ook vanaf dat adres, naar het e-mailadres uit het formulier. ActiveCampaign krijgt het contact plus de tags Staalaanvraag, de productgroep en Prijsindicatie. Zonder `ACTIVECAMPAIGN_API_URL` en `ACTIVECAMPAIGN_API_KEY` slaat de site dat over. Er zijn geen extra env vars voor dit formulier.
 
 Meting naar GA4 en Google Ads staat uit tot `TRACKING_GA4_ACTIEF` of `TRACKING_ADS_ACTIEF` op `true` staat. De browser laadt daar geen extern script voor. Namen, parameters en de webhook staan in `docs/tracking.md`.
 
