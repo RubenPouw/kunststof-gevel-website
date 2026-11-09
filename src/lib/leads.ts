@@ -11,7 +11,7 @@ import {
   validateSampleRequest,
   type SampleRequestInput,
 } from "@/lib/sample-request";
-import { customerStaalText, describeStaalLine, shopStaalText, staalGroupLabel } from "@/lib/staal/messages";
+import { customerStaalText, describeStaalLine, shopStaalText } from "@/lib/staal/messages";
 import { resolveStaalLine, type StaalRequest } from "@/lib/staal/validate";
 import type { StaalTree } from "@/lib/staal/tree";
 import { site } from "@/lib/site";
@@ -56,8 +56,7 @@ export async function submitStaalAanvraag(
     return describeStaalLine(resolved.node, resolved.colorIds);
   });
   const ref = reference("ST");
-  const groups = [...new Set(input.lines.map((line) => staalGroupLabel(tree, line.path)).filter(Boolean))];
-  const tags = ["Staalaanvraag", ...groups, input.wantsQuote ? "Prijsindicatie" : ""].filter(Boolean);
+  const tags = staalAcTags(described);
   const { firstName, lastName } = splitName(input.name);
   const note = `Staalaanvraag ${ref}. ${described.join("; ")}. ${input.postcode.trim()} ${input.houseNumber.trim()}. Prijsindicatie ${input.wantsQuote ? "ja" : "nee"}.`;
   console.info("[staalaanvraag]", { reference: ref, count: described.length });
@@ -71,7 +70,6 @@ export async function submitStaalAanvraag(
     houseNumber: input.houseNumber,
     wantsQuote: input.wantsQuote,
     dimensions: input.dimensions,
-    photoName: input.photoName,
     lines: described,
   });
   if (options?.dryRun) {
@@ -145,13 +143,21 @@ export async function submitStaalAanvraag(
   if (dealMissing.length) {
     console.warn(`[dealflow] skipped. Ontbrekend: ${dealMissing.join(", ")}.`);
   } else {
-    const posted = await postDealflow(dealflow);
-    if (!posted.ok) console.warn("[dealflow] failed", posted.error);
+    await postDealflow(dealflow);
   }
 
   const mailOk = email.ok && !email.skipped && customer.ok && !customer.skipped;
   if (!mailOk) return { ok: false, error: staalMailError() };
   return { ok: true, reference: ref };
+}
+
+/** Tags the dashboard already has: staalaanvraag, plus the brand when that colour is in the request. */
+export function staalAcTags(lines: string[]) {
+  const tags = ["staalaanvraag"];
+  const text = lines.join("\n");
+  if (/keralit/i.test(text)) tags.push("staal-keralit");
+  if (/vinyplus/i.test(text)) tags.push("staal-vinyplus");
+  return tags;
 }
 
 function staalMailError() {

@@ -127,10 +127,11 @@ test("dealflow dry-run returns the payload and does not post", async () => {
   assert.equal(dry.ok, true);
   if (!dry.ok || !("payload" in dry)) return;
   assert.equal(called.length, 0);
-  assert.equal(dry.payload.followUp.action, "call");
-  assert.equal(dry.payload.followUp.afterDays, 5);
-  assert.equal(dry.payload.stage, "presentationscheduled");
-  assert.equal(dry.payload.photoAttached, true);
+  assert.equal(dry.payload.submission.submissionId, "ST-DRY");
+  assert.equal(dry.payload.submission.questions.find((item) => item.name === "Email")?.value, "jan@example.com");
+  assert.equal(dry.payload.submission.questions.find((item) => item.name === "Prijsindicatie")?.value, "ja");
+  assert.equal(dry.payload.submission.questions.find((item) => item.name === "Stalen")?.value, "VinyPlus Shadow: Turners eiken");
+  assert.equal("contact" in dry.payload, false);
   console.log(JSON.stringify(dry.payload, null, 2));
 
   const previousUrl = process.env.DEALFLOW_WEBHOOK_URL;
@@ -173,15 +174,16 @@ test("dealflow dry-run returns the payload and does not post", async () => {
   const body = (await response.json()) as {
     ok: boolean;
     dryRun?: boolean;
-    dealflow?: { followUp: { afterDays: number }; lines: string[]; dimensions: string };
+    dealflow?: { submission: { questions: { name: string; value: string }[] } };
     missing?: { mail: string[]; activecampaign: string[]; dealflow: string[] };
   };
   assert.equal(response.status, 200);
   assert.equal(body.ok, true);
   assert.equal(body.dryRun, true);
-  assert.equal(body.dealflow?.followUp.afterDays, 5);
-  assert.match(body.dealflow?.lines.join(" ") ?? "", /./);
-  assert.equal(body.dealflow?.dimensions, "8 m2");
+  const questions = body.dealflow?.submission.questions ?? [];
+  assert.equal(questions.find((item) => item.name === "Afmetingen")?.value, "8 m2");
+  assert.match(questions.find((item) => item.name === "Stalen")?.value ?? "", /./);
+  assert.equal(questions.find((item) => item.name === "Prijsindicatie")?.value, "nee");
   assert.ok(body.missing);
   console.log(JSON.stringify({ dealflow: body.dealflow, missing: body.missing }, null, 2));
   delete process.env.DEALFLOW_WEBHOOK_URL;

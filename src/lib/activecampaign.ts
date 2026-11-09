@@ -90,10 +90,13 @@ async function applyTags(config: ActiveCampaignConfig, contact: string, tags: st
   const unique = [...new Set(tags.map((tag) => tag.trim()).filter(Boolean))];
   for (const name of unique) {
     try {
-      const created = await acPost(config, "/api/3/tags", { tag: { tag: name, tagType: "contact" } });
-      const id = created.ok ? tagIdFrom(created.data) : await findTagId(config, name);
+      let id = await findTagId(config, name);
       if (!id) {
-        console.error("[activecampaign] tag niet gevonden", created.ok ? "" : created.status);
+        const created = await acPost(config, "/api/3/tags", { tag: { tag: name, tagType: "contact" } });
+        id = created.ok ? tagIdFrom(created.data) : await findTagId(config, name);
+      }
+      if (!id) {
+        console.error("[activecampaign] tag niet gevonden");
         continue;
       }
       const linked = await acPost(config, "/api/3/contactTags", { contactTag: { contact, tag: id } });
