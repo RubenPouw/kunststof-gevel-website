@@ -19,7 +19,7 @@ export type LeadEmailResult =
 type Provider = "resend" | "mailersend" | "smtp";
 
 function providerName(value: string | undefined): Provider | "auto" | "invalid" {
-  const name = value?.trim().toLowerCase() || "auto";
+  const name = value?.trim().toLowerCase() || "smtp";
   if (name === "auto" || name === "resend" || name === "mailersend" || name === "smtp") return name;
   return "invalid";
 }
@@ -61,7 +61,7 @@ function detectProvider(): Provider | null {
   return null;
 }
 
-/** Env names that still block sending. Empty when a provider is ready. */
+/** Env names that still block sending. Empty when the chosen provider is ready. */
 export function missingMailEnv(): string[] {
   const explicit = providerName(process.env.LEAD_EMAIL_PROVIDER);
   if (explicit === "invalid") return ["LEAD_EMAIL_PROVIDER"];
@@ -69,10 +69,14 @@ export function missingMailEnv(): string[] {
   if (explicit === "mailersend") return process.env.MAILERSEND_API_KEY?.trim() ? [] : ["MAILERSEND_API_KEY"];
   if (explicit === "smtp") return process.env.SMTP_PASS?.trim() ? [] : ["SMTP_PASS"];
   if (providerReady("smtp") || providerReady("resend") || providerReady("mailersend")) return [];
-  return ["RESEND_API_KEY", "MAILERSEND_API_KEY", "SMTP_PASS"];
+  return ["SMTP_PASS"];
 }
 
-/** Resolved lead-mail settings. SMTP through Google Workspace is the default once SMTP_PASS is set. */
+/**
+ * Gmail SMTP is the default. Host, user, from and to fall back to
+ * smtp.gmail.com and info@kunststof-gevel.nl. Port 587 uses STARTTLS, port 465 implicit TLS.
+ * Only SMTP_PASS, the Gmail app password, has no default.
+ */
 export function leadMailPlan() {
   const provider = detectProvider();
   return {
@@ -172,6 +176,7 @@ async function sendSmtp(message: LeadEmail, from: string, to: string): Promise<L
   const port = smtpPort();
   const user = smtpUser();
   const pass = process.env.SMTP_PASS?.trim() ?? "";
+  // 465 is implicit TLS. 587, the default, starts plain and upgrades with STARTTLS.
   const secure = port === 465;
 
   const socket = await new Promise<net.Socket | tls.TLSSocket>((resolve, reject) => {

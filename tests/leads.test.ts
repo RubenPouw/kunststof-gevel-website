@@ -61,11 +61,12 @@ test("a real quote fails closed when no delivery channel is configured", async (
 });
 
 test("lead mail defaults to the Google Workspace mailbox", async () => {
-  const { leadMailPlan } = await import("../src/lib/mail.ts");
+  const { leadMailPlan, missingMailEnv } = await import("../src/lib/mail.ts");
   clearLeadEnv();
   const closed = leadMailPlan();
-  assert.equal(closed.provider, null);
+  assert.equal(closed.provider, "smtp");
   assert.equal(closed.ready, false);
+  assert.deepEqual(missingMailEnv(), ["SMTP_PASS"]);
   assert.equal(closed.from, "info@kunststof-gevel.nl");
   assert.equal(closed.to, "info@kunststof-gevel.nl");
   assert.equal(closed.host, "smtp.gmail.com");
