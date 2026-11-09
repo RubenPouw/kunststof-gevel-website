@@ -15,6 +15,7 @@ export type StaalSwatch = {
   code?: string;
   lineLabel: string;
   hex?: string;
+  image?: string;
   productSlugs: string[];
 };
 
@@ -39,7 +40,12 @@ function leaves(
   return node.children.flatMap((child) => leaves(child, [...path, child.id], [...labels, child.label]));
 }
 
-function swatchName(raw: string) {
+function swatchName(raw: string, verbatim = false) {
+  if (verbatim) {
+    const name = raw.trim();
+    if (!name) return null;
+    return { name, labeled: name };
+  }
   const tidy = tidySampleName(raw);
   if (!tidy || isBlankSampleName(tidy)) return null;
   const labeled = labelColour(tidy);
@@ -55,7 +61,7 @@ export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
       const lineSource = leaf.labels.join(" ");
       const swatches: StaalSwatch[] = [];
       const usable = leaf.node.colors.flatMap((color) => {
-        const parsed = swatchName(color.name);
+        const parsed = swatchName(color.name, color.verbatim);
         return parsed ? [{ color, parsed }] : [];
       });
       if (usable.length) {
@@ -68,6 +74,7 @@ export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
             code: parsed.code,
             lineLabel: sampleLineLabel(parsed.labeled, lineSource),
             hex: color.hex,
+            image: color.image,
             productSlugs: leaf.node.productSlugs,
           });
         }
@@ -106,6 +113,7 @@ export function sampleFromStaal(swatch: StaalSwatch): SampleColor {
     lineLabel: swatch.lineLabel,
     code: swatch.code,
     productSlugs: swatch.productSlugs,
+    image: swatch.image,
   };
 }
 
@@ -118,6 +126,7 @@ export function swatchFromSample(item: SampleColor): StaalSwatch {
     code: item.code,
     lineLabel: item.lineLabel || item.brandName,
     hex: item.hex,
+    image: item.image,
     productSlugs: item.productSlugs ?? [],
   };
 }

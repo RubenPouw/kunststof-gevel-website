@@ -39,6 +39,13 @@ export function isActiveCampaignConfigured() {
   return getActiveCampaignConfig() !== null;
 }
 
+export function missingActiveCampaignEnv() {
+  const missing: string[] = [];
+  if (!process.env.ACTIVECAMPAIGN_API_URL?.trim()) missing.push("ACTIVECAMPAIGN_API_URL");
+  if (!process.env.ACTIVECAMPAIGN_API_KEY?.trim()) missing.push("ACTIVECAMPAIGN_API_KEY");
+  return missing;
+}
+
 async function acFetch(config: ActiveCampaignConfig, path: string, method: "GET" | "POST", body?: unknown) {
   const response = await fetch(`${config.url}${path}`, {
     method,

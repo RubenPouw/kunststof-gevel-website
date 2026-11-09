@@ -25,6 +25,7 @@ export function customerStaalText(input: {
   postcode: string;
   houseNumber: string;
   wantsQuote: boolean;
+  dimensions?: string;
 }) {
   return [
     "Bedankt. Je staal wordt binnen een dag verstuurd.",
@@ -39,6 +40,7 @@ export function customerStaalText(input: {
     `Postcode: ${oneLine(input.postcode)}`,
     `Huisnummer: ${oneLine(input.houseNumber)}`,
     `Prijsindicatie: ${input.wantsQuote ? "ja" : "nee"}`,
+    ...(input.dimensions?.trim() ? [`Afmetingen / m²: ${oneLine(input.dimensions)}`] : []),
     "",
     `Vragen? Bel ${site.phone} of WhatsApp ${site.mobileDisplay}.`,
     site.name,
@@ -55,6 +57,8 @@ export function shopStaalText(input: {
   postcode: string;
   houseNumber: string;
   wantsQuote: boolean;
+  dimensions?: string;
+  photoName?: string;
 }) {
   return [
     `Nieuwe staalaanvraag ${oneLine(input.reference)}`,
@@ -64,6 +68,8 @@ export function shopStaalText(input: {
     `Postcode: ${oneLine(input.postcode)}`,
     `Huisnummer: ${oneLine(input.houseNumber)}`,
     `Prijsindicatie: ${input.wantsQuote ? "ja" : "nee"}`,
+    ...(input.dimensions?.trim() ? [`Afmetingen / m²: ${oneLine(input.dimensions)}`] : []),
+    ...(input.photoName?.trim() ? [`Foto: ${oneLine(input.photoName)}`] : []),
     "Stalen:",
     ...input.lines.map((line) => `- ${oneLine(line)}`),
   ].join("\n");

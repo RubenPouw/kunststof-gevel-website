@@ -1,6 +1,7 @@
 import { getCatalog } from "@/lib/catalog";
 import { submitStaalAanvraag } from "@/lib/leads";
 import { rateLimitStaal } from "@/lib/staal/rate-limit";
+import { applyFillout } from "@/lib/staal/fillout";
 import { buildStaalTree } from "@/lib/staal/tree";
 import { parseStaalRequest, validateStaalRequest } from "@/lib/staal/validate";
 import { settleStaal } from "@/lib/tracking/business";
@@ -36,11 +37,13 @@ export async function POST(request: Request) {
   }
 
   const catalog = await getCatalog();
-  const tree = buildStaalTree(catalog.products);
+  const tree = applyFillout(buildStaalTree(catalog.products));
   const error = validateStaalRequest(parsed, tree);
   if (error) return Response.json({ ok: false, error }, { status: 400 });
 
-  const result = await submitStaalAanvraag(parsed, tree);
+  const dryRun = (body as { dryRun?: unknown }).dryRun === true && process.env.NODE_ENV !== "production";
+  const result = await submitStaalAanvraag(parsed, tree, { dryRun });
+  if (dryRun) return Response.json(result);
   if (result.ok) {
     await settleStaal({ request, count: parsed.lines.length, email: parsed.email, phone: parsed.phone });
   }

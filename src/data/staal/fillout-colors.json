@@ -1,0 +1,1260 @@
+{
+  "steps": [
+    {
+      "section": "Gevel paneel",
+      "step": "Eurotexx kleur",
+      "groupTitle": "Potdeksel · Eurotexx",
+      "needles": [
+        "Potdeksel · Eurotexx"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/eurotexx-kleur-0-wit.jpg"
+        },
+        {
+          "label": "Creme",
+          "image": "/staal/fillout/eurotexx-kleur-1-creme.jpg"
+        },
+        {
+          "label": "Sand",
+          "image": "/staal/fillout/eurotexx-kleur-2-sand.jpg"
+        },
+        {
+          "label": "Lichtblauw",
+          "image": "/staal/fillout/eurotexx-kleur-3-lichtblauw.jpg"
+        },
+        {
+          "label": "Licht grijs",
+          "image": "/staal/fillout/eurotexx-kleur-4-licht-grijs.jpg"
+        },
+        {
+          "label": "Grijs",
+          "image": "/staal/fillout/eurotexx-kleur-5-grijs.jpg"
+        },
+        {
+          "label": "Quartzgrijs",
+          "image": "/staal/fillout/eurotexx-kleur-6-quartzgrijs.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/eurotexx-kleur-7-antraciet.jpg"
+        },
+        {
+          "label": "Klei",
+          "image": "/staal/fillout/eurotexx-kleur-8-klei.jpg"
+        },
+        {
+          "label": "Olijf",
+          "image": "/staal/fillout/eurotexx-kleur-9-olijf.jpg"
+        },
+        {
+          "label": "Sheffield eiken grijs",
+          "image": "/staal/fillout/eurotexx-kleur-10-sheffield-eiken-grijs.jpg"
+        },
+        {
+          "label": "Turners eiken",
+          "image": "/staal/fillout/eurotexx-kleur-11-turners-eiken.jpg"
+        },
+        {
+          "label": "Sheffield eiken wit",
+          "image": "/staal/fillout/eurotexx-kleur-12-sheffield-eiken-wit.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Eurotexx kleur dubbel rabat",
+      "groupTitle": "Eurotexx dubbel rabat",
+      "needles": [
+        "Eurotexx dubbel rabat"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-0-wit.jpg"
+        },
+        {
+          "label": "Creme",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-1-creme.jpg"
+        },
+        {
+          "label": "Sand",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-2-sand.jpg"
+        },
+        {
+          "label": "Lichtblauw",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-3-lichtblauw.jpg"
+        },
+        {
+          "label": "Licht grijs",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-4-licht-grijs.jpg"
+        },
+        {
+          "label": "Grijs",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-5-grijs.jpg"
+        },
+        {
+          "label": "Quartzgrijs",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-6-quartzgrijs.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-7-antraciet.jpg"
+        },
+        {
+          "label": "Klei",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-8-klei.jpg"
+        },
+        {
+          "label": "Olijf",
+          "image": "/staal/fillout/eurotexx-kleur-dubbel-rabat-9-olijf.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Keralit kleur 143 mm",
+      "groupTitle": "Keralit sponningdeel 143",
+      "needles": [
+        "Keralit sponningdeel 143"
+      ],
+      "colors": [
+        {
+          "label": "Creme 9001",
+          "image": "/staal/fillout/keralit-kleur-143-mm-0-creme-9001.jpg"
+        },
+        {
+          "label": "Zwart 9005",
+          "image": "/staal/fillout/keralit-kleur-143-mm-1-zwart-9005.jpg"
+        },
+        {
+          "label": "Antraciet 7016",
+          "image": "/staal/fillout/keralit-kleur-143-mm-2-antraciet-7016.jpg"
+        },
+        {
+          "label": "Grijs 7001",
+          "image": "/staal/fillout/keralit-kleur-143-mm-3-grijs-7001.jpg"
+        },
+        {
+          "label": "Groen 6009",
+          "image": "/staal/fillout/keralit-kleur-143-mm-4-groen-6009.jpg"
+        },
+        {
+          "label": "Kwartsgrijs 7039",
+          "image": "/staal/fillout/keralit-kleur-143-mm-5-kwartsgrijs-7039.jpg"
+        },
+        {
+          "label": "Staalblauw 5011",
+          "image": "/staal/fillout/keralit-kleur-143-mm-6-staalblauw-5011.jpg"
+        },
+        {
+          "label": "Monumenten groen",
+          "image": "/staal/fillout/keralit-kleur-143-mm-7-monumenten-groen.jpg"
+        },
+        {
+          "label": "Wijnrood 3005",
+          "image": "/staal/fillout/keralit-kleur-143-mm-8-wijnrood-3005.jpg"
+        },
+        {
+          "label": "Licht ivoor 1015",
+          "image": "/staal/fillout/keralit-kleur-143-mm-9-licht-ivoor-1015.jpg"
+        },
+        {
+          "label": "Basalt grijs 7012",
+          "image": "/staal/fillout/keralit-kleur-143-mm-10-basalt-grijs-7012.jpg"
+        },
+        {
+          "label": "Monumenten blauw 5004",
+          "image": "/staal/fillout/keralit-kleur-143-mm-11-monumenten-blauw-5004.jpg"
+        },
+        {
+          "label": "Rood 3011",
+          "image": "/staal/fillout/keralit-kleur-143-mm-12-rood-3011.jpg"
+        },
+        {
+          "label": "wit eiken",
+          "image": "/staal/fillout/keralit-kleur-143-mm-13-wit-eiken.jpg"
+        },
+        {
+          "label": "Donkerbruin",
+          "image": "/staal/fillout/keralit-kleur-143-mm-14-donkerbruin.jpg"
+        },
+        {
+          "label": "Zwartgrijs 7021",
+          "image": "/staal/fillout/keralit-kleur-143-mm-15-zwartgrijs-7021.jpg"
+        },
+        {
+          "label": "Bruin eiken",
+          "image": "/staal/fillout/keralit-kleur-143-mm-16-bruin-eiken.jpg"
+        },
+        {
+          "label": "Taupe eiken",
+          "image": "/staal/fillout/keralit-kleur-143-mm-17-taupe-eiken.jpg"
+        },
+        {
+          "label": "Natuur eiken",
+          "image": "/staal/fillout/keralit-kleur-143-mm-18-natuur-eiken.jpg"
+        },
+        {
+          "label": "Zwart eiken",
+          "image": "/staal/fillout/keralit-kleur-143-mm-19-zwart-eiken.jpg"
+        },
+        {
+          "label": "Steenrood",
+          "image": "/staal/fillout/keralit-kleur-143-mm-20-steenrood.jpg"
+        },
+        {
+          "label": "Bruingrijs",
+          "image": "/staal/fillout/keralit-kleur-143-mm-21-bruingrijs.jpg"
+        },
+        {
+          "label": "Grafiet zwart",
+          "image": "/staal/fillout/keralit-kleur-143-mm-22-grafiet-zwart.jpg"
+        },
+        {
+          "label": "Licht eiken",
+          "image": "/staal/fillout/keralit-kleur-143-mm-23-licht-eiken.jpg"
+        },
+        {
+          "label": "Donker eiken",
+          "image": "/staal/fillout/keralit-kleur-143-mm-24-donker-eiken.jpg"
+        },
+        {
+          "label": "Vergrijsd ceder",
+          "image": "/staal/fillout/keralit-kleur-143-mm-25-vergrijsd-ceder.jpg"
+        },
+        {
+          "label": "Bruin redcedar",
+          "image": "/staal/fillout/keralit-kleur-143-mm-26-bruin-redcedar.jpg"
+        },
+        {
+          "label": "Golden oak",
+          "image": "/staal/fillout/keralit-kleur-143-mm-27-golden-oak.jpg"
+        },
+        {
+          "label": "Mahonie",
+          "image": "/staal/fillout/keralit-kleur-143-mm-28-mahonie.jpg"
+        },
+        {
+          "label": "Californian Redwood",
+          "image": "/staal/fillout/keralit-kleur-143-mm-29-californian-redwood.jpg"
+        },
+        {
+          "label": "Snowwhite",
+          "image": "/staal/fillout/keralit-kleur-143-mm-30-snowwhite.jpg"
+        },
+        {
+          "label": "Nightblack",
+          "image": "/staal/fillout/keralit-kleur-143-mm-31-nightblack.jpg"
+        },
+        {
+          "label": "Dustgrey",
+          "image": "/staal/fillout/keralit-kleur-143-mm-32-dustgrey.jpg"
+        },
+        {
+          "label": "Skyblue",
+          "image": "/staal/fillout/keralit-kleur-143-mm-33-skyblue.jpg"
+        },
+        {
+          "label": "Timbergreen",
+          "image": "/staal/fillout/keralit-kleur-143-mm-34-timbergreen.jpg"
+        },
+        {
+          "label": "Sandcream",
+          "image": "/staal/fillout/keralit-kleur-143-mm-35-sandcream.jpg"
+        },
+        {
+          "label": "Wit 9016",
+          "image": "/staal/fillout/keralit-kleur-143-mm-36-wit-9016.jpg"
+        },
+        {
+          "label": "Mosgroen 6005",
+          "image": "/staal/fillout/keralit-kleur-143-mm-37-mosgroen-6005.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Keralit kleur 167 mm",
+      "groupTitle": "Keralit sponningdeel 167",
+      "needles": [
+        "Keralit sponningdeel 167"
+      ],
+      "colors": [
+        {
+          "label": "Creme 9001",
+          "image": "/staal/fillout/keralit-kleur-167-mm-0-creme-9001.jpg"
+        },
+        {
+          "label": "Zwart 9005",
+          "image": "/staal/fillout/keralit-kleur-167-mm-1-zwart-9005.jpg"
+        },
+        {
+          "label": "Antraciet 7016",
+          "image": "/staal/fillout/keralit-kleur-167-mm-2-antraciet-7016.jpg"
+        },
+        {
+          "label": "Kwartsgrijs 7039",
+          "image": "/staal/fillout/keralit-kleur-167-mm-3-kwartsgrijs-7039.jpg"
+        },
+        {
+          "label": "Staalblauw 5011",
+          "image": "/staal/fillout/keralit-kleur-167-mm-4-staalblauw-5011.jpg"
+        },
+        {
+          "label": "Monumenten groen",
+          "image": "/staal/fillout/keralit-kleur-167-mm-5-monumenten-groen.jpg"
+        },
+        {
+          "label": "Basalt grijs 7012",
+          "image": "/staal/fillout/keralit-kleur-167-mm-6-basalt-grijs-7012.jpg"
+        },
+        {
+          "label": "Monumenten blauw 5004",
+          "image": "/staal/fillout/keralit-kleur-167-mm-7-monumenten-blauw-5004.jpg"
+        },
+        {
+          "label": "wit eiken",
+          "image": "/staal/fillout/keralit-kleur-167-mm-8-wit-eiken.jpg"
+        },
+        {
+          "label": "Donkerbruin",
+          "image": "/staal/fillout/keralit-kleur-167-mm-9-donkerbruin.jpg"
+        },
+        {
+          "label": "Zwartgrijs 7021",
+          "image": "/staal/fillout/keralit-kleur-167-mm-10-zwartgrijs-7021.jpg"
+        },
+        {
+          "label": "Bruin eiken",
+          "image": "/staal/fillout/keralit-kleur-167-mm-11-bruin-eiken.jpg"
+        },
+        {
+          "label": "Taupe eiken",
+          "image": "/staal/fillout/keralit-kleur-167-mm-12-taupe-eiken.jpg"
+        },
+        {
+          "label": "Natuur eiken",
+          "image": "/staal/fillout/keralit-kleur-167-mm-13-natuur-eiken.jpg"
+        },
+        {
+          "label": "Zwart eiken",
+          "image": "/staal/fillout/keralit-kleur-167-mm-14-zwart-eiken.jpg"
+        },
+        {
+          "label": "Bruingrijs",
+          "image": "/staal/fillout/keralit-kleur-167-mm-15-bruingrijs.jpg"
+        },
+        {
+          "label": "Grafiet zwart",
+          "image": "/staal/fillout/keralit-kleur-167-mm-16-grafiet-zwart.jpg"
+        },
+        {
+          "label": "Vergrijsd ceder",
+          "image": "/staal/fillout/keralit-kleur-167-mm-17-vergrijsd-ceder.jpg"
+        },
+        {
+          "label": "Snowwhite",
+          "image": "/staal/fillout/keralit-kleur-167-mm-18-snowwhite.jpg"
+        },
+        {
+          "label": "Nightblack",
+          "image": "/staal/fillout/keralit-kleur-167-mm-19-nightblack.jpg"
+        },
+        {
+          "label": "Sandcream",
+          "image": "/staal/fillout/keralit-kleur-167-mm-20-sandcream.jpg"
+        },
+        {
+          "label": "Wit 9016",
+          "image": "/staal/fillout/keralit-kleur-167-mm-21-wit-9016.jpg"
+        },
+        {
+          "label": "Groen 6009",
+          "image": "/staal/fillout/keralit-kleur-167-mm-22-groen-6009.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Keralit kleur 190 mm",
+      "groupTitle": "Keralit sponningdeel 190",
+      "needles": [
+        "Keralit sponningdeel 190"
+      ],
+      "colors": [
+        {
+          "label": "Creme 9001",
+          "image": "/staal/fillout/keralit-kleur-190-mm-0-creme-9001.jpg"
+        },
+        {
+          "label": "Zwart 9005",
+          "image": "/staal/fillout/keralit-kleur-190-mm-1-zwart-9005.jpg"
+        },
+        {
+          "label": "Antraciet 7016",
+          "image": "/staal/fillout/keralit-kleur-190-mm-2-antraciet-7016.jpg"
+        },
+        {
+          "label": "Kwartsgrijs 7039",
+          "image": "/staal/fillout/keralit-kleur-190-mm-3-kwartsgrijs-7039.jpg"
+        },
+        {
+          "label": "Staalblauw 5011",
+          "image": "/staal/fillout/keralit-kleur-190-mm-4-staalblauw-5011.jpg"
+        },
+        {
+          "label": "Monumenten groen",
+          "image": "/staal/fillout/keralit-kleur-190-mm-5-monumenten-groen.jpg"
+        },
+        {
+          "label": "Basalt grijs 7012",
+          "image": "/staal/fillout/keralit-kleur-190-mm-6-basalt-grijs-7012.jpg"
+        },
+        {
+          "label": "Monumenten blauw 5004",
+          "image": "/staal/fillout/keralit-kleur-190-mm-7-monumenten-blauw-5004.jpg"
+        },
+        {
+          "label": "wit eiken",
+          "image": "/staal/fillout/keralit-kleur-190-mm-8-wit-eiken.jpg"
+        },
+        {
+          "label": "Donkerbruin",
+          "image": "/staal/fillout/keralit-kleur-190-mm-9-donkerbruin.jpg"
+        },
+        {
+          "label": "Zwartgrijs 7021",
+          "image": "/staal/fillout/keralit-kleur-190-mm-10-zwartgrijs-7021.jpg"
+        },
+        {
+          "label": "Bruin eiken",
+          "image": "/staal/fillout/keralit-kleur-190-mm-11-bruin-eiken.jpg"
+        },
+        {
+          "label": "Taupe eiken",
+          "image": "/staal/fillout/keralit-kleur-190-mm-12-taupe-eiken.jpg"
+        },
+        {
+          "label": "Natuur eiken",
+          "image": "/staal/fillout/keralit-kleur-190-mm-13-natuur-eiken.jpg"
+        },
+        {
+          "label": "Zwart eiken",
+          "image": "/staal/fillout/keralit-kleur-190-mm-14-zwart-eiken.jpg"
+        },
+        {
+          "label": "Bruingrijs",
+          "image": "/staal/fillout/keralit-kleur-190-mm-15-bruingrijs.jpg"
+        },
+        {
+          "label": "Grafiet zwart",
+          "image": "/staal/fillout/keralit-kleur-190-mm-16-grafiet-zwart.jpg"
+        },
+        {
+          "label": "Vergrijsd ceder",
+          "image": "/staal/fillout/keralit-kleur-190-mm-17-vergrijsd-ceder.jpg"
+        },
+        {
+          "label": "Snowwhite",
+          "image": "/staal/fillout/keralit-kleur-190-mm-18-snowwhite.jpg"
+        },
+        {
+          "label": "Nightblack",
+          "image": "/staal/fillout/keralit-kleur-190-mm-19-nightblack.jpg"
+        },
+        {
+          "label": "Sandcream",
+          "image": "/staal/fillout/keralit-kleur-190-mm-20-sandcream.jpg"
+        },
+        {
+          "label": "Wit 9016",
+          "image": "/staal/fillout/keralit-kleur-190-mm-21-wit-9016.jpg"
+        },
+        {
+          "label": "Groen 6009",
+          "image": "/staal/fillout/keralit-kleur-190-mm-22-groen-6009.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Keralit kleur Potdeksel",
+      "groupTitle": "Potdeksel · Keralit",
+      "needles": [
+        "Potdeksel · Keralit"
+      ],
+      "colors": [
+        {
+          "label": "Creme 9001",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-0-creme-9001.jpg"
+        },
+        {
+          "label": "Zwart 9005",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-1-zwart-9005.jpg"
+        },
+        {
+          "label": "Antraciet 7016",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-2-antraciet-7016.jpg"
+        },
+        {
+          "label": "Kwartsgrijs 7039",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-3-kwartsgrijs-7039.jpg"
+        },
+        {
+          "label": "Staalblauw 5011",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-4-staalblauw-5011.jpg"
+        },
+        {
+          "label": "Monumenten groen",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-5-monumenten-groen.jpg"
+        },
+        {
+          "label": "Basalt grijs 7012",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-6-basalt-grijs-7012.jpg"
+        },
+        {
+          "label": "Monumenten blauw 5004",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-7-monumenten-blauw-5004.jpg"
+        },
+        {
+          "label": "wit eiken",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-8-wit-eiken.jpg"
+        },
+        {
+          "label": "Donkerbruin",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-9-donkerbruin.jpg"
+        },
+        {
+          "label": "Zwartgrijs 7021",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-10-zwartgrijs-7021.jpg"
+        },
+        {
+          "label": "Bruin eiken",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-11-bruin-eiken.jpg"
+        },
+        {
+          "label": "Taupe eiken",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-12-taupe-eiken.jpg"
+        },
+        {
+          "label": "Natuur eiken",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-13-natuur-eiken.jpg"
+        },
+        {
+          "label": "Zwart eiken",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-14-zwart-eiken.jpg"
+        },
+        {
+          "label": "Bruingrijs",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-15-bruingrijs.jpg"
+        },
+        {
+          "label": "Grafiet zwart",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-16-grafiet-zwart.jpg"
+        },
+        {
+          "label": "Vergrijsd ceder",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-17-vergrijsd-ceder.jpg"
+        },
+        {
+          "label": "Snowwhite",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-18-snowwhite.jpg"
+        },
+        {
+          "label": "Nightblack",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-19-nightblack.jpg"
+        },
+        {
+          "label": "Sandcream",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-20-sandcream.jpg"
+        },
+        {
+          "label": "Wit 9016",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-21-wit-9016.jpg"
+        },
+        {
+          "label": "Groen 6009",
+          "image": "/staal/fillout/keralit-kleur-potdeksel-22-groen-6009.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Kerrafront Modern wood",
+      "groupTitle": "Modern Wood",
+      "needles": [
+        "Modern Wood"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/kerrafront-modern-wood-0-wit.jpg"
+        },
+        {
+          "label": "Claystone",
+          "image": "/staal/fillout/kerrafront-modern-wood-1-claystone.jpg"
+        },
+        {
+          "label": "Parel grijs",
+          "image": "/staal/fillout/kerrafront-modern-wood-2-parel-grijs.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/kerrafront-modern-wood-3-antraciet.jpg"
+        },
+        {
+          "label": "Quartz grijs",
+          "image": "/staal/fillout/kerrafront-modern-wood-4-quartz-grijs.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Kerrafront Multi sponningsdeel",
+      "groupTitle": "Kerrafront Multi",
+      "needles": [
+        "Kerrafront Multi"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/kerrafront-multi-sponningsdeel-0-wit.jpg"
+        },
+        {
+          "label": "Creme",
+          "image": "/staal/fillout/kerrafront-multi-sponningsdeel-1-creme.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/kerrafront-multi-sponningsdeel-2-antraciet.jpg"
+        },
+        {
+          "label": "Quartz grijs",
+          "image": "/staal/fillout/kerrafront-multi-sponningsdeel-3-quartz-grijs.jpg"
+        },
+        {
+          "label": "Turners eiken",
+          "image": "/staal/fillout/kerrafront-multi-sponningsdeel-4-turners-eiken.jpg"
+        },
+        {
+          "label": "Sheffield eiken wit",
+          "image": "/staal/fillout/kerrafront-multi-sponningsdeel-5-sheffield-eiken-wit.jpg"
+        },
+        {
+          "label": "Sheffield eiken grijs",
+          "image": "/staal/fillout/kerrafront-multi-sponningsdeel-6-sheffield-eiken-grijs.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Kleur wildverband",
+      "groupTitle": "wildverband",
+      "needles": [
+        "wildverband"
+      ],
+      "colors": [
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/kleur-wildverband-0-antraciet.jpg"
+        },
+        {
+          "label": "Antraciet gevlamd",
+          "image": "/staal/fillout/kleur-wildverband-1-antraciet-gevlamd.jpg"
+        },
+        {
+          "label": "Rood",
+          "image": "/staal/fillout/kleur-wildverband-2-rood.jpg"
+        },
+        {
+          "label": "Rood gevlamd",
+          "image": "/staal/fillout/kleur-wildverband-3-rood-gevlamd.jpg"
+        },
+        {
+          "label": "Geel",
+          "image": "/staal/fillout/kleur-wildverband-4-geel.jpg"
+        },
+        {
+          "label": "Geel gevlamd",
+          "image": "/staal/fillout/kleur-wildverband-5-geel-gevlamd.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Quattro kleur",
+      "groupTitle": "Quattro",
+      "needles": [
+        "Quattro"
+      ],
+      "colors": [
+        {
+          "label": "Turners eiken",
+          "image": "/staal/fillout/quattro-kleur-0-turners-eiken.jpg"
+        },
+        {
+          "label": "Eiken wit",
+          "image": "/staal/fillout/quattro-kleur-1-eiken-wit.jpg"
+        },
+        {
+          "label": "Kitami",
+          "image": "/staal/fillout/quattro-kleur-2-kitami.jpg"
+        },
+        {
+          "label": "Vergrijsd",
+          "image": "/staal/fillout/quattro-kleur-3-vergrijsd.jpg"
+        },
+        {
+          "label": "Eiken bruin",
+          "image": "/staal/fillout/quattro-kleur-4-eiken-bruin.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Shadow kleur",
+      "groupTitle": "VinyPlus Shadow",
+      "needles": [
+        "Shadow"
+      ],
+      "colors": [
+        {
+          "label": "Turners eiken",
+          "image": "/staal/fillout/shadow-kleur-0-turners-eiken.jpg"
+        },
+        {
+          "label": "vergrijsd red cedar",
+          "image": "/staal/fillout/shadow-kleur-1-vergrijsd-red-cedar.jpg"
+        },
+        {
+          "label": "Sheffield eiken Grijs",
+          "image": "/staal/fillout/shadow-kleur-2-sheffield-eiken-grijs.jpg"
+        },
+        {
+          "label": "Turners eiken bruin",
+          "image": "/staal/fillout/shadow-kleur-3-turners-eiken-bruin.jpg"
+        },
+        {
+          "label": "Sheffield eiken wit",
+          "image": "/staal/fillout/shadow-kleur-4-sheffield-eiken-wit.jpg"
+        },
+        {
+          "label": "Anteak vergrijsd",
+          "image": "/staal/fillout/shadow-kleur-5-anteak-vergrijsd.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Trend Kleur",
+      "groupTitle": "Kerrafront Trend",
+      "needles": [
+        "Kerrafront Trend"
+      ],
+      "colors": [
+        {
+          "label": "Ivoor wit",
+          "image": "/staal/fillout/trend-kleur-0-ivoor-wit.jpg"
+        },
+        {
+          "label": "Mastiek Beige",
+          "image": "/staal/fillout/trend-kleur-1-mastiek-beige.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Vario kleur",
+      "groupTitle": "Vario",
+      "needles": [
+        "Vario"
+      ],
+      "colors": [
+        {
+          "label": "Turners eiken",
+          "image": "/staal/fillout/vario-kleur-0-turners-eiken.jpg"
+        },
+        {
+          "label": "Eiken wit",
+          "image": "/staal/fillout/vario-kleur-1-eiken-wit.jpg"
+        },
+        {
+          "label": "Kitami",
+          "image": "/staal/fillout/vario-kleur-2-kitami.jpg"
+        },
+        {
+          "label": "Vergrijsd",
+          "image": "/staal/fillout/vario-kleur-3-vergrijsd.jpg"
+        },
+        {
+          "label": "Eiken bruin",
+          "image": "/staal/fillout/vario-kleur-4-eiken-bruin.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Vinyplus kleur rabat",
+      "groupTitle": "VinyPlus rabatdeel",
+      "needles": [
+        "VinyPlus rabatdeel"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-0-wit.jpg"
+        },
+        {
+          "label": "Creme",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-1-creme.jpg"
+        },
+        {
+          "label": "Zwart",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-2-zwart.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-3-antraciet.jpg"
+        },
+        {
+          "label": "Grijs",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-4-grijs.jpg"
+        },
+        {
+          "label": "Groen",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-5-groen.jpg"
+        },
+        {
+          "label": "Blauw",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-6-blauw.jpg"
+        },
+        {
+          "label": "Goud eiken",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-7-goud-eiken.jpg"
+        },
+        {
+          "label": "Mahonie",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-8-mahonie.jpg"
+        },
+        {
+          "label": "Monumenten groen",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-9-monumenten-groen.jpg"
+        },
+        {
+          "label": "Ivoorwit",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-10-ivoorwit.jpg"
+        },
+        {
+          "label": "Vergrijsd red cedar",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-11-vergrijsd-red-cedar.jpg"
+        },
+        {
+          "label": "Monumenten blauw",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-12-monumenten-blauw.jpg"
+        },
+        {
+          "label": "Rood",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-13-rood.jpg"
+        },
+        {
+          "label": "Turners eiken",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-14-turners-eiken.jpg"
+        },
+        {
+          "label": "Sheffield eiken wit",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-15-sheffield-eiken-wit.jpg"
+        },
+        {
+          "label": "Lichtgrijs",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-16-lichtgrijs.jpg"
+        },
+        {
+          "label": "Zwartgrijs",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-17-zwartgrijs.jpg"
+        },
+        {
+          "label": "Mosgroen",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-18-mosgroen.jpg"
+        },
+        {
+          "label": "Walnoot",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-19-walnoot.jpg"
+        },
+        {
+          "label": "California redwood",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-20-california-redwood.jpg"
+        },
+        {
+          "label": "Sheffield eiken grijs",
+          "image": "/staal/fillout/vinyplus-kleur-rabat-21-sheffield-eiken-grijs.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Vinyplus kleur rondkant",
+      "groupTitle": "VinyPlus rondkant",
+      "needles": [
+        "VinyPlus rondkant"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-0-wit.jpg"
+        },
+        {
+          "label": "Creme",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-1-creme.jpg"
+        },
+        {
+          "label": "Zwart",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-2-zwart.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-3-antraciet.jpg"
+        },
+        {
+          "label": "Grijs",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-4-grijs.jpg"
+        },
+        {
+          "label": "Groen",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-5-groen.jpg"
+        },
+        {
+          "label": "Quartz grijs",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-6-quartz-grijs.jpg"
+        },
+        {
+          "label": "Blauw",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-7-blauw.jpg"
+        },
+        {
+          "label": "Goud eiken",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-8-goud-eiken.jpg"
+        },
+        {
+          "label": "Mahonie",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-9-mahonie.jpg"
+        },
+        {
+          "label": "Monumenten groen",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-10-monumenten-groen.jpg"
+        },
+        {
+          "label": "Wijnrood",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-11-wijnrood.jpg"
+        },
+        {
+          "label": "Ivoorwit",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-12-ivoorwit.jpg"
+        },
+        {
+          "label": "Mosgroen",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-13-mosgroen.jpg"
+        },
+        {
+          "label": "Vergrijsd red cedar",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-14-vergrijsd-red-cedar.jpg"
+        },
+        {
+          "label": "Basalt grijs",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-15-basalt-grijs.jpg"
+        },
+        {
+          "label": "Monumenten blauw",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-16-monumenten-blauw.jpg"
+        },
+        {
+          "label": "Rood",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-17-rood.jpg"
+        },
+        {
+          "label": "Turners eiken",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-18-turners-eiken.jpg"
+        },
+        {
+          "label": "Sheffield eiken wit",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-19-sheffield-eiken-wit.jpg"
+        },
+        {
+          "label": "Sheffield eiken grijs",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-20-sheffield-eiken-grijs.jpg"
+        },
+        {
+          "label": "Lichtgrijs",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-21-lichtgrijs.jpg"
+        },
+        {
+          "label": "Donkerbruin",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-22-donkerbruin.jpg"
+        },
+        {
+          "label": "Zwartgrijs",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-23-zwartgrijs.jpg"
+        },
+        {
+          "label": "Anteak vergrijsd",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-24-anteak-vergrijsd.jpg"
+        },
+        {
+          "label": "Turners eiken bruin",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-25-turners-eiken-bruin.jpg"
+        },
+        {
+          "label": "Kitami eiken",
+          "image": "/staal/fillout/vinyplus-kleur-rondkant-26-kitami-eiken.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Gevel paneel",
+      "step": "Zierer grof",
+      "groupTitle": "grof",
+      "needles": [
+        "grof"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/zierer-grof-0-wit.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/zierer-grof-1-antraciet.jpg"
+        },
+        {
+          "label": "Rood gevlamd",
+          "image": "/staal/fillout/zierer-grof-2-rood-gevlamd.jpg"
+        },
+        {
+          "label": "Signal grijs gevlamd",
+          "image": "/staal/fillout/zierer-grof-3-signal-grijs-gevlamd.jpg"
+        },
+        {
+          "label": "Geel gevlamd",
+          "image": "/staal/fillout/zierer-grof-4-geel-gevlamd.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Dakrand",
+      "step": "Keralit kleur dakrand",
+      "groupTitle": "Keralit dakrand",
+      "needles": [
+        "Keralit dakrand"
+      ],
+      "colors": [
+        {
+          "label": "Creme 9001",
+          "image": "/staal/fillout/keralit-kleur-dakrand-0-creme-9001.jpg"
+        },
+        {
+          "label": "Antraciet 7016",
+          "image": "/staal/fillout/keralit-kleur-dakrand-1-antraciet-7016.jpg"
+        },
+        {
+          "label": "Grijs 7001",
+          "image": "/staal/fillout/keralit-kleur-dakrand-2-grijs-7001.jpg"
+        },
+        {
+          "label": "Kwartsgrijs 7039",
+          "image": "/staal/fillout/keralit-kleur-dakrand-3-kwartsgrijs-7039.jpg"
+        },
+        {
+          "label": "Staalblauw 5011",
+          "image": "/staal/fillout/keralit-kleur-dakrand-4-staalblauw-5011.jpg"
+        },
+        {
+          "label": "Monumenten groen",
+          "image": "/staal/fillout/keralit-kleur-dakrand-5-monumenten-groen.jpg"
+        },
+        {
+          "label": "Wijnrood 3005",
+          "image": "/staal/fillout/keralit-kleur-dakrand-6-wijnrood-3005.jpg"
+        },
+        {
+          "label": "Licht ivoor 1015",
+          "image": "/staal/fillout/keralit-kleur-dakrand-7-licht-ivoor-1015.jpg"
+        },
+        {
+          "label": "Monumenten blauw 5004",
+          "image": "/staal/fillout/keralit-kleur-dakrand-8-monumenten-blauw-5004.jpg"
+        },
+        {
+          "label": "Donkerbruin",
+          "image": "/staal/fillout/keralit-kleur-dakrand-9-donkerbruin.jpg"
+        },
+        {
+          "label": "Zwartgrijs 7021",
+          "image": "/staal/fillout/keralit-kleur-dakrand-10-zwartgrijs-7021.jpg"
+        },
+        {
+          "label": "Grafiet zwart",
+          "image": "/staal/fillout/keralit-kleur-dakrand-11-grafiet-zwart.jpg"
+        },
+        {
+          "label": "Vergrijsd ceder",
+          "image": "/staal/fillout/keralit-kleur-dakrand-12-vergrijsd-ceder.jpg"
+        },
+        {
+          "label": "Golden oak",
+          "image": "/staal/fillout/keralit-kleur-dakrand-13-golden-oak.jpg"
+        },
+        {
+          "label": "Mahonie",
+          "image": "/staal/fillout/keralit-kleur-dakrand-14-mahonie.jpg"
+        },
+        {
+          "label": "Wit 9016",
+          "image": "/staal/fillout/keralit-kleur-dakrand-15-wit-9016.jpg"
+        },
+        {
+          "label": "Groen 6009",
+          "image": "/staal/fillout/keralit-kleur-dakrand-16-groen-6009.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Dakrand",
+      "step": "Milexx glad",
+      "groupTitle": "Milexx glad",
+      "needles": [
+        "Milexx"
+      ],
+      "colors": [
+        {
+          "label": "Nerf Wit",
+          "image": "/staal/fillout/milexx-glad-0-nerf-wit.jpg"
+        },
+        {
+          "label": "Nerf creme",
+          "image": "/staal/fillout/milexx-glad-1-nerf-creme.jpg"
+        },
+        {
+          "label": "Folie antraciet",
+          "image": "/staal/fillout/milexx-glad-2-folie-antraciet.jpg"
+        },
+        {
+          "label": "Glad wit",
+          "image": "/staal/fillout/milexx-glad-3-glad-wit.jpg"
+        },
+        {
+          "label": "Glad creme",
+          "image": "/staal/fillout/milexx-glad-4-glad-creme.jpg"
+        }
+      ]
+    },
+    {
+      "section": "Dakrand",
+      "step": "Vinyplus kleur dakranden",
+      "groupTitle": "VinyPlus dakrand",
+      "needles": [
+        "VinyPlus dakrand",
+        "Vinyplus dakrand",
+        "dakrand"
+      ],
+      "colors": [
+        {
+          "label": "Wit",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-0-wit.jpg"
+        },
+        {
+          "label": "Creme",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-1-creme.jpg"
+        },
+        {
+          "label": "Zwart",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-2-zwart.jpg"
+        },
+        {
+          "label": "Antraciet",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-3-antraciet.jpg"
+        },
+        {
+          "label": "Groen",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-4-groen.jpg"
+        },
+        {
+          "label": "Blauw",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-5-blauw.jpg"
+        },
+        {
+          "label": "Zwartgrijs",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-6-zwartgrijs.jpg"
+        },
+        {
+          "label": "Grijs (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-7-grijs-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Goud eiken (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-8-goud-eiken-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Mahonie (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-9-mahonie-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Monumenten groen (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-10-monumenten-groen-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Ivoorwit (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-11-ivoorwit-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Vergrijsd red cedar (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-12-vergrijsd-red-cedar-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Monumenten blauw (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-13-monumenten-blauw-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Wijnrood (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-14-wijnrood-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Turners eiken (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-15-turners-eiken-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Lichtgrijs (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-16-lichtgrijs-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Mosgroen (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-17-mosgroen-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Basalt grijs (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-18-basalt-grijs-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Donkerbruin (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-19-donkerbruin-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Sheffield eiken wit (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-20-sheffield-eiken-wit-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Sheffield eiken grijs (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-21-sheffield-eiken-grijs-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "Walnoot (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-22-walnoot-enkel-295mm-hoog.jpg"
+        },
+        {
+          "label": "California redwood (enkel 295mm hoog)",
+          "image": "/staal/fillout/vinyplus-kleur-dakranden-23-california-redwood-enkel-295mm-hoog.jpg"
+        }
+      ]
+    }
+  ]
+}

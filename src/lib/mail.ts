@@ -61,6 +61,17 @@ function detectProvider(): Provider | null {
   return null;
 }
 
+/** Env names that still block sending. Empty when a provider is ready. */
+export function missingMailEnv(): string[] {
+  const explicit = providerName(process.env.LEAD_EMAIL_PROVIDER);
+  if (explicit === "invalid") return ["LEAD_EMAIL_PROVIDER"];
+  if (explicit === "resend") return process.env.RESEND_API_KEY?.trim() ? [] : ["RESEND_API_KEY"];
+  if (explicit === "mailersend") return process.env.MAILERSEND_API_KEY?.trim() ? [] : ["MAILERSEND_API_KEY"];
+  if (explicit === "smtp") return process.env.SMTP_PASS?.trim() ? [] : ["SMTP_PASS"];
+  if (providerReady("smtp") || providerReady("resend") || providerReady("mailersend")) return [];
+  return ["RESEND_API_KEY", "MAILERSEND_API_KEY", "SMTP_PASS"];
+}
+
 /** Resolved lead-mail settings. SMTP through Google Workspace is the default once SMTP_PASS is set. */
 export function leadMailPlan() {
   const provider = detectProvider();

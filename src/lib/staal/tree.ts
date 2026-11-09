@@ -22,6 +22,8 @@ export type StaalColor = {
   name: string;
   image?: string;
   hex?: string;
+  /** Keep the Fillout label, including the RAL or code, as written. */
+  verbatim?: boolean;
 };
 
 export type StaalNode = {

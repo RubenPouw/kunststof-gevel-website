@@ -210,6 +210,7 @@ export type SampleColor = {
   lineLabel?: string;
   code?: string;
   productSlugs?: string[];
+  image?: string;
 };
 
 export type ListingFilters = {
