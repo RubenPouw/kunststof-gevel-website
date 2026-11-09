@@ -56,10 +56,10 @@ export const categoryPageSeo: Record<CategorySlug, CategoryPageSeo> = {
   vensterbanken: {
     id: "vensterbanken",
     slug: "kunststof-vensterbank",
-    title: "Overzet vensterbank buiten en binnen | Kunststof vensterbank",
-    h1: "Overzet vensterbank buiten en binnen",
+    title: "Overzet vensterbank binnen | Kunststof vensterbank",
+    h1: "Kunststof overzet vensterbank voor binnen",
     description:
-      "Overzet vensterbank buiten of binnen? Milinboard 380 mm schuif je over je oude bank. Wit of crème, met eindkappen. Voorraad in max. 4 werkdagen.",
+      "Overzet vensterbank voor binnen: Milinboard 380 mm schuif je over je oude bank. Wit of crème, met eindkappen. Voorraad in max. 4 werkdagen.",
     previousSlugs: ["vensterbanken"],
     direct: true,
   },
