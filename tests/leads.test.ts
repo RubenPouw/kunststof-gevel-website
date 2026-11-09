@@ -41,6 +41,7 @@ const leadEnvKeys = [
   "MAILERSEND_API_KEY",
   "SMTP_HOST",
   "SMTP_PORT",
+  "SMTP_SECURE",
   "SMTP_USER",
   "SMTP_PASS",
   "ACTIVECAMPAIGN_API_URL",
@@ -81,7 +82,14 @@ test("lead mail defaults to the Google Workspace mailbox", async () => {
   assert.equal(gmail.to, "info@kunststof-gevel.nl");
 
   process.env.SMTP_PORT = "465";
-  assert.equal(leadMailPlan().port, 465);
+  process.env.SMTP_SECURE = "true";
+  const ssl = leadMailPlan();
+  assert.equal(ssl.port, 465);
+  assert.equal(ssl.secure, true);
+  assert.equal(ssl.host, "smtp.gmail.com");
+  assert.equal(ssl.user, "info@kunststof-gevel.nl");
+  process.env.SMTP_SECURE = "false";
+  assert.equal(leadMailPlan().secure, false);
 
   process.env.LEAD_EMAIL_PROVIDER = "resend";
   process.env.RESEND_API_KEY = "re_test";
@@ -89,6 +97,33 @@ test("lead mail defaults to the Google Workspace mailbox", async () => {
   assert.equal(resend.provider, "resend");
   assert.equal(resend.ready, true);
   clearLeadEnv();
+});
+
+test("a failed SMTP connection logs that Render may block the port", async () => {
+  const { sendLeadEmail } = await import("../src/lib/mail.ts");
+  clearLeadEnv();
+  process.env.SMTP_HOST = "127.0.0.1";
+  process.env.SMTP_PORT = "1";
+  process.env.SMTP_SECURE = "true";
+  process.env.SMTP_USER = "info@kunststof-gevel.nl";
+  process.env.SMTP_PASS = "app-password";
+  const lines: string[] = [];
+  const original = console.error;
+  console.error = (...args: unknown[]) => {
+    lines.push(args.map((part) => String(part)).join(" "));
+  };
+  try {
+    const result = await sendLeadEmail({ subject: "test", text: "hallo", to: "klant@example.com" });
+    assert.equal(result.ok, false);
+    const log = lines.join("\n");
+    assert.match(log, /\[smtp\] verzenden mislukt naar 127\.0\.0\.1:1/);
+    assert.match(log, /SMTP_SECURE=true/);
+    assert.match(log, /Render free kan uitgaande SMTP-poorten 465 en 587 blokkeren/);
+    assert.equal(log.includes("app-password"), false);
+  } finally {
+    console.error = original;
+    clearLeadEnv();
+  }
 });
 
 test("a sample request without samples is rejected before delivery", async () => {
