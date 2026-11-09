@@ -195,9 +195,9 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
         ],
       },
       {
-        heading: "Overzet vensterbank binnen: zo werkt het",
+        heading: "Waarom kunststof voor binnen?",
         paragraphs: [
-          "Binnen werk je een bestaande vensterbank af zonder die eruit te halen. De Milinboard overzet vensterbank 380 mm is vlak en krasvast. Hout moet je schuren en schilderen. Deze vensterbank niet: een vochtige doek met een mild schoonmaakmiddel is genoeg.",
+          "Een vensterbank krijgt binnen zon en condens te verduren. De Milinboard overzet vensterbank 380 mm is waterafstotend, UV-bestendig en krasvast. Hout moet je schuren en schilderen. Deze vensterbank niet: een vochtige doek met een mild schoonmaakmiddel is genoeg.",
           "De bank is 380 mm diep en komt per lengte van 600 cm. Je zaagt hem zelf op maat. Kies uit wit of crème. De spitse ronde neus geeft een strakke voorkant. De zijkanten werk je af met de bijpassende eindkap.",
         ],
       },

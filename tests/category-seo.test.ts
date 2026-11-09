@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { categoryPageSeo, categoryPath, categoryRedirectTarget } from "../src/data/seo/category-pages.ts";
+import { categoryPageSeo, categoryPath, categoryRedirectTarget, pageSeo } from "../src/data/seo/category-pages.ts";
+import { getLandingStory } from "../src/data/seo/landings.ts";
 import { categoryMetadata, categoryViewMetadata } from "../src/data/seo/categories.ts";
 import { lookupRedirect } from "../src/lib/seo/redirects.ts";
 import { absoluteUrl, breadcrumbJsonLd, collectionPageJsonLd } from "../src/lib/seo/schema.ts";
@@ -10,7 +11,9 @@ test("category slug, title, h1 and description live in one file", () => {
   const seo = categoryPageSeo.vensterbanken;
   assert.equal(seo.slug, "kunststof-vensterbank");
   assert.equal(categoryPath("vensterbanken"), "/kunststof-vensterbank");
+  assert.equal(seo.title, "Overzet vensterbank binnen | Kunststof vensterbank");
   assert.equal(seo.h1, "Kunststof overzet vensterbank voor binnen");
+  assert.equal(pageSeo.boeiKeralit.h1, "Keralit boeideel en dakranden");
   const meta = categoryMetadata("vensterbanken");
   const title = meta.title;
   const titleText = typeof title === "string" ? title : title && typeof title === "object" && "absolute" in title ? title.absolute : "";
@@ -25,6 +28,19 @@ test("category slug, title, h1 and description live in one file", () => {
   for (const page of Object.values(categoryPageSeo)) {
     assert.equal(lookupRedirect(`/${page.slug}`).status, "200", page.id);
   }
+});
+
+test("the overzet vensterbank stays indoors and matches the live heading", () => {
+  const story = getLandingStory("kunststof-vensterbank");
+  assert.ok(story);
+  assert.equal(
+    story.faqs.some((faq) => faq.q === "Kan ik een overzet vensterbank buiten gebruiken?"),
+    false,
+  );
+  const why = story.sections.find((section) => section.heading === "Waarom kunststof voor binnen?");
+  assert.ok(why);
+  assert.match(why.paragraphs[0] ?? "", /^Een vensterbank krijgt binnen zon en condens te verduren\./);
+  assert.equal(/buiten/i.test(JSON.stringify(story)), false);
 });
 
 test("a replaced category slug 301s once to the current slug", () => {
