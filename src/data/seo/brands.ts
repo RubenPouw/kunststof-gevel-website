@@ -4,6 +4,7 @@ import { ZIERER_MANUAL } from "@/lib/catalog/manuals";
 export type SeoSection = {
   heading: string;
   paragraphs: string[];
+  image?: { src: string; alt: string; place?: "before" | "after" };
 };
 
 export type SeoFaq = {

@@ -1,9 +1,18 @@
 import Link from "next/link";
 
+import { Bevel } from "@/components/brand/section-head";
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 import { faqJsonLd } from "@/lib/seo/schema";
 
 import { JsonLd } from "./json-ld";
+
+function SectionImage({ image }: { image: NonNullable<SeoSection["image"]> }) {
+  return (
+    <Bevel size={16} className="mt-4">
+      <img src={image.src} alt={image.alt} className="w-full" />
+    </Bevel>
+  );
+}
 
 export function SeoArticle({
   sections,
@@ -21,12 +30,14 @@ export function SeoArticle({
         <div className="space-y-8">
           {sections.map((section) => (
             <div key={section.heading}>
+              {section.image && section.image.place === "before" ? <SectionImage image={section.image} /> : null}
               <h2 className="text-[22px] font-bold tracking-[-0.03em]">{section.heading}</h2>
               {section.paragraphs.map((paragraph) => (
                 <p key={paragraph} className="mt-3 text-[16px] leading-[1.5] text-kg-text-2">
                   {paragraph}
                 </p>
               ))}
+              {section.image && section.image.place !== "before" ? <SectionImage image={section.image} /> : null}
             </div>
           ))}
           {links.length > 0 ? (

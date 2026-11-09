@@ -4774,5 +4774,29 @@
     "to": "/staalaanvraag",
     "status": "301",
     "reason": "staalaanvraag"
+  },
+  {
+    "from": "/overzet-vensterbank",
+    "to": "/kunststof-vensterbank",
+    "status": "301",
+    "reason": "vensterbank-page"
+  },
+  {
+    "from": "/overzet-vensterbank/",
+    "to": "/kunststof-vensterbank",
+    "status": "301",
+    "reason": "vensterbank-page"
+  },
+  {
+    "from": "/keralit-boeideel-dakrand-afwerken",
+    "to": "/blog/keralit-boeideel-dakrand-afwerken",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/keralit-boeideel-dakrand-afwerken/",
+    "to": "/blog/keralit-boeideel-dakrand-afwerken",
+    "status": "301",
+    "reason": "rewritten-article"
   }
 ]
