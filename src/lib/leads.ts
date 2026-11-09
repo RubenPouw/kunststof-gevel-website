@@ -87,8 +87,6 @@ export async function submitStaalAanvraag(
       },
     };
   }
-  const posted = await postDealflow(dealflow);
-  if (!posted.ok) return { ok: false, error: posted.error };
 
   const shopText = shopStaalText({
     reference: ref,
@@ -135,16 +133,32 @@ export async function submitStaalAanvraag(
     }),
   ]);
 
-  const emailOk = email.ok && !email.skipped;
-  const acOk = ac.ok && !ac.skipped;
-  if (!email.ok) console.error("[staalaanvraag] e-mail", email.error);
-  if (!customer.ok) console.error("[staalaanvraag] bevestiging", customer.error);
-  if (customer.ok && customer.skipped) console.info("[staalaanvraag] bevestiging overgeslagen (geen provider)");
-  if (!ac.ok) console.error("[staalaanvraag] ActiveCampaign", ac.error);
-  if (email.ok && email.skipped) console.info("[staalaanvraag] e-mail overgeslagen (geen provider)");
-  if (ac.ok && ac.skipped) console.info("[staalaanvraag] ActiveCampaign overgeslagen (geen sleutels)");
-  if (emailOk || acOk) return { ok: true, reference: ref };
-  return { ok: false, error: leadDeliveryError() };
+  if (!email.ok) console.error("[smtp]", email.error);
+  else if (email.skipped) console.error("[smtp] winkelmail overgeslagen");
+  if (!customer.ok) console.error("[smtp]", customer.error);
+  else if (customer.skipped) console.error("[smtp] bevestiging overgeslagen");
+
+  if (!ac.ok) console.warn("[activecampaign] failed", ac.error);
+  else if (ac.skipped) console.warn("[activecampaign] skipped");
+
+  const dealMissing = missingDealflowEnv();
+  if (dealMissing.length) {
+    console.warn(`[dealflow] skipped. Ontbrekend: ${dealMissing.join(", ")}.`);
+  } else {
+    const posted = await postDealflow(dealflow);
+    if (!posted.ok) console.warn("[dealflow] failed", posted.error);
+  }
+
+  const mailOk = email.ok && !email.skipped && customer.ok && !customer.skipped;
+  if (!mailOk) return { ok: false, error: staalMailError() };
+  return { ok: true, reference: ref };
+}
+
+function staalMailError() {
+  const missing = missingMailEnv();
+  const reach = `Bel ${site.phone} of WhatsApp ${site.mobileDisplay}, dan nemen we hem zelf op.`;
+  if (!missing.length) return `De aanvraag is niet aangekomen. ${reach}`;
+  return `De aanvraag is niet aangekomen. Ontbrekend: ${missing.join(", ")}. ${reach}`;
 }
 
 async function deliverLead(input: {
