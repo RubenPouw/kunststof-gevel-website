@@ -19,7 +19,7 @@ const CATEGORY_PHOTO: Record<string, ProductImage> = {
   },
   "/kunststof-kozijnen": {
     url: "/categorie/kozijnen-product.webp",
-    alt: "Stelkozijn aansluitprofiel",
+    alt: "Kunststof kozijn doorsnede",
   },
   "/montage": {
     url: "/categorie/bevestiging.webp",
