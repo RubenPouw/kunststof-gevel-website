@@ -8,9 +8,8 @@ import { colorFamilies, colorFamilyLabels, type ColorFamily, type Product } from
 export const HPL_HUB_PATH = "/hpl-plaat";
 export const HPL_HUB_ALIAS = "/hpl-plaat/kleur-structuur";
 
-export const HPL_HUB_TITLE = "HPL plaat op kleur";
-export const HPL_HUB_DESCRIPTION =
-  "HPL Compact Exterieur, Renolit eenzijdig en Milyt. Hele plaat 3050 × 1300 mm, 3,965 m². Kies een kleur of een decor. Wij zagen niet op maat.";
+export const HPL_HUB_TITLE = categoryPageSeo["hpl-platen"].h1;
+export const HPL_HUB_DESCRIPTION = categoryPageSeo["hpl-platen"].description;
 
 export const hplLineOrder = ["compact", "fr", "renolit", "milyt", "abet"] as const;
 

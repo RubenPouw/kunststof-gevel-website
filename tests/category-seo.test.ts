@@ -10,7 +10,7 @@ test("category slug, title, h1 and description live in one file", () => {
   const seo = categoryPageSeo.vensterbanken;
   assert.equal(seo.slug, "kunststof-vensterbank");
   assert.equal(categoryPath("vensterbanken"), "/kunststof-vensterbank");
-  assert.equal(seo.h1, "Kunststof vensterbank en overzet vensterbank (binnen en buiten)");
+  assert.equal(seo.h1, "Overzet vensterbank buiten en binnen");
   const meta = categoryMetadata("vensterbanken");
   const title = meta.title;
   const titleText = typeof title === "string" ? title : title && typeof title === "object" && "absolute" in title ? title.absolute : "";

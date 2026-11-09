@@ -1,5 +1,7 @@
 import type { CategorySlug } from "@/lib/catalog/types";
 
+import type { SeoFaq, SeoLink, SeoSection } from "./brands";
+
 /**
  * Public SEO for category pages. Ahrefs copy lands here.
  * Change `slug`, and put the old slug in `previousSlugs`: that old URL 301s to the new one.
@@ -54,10 +56,10 @@ export const categoryPageSeo: Record<CategorySlug, CategoryPageSeo> = {
   vensterbanken: {
     id: "vensterbanken",
     slug: "kunststof-vensterbank",
-    title: "Kunststof vensterbank & overzet vensterbank buiten",
-    h1: "Kunststof vensterbank en overzet vensterbank (binnen en buiten)",
+    title: "Overzet vensterbank buiten en binnen | Kunststof vensterbank",
+    h1: "Overzet vensterbank buiten en binnen",
     description:
-      "Kunststof vensterbanken en overzetbanken. Per merk eerst de bank, dan eindkappen en profielen, dan de bevestiging.",
+      "Overzet vensterbank buiten of binnen? Milinboard 380 mm schuif je over je oude bank. Wit of crème, met eindkappen. Voorraad in max. 4 werkdagen.",
     previousSlugs: ["vensterbanken"],
     direct: true,
   },
@@ -73,10 +75,10 @@ export const categoryPageSeo: Record<CategorySlug, CategoryPageSeo> = {
   "hpl-platen": {
     id: "hpl-platen",
     slug: "hpl-plaat",
-    title: "HPL plaat kopen | Milyt HPL voor gevel en dakkapel",
-    h1: "HPL platen",
+    title: "HPL plaat kopen | Voor gevel en dakkapel",
+    h1: "HPL plaat voor gevel, dakkapel en boeiboord",
     description:
-      "HPL platen van 3050 × 1300 × 6 mm. Hele plaat, 3,965 m². Compact exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur en RAL.",
+      "HPL plaat 3050 x 1300 x 6 mm. Hele plaat, ongeveer 3,965 m². Compact exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur en RAL.",
     previousSlugs: ["hpl-platen"],
     direct: true,
   },
@@ -91,7 +93,7 @@ export const pageSeo = {
   },
   keralit: {
     path: "/keralit-gevelbekleding",
-    title: "Keralit gevelbekleding kopen | Keralit panelen en profielen",
+    title: "Keralit gevelbekleding kopen | Planken, panelen, profielen",
     h1: "Keralit gevelbekleding",
   },
   rabatdelen: {
@@ -102,9 +104,10 @@ export const pageSeo = {
   },
   plafondBadkamer: {
     path: "/plafondpanelen/badkamer",
-    title: "Kunststof plafondpanelen voor de badkamer",
+    title: "Kunststof plafond badkamer kopen | Plafondpanelen",
     h1: "Kunststof plafond voor de badkamer",
-    description: "Florence binnenplafondpanelen voor een badkamer of een andere binnenruimte.",
+    description:
+      "Kunststof plafondpanelen voor de badkamer: vochtbestendig, strak en onderhoudsarm. Prijs per paneel staat bij het product. Gratis verzending vanaf €499.",
   },
   plafondOverstek: {
     path: "/plafondpanelen/overstek",
@@ -114,9 +117,10 @@ export const pageSeo = {
   },
   boeiKeralit: {
     path: "/boeidelen/keralit",
-    title: "Keralit boeidelen en dakranden",
-    h1: "Keralit boeidelen",
-    description: "Keralit dakrandpanelen en boeidelen. De breedte kiest u met het filter.",
+    title: "Keralit boeideel en dakranden kopen | 200 tot 350 mm",
+    h1: "Keralit boeideel en dakranden",
+    description:
+      "Keralit boeideel in 200, 250, 300 of 350 mm, met profielen en hoekstukken. Zelfde kleur als je gevel. Gratis verzending vanaf €499.",
     brand: "keralit",
   },
   boeiVinyplus: {
@@ -175,3 +179,100 @@ export function categoryInternalRewrite(pathname: string): string | null {
   }
   return null;
 }
+
+export const boeiKeralitArticle: {
+  intro: string;
+  sections: SeoSection[];
+  faqs: SeoFaq[];
+  links: SeoLink[];
+} = {
+  intro:
+    "Een Keralit boeideel is het dakrandpaneel waarmee je de dakrand strak en onderhoudsarm afwerkt. Kies de breedte die bij je overstek past en combineer met dezelfde kleur als je Keralit gevelbekleding.",
+  sections: [
+    {
+      heading: "Welke breedte kies je?",
+      paragraphs: [
+        "Keralit dakrandpanelen zijn er in 200, 250, 300 en 350 mm. Meet de hoogte van je boei of overstek en kies de breedte die past, met ruimte voor het montageprofiel.",
+      ],
+    },
+    {
+      heading: "Profielen en hoeken",
+      paragraphs: [
+        "Naast het paneel heb je aansluit- en eindprofielen, en hoek- of tussenstukken nodig. Bestel alles in dezelfde order, in dezelfde kleur.",
+      ],
+    },
+    {
+      heading: "Gevel en dakrand samen",
+      paragraphs: [
+        "Werk gevel en dakrand in één systeem af. De Keralit gevelbekleding staat op de Keralit-landingspagina. Twijfel je over de kleur, vraag eerst een staal aan.",
+      ],
+    },
+  ],
+  faqs: [
+    {
+      q: "Wat is een Keralit boeideel?",
+      a: "Het kunststof dakrandpaneel van Keralit waarmee je de dakrand of boei afwerkt. In de shop zie je het ook als dakrandpaneel.",
+    },
+    {
+      q: "Kan ik de dakrand over mijn oude boeideel heen?",
+      a: "Vaak wel, als de ondergrond recht en droog is en je de juiste montageprofielen gebruikt. Twijfel je, stuur een foto mee bij de offerte.",
+    },
+    {
+      q: "Kan ik Keralit dakranden zelf monteren?",
+      a: "Ja, met de bijpassende profielen en de montagevoorschriften van Keralit. Liever laten plaatsen? Vraag een offerte aan.",
+    },
+  ],
+  links: [
+    { href: "/keralit-gevelbekleding", label: "Keralit gevelbekleding" },
+    { href: "/boeidelen", label: "Alle boeidelen" },
+    { href: "/staalaanvraag", label: "Gratis kleurstaal" },
+    { href: "/offerte", label: "Offerte aanvragen" },
+  ],
+};
+
+export const plafondBadkamerArticle: {
+  intro: string;
+  sections: SeoSection[];
+  faqs: SeoFaq[];
+  links: SeoLink[];
+} = {
+  intro:
+    "Een kunststof plafond in de badkamer is vochtbestendig, strak en onderhoudsarm. Je kiest binnenplafondpanelen die tegen vocht kunnen, met de bijpassende profielen en plinten.",
+  sections: [
+    {
+      heading: "Waarom kunststof in de badkamer?",
+      paragraphs: [
+        "Vocht en temperatuurschommelingen horen bij een badkamer. Kunststof plafondpanelen nemen geen vocht op zoals sommige plaatmaterialen en je hoeft niet te schilderen.",
+      ],
+    },
+    {
+      heading: "Wat heb je nodig?",
+      paragraphs: [
+        "Panelen, omrandings- of H-profielen, en waar nodig een plint of ventilatierooster. De exacte set hangt af van het merk en de afmeting van je plafond. Prijs en lengte staan op de productkaart.",
+      ],
+    },
+    {
+      heading: "Binnen of overstek?",
+      paragraphs: [
+        "Deze pagina is voor binnen, zoals de badkamer. Voor een overstek of buitenplafond kies je de overstek-pagina bij plafondpanelen.",
+      ],
+    },
+  ],
+  faqs: [
+    {
+      q: "Kan ik een kunststof plafond in de badkamer plaatsen?",
+      a: "Ja, met binnenplafondpanelen die tegen vocht kunnen, plus de juiste profielen. Volg de montagevoorschriften van het merk.",
+    },
+    {
+      q: "Wat is het verschil met een buitenplafond?",
+      a: "Binnenpanelen horen binnen. Voor een overstek gebruik je buitenplafondpanelen. Die staan onder plafondpanelen overstek.",
+    },
+  ],
+  links: [
+    { href: "/plafondpanelen", label: "Alle plafondpanelen" },
+    { href: "/plafondpanelen/overstek", label: "Overstek en buiten" },
+    { href: "/merken/florence", label: "Florence" },
+    { href: "/staalaanvraag", label: "Staal aanvragen" },
+    { href: "/offerte", label: "Offerte" },
+  ],
+};

@@ -185,10 +185,10 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
     description: categoryPageSeo["hpl-platen"].description,
     sections: [
       {
-        heading: "HPL platen kopen",
+        heading: "HPL plaat kopen",
         paragraphs: [
-          "HPL is een compacte plaat: lagen papier en hars, geperst onder hoge druk. Het oppervlak is hard en bestand tegen vocht. U bestelt de plaat heel. Wij zagen niet op maat.",
-          "De lijnen in deze categorie zijn HPL Compact Exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur of op RAL. Een staal legt u buiten tegen de gevel, niet alleen op een scherm.",
+          "Een HPL plaat (ook: HPL platen) is een compacte plaat: lagen papier en hars, geperst onder hoge druk. Het oppervlak is hard en bestand tegen vocht. Je bestelt de plaat heel. Wij zagen niet op maat.",
+          "De lijnen in deze categorie zijn HPL Compact Exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur of op RAL. Een staal leg je buiten tegen de gevel, niet alleen op een scherm.",
         ],
       },
       {
@@ -241,6 +241,8 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       { href: "/merken/abet", label: "Abet" },
       { href: "/blog/hpl-plaat", label: "Plaat of gevelpaneel" },
       { href: categoryPath("gevelbekleding"), label: "Gevelpanelen" },
+      { href: "/staalaanvraag", label: "Gratis staal" },
+      { href: "/offerte", label: "Offerte" },
     ],
   },
 };

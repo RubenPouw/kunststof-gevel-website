@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { pageSeo } from "@/data/seo/category-pages";
+import { boeiKeralitArticle, pageSeo } from "@/data/seo/category-pages";
 
 export const revalidate = 3600;
 
@@ -40,7 +40,13 @@ export default async function BoeiBrandPage({ params }: Props) {
       slug="dakranden"
       filters={{ brandSlug: page.brand }}
       page={1}
-      heading={{ h1: page.h1, path: page.path, description: page.description, intro: page.description }}
+      heading={{
+        h1: page.h1,
+        path: page.path,
+        description: page.description,
+        intro: merk === "keralit" ? boeiKeralitArticle.intro : page.description,
+      }}
+      article={merk === "keralit" ? boeiKeralitArticle : undefined}
     />
   );
 }
