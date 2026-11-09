@@ -158,7 +158,7 @@ export const faqs = [
   },
   {
     q: "Overzet vensterbank of vaste bank?",
-    a: "Bij een gave oude bank kies je een overzet vensterbank: over de bestaande bank, zonder breekwerk, buiten en binnen. Is de bank rot, hol of scheef, kies dan een vaste kunststof vensterbank.",
+    a: "Bij een gave oude bank kies je een overzet vensterbank: over de bestaande bank, zonder breekwerk, voor binnen. Is de bank rot, hol of scheef, kies dan een vaste kunststof vensterbank.",
   },
 ] as const;
 
@@ -173,7 +173,7 @@ export const homeGuides = [
     href: "/kunststof-vensterbank",
     kicker: "Kozijn",
     title: "Overzet vensterbank",
-    description: "Milinboard 380 mm over je oude bank, buiten en binnen, met eindkappen.",
+    description: "Milinboard 380 mm over je oude bank, voor binnen, met eindkappen.",
   },
   {
     href: "/boeidelen/keralit",

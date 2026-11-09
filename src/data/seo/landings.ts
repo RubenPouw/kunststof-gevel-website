@@ -183,21 +183,21 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     title: categoryPageSeo.vensterbanken.h1,
     metaTitle: categoryPageSeo.vensterbanken.title,
     description:
-      "Overzet vensterbank buiten of binnen? Milinboard 380 mm schuif je over je oude bank. Wit of crème, met eindkappen. Voorraad in max. 4 werkdagen.",
+      "Overzet vensterbank voor binnen: Milinboard 380 mm schuif je over je oude bank. Wit of crème, met eindkappen. Voorraad in max. 4 werkdagen.",
     intro:
-      "Zoek je een overzet vensterbank kunststof voor buiten of binnen? Met een overzet vensterbank van Milinboard werk je je oude vensterbank strak af zonder breekwerk. De overzetvensterbank van 380 mm in wit of crème plaats je direct over de oude bank en werk je af met bijpassende eindkappen. Het materiaal is stevig en vlak, waterbestendig en krasvast. Zo heb je in 1 dagdeel een nieuwe, onderhoudsarme vensterbank.",
+      "Zoek je een overzet vensterbank kunststof voor binnen? Met een overzet vensterbank van Milinboard werk je je oude vensterbank strak af zonder breekwerk. De overzetvensterbank van 380 mm in wit of crème plaats je direct over de oude bank en werk je af met bijpassende eindkappen. Het materiaal is stevig en vlak, waterbestendig en krasvast. Zo heb je in 1 dagdeel een nieuwe, onderhoudsarme vensterbank.",
     sampleHref: "/staalaanvraag?groep=vensterbank",
     sections: [
       {
         heading: "Kunststof vensterbank: overzet of vast",
         paragraphs: [
-          "Op deze pagina vind je de overzet vensterbank van Milinboard, plus vaste vensterbanken en eindkappen. Een overzet vensterbank plaats je over de bestaande bank. De oude bank hoeft er niet uit en er komt geen breekwerk aan te pas. Daarom past dit bij renovatie, buiten en binnen.",
+          "Op deze pagina vind je de overzet vensterbank van Milinboard, plus vaste vensterbanken en eindkappen. Een overzet vensterbank plaats je over de bestaande bank. De oude bank hoeft er niet uit en er komt geen breekwerk aan te pas. Daarom past dit bij renovatie binnen.",
         ],
       },
       {
-        heading: "Overzet vensterbank buiten: zo werkt het",
+        heading: "Overzet vensterbank binnen: zo werkt het",
         paragraphs: [
-          "Buiten krijgt een vensterbank regen en zon te verduren. De Milinboard overzet vensterbank 380 mm is waterafstotend, UV-bestendig en krasvast. Hout moet je schuren en schilderen. Deze vensterbank niet: een vochtige doek met een mild schoonmaakmiddel is genoeg.",
+          "Binnen werk je een bestaande vensterbank af zonder die eruit te halen. De Milinboard overzet vensterbank 380 mm is vlak en krasvast. Hout moet je schuren en schilderen. Deze vensterbank niet: een vochtige doek met een mild schoonmaakmiddel is genoeg.",
           "De bank is 380 mm diep en komt per lengte van 600 cm. Je zaagt hem zelf op maat. Kies uit wit of crème. De spitse ronde neus geeft een strakke voorkant. De zijkanten werk je af met de bijpassende eindkap.",
         ],
       },
@@ -224,10 +224,6 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         q: "Wat is een overzet vensterbank?",
         a: "Een kunststof vensterbank die je over de bestaande vensterbank plaatst. De oude bank hoeft er niet uit, dus je hebt geen sloop- of breekwerk.",
-      },
-      {
-        q: "Kan ik een overzet vensterbank buiten gebruiken?",
-        a: "Ja. De Milinboard overzet vensterbank is waterafstotend, UV-bestendig en krasvast, en daarmee geschikt voor buiten. Schilderen is niet nodig.",
       },
       {
         q: "Welke maat en kleuren zijn er?",
