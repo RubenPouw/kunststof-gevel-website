@@ -148,7 +148,7 @@ test("every old URL in the redirect map reaches a 200 in one hop", () => {
   const table = parseCsv(csv.trim());
   const [header, ...rows] = table;
   assert.deepEqual(header, ["oude_url", "prioriteit", "status", "zoektermen", "nieuwe_url"]);
-  assert.equal(rows.length, 260);
+  assert.equal(rows.length, 262);
 
   const home = rows.filter((row) => row[4] === "/").map((row) => row[0]);
   assert.deepEqual(home.sort(), ["/", "/kunststof-gevelbekleding/"]);

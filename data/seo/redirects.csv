@@ -795,3 +795,7 @@ from,to,status,reason
 /product-categorie/kunststof-dakranden-boei-delen,/boeidelen,301,category
 /product-categorie/kozijn-afwerking-vensterbanken,/kunststof-vensterbank,301,vensterbank-page
 /stalen,/staalaanvraag,301,staalaanvraag
+/overzet-vensterbank,/kunststof-vensterbank,301,vensterbank-page
+/overzet-vensterbank/,/kunststof-vensterbank,301,vensterbank-page
+/keralit-boeideel-dakrand-afwerken,/blog/keralit-boeideel-dakrand-afwerken,301,rewritten-article
+/keralit-boeideel-dakrand-afwerken/,/blog/keralit-boeideel-dakrand-afwerken,301,rewritten-article

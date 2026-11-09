@@ -232,4 +232,155 @@ export const migratedPosts: BlogPost[] = [
       { href: "/blog/keralit-of-vinyplus", label: "VinyPlus of Keralit" },
     ],
   },
+  {
+    slug: "keralit-boeideel-dakrand-afwerken",
+    title: "Keralit boeideel: zo werk je je dakrand strak en onderhoudsvrij af",
+    description:
+      "Keralit boeideel bestellen? Lees welke breedte en welk montageprofiel je nodig hebt, hoe je hoeken en ventilatie goed doet en bestel alles compleet bij Kunststof-gevel.nl.",
+    date: "2026-10-22",
+    kicker: "Dakrand",
+    sections: [
+      {
+        heading: "Wat is een Keralit boeideel?",
+        image: {
+          src: "/blog/keralit-boeideel-dakrand.webp",
+          alt: "Keralit boeideel dakrand",
+          place: "before",
+        },
+        paragraphs: [
+          "Een houten boeideel dat elke paar jaar geschuurd en geschilderd moet worden, kost je geld, tijd en steigerhuur. Een Keralit boeideel los je dat in één keer mee op: je bekleedt de dakrand met kunststof panelen die niet meer geschilderd hoeven te worden. In dit artikel lees je welke breedte je kiest, welk montageprofiel je nodig hebt, hoe je hoeken en naden netjes afwerkt en wat er allemaal op je bestellijst moet.",
+          "Een boeideel is de plank aan de rand van je dak die de dakconstructie afdekt en de goot of dakbedekking afwerkt. Bij Keralit bestaat dat boeideel uit een dakrandpaneel van Fiberyl, het kunststof waar Keralit om bekend staat. De panelen zijn 10 mm dik, 600 cm lang en hebben 10 jaar garantie. Je klikt ze op een montageprofiel, dus je ziet aan de voorkant geen schroeven.",
+          "Het grote verschil met hout: geen verf die afbladdert, geen houtrot en geen vaste onderhoudsronde. Even schoonmaken met water en een mild middel is genoeg.",
+        ],
+      },
+      {
+        heading: "Welke breedte heb je nodig?",
+        image: {
+          src: "/blog/keralit-dakrand-close-up-wit.webp",
+          alt: "Kunststof dakrand afwerking",
+        },
+        paragraphs: [
+          "De Keralit dakranden en boeidelen zijn er in vier hoogtes:",
+          "Keralit dakrand paneel 200 mm",
+          "Keralit dakrand paneel 250 mm",
+          "Keralit dakrand paneel 300 mm",
+          "Keralit dakrand paneel 350 mm",
+          "Meet de hoogte van je bestaande boeideel, van onderkant tot bovenkant, en kies het paneel dat die hoogte volledig afdekt. Twijfel je tussen twee maten? Neem de bredere. Een paneel dat net te smal is, laat een streep oud hout zien en dat zie je van de straat af direct. Meet ook op meerdere plekken, want oude boeidelen zijn zelden overal even hoog.",
+          "Voor de lengte reken je de totale strekkende meters van alle dakranden bij elkaar en deel je door 6 meter per paneel. Tel daar een marge bij op voor zaagverlies en hoeken.",
+        ],
+      },
+      {
+        heading: "Met of zonder overstek: kies het juiste montageprofiel",
+        paragraphs: [
+          "Dit is de keuze waar de meeste fouten gemaakt worden. Keralit werkt met twee montageprofielen:",
+          "Zonder overstek: het Keralit dakrand boeiboordmontageprofiel. Dit schroef je op het boeideel als er geen overstek onder het dak zit. Daarna klik je het paneel erin.",
+          "Met overstek: het Keralit dakrand montage profiel 10 mm. Dit gebruik je als er een dakrandpaneel als plafond in het overstek komt. Het profiel heeft een binnenmaat van 10 mm, precies de dikte van het paneel.",
+          "Beide profielen bevestig je om de 30 cm. Het kliksysteem werkt in twee stappen: met de eerste klik hangt het paneel zelfstandig en kun je het nog naar links of rechts schuiven om het goed te positioneren. Zodra de hoek- en tussenstukken zitten, druk je het paneel met een tweede klik verder in het profiel. Dan zit het muurvast.",
+        ],
+      },
+      {
+        heading: "Ventilatie: sla dit niet over",
+        paragraphs: [
+          "Achter een dakrand moet lucht kunnen stromen. Zit het dicht, dan krijg je vocht, schimmel en vervorming door temperatuurverschillen. Gebruik daarom aan de onderzijde de geventileerde Keralit trim/kraal. De ventilatieopeningen zijn afgestemd op Keralit dakrandpanelen en je ziet ze nauwelijks. Dit profiel zet je vast met een Torx schroef in dezelfde kleur, zodat de bevestiging niet opvalt.",
+        ],
+      },
+      {
+        heading: "Klassiek of modern: de sierlijst bepaalt de uitstraling",
+        paragraphs: [
+          "Bovenop of onderaan de dakrand kies je de afwerking die bij je huis past:",
+          "Klassiek: de Keralit trim kraal aansluiting klassiek, met de herkenbare kraal die je kent van traditionele houten boeidelen. Ideaal voor jaren 30 woningen, rijtjeshuizen en monumentale panden.",
+          "Modern: de Keralit trim sierlijst modern, strak en zonder profilering. Past bij nieuwbouw, aanbouwen en dakkapellen met een rechte lijn.",
+          "Kies je één stijl, houd die dan aan rondom het hele huis. Klassiek aan de voorkant en modern aan de achterkant ziet er snel rommelig uit.",
+        ],
+      },
+      {
+        heading: "Hoeken en naden netjes afwerken",
+        paragraphs: [
+          "Een dakrand is zo strak als de zwakste hoek. Daarom heeft Keralit voor elke aansluiting een eigen onderdeel:",
+          "Uitwendige hoeken: het uitwendig hoekstuk voor het paneel, plus een hoekstuk voor de sierlijst in klassiek of modern.",
+          "Naden in de lengte: tussenstukken voor paneel en sierlijst, of een H-verbindingsprofiel van 10 mm als je twee panelen in lijn wilt aansluiten.",
+          "Einden: het eindprofiel van 10 mm sluit de zijkant van de dakrand af, zodat je geen open kopse kant ziet.",
+          "Plaats de hoek- en tussenstukken voordat je de panelen met de tweede klik vastzet. Zo kun je de panelen nog schuiven tot alles sluit. Kleine beschadigingen of zaagranden werk je bij met de Keralit kleurstift.",
+        ],
+      },
+      {
+        heading: "Kleur kiezen",
+        paragraphs: [
+          "Keralit dakranden zijn er in 17 kleuren, van wit (RAL 9016), crème (RAL 9001) en licht ivoor (RAL 1015) tot antraciet (RAL 7016), zwartgrijs (RAL 7021), grafiet zwart, monumentengroen, monumentenblauw en houtlooks als golden oak en mahonie. Wit en crème kiezen veel klanten bij klassieke woningen, antraciet en zwartgrijs bij moderne gevels en dakkapellen.",
+          "Combineer je de dakrand met kunststof gevelbekleding of kunststof rabatdelen? Stem de kleuren dan op elkaar af. Een dakrand in dezelfde kleur als de kozijnen is meestal de veiligste keuze.",
+        ],
+      },
+      {
+        heading: "Veelgemaakte fouten",
+        image: {
+          src: "/blog/keralit-boeideel-woning.webp",
+          alt: "Kunststof dakrand en boeideel op een woning",
+        },
+        paragraphs: [
+          "Het verkeerde montageprofiel bestellen. Eerst bepalen of er een overstek is, dan pas bestellen.",
+          "Te smal paneel. Altijd op meerdere plekken meten en bij twijfel de bredere maat.",
+          "Geen ventilatie. Zonder geventileerde trim/kraal loop je risico op vocht en vervorming.",
+          "Rot hout niet vervangen. Keralit bekleedt je boeideel, het herstelt geen rotte ondergrond. Vervang slecht hout eerst.",
+          "Verkeerde schroeven. Gebruik roestvrije schroeven, bijvoorbeeld rvs A4 schroeven, zodat je over een paar jaar geen roestsporen ziet.",
+        ],
+      },
+      {
+        heading: "Je bestellijst in het kort",
+        paragraphs: [
+          "Dakrandpanelen in de juiste hoogte (200, 250, 300 of 350 mm)",
+          "Montageprofiel: boeiboordmontageprofiel zonder overstek, of montageprofiel 10 mm met overstek",
+          "Geventileerde trim/kraal",
+          "Sierlijst klassiek of modern",
+          "Hoekstukken, tussenstukken, eindprofielen en eventueel H-verbindingsprofielen",
+          "Rvs schroeven en Torx schroeven op kleur",
+          "Keralit kleurstift voor de afwerking",
+          "Alle onderdelen staan bij elkaar op de pagina Keralit dakranden en boeidelen. Vanaf €499 is de verzending gratis. Heb je een groot project of veel strekkende meters? Vraag via die pagina een prijs op maat aan.",
+        ],
+      },
+      {
+        heading: "Eerst de kleur in het echt zien?",
+        paragraphs: [
+          "Een kleur op je scherm is niet hetzelfde als een kleur in het daglicht tegen je eigen gevel. Vraag een staal aan met onderwerp Staalaanvraag en zet erbij welke kleur je wilt zien.",
+        ],
+      },
+      {
+        heading: "Kort samengevat",
+        paragraphs: [
+          "Met een Keralit boeideel ben je voorgoed af van schilderen. Meet de hoogte goed, kies het montageprofiel op basis van wel of geen overstek, zorg voor ventilatie met de geventileerde trim/kraal en werk elke hoek en naad af met het juiste onderdeel. Dan heb je een dakrand die jarenlang strak blijft.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Welke breedte heb je nodig?",
+        a: "Meet de hoogte van je bestaande boeideel, van onderkant tot bovenkant, en kies het paneel dat die hoogte volledig afdekt. Twijfel je tussen twee maten? Neem de bredere.",
+      },
+      {
+        q: "Welk montageprofiel gebruik je met een overstek?",
+        a: "Met overstek gebruik je het Keralit dakrand montage profiel 10 mm, als er een dakrandpaneel als plafond in het overstek komt. Zonder overstek schroef je het boeiboordmontageprofiel op het boeideel.",
+      },
+      {
+        q: "Waarom moet de dakrand ventileren?",
+        a: "Achter een dakrand moet lucht kunnen stromen. Zit het dicht, dan krijg je vocht, schimmel en vervorming door temperatuurverschillen.",
+      },
+    ],
+    links: [
+      { href: "/boeidelen/keralit", label: "Keralit dakranden en boeidelen" },
+      { href: "/keralit-gevelbekleding", label: "Keralit gevelbekleding" },
+      { href: "/producten/keralit-dakrandpaneel-200mm", label: "Keralit dakrand paneel 200 mm" },
+      { href: "/producten/keralit-dakrandpaneel-250mm", label: "Keralit dakrand paneel 250 mm" },
+      { href: "/producten/keralit-dakrandpaneel-300mm", label: "Keralit dakrand paneel 300 mm" },
+      { href: "/producten/keralit-dakrandpaneel-350mm", label: "Keralit dakrand paneel 350 mm" },
+      { href: "/producten/keralit-dakrand-boeiboordmontageprofiel", label: "Boeiboordmontageprofiel" },
+      { href: "/producten/keralit-dakrandmontageprofiel-10mm", label: "Montageprofiel 10 mm" },
+      { href: "/producten/trim-kraal-vent-keralit-dakrand", label: "Geventileerde trim/kraal" },
+      { href: "/producten/trim-kraal-sierlijst-klassiek", label: "Trim kraal aansluiting klassiek" },
+      { href: "/producten/trim-kraal-sierlijst-modern", label: "Trim sierlijst modern" },
+      { href: "/producten/uitwendig-hoekstuk-350mm-keralit-dakrand", label: "Uitwendig hoekstuk" },
+      { href: "/producten/rvs-a4-schroef-alu-hout-zelfborend-4-2x23-100st", label: "Rvs A4 schroeven" },
+      { href: "/gevelbekleding", label: "Kunststof gevelbekleding" },
+      { href: "/rabatdelen", label: "Kunststof rabatdelen" },
+      { href: "/staalaanvraag", label: "Staalaanvraag" },
+    ],
+  },
 ];
