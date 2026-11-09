@@ -10,6 +10,7 @@ import {
   filterHplCards,
   hplColorTokenLabel,
   hplHubHref,
+  HPL_HUB_TITLE,
   hplLineLabel,
   hplLineOrder,
   type HplCard,
@@ -84,7 +85,7 @@ export function HplHub({
     <div className="bg-kg-kalk">
       <div className="container-kg py-10 sm:py-12">
         <p className="font-mono text-[13px] text-kg-text-2">Assortiment</p>
-        <h1 className="display-plp mt-2 max-w-3xl">{onPlates ? "HPL plaat op kleur" : "Sandwich en reiniger"}</h1>
+        <h1 className="display-plp mt-2 max-w-3xl">{onPlates ? HPL_HUB_TITLE : "Sandwich en reiniger"}</h1>
         <p className="mt-4 max-w-2xl text-kg-text-2">
           {onPlates
             ? "Compact Exterieur, Renolit eenzijdig en Milyt. Hele plaat, 3050 × 1300 × 6 mm, 3,965 m². U kiest een kleur of een decor. Wij zagen niet op maat."

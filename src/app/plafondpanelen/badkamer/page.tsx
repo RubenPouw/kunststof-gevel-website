@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { CategoryListing } from "@/components/catalog/category-listing";
-import { pageSeo } from "@/data/seo/category-pages";
+import { pageSeo, plafondBadkamerArticle } from "@/data/seo/category-pages";
 
 export const revalidate = 3600;
 
@@ -19,7 +19,8 @@ export default function PlafondBadkamerPage() {
       slug="plafondpanelen"
       filters={{ ceilingPlace: "binnen" }}
       page={1}
-      heading={{ h1: page.h1, path: page.path, description: page.description, intro: page.description }}
+      heading={{ h1: page.h1, path: page.path, description: page.description, intro: plafondBadkamerArticle.intro }}
+      article={plafondBadkamerArticle}
     />
   );
 }

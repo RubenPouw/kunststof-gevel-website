@@ -11,7 +11,7 @@ export function FaqReviews() {
   return (
     <section className="container-kg section-kg mb-16 grid gap-12 lg:grid-cols-[7fr_5fr]">
       <div>
-        <SectionHead title="Veelgestelde vragen" aside="01 – 03" />
+        <SectionHead title="Veelgestelde vragen" aside={`01-${String(faqs.length).padStart(2, "0")}`} />
         <div>
           {faqs.map((item, index) => {
             const expanded = open === index;

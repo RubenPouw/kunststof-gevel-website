@@ -146,7 +146,7 @@ export const businessPoints = [
 export const faqs = [
   {
     q: "Wat kost kunststof gevelbekleding per m²?",
-    a: "Tussen € 65 en € 120 per m² excl. btw, afhankelijk van profiel, merk en kleur. Rechte gevels zonder veel snijwerk zitten aan de onderkant. Wij rekenen het voor uw woning door, binnen 24 uur.",
+    a: "Tussen €65 en €120 per m² excl. btw, afhankelijk van profiel, merk en kleur. Rechte gevels zonder veel snijwerk zitten aan de onderkant. Wij rekenen het voor je woning door. Vraag een offerte aan.",
   },
   {
     q: "Hoe lang gaat kunststof gevelbekleding mee?",
@@ -155,6 +155,31 @@ export const faqs = [
   {
     q: "Keralit of VinyPlus?",
     a: "Keralit: stijver paneel, fijnere houtstructuur, hoogste kleurvastheid. VinyPlus: dezelfde garantie, scherpere prijs. Vraag van allebei een staal aan en leg ze naast elkaar.",
+  },
+  {
+    q: "Overzet vensterbank of vaste bank?",
+    a: "Bij een gave oude bank kies je een overzet vensterbank: over de bestaande bank, zonder breekwerk, buiten en binnen. Is de bank rot, hol of scheef, kies dan een vaste kunststof vensterbank.",
+  },
+] as const;
+
+export const homeGuides = [
+  {
+    href: "/keralit-gevelbekleding",
+    kicker: "Gevel",
+    title: "Keralit gevelbekleding",
+    description: "Keralit planken en panelen, profielen en kleuren. Prijs per plank zichtbaar.",
+  },
+  {
+    href: "/kunststof-vensterbank",
+    kicker: "Kozijn",
+    title: "Overzet vensterbank",
+    description: "Milinboard 380 mm over je oude bank, buiten en binnen, met eindkappen.",
+  },
+  {
+    href: "/boeidelen/keralit",
+    kicker: "Dakrand",
+    title: "Keralit boeideel",
+    description: "Boeidelen en dakranden 200 tot 350 mm, in kleur bij je gevel.",
   },
 ] as const;
 

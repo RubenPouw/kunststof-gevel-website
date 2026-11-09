@@ -4,6 +4,7 @@ import { CategoryPage } from "@/components/catalog/category-page";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SeoArticle } from "@/components/seo/article";
 import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
+import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 import { getCategoryStory } from "@/data/seo/categories";
 import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
@@ -19,18 +20,20 @@ export async function CategoryListing({
   page,
   presentation = DEFAULT_PRESENTATION,
   heading,
+  article,
 }: {
   slug: CategorySlug;
   filters: ListingFilters;
   page: number;
   presentation?: ListingPresentation;
   heading?: { h1: string; path: string; description: string; intro: string };
+  article?: { sections: SeoSection[]; faqs: SeoFaq[]; links: SeoLink[] };
 }) {
   const category = await getCategory(slug);
   if (!category) return null;
   const all = await getProductsByCategory(slug);
   const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
-  const story = getCategoryStory(slug);
+  const story = article ?? getCategoryStory(slug);
   const seo = categoryPageSeo[slug];
   const path = heading?.path ?? categoryPath(slug);
   const h1 = heading?.h1 ?? seo.h1;
