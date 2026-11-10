@@ -81,8 +81,14 @@ export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix =
   parts.push(
     `<svg xmlns="http://www.w3.org/2000/svg" id="${prefix}-sheet" width="${r(box.width)}" height="${r(box.height)}" viewBox="0 0 ${r(box.width)} ${r(box.height)}" style="display:block;width:100%;height:auto" role="img" aria-label="${escapeXml(`${layout.title}, ${W} bij ${H} millimeter, van buiten gezien`)}">`,
   );
+  const glass = plain ? `url(#${prefix}-glass)` : "#F4F2ED";
+  if (plain) {
+    parts.push(
+      `<defs><linearGradient id="${prefix}-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7FBFF"/><stop offset="1" stop-color="#C5D8EE"/></linearGradient></defs>`,
+    );
+  }
   parts.push(`<rect width="100%" height="100%" fill="#FFFFFF"/>`);
-  parts.push(rect(ox, oy, W, H, "none", ink, stroke));
+  parts.push(rect(ox, oy, W, H, plain ? "#FFFFFF" : "none", ink, plain ? stroke * 1.35 : stroke));
 
   if (ventH > 0) {
     parts.push(`<g data-vent="rooster">`);
@@ -107,7 +113,7 @@ export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix =
     const gh = Math.max(8, bottom - top - inset * 2);
     parts.push(`<g data-vak="${index + 1}" data-kind="${pane.kind}" data-hinge="${pane.hingeRight ? "rechts" : "links"}">`);
     if (open) parts.push(rect(ox + left, oy + top, right - left, bottom - top, "#FFFFFF", ink, thin));
-    parts.push(paneGlass(pane.kind, config.filling, gx, gy, gw, gh, ink, thin));
+    parts.push(paneGlass(pane.kind, config.filling, gx, gy, gw, gh, ink, thin, glass));
     if (pane.kind === "draai" || pane.kind === "draaikiep" || pane.kind === "deur") {
       parts.push(openingMarks(gx, gy, gw, gh, pane.hingeRight, pane.kind === "draaikiep", ink, thin, dash));
     }
@@ -172,13 +178,23 @@ function share(total: number, flexes: number[]) {
   return widths;
 }
 
-function paneGlass(kind: string, filling: KozijnConfig["filling"], x: number, y: number, w: number, h: number, ink: string, stroke: number) {
+function paneGlass(
+  kind: string,
+  filling: KozijnConfig["filling"],
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  ink: string,
+  stroke: number,
+  glass = "#F4F2ED",
+) {
   if (kind === "deur" && filling === "paneel") return rect(x, y, w, h, "#E4DDD2", ink, stroke);
   if (kind === "deur" && filling === "half") {
     const split = Math.round(h * 0.45);
-    return rect(x, y, w, split, "#F4F2ED", ink, stroke) + rect(x, y + split, w, h - split, "#E4DDD2", ink, stroke);
+    return rect(x, y, w, split, glass, ink, stroke) + rect(x, y + split, w, h - split, "#E4DDD2", ink, stroke);
   }
-  return rect(x, y, w, h, "#F4F2ED", ink, stroke);
+  return rect(x, y, w, h, glass, ink, stroke);
 }
 
 function openingMarks(x: number, y: number, w: number, h: number, hingeRight: boolean, tilt: boolean, ink: string, stroke: number, dash: string) {

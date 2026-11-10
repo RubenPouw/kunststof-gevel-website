@@ -63,12 +63,13 @@ export default async function KozijnGroupPage({ params }: Props) {
         </div>
       </header>
       <div className="h-2" style={{ background: "var(--gradient-signal)" }} />
-      <section className="bg-kg-kalk">
+      <section className="bg-[#E7EEF4]">
       <ul className="container-kg grid gap-5 py-10 sm:grid-cols-2">
         {layouts.map((layout) => (
           <li key={layout.slug}>
-            <Link href={layoutPath(layout)} className="kg-soft-card flex h-full flex-col overflow-hidden no-underline hover:no-underline">
-              <span className="flex h-44 items-center justify-center border-b border-kg-lijn bg-white px-4">
+            <Link href={layoutPath(layout)} className="kg-soft-card flex h-full flex-col overflow-hidden no-underline transition duration-150 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgb(27_40_56/0.16)] hover:no-underline">
+              <span className="h-1.5 bg-kg-signal" />
+              <span className="flex h-44 items-center justify-center bg-[#E7EEF4] px-4">
                 <KozijnDrawing layout={layout} config={defaultConfig(layout)} caption={false} fit plain />
               </span>
               <span className="flex flex-1 flex-col p-4">

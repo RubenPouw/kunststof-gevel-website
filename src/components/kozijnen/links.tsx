@@ -9,11 +9,10 @@ const LINKS = [
 
 export function KozijnLinks() {
   return (
-    <section className="bg-kg-navy">
-      <div className="h-2" style={{ background: "var(--gradient-signal)" }} />
+    <section className="bg-kg-kalk">
       <div className="container-kg py-12">
-        <h2 className="text-[22px] font-bold tracking-[-0.03em] text-kg-kalk">Kozijn en gevel samen</h2>
-        <p className="mt-3 max-w-2xl text-[16px] leading-normal text-kg-grind">
+        <h2 className="text-[22px] font-bold tracking-[-0.03em] text-kg-navy">Kozijn en gevel samen</h2>
+        <p className="mt-3 max-w-2xl text-[16px] leading-normal text-kg-text-2">
           Het kozijn staat niet los van de gevel. Leg een staal van de bekleding naast de kleur van het kader, en bestel de bank en de dakrand in dezelfde ronde.
         </p>
         <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
