@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{ groep?: string; product?: string }>;
+  searchParams: Promise<{ groep?: string; product?: string; paneel?: string }>;
 };
 
 export default async function StaalaanvraagPage({ searchParams }: Props) {
@@ -22,7 +22,7 @@ export default async function StaalaanvraagPage({ searchParams }: Props) {
   const tree = applyFillout(buildStaalTree(catalog.products));
   return (
     <div className="container-kg py-8 sm:py-12">
-      <StaalPicker tree={tree} groep={params.groep} product={params.product} />
+      <StaalPicker tree={tree} groep={params.groep} product={params.product} paneel={params.paneel} />
     </div>
   );
 }

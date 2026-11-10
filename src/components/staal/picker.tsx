@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 
 import { ColourName, colourOptionText } from "@/components/catalog/colour-name";
@@ -9,8 +10,10 @@ import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import {
   picksToLines,
   sampleFromStaal,
+  staalCategoryBlocks,
   staalPickerSections,
   swatchFromSample,
+  type StaalPickerGroup,
   type StaalSwatch,
 } from "@/lib/staal/picker";
 import {
@@ -163,12 +166,17 @@ export function StaalPicker({
   tree,
   groep,
   product,
+  paneel,
 }: {
   tree: StaalTree;
   groep?: string;
   product?: string;
+  paneel?: string;
 }) {
+  const router = useRouter();
   const sections = useMemo(() => staalPickerSections(tree), [tree]);
+  const blocks = useMemo(() => staalCategoryBlocks(sections), [sections]);
+  const groups = useMemo(() => blocks.flatMap((block) => block.groups), [blocks]);
   const samples = useSamples();
   const slots = useMemo(() => samples.items.map(swatchFromSample), [samples.items]);
   const [formOpen, setFormOpen] = useState(false);
@@ -198,10 +206,34 @@ export function StaalPicker({
     () => true,
   );
 
+  const active =
+    groups.find((group) => group.id === paneel) ??
+    (product ? groups.find((group) => group.swatches.some((swatch) => swatch.productSlugs.includes(product))) : undefined);
+
   useEffect(() => {
-    const target = product ? document.getElementById(`staal-product-${product}`) : groep ? document.getElementById(`staal-${groep}`) : null;
+    const target = active
+      ? document.getElementById("staal-kleuren")
+      : groep
+        ? document.getElementById(`staal-cat-${groep}`)
+        : null;
     target?.scrollIntoView({ block: "start" });
-  }, [groep, product]);
+  }, [active, groep]);
+
+  function openPanel(id: string) {
+    const next = new URLSearchParams();
+    if (groep) next.set("groep", groep);
+    next.set("paneel", id);
+    router.push(`/staalaanvraag?${next.toString()}`);
+  }
+
+  function backToPanels() {
+    router.push(groep ? `/staalaanvraag?groep=${encodeURIComponent(groep)}` : "/staalaanvraag");
+  }
+
+  function chosenIn(group: StaalPickerGroup) {
+    const ids = new Set(group.swatches.map((swatch) => swatch.id));
+    return slots.filter((slot) => ids.has(slot.id)).length;
+  }
 
   function choose(swatch: StaalSwatch) {
     setError("");
@@ -288,59 +320,93 @@ export function StaalPicker({
           <p className="mb-2 max-w-[560px] text-kg-text-2">{STAAL_GROUP_QUESTION}</p>
           <p className="mb-2 max-w-[560px] text-kg-text-2">{STAAL_MULTI_NOTE}</p>
           <p className="mb-6 max-w-[560px] text-kg-text-2">{STAAL_BOTH_NOTE}</p>
-          <div className="grid gap-8">
-            {sections.map((section) => (
-              <section key={section.id} id={`staal-${section.id}`} className="scroll-mt-[130px]">
-                <h2 className="text-[20px] font-medium">{section.title}</h2>
-                {section.groups.map((group) => (
-                  <div key={group.id} className="mt-4">
-                    {[...new Set(group.swatches.flatMap((swatch) => swatch.productSlugs))].map((slug) => (
-                      <span key={slug} id={`staal-product-${slug}`} className="sr-only" />
-                    ))}
-                    {group.title !== section.title ? (
-                      <h3 className="font-mono text-[13px] text-kg-text-2">{group.title}</h3>
-                    ) : null}
-                    <div className="mt-3 grid grid-cols-3 gap-x-5 gap-y-3 sm:grid-cols-4">
-                      {group.swatches.map((swatch) => {
-                        const selected = slots.some((slot) => slot.id === swatch.id);
-                        const pos = slots.findIndex((slot) => slot.id === swatch.id);
-                        const blocked = !selected && slots.length >= SAMPLE_LIMIT;
-                        const label = swatch.code ? `${swatch.name} (${swatch.code})` : swatch.name;
-                        return (
+          {active ? (
+            <div id="staal-kleuren" className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
+              <button type="button" onClick={backToPanels} className={buttonVariants({ size: "sm" })}>
+                Terug naar paneelsoorten
+              </button>
+              <h2 className="mt-5 text-[28px] leading-none font-bold tracking-[-0.03em]">{active.title}</h2>
+              {active.swatches.flatMap((swatch) => swatch.productSlugs).filter((slug, index, list) => list.indexOf(slug) === index).map((slug) => (
+                <span key={slug} id={`staal-product-${slug}`} className="sr-only" />
+              ))}
+              <div className="mt-5 grid grid-cols-3 gap-x-5 gap-y-3 sm:grid-cols-4">
+                {active.swatches.map((swatch) => {
+                  const selected = slots.some((slot) => slot.id === swatch.id);
+                  const pos = slots.findIndex((slot) => slot.id === swatch.id);
+                  const blocked = !selected && slots.length >= SAMPLE_LIMIT;
+                  const label = swatch.code ? `${swatch.name} (${swatch.code})` : swatch.name;
+                  return (
+                    <button
+                      key={swatch.id}
+                      type="button"
+                      onClick={() => choose(swatch)}
+                      disabled={blocked}
+                      className="relative text-left disabled:opacity-45"
+                    >
+                      <div
+                        className={cn(
+                          "relative aspect-square border border-kg-lijn",
+                          selected && "outline outline-2 outline-offset-2 outline-kg-navy",
+                        )}
+                        style={{ background: swatch.hex || "#C5C1B8" }}
+                      >
+                        {swatch.image ? (
+                          <img src={swatch.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                        ) : null}
+                        {selected ? (
+                          <span className="absolute top-1.5 right-1.5 bg-kg-navy px-1.5 py-0.5 font-mono text-[11px] text-kg-signal">
+                            {String(pos + 1).padStart(2, "0")}
+                          </span>
+                        ) : null}
+                      </div>
+                      <ColourName value={label} className="mt-2 block text-[15px] font-medium" />
+                      <span className="block font-mono text-[12px] text-kg-text-2">{swatch.lineLabel}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <div className="grid gap-10">
+              {blocks.map((block) => (
+                <section key={block.sectionId} id={`staal-cat-${block.sectionId}`} className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
+                  <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">{block.title}</h2>
+                  <ul className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                    {block.groups.map((group) => {
+                      const chosen = chosenIn(group);
+                      return (
+                        <li key={group.id}>
                           <button
-                            key={swatch.id}
                             type="button"
-                            onClick={() => choose(swatch)}
-                            disabled={blocked}
-                            className="relative text-left disabled:opacity-45"
+                            onClick={() => openPanel(group.id)}
+                            className="kg-soft-card flex h-full w-full flex-col overflow-hidden text-left"
                           >
-                            <div
-                              className={cn(
-                                "relative aspect-square border border-kg-lijn",
-                                selected && "outline outline-2 outline-offset-2 outline-kg-navy",
-                              )}
-                              style={{ background: swatch.hex || "#C5C1B8" }}
-                            >
-                              {swatch.image ? (
-                                <img src={swatch.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                            <span className="flex h-40 items-center justify-center bg-white px-4">
+                              {group.image ? (
+                                <img src={group.image} alt="" className="max-h-36 w-full object-contain" />
                               ) : null}
-                              {selected ? (
-                                <span className="absolute top-1.5 right-1.5 bg-kg-navy px-1.5 py-0.5 font-mono text-[11px] text-kg-signal">
-                                  {String(pos + 1).padStart(2, "0")}
+                            </span>
+                            <span className="flex flex-1 flex-col p-4">
+                              <span className="text-[16px] font-medium text-kg-navy">{group.title}</span>
+                              <span className="mt-1 font-mono text-[13px] text-kg-text-2">
+                                {group.swatches.length} {group.swatches.length === 1 ? "kleur" : "kleuren"}
+                              </span>
+                              {chosen > 0 ? (
+                                <span className="mt-1 font-mono text-[13px] text-kg-navy">
+                                  {chosen} {chosen === 1 ? "staal gekozen" : "stalen gekozen"}
                                 </span>
                               ) : null}
-                            </div>
-                            <ColourName value={label} className="mt-2 block text-[15px] font-medium" />
-                            <span className="block font-mono text-[12px] text-kg-text-2">{swatch.lineLabel}</span>
+                              <span className={cn(buttonVariants({ size: "sm" }), "mt-4 w-fit")}>Kleuren</span>
+                            </span>
                           </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </section>
-            ))}
-          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          )}
         </div>
         <Tray
           slots={slots}

@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { staticProducts } from "../src/lib/catalog/static.ts";
+import { applyFillout } from "../src/lib/staal/fillout.ts";
+import { staalCategoryBlocks, staalPickerSections } from "../src/lib/staal/picker.ts";
 import type { Product, ProductVariant } from "../src/lib/catalog/types.ts";
 import { customerStaalText } from "../src/lib/staal/messages.ts";
 import { rateLimitStaal, resetStaalRateLimit } from "../src/lib/staal/rate-limit.ts";
@@ -108,6 +110,36 @@ test("gevel splits potdeksel by brand and sponning by product", () => {
   assert.match(multiText, /Multi/);
   assert.match(multiText, /dubbel/i);
   assert.equal(labels(gevel).some((label) => /hoekstuk|eindprofiel|schroef/i.test(label)), false);
+});
+
+test("verbindstukken are not a panel and not a colour", () => {
+  const removed = [
+    ["keralit-verbindstuk-143", "Keralit verbindstuk voor 143 mm", "Montage"],
+    ["keralit-h-verbindingprofiel-10mm", "H-verbindingprofiel 10 mm Keralit dakrand", "Dakranden"],
+    ["eurotexx-stootvoeg-180", "Eurotexx Stootvoegverbinding 180 mm voor Potdeksel", "Montage"],
+    ["eurotexx-stootvoeg-332", "Eurotexx stootvoegverbinding 332 mm voor Dubbel rabatdeel", "Montage"],
+  ] as const;
+  for (const [slug, name] of removed) {
+    const product = staticProducts.find((item) => item.slug === slug);
+    assert.equal(product?.name, name);
+  }
+  const filled = applyFillout(buildStaalTree(staticProducts));
+  function slugs(node: StaalNode): string[] {
+    return [...node.productSlugs, ...(node.children ?? []).flatMap(slugs)];
+  }
+  const present = new Set(filled.groups.flatMap(slugs));
+  const sections = staalPickerSections(filled);
+  const text = sections
+    .flatMap((section) => section.groups.flatMap((group) => [group.title, ...group.swatches.map((swatch) => swatch.name)]))
+    .join("\n");
+  for (const [slug] of removed) {
+    assert.equal(present.has(slug), false, slug);
+  }
+  assert.doesNotMatch(text, /verbind/i);
+  assert.deepEqual(
+    staalCategoryBlocks(sections).map((block) => block.title),
+    ["Gevelbekleding", "Dakranden", "Vensterbanken"],
+  );
 });
 
 test("dakrand lists panels and drops profiles, corners and caps", () => {

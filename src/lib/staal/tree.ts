@@ -77,15 +77,20 @@ const DAKRAND_META: Record<DakrandKind, { label: string; question: string }> = {
   daktrim: { label: "Daktrim", question: "Kies de daktrim" },
 };
 
+/** Verbindstukken, verbindingsprofielen and stootvoegverbindingen are not samples. */
+export function isVerbindingName(name: string) {
+  return /verbind/i.test(name);
+}
+
 const HARDWARE =
-  /schroef|eindkap|eindprofiel|startprofiel|hoekprofiel|hoekstuk|\bhoek\b|verbind|montage\s*profiel|reiniger|ventilatie|afdicht|stootvoeg|bevestiging|\bclip\b|\bkit\b/;
+  /schroef|eindkap|eindprofiel|startprofiel|hoekprofiel|hoekstuk|\bhoek\b|montage\s*profiel|reiniger|ventilatie|afdicht|stootvoeg|bevestiging|\bclip\b|\bkit\b/;
 
 function blob(product: Product) {
   return `${product.name} ${product.brand} ${product.vendor} ${product.productType ?? ""}`.toLowerCase();
 }
 
 function isHardware(name: string) {
-  return HARDWARE.test(name.toLowerCase());
+  return isVerbindingName(name) || HARDWARE.test(name.toLowerCase());
 }
 
 function productImage(product: Product) {
@@ -199,7 +204,7 @@ export function collectColors(products: Product[]): StaalColor[] {
   for (const product of products) {
     for (const variant of product.variants) {
       const name = labelColour(variant.colorName?.trim() ?? "");
-      if (!isSampleColor(name)) continue;
+      if (!isSampleColor(name) || isVerbindingName(name)) continue;
       const id = slugKey(name);
       if (!id) continue;
       const image = variant.image?.url;
@@ -212,7 +217,7 @@ export function collectColors(products: Product[]): StaalColor[] {
     }
     for (const color of product.colors) {
       const name = labelColour(color.name?.trim() ?? "");
-      if (!isSampleColor(name)) continue;
+      if (!isSampleColor(name) || isVerbindingName(name)) continue;
       const id = slugKey(name);
       if (!id || map.has(id)) continue;
       map.set(id, { id, name, hex: color.hex || undefined });

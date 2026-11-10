@@ -22,7 +22,23 @@ export type StaalSwatch = {
 export type StaalPickerGroup = {
   id: string;
   title: string;
+  image?: string;
   swatches: StaalSwatch[];
+};
+
+/** Site category names, in the same order as the assortment. */
+export const STAAL_CATEGORIES = [
+  { sectionId: "gevel", title: "Gevelbekleding" },
+  { sectionId: "dakrand", title: "Dakranden" },
+  { sectionId: "plafondpanelen", title: "Plafondpanelen" },
+  { sectionId: "hpl", title: "HPL platen" },
+  { sectionId: "vensterbank", title: "Vensterbanken" },
+] as const;
+
+export type StaalCategoryBlock = {
+  sectionId: string;
+  title: string;
+  groups: StaalPickerGroup[];
 };
 
 export type StaalPickerSection = {
@@ -38,6 +54,10 @@ function leaves(
 ): { node: StaalNode; path: string[]; labels: string[] }[] {
   if (!node.children?.length) return [{ node, path, labels }];
   return node.children.flatMap((child) => leaves(child, [...path, child.id], [...labels, child.label]));
+}
+
+function isVerbindingText(value: string) {
+  return /verbind/i.test(value);
 }
 
 function swatchName(raw: string, verbatim = false) {
@@ -60,9 +80,12 @@ export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
     for (const leaf of leaves(group, [group.id], [group.label])) {
       const lineSource = leaf.labels.join(" ");
       const swatches: StaalSwatch[] = [];
+      if (isVerbindingText(leaf.node.label) || leaf.labels.some(isVerbindingText)) continue;
       const usable = leaf.node.colors.flatMap((color) => {
+        if (isVerbindingText(color.name)) return [];
         const parsed = swatchName(color.name, color.verbatim);
-        return parsed ? [{ color, parsed }] : [];
+        if (!parsed || isVerbindingText(parsed.name)) return [];
+        return [{ color, parsed }];
       });
       if (usable.length) {
         for (const { color, parsed } of usable) {
@@ -94,11 +117,25 @@ export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
       }
       if (!swatches.length) continue;
       const title = leaf.labels.slice(1).join(" · ") || leaf.node.label;
-      groups.push({ id: leaf.path.join("/"), title, swatches });
+      if (isVerbindingText(title)) continue;
+      groups.push({
+        id: leaf.path.join("/"),
+        title,
+        image: leaf.node.image || swatches.find((swatch) => swatch.image)?.image,
+        swatches,
+      });
     }
     if (groups.length) sections.push({ id: group.id, title: group.label, groups });
   }
   return sections;
+}
+
+export function staalCategoryBlocks(sections: StaalPickerSection[]): StaalCategoryBlock[] {
+  return STAAL_CATEGORIES.flatMap((category) => {
+    const section = sections.find((item) => item.id === category.sectionId);
+    if (!section?.groups.length) return [];
+    return [{ sectionId: category.sectionId, title: category.title, groups: section.groups }];
+  });
 }
 
 export function sampleFromStaal(swatch: StaalSwatch): SampleColor {
