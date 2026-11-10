@@ -201,7 +201,8 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   }
 
   return (
-    <div className="container-kg pb-28 lg:pb-16">
+    <div className="bg-kg-kalk">
+    <div className="container-kg py-10 pb-28 lg:pb-16">
       {resumeVisible(config.step, askResume) ? (
         <div className="mb-8 border border-kg-navy bg-white p-5">
           <div className="flex items-start justify-between gap-4">
@@ -346,12 +347,12 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
           <p className="mt-4 text-[13px] text-kg-text-2">Je stappen blijven in de link op dit apparaat.</p>
         </div>
 
-        <aside className="hidden border border-kg-lijn bg-kg-kalk p-6 lg:sticky lg:top-24 lg:block lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+        <aside className="kg-soft-card hidden p-6 lg:sticky lg:top-24 lg:block lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
           <Preview layout={layout} config={config} pricesActive={pricesActive} price={price} basketNote={basketNote} prefix={`${layout.slug}-paneel`} />
         </aside>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-kg-navy bg-white print:hidden lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t-4 border-kg-signal bg-kg-navy text-kg-kalk print:hidden lg:hidden">
         <button
           type="button"
           className="flex h-14 w-full items-center justify-between gap-4 px-5 pr-16 text-left"
@@ -365,7 +366,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
             </span>
             <span className="block truncate text-[14px]">Buitenaanzicht, van buiten gezien</span>
           </span>
-          <span className="shrink-0 text-[14px] underline underline-offset-[3px]">{sheetOpen ? "Sluiten" : "Tonen"}</span>
+          <span className="shrink-0 text-[14px] text-kg-signal underline underline-offset-[3px]">{sheetOpen ? "Sluiten" : "Tonen"}</span>
         </button>
         {sheetOpen ? (
           <div id="kozijn-tekening" className="max-h-[70vh] overflow-y-auto border-t border-kg-lijn bg-kg-kalk px-5 py-5">
@@ -373,6 +374,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
           </div>
         ) : null}
       </div>
+    </div>
     </div>
   );
 }
@@ -561,14 +563,17 @@ function TypeStep({
               key={item.slug}
               href={layoutPath(item)}
               aria-current={selected ? "page" : undefined}
-              className={cn("block border-2 no-underline hover:no-underline", selected ? "border-kg-navy bg-kg-kalk" : "border-kg-lijn bg-white")}
+              className={cn(
+                "kg-soft-card block overflow-hidden no-underline hover:no-underline",
+                selected && "ring-2 ring-kg-navy",
+              )}
             >
-              <span className="flex h-52 items-center justify-center bg-white">
-                <KozijnDrawing layout={item} config={defaultConfig(item)} caption={false} prefix={`${item.slug}-type`} fit />
+              <span className="flex h-44 items-center justify-center bg-white px-3">
+                <KozijnDrawing layout={item} config={defaultConfig(item)} caption={false} prefix={`${item.slug}-type`} fit plain />
               </span>
               <span className="block px-4 pt-4 text-[16px] leading-snug font-medium text-kg-navy">{item.title}</span>
               <span className="block px-4 pt-1 text-[14px] leading-snug text-kg-text-2">{item.summary}</span>
-              <span className="block px-4 pt-3 pb-4 font-mono text-[12px] text-kg-navy">{selected ? "Gekozen" : "Kies"}</span>
+              <span className={buttonVariants({ size: "sm", className: "mx-4 mt-3 mb-4 w-fit" })}>{selected ? "Gekozen" : "Kies"}</span>
             </Link>
           );
         })}

@@ -53,7 +53,8 @@ export default async function KozijnLayoutPage({ params }: Props) {
         ])}
       />
       <JsonLd data={faqJsonLd(copy.faqs)} />
-      <header className="container-kg pt-10 pb-6">
+      <header className="bg-white">
+        <div className="container-kg pt-10 pb-8">
         <p className="font-mono text-[13px] text-kg-text-2">
           <Link href="/kunststof-kozijnen" className="underline underline-offset-[3px]">
             Kozijnen
@@ -72,9 +73,12 @@ export default async function KozijnLayoutPage({ params }: Props) {
         {layout.group !== "schuifpuien" ? (
           <p className="mt-2 max-w-2xl text-[15px] leading-normal text-kg-text-2">{profileSpecSentence()}</p>
         ) : null}
+        </div>
       </header>
+      <div className="h-2" style={{ background: "var(--gradient-signal)" }} />
       <KozijnConfigurator layout={layout} pricesActive={pricesActive} />
-      <section className="container-kg grid gap-10 border-t border-kg-lijn py-14 lg:grid-cols-[minmax(0,40rem)_minmax(0,22rem)]">
+      <section className="bg-white">
+        <div className="container-kg grid gap-10 py-14 lg:grid-cols-[minmax(0,40rem)_minmax(0,22rem)]">
         <div className="space-y-4">
           <h2 className="text-[22px] font-bold tracking-[-0.03em]">Over dit kozijn</h2>
           {copy.paragraphs.map((paragraph) => (
@@ -87,6 +91,7 @@ export default async function KozijnLayoutPage({ params }: Props) {
           </p>
         </div>
         <KozijnFaqs faqs={copy.faqs} />
+        </div>
       </section>
       <KozijnLinks />
     </>

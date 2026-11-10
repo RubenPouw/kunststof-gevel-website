@@ -43,12 +43,12 @@ export function drawnPanes(layout: Layout, config: KozijnConfig): DrawnPane[] {
   });
 }
 
-export function drawingBox(config: KozijnConfig) {
+export function drawingBox(config: KozijnConfig, plain = false) {
   const font = Math.max(22, config.width * 0.05);
-  const padL = font * 4.4;
-  const padR = font * 3.8;
-  const padT = font * 3.6;
-  const padB = font * 3.8;
+  const padL = plain ? font * 0.55 : font * 4.4;
+  const padR = plain ? font * 0.55 : font * 3.8;
+  const padT = plain ? font * 0.45 : font * 3.6;
+  const padB = plain ? font * 0.45 : font * 3.8;
   return {
     font,
     padL,
@@ -60,8 +60,8 @@ export function drawingBox(config: KozijnConfig) {
   };
 }
 
-export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix = "w") {
-  const box = drawingBox(config);
+export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix = "w", plain = false) {
+  const box = drawingBox(config, plain);
   const panes = drawnPanes(layout, config);
   const faceKnown = frameFaceMm(layout.slug);
   const face = faceKnown ?? Math.max(36, Math.round(Math.min(config.width, config.height) * 0.04));
@@ -81,8 +81,14 @@ export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix =
   parts.push(
     `<svg xmlns="http://www.w3.org/2000/svg" id="${prefix}-sheet" width="${r(box.width)}" height="${r(box.height)}" viewBox="0 0 ${r(box.width)} ${r(box.height)}" style="display:block;width:100%;height:auto" role="img" aria-label="${escapeXml(`${layout.title}, ${W} bij ${H} millimeter, van buiten gezien`)}">`,
   );
+  const glass = plain ? `url(#${prefix}-glass)` : "#F4F2ED";
+  if (plain) {
+    parts.push(
+      `<defs><linearGradient id="${prefix}-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7FBFF"/><stop offset="1" stop-color="#C5D8EE"/></linearGradient></defs>`,
+    );
+  }
   parts.push(`<rect width="100%" height="100%" fill="#FFFFFF"/>`);
-  parts.push(rect(ox, oy, W, H, "none", ink, stroke));
+  parts.push(rect(ox, oy, W, H, plain ? "#FFFFFF" : "none", ink, plain ? stroke * 1.35 : stroke));
 
   if (ventH > 0) {
     parts.push(`<g data-vent="rooster">`);
@@ -107,7 +113,7 @@ export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix =
     const gh = Math.max(8, bottom - top - inset * 2);
     parts.push(`<g data-vak="${index + 1}" data-kind="${pane.kind}" data-hinge="${pane.hingeRight ? "rechts" : "links"}">`);
     if (open) parts.push(rect(ox + left, oy + top, right - left, bottom - top, "#FFFFFF", ink, thin));
-    parts.push(paneGlass(pane.kind, config.filling, gx, gy, gw, gh, ink, thin));
+    parts.push(paneGlass(pane.kind, config.filling, gx, gy, gw, gh, ink, thin, glass));
     if (pane.kind === "draai" || pane.kind === "draaikiep" || pane.kind === "deur") {
       parts.push(openingMarks(gx, gy, gw, gh, pane.hingeRight, pane.kind === "draaikiep", ink, thin, dash));
     }
@@ -130,31 +136,33 @@ export function workingDrawingSvg(layout: Layout, config: KozijnConfig, prefix =
 
   parts.push(corners(ox, oy, W, H, face, config.corner === "hvl", ink, thin));
 
-  const label = (value: number) => String(Math.round(value));
-  parts.push(
-    hDim(ox, ox + W, oy + H + box.font * 1.7, label(W), box.font, thin, ink, oy + H, oy + H + box.font * 2),
-  );
-  parts.push(vDim(box.font * 1.15, oy, oy + H, label(H), box.font, thin, ink, ox, box.font * 0.4));
-  panes.forEach((pane) => {
+  if (!plain) {
+    const label = (value: number) => String(Math.round(value));
     parts.push(
-      hDim(
-        ox + pane.x,
-        ox + pane.x + pane.width,
-        oy - box.font * 1.55,
-        label(pane.width),
-        box.font,
-        thin,
-        ink,
-        oy,
-        oy - box.font * 1.9,
-      ),
+      hDim(ox, ox + W, oy + H + box.font * 1.7, label(W), box.font, thin, ink, oy + H, oy + H + box.font * 2),
     );
-  });
-  parts.push(vDim(ox + W + box.font * 1.7, oy, oy + H, label(H), box.font, thin, ink, ox + W, ox + W + box.font * 2.1));
-  if (faceKnown != null) {
-    parts.push(
-      hDim(ox, ox + faceKnown, oy + H + box.font * 3.05, label(faceKnown), box.font * 0.82, thin, ink, oy + H, oy + H + box.font * 3.2),
-    );
+    parts.push(vDim(box.font * 1.15, oy, oy + H, label(H), box.font, thin, ink, ox, box.font * 0.4));
+    panes.forEach((pane) => {
+      parts.push(
+        hDim(
+          ox + pane.x,
+          ox + pane.x + pane.width,
+          oy - box.font * 1.55,
+          label(pane.width),
+          box.font,
+          thin,
+          ink,
+          oy,
+          oy - box.font * 1.9,
+        ),
+      );
+    });
+    parts.push(vDim(ox + W + box.font * 1.7, oy, oy + H, label(H), box.font, thin, ink, ox + W, ox + W + box.font * 2.1));
+    if (faceKnown != null) {
+      parts.push(
+        hDim(ox, ox + faceKnown, oy + H + box.font * 3.05, label(faceKnown), box.font * 0.82, thin, ink, oy + H, oy + H + box.font * 3.2),
+      );
+    }
   }
 
   parts.push(`</svg>`);
@@ -170,13 +178,23 @@ function share(total: number, flexes: number[]) {
   return widths;
 }
 
-function paneGlass(kind: string, filling: KozijnConfig["filling"], x: number, y: number, w: number, h: number, ink: string, stroke: number) {
+function paneGlass(
+  kind: string,
+  filling: KozijnConfig["filling"],
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  ink: string,
+  stroke: number,
+  glass = "#F4F2ED",
+) {
   if (kind === "deur" && filling === "paneel") return rect(x, y, w, h, "#E4DDD2", ink, stroke);
   if (kind === "deur" && filling === "half") {
     const split = Math.round(h * 0.45);
-    return rect(x, y, w, split, "#F4F2ED", ink, stroke) + rect(x, y + split, w, h - split, "#E4DDD2", ink, stroke);
+    return rect(x, y, w, split, glass, ink, stroke) + rect(x, y + split, w, h - split, "#E4DDD2", ink, stroke);
   }
-  return rect(x, y, w, h, "#F4F2ED", ink, stroke);
+  return rect(x, y, w, h, glass, ink, stroke);
 }
 
 function openingMarks(x: number, y: number, w: number, h: number, hingeRight: boolean, tilt: boolean, ink: string, stroke: number, dash: string) {

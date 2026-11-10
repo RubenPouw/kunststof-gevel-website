@@ -8,6 +8,7 @@ export function KozijnDrawing({
   caption = true,
   prefix,
   fit = false,
+  plain = false,
 }: {
   layout: Layout;
   config: KozijnConfig;
@@ -15,9 +16,11 @@ export function KozijnDrawing({
   prefix?: string;
   /** Vaste hoogte voor een keuzetegel. De tekening schaalt mee, zonder te croppen. */
   fit?: boolean;
+  /** Keuzekaart: alleen het kozijn, zonder maatlijnen. */
+  plain?: boolean;
 }) {
-  const box = drawingBox(config);
-  const svg = workingDrawingSvg(layout, config, prefix ?? layout.slug);
+  const box = drawingBox(config, plain);
+  const svg = workingDrawingSvg(layout, config, prefix ?? layout.slug, plain);
   const face = frameFaceMm(layout.slug);
   return (
     <figure className="m-0 bg-white">
