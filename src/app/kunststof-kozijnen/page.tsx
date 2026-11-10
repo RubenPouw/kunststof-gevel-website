@@ -81,20 +81,24 @@ export default function KozijnenHubPage() {
       <header className="bg-kg-navy text-kg-kalk">
         <div className="container-kg grid items-center gap-8 py-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:py-14">
           <div>
-            <p className="font-mono text-[13px] text-kg-grind">
-              <Link href="/" className="underline underline-offset-[3px]">
+            <p className="font-mono text-[13px] text-kg-kalk">
+              <Link href="/" className="text-kg-kalk underline underline-offset-[3px] hover:text-kg-signal">
                 Home
               </Link>
               {" / Kozijnen"}
             </p>
             <nav aria-label="Kozijnen" className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[15px] font-medium">
               {GROUPS.map((group) => (
-                <Link key={group.id} href={group.href}>
+                <Link key={group.id} href={group.href} className="text-kg-kalk hover:text-kg-signal">
                   {group.title}
                 </Link>
               ))}
-              <Link href={categoryPath("kozijnafwerking")}>Kozijnafwerking</Link>
-              <Link href={categoryPath("vensterbanken")}>Vensterbanken</Link>
+              <Link href={categoryPath("kozijnafwerking")} className="text-kg-kalk hover:text-kg-signal">
+                Kozijnafwerking
+              </Link>
+              <Link href={categoryPath("vensterbanken")} className="text-kg-kalk hover:text-kg-signal">
+                Vensterbanken
+              </Link>
             </nav>
             <p className="mt-6 font-mono text-[13px] text-kg-signal">{PROFILE.name}</p>
             <h1 className="display-plp mt-2 max-w-3xl">{pageSeo.kozijnen.h1}</h1>
