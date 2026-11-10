@@ -77,21 +77,34 @@ const DAKRAND_META: Record<DakrandKind, { label: string; question: string }> = {
   daktrim: { label: "Daktrim", question: "Kies de daktrim" },
 };
 
+/** Verbindstukken, verbindingsprofielen and stootvoegverbindingen are not samples. */
+export function isVerbindingName(name: string) {
+  return /verbind/i.test(name);
+}
+
 const HARDWARE =
-  /schroef|eindkap|eindprofiel|startprofiel|hoekprofiel|hoekstuk|\bhoek\b|verbind|montage\s*profiel|reiniger|ventilatie|afdicht|stootvoeg|bevestiging|\bclip\b|\bkit\b/;
+  /schroef|eindkap|eindprofiel|startprofiel|hoekprofiel|hoekstuk|\bhoek\b|montage\s*profiel|reiniger|ventilatie|afdicht|stootvoeg|bevestiging|\bclip\b|\bkit\b/;
 
 function blob(product: Product) {
   return `${product.name} ${product.brand} ${product.vendor} ${product.productType ?? ""}`.toLowerCase();
 }
 
 function isHardware(name: string) {
-  return HARDWARE.test(name.toLowerCase());
+  return isVerbindingName(name) || HARDWARE.test(name.toLowerCase());
 }
+
+/** Live product shots for panels whose catalog record has no photo. Not project photos. */
+const PANEL_PHOTO: Record<string, string> = {
+  "profex-duafort-rabat-125": "/staal/panelen/duafort-rabat-125.webp",
+  "kerrafront-dubbel-sponningdeel-332": "/staal/panelen/kerrafront-dubbel-sponningdeel.webp",
+  "milinboard-overzetvensterbank-380": "/staal/panelen/milinboard-overzetvensterbank.webp",
+};
 
 function productImage(product: Product) {
   return (
     product.images.find((image) => image.url)?.url ??
-    product.variants.find((variant) => variant.image?.url)?.image?.url
+    product.variants.find((variant) => variant.image?.url)?.image?.url ??
+    PANEL_PHOTO[product.slug]
   );
 }
 
@@ -199,7 +212,7 @@ export function collectColors(products: Product[]): StaalColor[] {
   for (const product of products) {
     for (const variant of product.variants) {
       const name = labelColour(variant.colorName?.trim() ?? "");
-      if (!isSampleColor(name)) continue;
+      if (!isSampleColor(name) || isVerbindingName(name)) continue;
       const id = slugKey(name);
       if (!id) continue;
       const image = variant.image?.url;
@@ -212,7 +225,7 @@ export function collectColors(products: Product[]): StaalColor[] {
     }
     for (const color of product.colors) {
       const name = labelColour(color.name?.trim() ?? "");
-      if (!isSampleColor(name)) continue;
+      if (!isSampleColor(name) || isVerbindingName(name)) continue;
       const id = slugKey(name);
       if (!id || map.has(id)) continue;
       map.set(id, { id, name, hex: color.hex || undefined });
