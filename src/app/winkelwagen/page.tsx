@@ -181,7 +181,7 @@ export default function CartPage() {
           </div>
         </div>
 
-        <aside className="h-fit border border-kg-lijn bg-white p-6 lg:sticky lg:top-[170px]">
+        <aside className="h-fit border border-kg-lijn bg-white p-6 lg:sticky lg:top-[calc(var(--kg-chrome)+12px)]">
           <h2 className="font-mono text-[13px] text-kg-text-2">Overzicht</h2>
           <p className="mt-3 text-[14px] text-kg-text-2">
             <ShippingEstimate />

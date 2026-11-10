@@ -127,7 +127,7 @@ function SampleFields({
           Binnen 2 werkdagen thuis. U zit nergens aan vast.
         </p>
       </div>
-      <SampleTrayCard className="h-fit lg:sticky lg:top-[130px]" />
+      <SampleTrayCard className="h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)]" />
     </form>
   );
 }

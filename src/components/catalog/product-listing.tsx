@@ -203,7 +203,7 @@ export function ProductListing({
         onFilter={onFilter}
       />
       <div className="mt-8 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
-        <aside className="hidden h-fit lg:sticky lg:top-[128px] lg:block">
+        <aside className="hidden h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)] lg:block">
           {showFilters ? (
             <div className="kg-soft-card p-5">
               <p className="font-mono text-[13px] text-kg-navy">Filters</p>
