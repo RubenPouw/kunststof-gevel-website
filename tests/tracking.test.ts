@@ -19,6 +19,7 @@ import { encodeAdsState, normalizeEmail, normalizePhone, sha256 } from "../src/l
 import { handleOrderWebhook, parseOrderTracking } from "../src/lib/tracking/order.ts";
 import { quoteTotalExcl } from "../src/lib/tracking/quote-value.ts";
 import { trackOfferte, trackStaal } from "../src/lib/tracking/business.ts";
+import { gtmLoaderScript, gtmMarkupId, isPreviewHost, resolveGtmId } from "../src/lib/tracking/gtm.ts";
 
 const CLIENT = "11111111-1111-4111-8111-111111111111";
 const GCLID = "CjwKCAjw1234567890";
@@ -32,15 +33,26 @@ function cookie(granted = true) {
   return `kg_consent=${granted ? "granted" : "denied"}; kg_ads=${ads}`;
 }
 
-test("click ids stay first-party and GTM is gone", () => {
+test("click ids stay first-party and GTM stays off the preview host", () => {
   assert.equal(CLICK_CAPTURE_SCRIPT.includes("googletagmanager"), false);
   assert.equal(CLICK_CAPTURE_SCRIPT.includes("http"), false);
   assert.match(CLICK_CAPTURE_SCRIPT, /kg-ads-pending/);
   const consent = readFileSync(new URL("../src/components/seo/consent.tsx", import.meta.url), "utf8");
   const layout = readFileSync(new URL("../src/app/layout.tsx", import.meta.url), "utf8");
-  assert.equal(consent.includes("googletagmanager"), false);
-  assert.equal(layout.includes("googletagmanager"), false);
-  assert.match(consent, /geen script van Google/);
+  assert.match(consent, /Google Tag Manager/);
+  assert.match(consent, /zetten we pas nadat u accepteert/);
+  assert.match(layout, /gtmDataLayerScript/);
+  assert.match(layout, /gtmNoscriptHtml/);
+  assert.equal(isPreviewHost("kunststofgevel-website.onrender.com"), true);
+  assert.equal(resolveGtmId("kunststofgevel-website.onrender.com", "GTM-N3DQ6G5"), null);
+  assert.equal(resolveGtmId("www.kunststof-gevel.nl", ""), "GTM-N3DQ6G5");
+  assert.equal(resolveGtmId("www.kunststof-gevel.nl", "uit"), null);
+  const loader = gtmLoaderScript("");
+  assert.match(loader, /window,document,'script','dataLayer','GTM-N3DQ6G5'/);
+  assert.match(loader, /onrender\.com/);
+  assert.equal(loader.indexOf("onrender.com") < loader.indexOf("googletagmanager.com"), true);
+  assert.equal(gtmMarkupId("uit"), null);
+  assert.equal(gtmMarkupId("GTM-TEST1"), "GTM-TEST1");
 });
 
 test("sanitize keeps the allowlist and blocks client conversion names", () => {

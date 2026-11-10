@@ -125,7 +125,7 @@ Offerte- en staalmail gaat via Gmail SMTP. Een lege `LEAD_EMAIL_PROVIDER` is `sm
 
 `/staalaanvraag` gebruikt dezelfde variabelen. De winkelmail gaat naar `info@kunststof-gevel.nl`. De bevestiging naar de klant gaat ook vanaf dat adres, naar het e-mailadres uit het formulier. ActiveCampaign krijgt het contact plus de tags Staalaanvraag, de productgroep en Prijsindicatie. Zonder `ACTIVECAMPAIGN_API_URL` en `ACTIVECAMPAIGN_API_KEY` slaat de site dat over. Er zijn geen extra env vars voor dit formulier.
 
-Meting naar GA4 en Google Ads staat uit tot `TRACKING_GA4_ACTIEF` of `TRACKING_ADS_ACTIEF` op `true` staat. De browser laadt daar geen extern script voor. Namen, parameters en de webhook staan in `docs/tracking.md`.
+Meting naar GA4 en Google Ads via de eigen server staat uit tot `TRACKING_GA4_ACTIEF` of `TRACKING_ADS_ACTIEF` op `true` staat. Google Tag Manager (GTM-N3DQ6G5) laadt alleen op kunststof-gevel.nl, niet op `*.onrender.com`. `GTM_ID` blijft leeg op de preview. Namen, parameters en de webhook staan in `docs/tracking.md`.
 
 `render.yaml` declareert deze variabelen (`sync: false` voor domain en token, zodat het geheim in het Dashboard blijft). Na een Blueprint-apply of op de bestaande web service de waarden invullen en opnieuw deployen.
 
