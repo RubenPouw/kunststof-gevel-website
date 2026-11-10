@@ -347,7 +347,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
           <p className="mt-4 text-[13px] text-kg-text-2">Je stappen blijven in de link op dit apparaat.</p>
         </div>
 
-        <aside className="kg-soft-card hidden p-6 lg:sticky lg:top-24 lg:block lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+        <aside className="kg-soft-card hidden p-6 lg:sticky lg:top-[calc(var(--kg-chrome)+12px)] lg:block lg:max-h-[calc(100vh-var(--kg-chrome)-1.5rem)] lg:overflow-y-auto">
           <Preview layout={layout} config={config} pricesActive={pricesActive} price={price} basketNote={basketNote} prefix={`${layout.slug}-paneel`} />
         </aside>
       </div>

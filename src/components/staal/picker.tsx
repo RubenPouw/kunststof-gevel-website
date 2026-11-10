@@ -349,7 +349,7 @@ export function StaalPicker({
             setFormOpen(true);
             document.getElementById("staal-formulier")?.scrollIntoView({ block: "start" });
           }}
-          className="h-fit max-lg:hidden lg:sticky lg:top-[130px]"
+          className="h-fit max-lg:hidden lg:sticky lg:top-[calc(var(--kg-chrome)+12px)]"
         />
       </div>
       <Tray

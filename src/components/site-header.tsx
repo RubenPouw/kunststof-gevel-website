@@ -237,7 +237,7 @@ export function SiteHeader() {
 
   if (bare) {
     return (
-      <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
+      <header className="relative z-20 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
         <div className="container-kg flex min-h-[72px] items-center justify-between gap-4 py-2">
           <Logo size={20} tone="dark" lockup />
           <a href={site.phoneHref} className="font-mono text-[14px] text-kg-kalk no-underline">
@@ -250,7 +250,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
+    <header className="relative z-20 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
         <div className="container-kg flex min-h-[72px] items-center gap-3 py-2 xl:gap-6">
         <Logo size={20} tone="dark" lockup />
 

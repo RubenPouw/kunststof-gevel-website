@@ -55,7 +55,7 @@ export function SamplesSection({ colors }: { colors: SampleColor[] }) {
             })}
           </div>
         </div>
-        <SampleTrayCard className="h-fit lg:sticky lg:top-[130px]" />
+        <SampleTrayCard className="h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)]" />
       </div>
     </section>
   );

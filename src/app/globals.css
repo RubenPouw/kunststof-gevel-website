@@ -124,6 +124,7 @@
     color: var(--color-text);
     background: var(--color-bg);
     font-variant-numeric: tabular-nums;
+    --kg-chrome: 188px;
   }
 
   body {

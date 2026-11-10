@@ -4,6 +4,7 @@ import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 
 import { ChatButton } from "@/components/brand/chat-button";
 import { FactsStrip } from "@/components/brand/facts-strip";
+import { StickyChrome } from "@/components/brand/sticky-chrome";
 import { ConsentAndGtm } from "@/components/seo/consent";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SiteFooter } from "@/components/site-footer";
@@ -76,8 +77,10 @@ export default function RootLayout({
         <AccountProvider>
           <CartProvider>
             <SampleTrayProvider>
-              <SiteHeader />
-              <FactsStrip />
+              <StickyChrome>
+                <SiteHeader />
+                <FactsStrip />
+              </StickyChrome>
               <main className="flex-1">{children}</main>
               <SiteFooter />
               <ChatButton />
