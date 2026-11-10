@@ -10,6 +10,7 @@ import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { ProductCard } from "@/components/brand/product-card";
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { ColourName } from "@/components/catalog/colour-name";
+import { ColourTip } from "@/components/catalog/colour-tip";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
@@ -18,6 +19,7 @@ import { describeMeasure, isRealListedLength } from "@/lib/catalog/measures";
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product, ProductVariant } from "@/lib/catalog/types";
 import { productHasPrice, profileRole } from "@/lib/catalog/helpers";
+import { colourOptionText } from "@/lib/catalog/colours";
 import { exclVat, formatLengthMm, formatPrice } from "@/lib/format";
 import { confirmedLeadTimeWeeks, leadTimeLabel } from "@/lib/lead-time";
 import { productAlt } from "@/lib/seo/alt";
@@ -201,18 +203,19 @@ export function ProductDetail({
               : null}
             {product.images.length === 0
               ? product.colors.slice(0, 5).map((color) => (
-                  <button
-                    key={color.sampleId}
-                    type="button"
-                    onClick={() => chooseColor(color.name)}
-                    className={cn(
-                      "relative aspect-square",
-                      color.name === selected.colorName && "outline outline-2 outline-kg-navy",
-                    )}
-                    aria-label={color.name}
-                  >
-                    <span className="absolute inset-0" style={{ background: color.hex }} />
-                  </button>
+                  <ColourTip key={color.sampleId} label={colourOptionText(color.name)}>
+                    <button
+                      type="button"
+                      onClick={() => chooseColor(color.name)}
+                      className={cn(
+                        "relative aspect-square",
+                        color.name === selected.colorName && "outline outline-2 outline-kg-navy",
+                      )}
+                      aria-label={colourOptionText(color.name)}
+                    >
+                      <span className="absolute inset-0" style={{ background: color.hex }} />
+                    </button>
+                  </ColourTip>
                 ))
               : null}
           </div>
@@ -278,21 +281,25 @@ export function ProductDetail({
 
           {product.colors.length > 1 ? (
             <fieldset>
-              <legend className="text-[17px] font-medium">Kies je kleur · {product.colors.length} kleuren</legend>
-              <div className="mt-3 flex flex-wrap gap-1.5">
+              <legend className="text-[17px] font-medium">
+                <span className="sm:hidden">Kies je kleur · {colourOptionText(selected.colorName)}</span>
+                <span className="hidden sm:inline">Kies je kleur · {product.colors.length} kleuren</span>
+              </legend>
+              <div className="mt-3 flex flex-wrap gap-1.5 sm:mt-1 sm:pt-8">
                 {product.colors.map((color) => (
-                  <button
-                    key={color.sampleId}
-                    type="button"
-                    onClick={() => chooseColor(color.name)}
-                    className={cn(
-                      "size-8",
-                      color.name === selected.colorName && "outline outline-2 outline-offset-2 outline-kg-navy",
-                    )}
-                    style={{ background: color.hex }}
-                    aria-label={color.name}
-                    aria-pressed={color.name === selected.colorName}
-                  />
+                  <ColourTip key={color.sampleId} label={colourOptionText(color.name)}>
+                    <button
+                      type="button"
+                      onClick={() => chooseColor(color.name)}
+                      className={cn(
+                        "size-8",
+                        color.name === selected.colorName && "outline outline-2 outline-offset-2 outline-kg-navy",
+                      )}
+                      style={{ background: color.hex }}
+                      aria-label={colourOptionText(color.name)}
+                      aria-pressed={color.name === selected.colorName}
+                    />
+                  </ColourTip>
                 ))}
               </div>
             </fieldset>
