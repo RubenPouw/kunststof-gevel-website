@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { ColourName } from "@/components/catalog/colour-name";
 import { ColourSwatch } from "@/components/catalog/colour-swatch";
+import { ColourTip } from "@/components/catalog/colour-tip";
+import { colourOptionText } from "@/lib/catalog/colours";
 import type { ListingCardModel } from "@/lib/catalog/listing";
 import { visibleCardSwatches } from "@/lib/catalog/swatches";
 
@@ -33,24 +35,25 @@ export function CardSwatches({
   return (
     <div className="flex flex-wrap items-center gap-2">
       {visible.map(({ swatch, index }) => (
-        <button
-          key={swatch.sampleId || `${swatch.name}-${index}`}
-          type="button"
-          onMouseEnter={() => onHover(index)}
-          onMouseLeave={() => onHover(null)}
-          onFocus={() => onHover(index)}
-          onBlur={() => onHover(null)}
-          onClick={() => {
-            onPick(index);
-            onHover(null);
-          }}
-          className="grid size-7 place-items-center bg-transparent p-0"
-          style={{ borderRadius: 9999 }}
-          aria-label={swatch.name}
-          aria-pressed={index === activeIndex}
-        >
-          <ColourSwatch name={swatch.name} hex={swatch.hex} family={swatch.family} size={22} active={index === activeIndex} />
-        </button>
+        <ColourTip key={swatch.sampleId || `${swatch.name}-${index}`} label={colourOptionText(swatch.name)}>
+          <button
+            type="button"
+            onMouseEnter={() => onHover(index)}
+            onMouseLeave={() => onHover(null)}
+            onFocus={() => onHover(index)}
+            onBlur={() => onHover(null)}
+            onClick={() => {
+              onPick(index);
+              onHover(null);
+            }}
+            className="grid size-7 place-items-center bg-transparent p-0"
+            style={{ borderRadius: 9999 }}
+            aria-label={colourOptionText(swatch.name)}
+            aria-pressed={index === activeIndex}
+          >
+            <ColourSwatch name={swatch.name} hex={swatch.hex} family={swatch.family} size={22} active={index === activeIndex} />
+          </button>
+        </ColourTip>
       ))}
       {hidden > 0 ? (
         <Link
