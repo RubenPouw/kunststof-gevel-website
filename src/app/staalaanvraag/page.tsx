@@ -3,12 +3,11 @@ import type { Metadata } from "next";
 import { StaalPicker } from "@/components/staal/picker";
 import { getCatalog } from "@/lib/catalog";
 import { applyFillout } from "@/lib/staal/fillout";
-import { buildStaalTree } from "@/lib/staal/tree";
+import { buildStaalTree, STAAL_DESCRIPTION, STAAL_HEADING } from "@/lib/staal/tree";
 
 export const metadata: Metadata = {
-  title: "Gratis staalaanvraag",
-  description:
-    "Vraag gratis kleurstalen aan voor gevel, dakrand, vensterbank of HPL. Binnen een dag verstuurd.",
+  title: STAAL_HEADING,
+  description: STAAL_DESCRIPTION,
   alternates: { canonical: "/staalaanvraag" },
 };
 

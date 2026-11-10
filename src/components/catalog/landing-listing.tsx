@@ -44,7 +44,11 @@ export async function LandingListing({
         sampleHref={story.sampleHref}
         emptyMessage={
           all.length === 0
-            ? `Deze artikelen komen uit de shopcollectie. Ziet u ze nog niet, bel ${site.phone}.`
+            ? (
+                <>
+                  Deze artikelen komen uit de shopcollectie. Ziet u ze nog niet, bel <a href={site.phoneHref}>{site.phone}</a>.
+                </>
+              )
             : undefined
         }
       />

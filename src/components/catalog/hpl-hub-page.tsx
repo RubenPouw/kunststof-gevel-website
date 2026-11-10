@@ -32,7 +32,7 @@ export async function HplHubPage({
             <SheetCalculator />
           </div>
           {plates.length === 0 ? (
-            <p className="mt-6 text-kg-text-2">Ziet u de platen nog niet, bel {site.phone}.</p>
+            <p className="mt-6 text-kg-text-2">Ziet u de platen nog niet, bel <a href={site.phoneHref}>{site.phone}</a>.</p>
           ) : null}
         </section>
       ) : null}

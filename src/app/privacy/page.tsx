@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <section>
         <h2>Wie we zijn</h2>
         <p className="mt-3">
-          {site.company}, {site.address}. KvK {site.kvk}, BTW {site.btw}. Mail {site.email} of bel {site.phone}.
+          {site.company}, {site.address}. KvK {site.kvk}, BTW {site.btw}. Mail {site.email} of bel <a href={site.phoneHref}>{site.phone}</a>.
           De showroom is alleen op afspraak.
         </p>
       </section>

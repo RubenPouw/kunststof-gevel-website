@@ -12,7 +12,7 @@ export const site = {
   phoneHref: "tel:+31302271397",
   phoneE164: "+31302271397",
   mobile: "06 13639368",
-  mobileDisplay: "+31 6 13639368",
+  mobileDisplay: "+31 6 13 63 93 68",
   mobileHref: "tel:+31613639368",
   email: "info@kunststof-gevel.nl",
   emailHref: "mailto:info@kunststof-gevel.nl",

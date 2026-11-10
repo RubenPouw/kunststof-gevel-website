@@ -151,12 +151,23 @@ export async function submitStaalAanvraag(
   return { ok: true, reference: ref };
 }
 
-/** Tags the dashboard already has: staalaanvraag, plus the brand when that colour is in the request. */
+/**
+ * Always staalaanvraag (starts the follow-up). One type tag per chosen panel:
+ * staal-vinyplus, staal-keralit, or staal-overig. Several type tags can apply.
+ */
 export function staalAcTags(lines: string[]) {
   const tags = ["staalaanvraag"];
-  const text = lines.join("\n");
-  if (/keralit/i.test(text)) tags.push("staal-keralit");
-  if (/vinyplus/i.test(text)) tags.push("staal-vinyplus");
+  let vinyplus = false;
+  let keralit = false;
+  let overig = false;
+  for (const line of lines) {
+    if (/viny\s?plus/i.test(line)) vinyplus = true;
+    else if (/keralit/i.test(line)) keralit = true;
+    else overig = true;
+  }
+  if (vinyplus) tags.push("staal-vinyplus");
+  if (keralit) tags.push("staal-keralit");
+  if (overig) tags.push("staal-overig");
   return tags;
 }
 

@@ -22,7 +22,7 @@ export function LegalPage({
         {children}
       </div>
       <p className="mt-12 border border-kg-lijn bg-white p-4 font-mono text-[13px] text-kg-text-2">
-        {site.company}, KvK {site.kvk}, BTW {site.btw}. {site.address}. {site.addressNote}. {site.email}, {site.phone}.
+        {site.company}, KvK {site.kvk}, BTW {site.btw}. {site.address}. {site.addressNote}. {site.email}, <a href={site.phoneHref}>{site.phone}</a>.
       </p>
     </article>
   );

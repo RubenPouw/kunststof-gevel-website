@@ -20,7 +20,7 @@ export default function ComplaintsPage() {
       <section>
         <h2>Melden</h2>
         <p className="mt-3">
-          Mail {site.email} of bel {site.phone}. Zet het bestelnummer, uw naam en een korte omschrijving erbij. Beeld van transportschade het liefst binnen twee dagen na ontvangst.
+          Mail {site.email} of bel <a href={site.phoneHref}>{site.phone}</a>. Zet het bestelnummer, uw naam en een korte omschrijving erbij. Beeld van transportschade het liefst binnen twee dagen na ontvangst.
         </p>
       </section>
       <section>

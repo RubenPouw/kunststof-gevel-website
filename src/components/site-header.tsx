@@ -294,6 +294,12 @@ export function SiteHeader() {
         </form>
 
         <div className="ml-auto flex shrink-0 items-center gap-2">
+          <a
+            href={site.phoneHref}
+            className="hidden font-mono text-[13px] text-kg-kalk no-underline hover:underline lg:inline"
+          >
+            {site.phone}
+          </a>
           <button
             type="button"
             onClick={onSamplesClick}
@@ -343,6 +349,12 @@ export function SiteHeader() {
       {menuOpen ? (
         <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 lg:hidden">
           <nav className="flex flex-col" aria-label="Hoofdmenu">
+            <a href={site.phoneHref} className="flex min-h-11 items-center font-mono text-[15px] text-kg-kalk no-underline">
+              {site.phone}
+            </a>
+            <a href={site.mobileHref} className="flex min-h-11 items-center font-mono text-[15px] text-kg-kalk no-underline">
+              {site.mobileDisplay}
+            </a>
             <button
               type="button"
               className="flex min-h-11 items-center justify-between text-left text-[15px] font-medium text-kg-kalk"

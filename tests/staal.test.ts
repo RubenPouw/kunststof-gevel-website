@@ -8,12 +8,9 @@ import type { Product, ProductVariant } from "../src/lib/catalog/types.ts";
 import { customerStaalText } from "../src/lib/staal/messages.ts";
 import { rateLimitStaal, resetStaalRateLimit } from "../src/lib/staal/rate-limit.ts";
 import {
-  STAAL_BOTH_NOTE,
-  STAAL_GROUP_QUESTION,
-  STAAL_MULTI_NOTE,
-  STAAL_PRICE_NO,
-  STAAL_PRICE_QUESTION,
-  STAAL_PRICE_YES,
+  STAAL_DESCRIPTION,
+  STAAL_HEADING,
+  STAAL_INTRO,
   buildStaalTree,
   pathForProduct,
   staalSteps,
@@ -72,17 +69,13 @@ test("staalaanvraag keeps the four groups and the Fillout questions", () => {
     tree.groups.map((group) => group.label),
     ["Gevel paneel", "Dakrand", "Vensterbanken", "HPL platen"],
   );
-  assert.equal(STAAL_GROUP_QUESTION, "Kiest u eerst voor wat er nodig is, dakrand of een geveldeel?");
-  assert.match(STAAL_BOTH_NOTE, /Bijbestellen/);
-  assert.match(STAAL_MULTI_NOTE, /Meerdere stalen zijn mogelijk/);
-  assert.equal(
-    STAAL_PRICE_QUESTION,
-    "Wil je alvast vrijblijvend een prijsindicatie of offerte ontvangen voor jouw project?",
-  );
-  assert.equal(STAAL_PRICE_YES, "Ja, ik wil graag een prijs indicatie");
-  assert.equal(STAAL_PRICE_NO, "Nee direct stalen ontvangen!");
-  for (const text of [STAAL_GROUP_QUESTION, STAAL_BOTH_NOTE, STAAL_MULTI_NOTE, STAAL_PRICE_QUESTION]) {
+  assert.equal(STAAL_HEADING, "Vraag gratis kleurstalen aan");
+  assert.match(STAAL_DESCRIPTION, /brievenbus/);
+  assert.match(STAAL_INTRO, /Geen verplichtingen/);
+  for (const text of [STAAL_HEADING, STAAL_DESCRIPTION, STAAL_INTRO]) {
     assert.equal(text.includes("\u2014") || text.includes("\u2013"), false);
+    assert.doesNotMatch(text, /winkelmandje|profex|duafort|milin|250 mm/i);
+    assert.doesNotMatch(text, /dakrand of een geveldeel|doorloop het proces|Bijbestellen/);
   }
 });
 
@@ -432,7 +425,7 @@ test("customer mail uses the thank-you sentence and the published phone numbers"
   });
   assert.match(text, /Je staal wordt binnen een dag verstuurd/);
   assert.match(text, new RegExp(site.phone.replace(/ /g, " ")));
-  assert.match(text, /31613639368|06 13639368|\+31 6 13639368/);
+  assert.ok(text.includes(site.mobileDisplay));
   assert.equal(text.includes("\u2014") || text.includes("\u2013"), false);
   assert.equal(/\p{Extended_Pictographic}/u.test(text), false);
   assert.equal(/085[\s-]*401|06[\s-]*46011057/.test(text), false);

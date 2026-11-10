@@ -49,8 +49,9 @@ export function staalContactErrors(input: Pick<StaalRequest, StaalContactKey>) {
   }
 
   const digits = input.phone.replace(/\D/g, "");
-  if (!input.phone.trim()) errors.phone = "Dit veld is verplicht";
-  else if (digits.length < 8 || input.phone.trim().length > 20) errors.phone = "Vul een geldig telefoonnummer in.";
+  if (input.phone.trim() && (digits.length < 8 || input.phone.trim().length > 20)) {
+    errors.phone = "Vul een geldig telefoonnummer in.";
+  }
 
   if (!input.postcode.trim()) errors.postcode = "Dit veld is verplicht";
   else if (!POSTCODE.test(input.postcode.trim())) errors.postcode = "Vul een geldige postcode in.";

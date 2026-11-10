@@ -36,7 +36,7 @@ export default async function CheckoutThanksPage({ searchParams }: Props) {
         <>
           <h1 className="mt-2">Geen betaling bevestigd</h1>
           <p className="mt-6 text-kg-text-2">
-            Deze pagina bevestigt geen bestelling. Een koop staat pas als Shopify de betaling heeft afgerond. Ziet u geen bevestiging in uw mail, dan is er niets besteld. Bel {site.phone} of WhatsApp {site.mobileDisplay}.
+            Deze pagina bevestigt geen bestelling. Een koop staat pas als Shopify de betaling heeft afgerond. Ziet u geen bevestiging in uw mail, dan is er niets besteld. Bel <a href={site.phoneHref}>{site.phone}</a> of WhatsApp <a href={site.mobileHref}>{site.mobileDisplay}</a>.
           </p>
         </>
       )}

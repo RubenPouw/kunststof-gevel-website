@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 
 import { ColourName, colourOptionText } from "@/components/catalog/colour-name";
-import { SectionHead } from "@/components/brand/section-head";
 import { buttonVariants } from "@/components/ui/button";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import {
@@ -17,14 +16,9 @@ import {
   type StaalSwatch,
 } from "@/lib/staal/picker";
 import {
-  STAAL_BOTH_NOTE,
   STAAL_CONTACT_HINT,
-  STAAL_GROUP_QUESTION,
   STAAL_HEADING,
-  STAAL_MULTI_NOTE,
-  STAAL_PRICE_NO,
-  STAAL_PRICE_QUESTION,
-  STAAL_PRICE_YES,
+  STAAL_INTRO,
   type StaalTree,
 } from "@/lib/staal/tree";
 import { staalContactErrors, type StaalContactKey } from "@/lib/staal/validate";
@@ -180,15 +174,12 @@ export function StaalPicker({
   const samples = useSamples();
   const slots = useMemo(() => samples.items.map(swatchFromSample), [samples.items]);
   const [formOpen, setFormOpen] = useState(false);
-  const [wantsQuote, setWantsQuote] = useState<boolean | null>(null);
+  const [wantsQuote, setWantsQuote] = useState(false);
   const [contact, setContact] = useState<Contact>(emptyContact);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<StaalContactKey, string>>>({});
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [honeypot, setHoneypot] = useState("");
-  const [dimensions, setDimensions] = useState("");
-  const [photoName, setPhotoName] = useState("");
-  const [photoDataUrl, setPhotoDataUrl] = useState("");
   const [done, setDone] = useState<string | null>(null);
   const bannerOpen = useSyncExternalStore(
     (onStoreChange) => {
@@ -247,10 +238,6 @@ export function StaalPicker({
       setError("Vul de verplichte velden in.");
       return;
     }
-    if (wantsQuote === null) {
-      setError("Kies of u een prijsindicatie wilt.");
-      return;
-    }
     const lines = picksToLines(slots.filter((slot) => slot.path.length));
     if (!lines.length) {
       setError("Kies minstens één kleur.");
@@ -267,9 +254,9 @@ export function StaalPicker({
           wantsQuote,
           ...contact,
           lines,
-          dimensions,
-          photoName,
-          photoDataUrl,
+          dimensions: "",
+          photoName: "",
+          photoDataUrl: "",
         }),
       });
       const body = (await response.json()) as { ok?: boolean; error?: string; reference?: string };
@@ -277,6 +264,13 @@ export function StaalPicker({
         setError(body.error || "De aanvraag is niet aangekomen.");
         return;
       }
+      const win = window as Window & { dataLayer?: Record<string, string>[] };
+      win.dataLayer = win.dataLayer || [];
+      win.dataLayer.push({
+        event: "lead_submit",
+        lead_type: "staal_render",
+        form_source: "render_staalaanvraag",
+      });
       sessionStorage.removeItem(STORAGE_KEY);
       samples.clear();
       setDone(body.reference || "");
@@ -300,7 +294,7 @@ export function StaalPicker({
             setDone(null);
             samples.clear();
             setFormOpen(false);
-            setWantsQuote(null);
+            setWantsQuote(false);
             setContact(emptyContact());
           }}
           className={cn(buttonVariants({ variant: "primary" }), "mt-8")}
@@ -315,11 +309,8 @@ export function StaalPicker({
     <div className={cn("pb-24 lg:pb-0", bannerOpen && "pb-44")}>
       <div className="grid gap-8 lg:grid-cols-[8fr_4fr]">
         <div>
-          <SectionHead title="Kies je kleur" aside="Gratis · maximaal 4 stalen" />
-          <h1 className="sr-only">{STAAL_HEADING}</h1>
-          <p className="mb-2 max-w-[560px] text-kg-text-2">{STAAL_GROUP_QUESTION}</p>
-          <p className="mb-2 max-w-[560px] text-kg-text-2">{STAAL_MULTI_NOTE}</p>
-          <p className="mb-6 max-w-[560px] text-kg-text-2">{STAAL_BOTH_NOTE}</p>
+          <h1 className="display-plp max-w-3xl">{STAAL_HEADING}</h1>
+          <p className="mt-4 mb-8 max-w-2xl text-[17px] leading-normal text-kg-text-2">{STAAL_INTRO}</p>
           {active ? (
             <div id="staal-kleuren" className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
               <button type="button" onClick={backToPanels} className={buttonVariants({ size: "sm" })}>
@@ -447,86 +438,31 @@ export function StaalPicker({
               <input tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} />
             </label>
           </div>
-          <fieldset className="mt-6">
-            <legend className="text-[18px] leading-snug font-medium">Eventueel offerte?</legend>
-            <p className="mt-2 text-[15px]">{STAAL_PRICE_QUESTION}</p>
-            <div className="mt-4 grid gap-3">
-              {(
-                [
-                  [true, STAAL_PRICE_YES],
-                  [false, STAAL_PRICE_NO],
-                ] as const
-              ).map(([value, label]) => (
-                <label
-                  key={label}
-                  className={cn(
-                    "flex min-h-12 cursor-pointer items-center gap-3 border-2 bg-white px-3 text-[15px]",
-                    wantsQuote === value ? "border-kg-navy" : "border-kg-lijn",
-                  )}
-                >
-                  <input type="radio" name="prijs" checked={wantsQuote === value} onChange={() => setWantsQuote(value)} />
-                  {label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-          <label className="mt-6 grid gap-1 text-[15px]" htmlFor="staal-afmetingen">
-            <span>Afmetingen / m²</span>
-            <textarea
-              id="staal-afmetingen"
-              name="dimensions"
-              rows={3}
-              value={dimensions}
-              onChange={(event) => setDimensions(event.target.value)}
-              className="border border-kg-lijn bg-white px-3 py-2"
-            />
-          </label>
-          <label className="mt-4 grid gap-1 text-[15px]" htmlFor="staal-foto">
-            <span>Foto (optioneel)</span>
+          <label className="mt-6 flex min-h-12 items-center gap-3 border border-kg-lijn bg-white px-3 text-[15px]">
             <input
-              id="staal-foto"
-              name="photo"
-              type="file"
-              accept="image/*"
-              className="border border-kg-lijn bg-white px-3 py-2"
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (!file) {
-                  setPhotoName("");
-                  setPhotoDataUrl("");
-                  return;
-                }
-                if (file.size > 1_500_000) {
-                  setPhotoName("");
-                  setPhotoDataUrl("");
-                  setError("De foto is te groot. Kies een foto tot 1,5 MB.");
-                  return;
-                }
-                setError("");
-                const reader = new FileReader();
-                reader.onload = () => {
-                  setPhotoName(file.name);
-                  setPhotoDataUrl(typeof reader.result === "string" ? reader.result : "");
-                };
-                reader.readAsDataURL(file);
-              }}
+              type="checkbox"
+              name="prijsindicatie"
+              checked={wantsQuote}
+              onChange={(event) => setWantsQuote(event.target.checked)}
             />
+            Ik wil ook een vrijblijvende prijsindicatie
           </label>
           <div className="mt-6 grid gap-4">
             {(
               [
-                ["name", "Naam", "name"],
-                ["email", "Email", "email"],
-                ["phone", "Telefoonnummer", "tel"],
-                ["postcode", "Postcode", "postal-code"],
-                ["houseNumber", "Huisnummer", "off"],
+                ["name", "Naam", "name", true],
+                ["email", "E-mail", "email", true],
+                ["phone", "Telefoon", "tel", false],
+                ["postcode", "Postcode", "postal-code", true],
+                ["houseNumber", "Huisnummer", "off", true],
               ] as const
-            ).map(([key, label, autoComplete]) => {
+            ).map(([key, label, autoComplete, required]) => {
               const fieldError = fieldErrors[key];
               return (
                 <label key={key} className="grid gap-1 text-[15px]" htmlFor={`staal-${key}`}>
                   <span>
-                    {label} <span aria-hidden="true">*</span>
+                    {label}
+                    {required ? <span aria-hidden="true"> *</span> : " (optioneel)"}
                   </span>
                   <input
                     id={`staal-${key}`}
@@ -534,7 +470,7 @@ export function StaalPicker({
                     type={key === "email" ? "email" : "text"}
                     inputMode={key === "phone" ? "tel" : undefined}
                     autoComplete={autoComplete}
-                    required
+                    required={required}
                     aria-invalid={Boolean(fieldError)}
                     value={contact[key]}
                     onChange={(event) => setContact((prev) => ({ ...prev, [key]: event.target.value }))}
@@ -552,10 +488,7 @@ export function StaalPicker({
           ) : null}
           <div className="mt-6 flex flex-wrap gap-3">
             <button type="submit" disabled={submitting} className={buttonVariants({ variant: "primary" })}>
-              {submitting ? "Versturen" : "Stalen aanvragen"}
-            </button>
-            <button type="button" className={buttonVariants({ variant: "secondary" })} onClick={() => setFormOpen(false)}>
-              Bijbestellen
+              {submitting ? "Versturen" : "Staal aanvragen"}
             </button>
           </div>
           <p className="mt-3 text-[13px] text-kg-text-2">Binnen een dag verstuurd. Geen verplichting.</p>
