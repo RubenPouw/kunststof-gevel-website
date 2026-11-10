@@ -78,31 +78,31 @@ export default function KozijnenHubPage() {
         ])}
       />
       <JsonLd data={faqJsonLd(hubCopy.faqs)} />
-      <header className="bg-kg-navy text-kg-kalk">
-        <div className="container-kg grid items-center gap-8 py-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:py-14">
+      <header className="bg-white text-kg-navy">
+        <div className="container-kg grid items-center gap-6 py-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:py-8">
           <div>
-            <p className="font-mono text-[13px] text-kg-kalk">
-              <Link href="/" className="text-kg-kalk underline underline-offset-[3px] hover:text-kg-signal">
+            <p className="font-mono text-[13px] text-kg-navy">
+              <Link href="/" className="text-kg-navy underline underline-offset-[3px] hover:text-kg-navy">
                 Home
               </Link>
               {" / Kozijnen"}
             </p>
             <nav aria-label="Kozijnen" className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[15px] font-medium">
               {GROUPS.map((group) => (
-                <Link key={group.id} href={group.href} className="text-kg-kalk hover:text-kg-signal">
+                <Link key={group.id} href={group.href} className="text-kg-navy hover:text-kg-navy">
                   {group.title}
                 </Link>
               ))}
-              <Link href={categoryPath("kozijnafwerking")} className="text-kg-kalk hover:text-kg-signal">
+              <Link href={categoryPath("kozijnafwerking")} className="text-kg-navy hover:text-kg-navy">
                 Kozijnafwerking
               </Link>
-              <Link href={categoryPath("vensterbanken")} className="text-kg-kalk hover:text-kg-signal">
+              <Link href={categoryPath("vensterbanken")} className="text-kg-navy hover:text-kg-navy">
                 Vensterbanken
               </Link>
             </nav>
-            <p className="mt-6 font-mono text-[13px] text-kg-signal">{PROFILE.name}</p>
+            <p className="mt-5 font-mono text-[13px] text-kg-text-2">{PROFILE.name}</p>
             <h1 className="display-plp mt-2 max-w-3xl">{pageSeo.kozijnen.h1}</h1>
-            <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-grind">
+            <p className="mt-3 max-w-2xl text-[17px] leading-normal text-kg-text-2">
               Ramen en deuren in één profiel. U stelt het kozijn samen op buitenwerkse maat. Op de site staat nog geen bedrag.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -113,8 +113,8 @@ export default function KozijnenHubPage() {
               ))}
             </div>
           </div>
-          <div className="bevel-16 bg-white p-4">
-            <img src="/kozijnen/doorsnede.webp" alt="Doorsnede van een kunststof kozijn" width={800} height={800} className="h-auto w-full object-contain" />
+          <div className="bevel-16 border border-kg-lijn bg-white p-3">
+            <img src="/kozijnen/doorsnede.webp" alt="Doorsnede van een kunststof kozijn" width={800} height={800} className="mx-auto h-auto max-h-[240px] w-full object-contain lg:max-h-[300px]" />
           </div>
         </div>
       </header>
@@ -139,7 +139,6 @@ export default function KozijnenHubPage() {
           const face = getLayoutBySlug(GROUP_FACE[group.id]);
           return (
           <Link key={group.id} href={group.href} className="kg-soft-card flex flex-col overflow-hidden no-underline transition duration-150 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgb(27_40_56/0.16)] hover:no-underline">
-            <span className="h-1.5 bg-kg-signal" />
             <span className="flex h-40 items-center justify-center bg-[#E7EEF4] px-4">
               {face ? <KozijnDrawing layout={face} config={defaultConfig(face)} caption={false} fit plain prefix={`${group.id}-kaart`} /> : null}
             </span>
@@ -166,12 +165,12 @@ export default function KozijnenHubPage() {
       </section>
       <section className="bg-white">
         <div className="container-kg grid gap-5 py-10 sm:grid-cols-2">
-        <Link href={categoryPath("kozijnafwerking")} className="flex flex-col border-t-4 border-kg-signal bg-kg-navy-2 p-6 text-kg-kalk no-underline shadow-[0_8px_24px_rgb(0_0_0/0.18)] hover:no-underline">
+        <Link href={categoryPath("kozijnafwerking")} className="flex flex-col bg-kg-navy-2 p-6 text-kg-kalk no-underline shadow-[0_8px_24px_rgb(0_0_0/0.18)] hover:no-underline">
           <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Kozijnafwerking</h2>
           <p className="mt-3 text-[15px] text-kg-grind">Aansluitprofielen en afwerking rond het kozijn.</p>
           <span className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</span>
         </Link>
-        <Link href={categoryPath("vensterbanken")} className="flex flex-col border-t-4 border-kg-signal bg-kg-navy-2 p-6 text-kg-kalk no-underline shadow-[0_8px_24px_rgb(0_0_0/0.18)] hover:no-underline">
+        <Link href={categoryPath("vensterbanken")} className="flex flex-col bg-kg-navy-2 p-6 text-kg-kalk no-underline shadow-[0_8px_24px_rgb(0_0_0/0.18)] hover:no-underline">
           <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">Vensterbanken</h2>
           <p className="mt-3 text-[15px] text-kg-grind">De bank zelf, daarna eindkappen en bevestiging, per merk.</p>
           <span className="mt-auto pt-6 font-mono text-[13px] text-kg-signal">Bekijk</span>
@@ -187,7 +186,6 @@ export default function KozijnenHubPage() {
           {allLayouts().map((layout) => (
             <li key={layout.slug}>
               <Link href={layoutPath(layout)} className="kg-soft-card flex h-full flex-col overflow-hidden no-underline transition duration-150 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgb(27_40_56/0.16)] hover:no-underline">
-                <span className="h-1.5 bg-kg-signal" />
                 <span className="flex h-44 items-center justify-center bg-[#E7EEF4] px-4">
                   <KozijnDrawing layout={layout} config={defaultConfig(layout)} caption={false} fit plain prefix={`${layout.slug}-indeling`} />
                 </span>

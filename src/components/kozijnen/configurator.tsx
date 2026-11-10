@@ -568,7 +568,6 @@ function TypeStep({
                 selected && "ring-2 ring-kg-navy",
               )}
             >
-              <span className={cn("block h-1.5", selected ? "bg-kg-signal" : "bg-kg-navy")} />
               <span className="flex h-44 items-center justify-center bg-white px-3">
                 <KozijnDrawing layout={item} config={defaultConfig(item)} caption={false} prefix={`${item.slug}-type`} fit plain />
               </span>

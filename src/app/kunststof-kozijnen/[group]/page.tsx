@@ -68,7 +68,6 @@ export default async function KozijnGroupPage({ params }: Props) {
         {layouts.map((layout) => (
           <li key={layout.slug}>
             <Link href={layoutPath(layout)} className="kg-soft-card flex h-full flex-col overflow-hidden no-underline transition duration-150 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgb(27_40_56/0.16)] hover:no-underline">
-              <span className="h-1.5 bg-kg-signal" />
               <span className="flex h-44 items-center justify-center bg-[#E7EEF4] px-4">
                 <KozijnDrawing layout={layout} config={defaultConfig(layout)} caption={false} fit plain />
               </span>
