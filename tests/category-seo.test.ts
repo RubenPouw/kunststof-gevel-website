@@ -108,7 +108,8 @@ test("approved category and legacy redirects land in one hop", () => {
     assert.equal(again.status, "200", `${from} chains via ${to}`);
     assert.equal(again.to.split("?")[0], to, from);
   }
-  assert.equal(lookupRedirect("/profex-gevelbekleding").to, "/merken/profex");
+  assert.equal(lookupRedirect("/profex-gevelbekleding").to, "/gevelbekleding");
+  assert.equal(lookupRedirect("/gevelbekleding").status, "200");
   assert.equal(categoryPageSeo.dakranden.title, "Kunststof boeidelen en dakranden kopen | Keralit, VinyPlus, Milexx");
   assert.equal(categoryPageSeo.dakranden.h1, "Kunststof boeidelen en dakranden");
   assert.equal(categoryPageSeo.gevelbekleding.h1, "Gevelbekleding");

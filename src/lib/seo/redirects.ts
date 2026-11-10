@@ -24,8 +24,19 @@ const PUBLIC_BRANDS = [
   "unipanel",
   "florence",
   "zierer",
-  "profex",
 ] as const;
+
+/** Profex and Duafort are no longer sold. Old URLs land on a category that stays. */
+export function retiredProfexTarget(path: string): string | null {
+  const text = path.toLowerCase();
+  if (path === "/producten/afdichtingsprofiel-pvc-45") return "/kozijnafwerking";
+  if (!/profex|duafort|canexel/.test(text)) return null;
+  if (/afdicht/.test(text)) return "/kozijnafwerking";
+  if (/hoek|eindprofiel|start|ventilatie|verbind|montage|profiel/.test(text)) return "/montage";
+  if (/velling/.test(text)) return "/gevelbekleding";
+  if (/rabat|canexel/.test(text)) return "/rabatdelen";
+  return "/gevelbekleding";
+}
 
 export function normalizePath(pathname: string) {
   let path = pathname || "/";
@@ -46,7 +57,6 @@ function dakrandFallback(brand: string | undefined) {
 
 function brandOf(value: string) {
   const text = value.toLowerCase();
-  if (text.includes("duafort") || text.includes("canexel")) return "profex";
   return PUBLIC_BRANDS.find((brand) => text.includes(brand));
 }
 
@@ -87,6 +97,8 @@ export function fallbackTarget(path: string) {
 
 /** Linerio is off the shop. Wonderboard stays in Shopify for the other site. */
 export function retiredKgTarget(path: string): string | null {
+  const profex = retiredProfexTarget(path);
+  if (profex) return profex;
   if (path === "/merken/linerio" || path === "/merken/wonderboard") return "/gevelbekleding";
   if (!path.startsWith("/producten/")) return null;
   const slug = path.slice("/producten/".length);
@@ -132,17 +144,22 @@ export function resolveNavigation(
   const row = lookupRedirect(input.pathname);
   const target = splitTarget(row.to);
   const normalized = normalizePath(input.pathname);
+  const incoming = input.search.startsWith("?") ? input.search.slice(1) : input.search;
+  const params = new URLSearchParams(incoming);
+  const dropProfex = params.get("merk") === "profex";
+  if (dropProfex) params.delete("merk");
+  const cleaned = dropProfex ? (params.toString() ? `?${params.toString()}` : "") : input.search;
   const apex = hostname === "kunststof-gevel.nl";
   const slash = input.pathname.length > 1 && input.pathname.endsWith("/");
   const pathChanged = target.pathname !== normalized;
   const carryQuery = row.reason === "categorie-slug" && !target.search;
-  if (!apex && !pathChanged && !slash && !target.search) {
+  if (!apex && !pathChanged && !slash && !target.search && !dropProfex) {
     return { action: "next", noindex };
   }
   return {
     action: "redirect",
     pathname: target.pathname,
-    search: preserveClickSearch(target.search || (pathChanged && !carryQuery ? "" : input.search), input.search),
+    search: preserveClickSearch(target.search || (pathChanged && !carryQuery ? "" : cleaned), cleaned),
     host: apex ? "www.kunststof-gevel.nl" : null,
     noindex,
   };

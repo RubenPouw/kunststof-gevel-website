@@ -23,7 +23,7 @@ function inferProfileType(name) {
   if (/potdeksel/.test(t)) return "potdeksel";
   if (/rondkant/.test(t)) return "rondkant";
   if (/quattro/.test(t)) return "quattro";
-  if (/\brabat\b|duafort/.test(t)) return "rabat";
+  if (/\brabat\b/.test(t)) return "rabat";
   return "overig";
 }
 

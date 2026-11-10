@@ -223,9 +223,9 @@
   },
   {
     "from": "/merk/profex",
-    "to": "/merken/profex",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "brand"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/merk/unipanel",
@@ -433,15 +433,15 @@
   },
   {
     "from": "/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding",
-    "to": "/merken/profex",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "category"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding/profex-duafort-profielen",
-    "to": "/merken/profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "category"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product-categorie/kunststof-gevelbekleding/vinyplus-kunststof-gevelbekleding",
@@ -505,9 +505,9 @@
   },
   {
     "from": "/product/duafort-rabat-125-mm-canexel-vervanger",
-    "to": "/merken/profex",
+    "to": "/rabatdelen",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/eindkap-400-mm-overzet-vensterbank",
@@ -1141,45 +1141,45 @@
   },
   {
     "from": "/product/profex-duafort-hoekprofiel-2-delig",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/profex-duafort-velling-paneel",
-    "to": "/merken/profex",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/profex-dubbel-rabat-270-mm",
-    "to": "/merken/profex",
+    "to": "/rabatdelen",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/profex-eindprofiel-2-delig",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/profex-start-profiel-300-cm",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/profex-ventilatieprofiel",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/profex-verbindingsprofiel-2-delig",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/product/reparatiestift",
@@ -3271,9 +3271,9 @@
   },
   {
     "from": "/profex-gevelbekleding",
-    "to": "/merken/profex",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "brand"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/projecten",
@@ -4423,15 +4423,15 @@
   },
   {
     "from": "/wp-content/uploads/2025/06/Profex-Dubbel-Rabat-800x500-1.jpeg",
-    "to": "/merken/profex",
+    "to": "/rabatdelen",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/06/Profex-Gevelbekleding-Duafort.jpeg",
-    "to": "/merken/profex",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/06/Waaier_dubbel_Rabat-kopie-scaled-1.jpeg",
@@ -4447,9 +4447,9 @@
   },
   {
     "from": "/wp-content/uploads/2025/07/IMG-20210708-WA0014.jpeg",
-    "to": "/merken/profex",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/07/Vinyplus-turners-eiken-quattro-e1752230376479.webp",
@@ -4459,15 +4459,15 @@
   },
   {
     "from": "/wp-content/uploads/2025/08/Profex_logo.png",
-    "to": "/merken/profex",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/08/Schermafbeelding-2025-08-13-om-17.51.06.png",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/09/746_IMG-20190628-WA0011.jpeg",
@@ -4483,21 +4483,21 @@
   },
   {
     "from": "/wp-content/uploads/2025/09/binnen-buitenhoekprofiel.png",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/09/ongedierte-profiel_2.png",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/09/verbindingprofiel.png",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2025/10/Eurotexx-potdeksel-antraciet.jpg",
@@ -4657,9 +4657,9 @@
   },
   {
     "from": "/wp-content/uploads/2026/05/eindprofiel_1.png",
-    "to": "/montage?merk=profex",
+    "to": "/montage",
     "status": "301",
-    "reason": "image-to-parent-page"
+    "reason": "profex-duafort-uit-assortiment"
   },
   {
     "from": "/wp-content/uploads/2026/05/https-www.kunststof-gevel.nlproductflorence-binnenplafond-paneel-250x10mm-verschillende-lengtes.webp",

@@ -53,6 +53,35 @@ test("preview host stays on that host and is noindex", () => {
   assert.equal(decision.noindex, true);
 });
 
+test("Profex and Duafort URLs land on a category that stays", () => {
+  const hops: [string, string][] = [
+    ["/merken/profex", "/gevelbekleding"],
+    ["/merk/profex", "/gevelbekleding"],
+    ["/profex-gevelbekleding", "/gevelbekleding"],
+    ["/product/duafort-rabat-125-mm-canexel-vervanger", "/rabatdelen"],
+    ["/product/profex-dubbel-rabat-270-mm", "/rabatdelen"],
+    ["/producten/profex-duafort-rabat-125", "/rabatdelen"],
+    ["/product/profex-duafort-velling-paneel", "/gevelbekleding"],
+    ["/product/profex-duafort-hoekprofiel-2-delig", "/montage"],
+    ["/product/profex-verbindingsprofiel-2-delig", "/montage"],
+    ["/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding/profex-duafort-profielen", "/montage"],
+    ["/producten/afdichtingsprofiel-pvc-45", "/kozijnafwerking"],
+  ];
+  for (const [from, to] of hops) {
+    const row = lookupRedirect(from);
+    assert.equal(row.status, "301", from);
+    assert.equal(row.to, to, from);
+    const again = lookupRedirect(to);
+    assert.equal(again.status, "200", to);
+    assert.equal(again.to.split("?")[0], to, to);
+  }
+  const merk = resolveNavigation({ host: "www.kunststof-gevel.nl", pathname: "/gevelbekleding", search: "?merk=profex" });
+  assert.equal(merk.action, "redirect");
+  if (merk.action !== "redirect") return;
+  assert.equal(merk.pathname, "/gevelbekleding");
+  assert.equal(merk.search, "");
+});
+
 test("unknown old product paths fall back to a brand or category, not the homepage", () => {
   const decision = resolveNavigation({
     host: "www.kunststof-gevel.nl",

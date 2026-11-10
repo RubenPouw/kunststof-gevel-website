@@ -100,8 +100,7 @@ test("gevel splits potdeksel by brand and sponning by product", () => {
   assert.match(sponningText, /143/);
   assert.match(sponningText, /167/);
   assert.match(sponningText, /190/);
-  assert.match(sponningText, /Rabat/);
-  assert.doesNotMatch(sponningText, /Quattro/);
+  assert.doesNotMatch(sponningText, /Quattro|Duafort|Profex/);
 
   const multi = gevel.children?.find((child) => child.id === "multisponning");
   assert.equal(multi?.question, "Kies het soort Multisponning");
@@ -141,9 +140,11 @@ test("verbindstukken are not a panel and not a colour", () => {
     ["Gevelbekleding", "Dakranden", "Vensterbanken"],
   );
   const photos = new Map(sections.flatMap((section) => section.groups.map((group) => [group.id, group.image])));
-  assert.match(photos.get("gevel/sponning/profex-duafort-rabat-125") ?? "", /duafort-rabat-125/);
+  assert.equal(photos.has("gevel/sponning/profex-duafort-rabat-125"), false);
   assert.match(photos.get("gevel/multisponning/kerrafront-dubbel-sponningdeel-332") ?? "", /kerrafront-dubbel-sponningdeel/);
   assert.match(photos.get("vensterbank/milinboard-overzetvensterbank-380") ?? "", /milinboard-overzetvensterbank/);
+  const visible = sections.flatMap((section) => section.groups.map((group) => `${group.id} ${group.title}`)).join("\n");
+  assert.doesNotMatch(visible, /profex|duafort|canexel/i);
   for (const section of sections) {
     for (const group of section.groups) assert.ok(group.image, group.title);
   }

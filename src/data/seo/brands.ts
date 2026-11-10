@@ -195,32 +195,6 @@ export const brandStories: BrandStory[] = [
     ],
   },
   {
-    slug: "profex",
-    metaTitle: "Profex Duafort rabat",
-    description:
-      "Profex Duafort rabat als lichte, onderhoudsarme vervanger van Canexel-achtige bekleding.",
-    lead: "Profex Duafort is een licht rabat. Het komt in de plaats van oudere Canexel-achtige platen die zacht zijn geworden.",
-    sections: [
-      {
-        heading: "Vervangen zonder schilderbeurt",
-        paragraphs: [
-          "Het paneel is onderhoudsarm: geen beits, geen jaarlijkse lak. De achterconstructie maakt of breekt het resultaat. Haal zachte platen en zachte regels weg, zet een geventileerde regelmaat terug en start onderaan met het startprofiel.",
-          "Kleuren vallen het best te beoordelen met een staal op de bestaande gevel, niet op een beeldscherm.",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        q: "Is Duafort een Keralit-paneel?",
-        a: "Nee. Het is een eigen systeem. Hulpstukken van Profex horen bij Profex.",
-      },
-    ],
-    links: [
-      { href: "/blog/levensduur-kunststof-gevel", label: "Levensduur en onderhoud" },
-      { href: "/staalaanvraag", label: "Staal aanvragen" },
-    ],
-  },
-  {
     slug: "milexx",
     metaTitle: "Milexx dakranden",
     description:
