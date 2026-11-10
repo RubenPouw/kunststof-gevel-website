@@ -140,6 +140,13 @@ test("verbindstukken are not a panel and not a colour", () => {
     staalCategoryBlocks(sections).map((block) => block.title),
     ["Gevelbekleding", "Dakranden", "Vensterbanken"],
   );
+  const photos = new Map(sections.flatMap((section) => section.groups.map((group) => [group.id, group.image])));
+  assert.match(photos.get("gevel/sponning/profex-duafort-rabat-125") ?? "", /duafort-rabat-125/);
+  assert.match(photos.get("gevel/multisponning/kerrafront-dubbel-sponningdeel-332") ?? "", /kerrafront-dubbel-sponningdeel/);
+  assert.match(photos.get("vensterbank/milinboard-overzetvensterbank-380") ?? "", /milinboard-overzetvensterbank/);
+  for (const section of sections) {
+    for (const group of section.groups) assert.ok(group.image, group.title);
+  }
 });
 
 test("dakrand lists panels and drops profiles, corners and caps", () => {

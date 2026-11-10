@@ -93,10 +93,18 @@ function isHardware(name: string) {
   return isVerbindingName(name) || HARDWARE.test(name.toLowerCase());
 }
 
+/** Live product shots for panels whose catalog record has no photo. Not project photos. */
+const PANEL_PHOTO: Record<string, string> = {
+  "profex-duafort-rabat-125": "/staal/panelen/duafort-rabat-125.webp",
+  "kerrafront-dubbel-sponningdeel-332": "/staal/panelen/kerrafront-dubbel-sponningdeel.webp",
+  "milinboard-overzetvensterbank-380": "/staal/panelen/milinboard-overzetvensterbank.webp",
+};
+
 function productImage(product: Product) {
   return (
     product.images.find((image) => image.url)?.url ??
-    product.variants.find((variant) => variant.image?.url)?.image?.url
+    product.variants.find((variant) => variant.image?.url)?.image?.url ??
+    PANEL_PHOTO[product.slug]
   );
 }
 
