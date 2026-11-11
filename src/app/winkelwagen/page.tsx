@@ -7,6 +7,7 @@ import { ProductPhoto } from "@/components/brand/product-photo";
 import { ColourName } from "@/components/catalog/colour-name";
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
+import { quoteOrderDiscount } from "@/lib/catalog/volume-discount";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -25,7 +26,8 @@ export default function CartPage() {
   } = useCart();
   const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
   const mount = mountGevel ? mountPrice : 0;
-  const net = subtotal + mount + shipping;
+  const volume = quoteOrderDiscount(inclVat(subtotal));
+  const net = subtotal - volume.discountExcl + mount + shipping;
   const vat = inclVat(net) - net;
   const totalIncl = inclVat(net);
 
@@ -193,6 +195,14 @@ export default function CartPage() {
                 <VatPrice incl={inclVat(subtotal)} excl={subtotal} />
               </dd>
             </div>
+            {volume.applied ? (
+              <div className="flex justify-between gap-3">
+                <dt>Korting</dt>
+                <dd>
+                  -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
+                </dd>
+              </div>
+            ) : null}
             <div className="flex justify-between gap-3">
               <dt>Montage</dt>
               <dd>{mount ? <VatPrice incl={inclVat(mount)} excl={mount} /> : "nee"}</dd>
@@ -229,6 +239,22 @@ export default function CartPage() {
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
               Nog <VatPrice incl={inclVat(remainingForFreeShipping)} excl={remainingForFreeShipping} /> tot gratis
               verzending
+            </p>
+          ) : null}
+          {lines.length > 0 && !volume.codeApplied && volume.baseIncl > 0 && !volume.applied ? (
+            <p className="mt-2 font-mono text-[13px] text-kg-text-2">
+              Nog <VatPrice incl={volume.remainingIncl} excl={volume.remainingExcl} /> tot €75 korting op je bestelling
+            </p>
+          ) : null}
+          {volume.applied ? (
+            <p className="mt-2 font-mono text-[13px] text-kg-text-2">
+              Korting vanaf €2.500: -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
+            </p>
+          ) : null}
+          {lines.length > 0 && !volume.codeApplied ? (
+            <p className="mt-2 text-[13px] leading-snug text-kg-text-2">
+              Grote bestelling? Vanaf €2.500 krijg je €75 korting. Grote orders kunnen we efficiënter inkopen en in één
+              keer leveren, en dat voordeel geven we aan je door.
             </p>
           ) : null}
           <Link
