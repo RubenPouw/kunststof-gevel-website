@@ -10,6 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { quoteOrderDiscount } from "@/lib/catalog/volume-discount";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
+import { buildMontageQuoteDraft, montageQuoteHref, saveMontageQuoteDraft } from "@/lib/montage-quote";
 import { cn } from "@/lib/utils";
 
 export default function CartPage() {
@@ -25,9 +26,29 @@ export default function CartPage() {
     mountPrice,
   } = useCart();
   const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
-  const mount = mountGevel ? mountPrice : 0;
   const volume = quoteOrderDiscount(inclVat(subtotal));
-  const net = subtotal - volume.discountExcl + mount + shipping;
+  const net = subtotal - volume.discountExcl + shipping;
+  const montageViaOfferte = mountGevel && gevelM2 > 0;
+  const montageDraft = montageViaOfferte
+    ? buildMontageQuoteDraft({
+        areaM2: gevelM2,
+        montageIncl: inclVat(mountPrice),
+        materialIncl: inclVat(subtotal),
+        lines: lines.flatMap((line) => {
+          const resolved = resolveCartLine(line);
+          if (!resolved) return [];
+          return [
+            {
+              name: resolved.name,
+              color: resolved.colorName,
+              sku: resolved.skuLabel,
+              length: resolved.length,
+              qty: line.qty,
+            },
+          ];
+        }),
+      })
+    : null;
   const vat = inclVat(net) - net;
   const totalIncl = inclVat(net);
 
@@ -205,7 +226,7 @@ export default function CartPage() {
             ) : null}
             <div className="flex justify-between gap-3">
               <dt>Montage</dt>
-              <dd>{mount ? <VatPrice incl={inclVat(mount)} excl={mount} /> : "nee"}</dd>
+              <dd>{montageViaOfferte ? "via offerte" : "nee"}</dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt>Verzending</dt>
@@ -257,16 +278,26 @@ export default function CartPage() {
               keer leveren, en dat voordeel geven we aan je door.
             </p>
           ) : null}
-          <Link
-            href="/afrekenen"
-            className={cn(
-              buttonVariants({ variant: "primary", block: true }),
-              "mt-5 no-underline hover:no-underline",
-              lines.length === 0 && "pointer-events-none opacity-45",
-            )}
-          >
-            Naar bestellen
-          </Link>
+          {montageDraft ? (
+            <Link
+              href={montageQuoteHref(montageDraft)}
+              onClick={() => saveMontageQuoteDraft(montageDraft)}
+              className={cn(buttonVariants({ variant: "primary", block: true }), "mt-5 no-underline hover:no-underline")}
+            >
+              Offerte montage aanvragen
+            </Link>
+          ) : (
+            <Link
+              href="/afrekenen"
+              className={cn(
+                buttonVariants({ variant: "primary", block: true }),
+                "mt-5 no-underline hover:no-underline",
+                lines.length === 0 && "pointer-events-none opacity-45",
+              )}
+            >
+              Naar bestellen
+            </Link>
+          )}
           <Link
             href="/offerte"
             className={cn(buttonVariants({ variant: "outline", block: true }), "mt-2 no-underline hover:no-underline")}

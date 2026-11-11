@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { MontageQuoteCard } from "@/components/montage-quote-card";
 import { ProjectFigure } from "@/components/projects/project-figure";
 import { projectBrands, projects, type ProjectBrand } from "@/data/projects";
 import { site } from "@/lib/site";
@@ -16,9 +17,9 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { merk } = await searchParams;
   const filtered = Boolean(merk && BRANDS.has(merk as ProjectBrand));
   return {
-    title: "Gevelbekleding projecten",
+    title: "Projecten van Cavemen",
     description:
-      "Gevelbekleding projecten in Keralit, VinyPlus en Kerrafront. Het resultaat van een kunststof gevel voor en na, in houtlook en antraciet.",
+      "Projecten van Cavemen in Keralit, VinyPlus en Kerrafront. Het resultaat van een kunststof gevel voor en na, in houtlook en antraciet.",
     alternates: { canonical: "/projecten" },
     ...(filtered ? { robots: { index: false, follow: true } } : {}),
   };
@@ -34,11 +35,11 @@ export default async function ProjectenPage({ searchParams }: Props) {
       <header className="max-w-2xl">
         <p className="font-mono text-[13px] text-kg-text-2">Projecten</p>
         <h1 className="mt-4 text-[34px] leading-[1.05] font-medium tracking-[-0.04em] sm:text-[44px]">
-          Gevelbekleding projecten
+          Projecten van Cavemen
         </h1>
         <p className="mt-4 max-w-lg text-[16px] leading-normal text-kg-text-2 sm:text-[17px] sm:leading-[1.6]">
-          Eigen werk in Keralit, VinyPlus en Kerrafront: paneel en kleur op de gevel, het plafond of het overstek. Zoekt u
-          een kunststof gevel voor en na, dan is dit het na.
+          Gevels, plafonds en overstekken in Keralit, VinyPlus en Kerrafront. Paneel en kleur op het huis. Zoekt u een
+          kunststof gevel voor en na, dan is dit het na.
         </p>
         <nav aria-label="Filter op merk" className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
           <FilterLink href="/projecten" current={!active}>
@@ -83,6 +84,10 @@ export default async function ProjectenPage({ searchParams }: Props) {
           Volg ons op Instagram
         </a>
       </p>
+
+      <div className="mt-16 max-w-3xl sm:mt-20">
+        <MontageQuoteCard idPrefix="project" />
+      </div>
     </div>
   );
 }
