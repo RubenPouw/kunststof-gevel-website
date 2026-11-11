@@ -1,7 +1,7 @@
 import { exclVat, roundMoney } from "@/lib/format";
 
 /** Materiaalsubtotaal inclusief btw vanaf waar € 75 korting op de materiaalorder geldt. */
-export const ORDER_DISCOUNT_THRESHOLD_INCL = 2000;
+export const ORDER_DISCOUNT_THRESHOLD_INCL = 2500;
 export const ORDER_DISCOUNT_INCL = 75;
 
 /**
@@ -14,7 +14,7 @@ export const SHOPIFY_ORDER_DISCOUNT_ID = "gid://shopify/DiscountAutomaticNode/19
 export const REPLACING_DISCOUNT_CODES = ["popup50", "Bestelling100"] as const;
 
 /**
- * € 75 over het materiaalsubtotaal zodra dat € 2.000 incl. btw of meer is.
+ * € 75 over het materiaalsubtotaal zodra dat € 2.500 incl. btw of meer is.
  * Verzending en montage horen niet in `materialIncl` en krijgen geen korting.
  * Staat er een kortingscode op (popup50 of Bestelling100), dan vervalt de € 75.
  */

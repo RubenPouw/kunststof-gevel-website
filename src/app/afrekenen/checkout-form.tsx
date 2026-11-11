@@ -8,7 +8,6 @@ import { beginCheckout } from "@/app/afrekenen/actions";
 import { shippingEstimateBothCopy, VatBoth } from "@/components/brand/vat-price";
 import { ColourName } from "@/components/catalog/colour-name";
 import { buttonVariants } from "@/components/ui/button";
-import { quoteOrderDiscount } from "@/lib/catalog/volume-discount";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatPrice, inclVat, roundMoney } from "@/lib/format";
 import { site } from "@/lib/site";
@@ -18,8 +17,7 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
   const { lines, subtotal, remainingForFreeShipping, mountGevel, mountPrice } = useCart();
   const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
   const mount = mountGevel ? mountPrice : 0;
-  const volume = quoteOrderDiscount(inclVat(subtotal));
-  const net = subtotal - volume.discountExcl + mount + shipping;
+  const net = subtotal + mount + shipping;
   const vat = roundMoney(net * 0.21);
   const totalIncl = roundMoney(net + vat);
   const [step, setStep] = useState<1 | 2>(1);
@@ -163,17 +161,6 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
                   ? `. Nog ${formatPrice(remainingForFreeShipping)} excl. btw (${formatPrice(inclVat(remainingForFreeShipping))} incl. 21% btw) tot gratis verzending`
                   : ""}
               </p>
-              {volume.applied ? (
-                <p className="mt-2 font-mono text-[13px]">
-                  Korting vanaf €2.000: -{formatPrice(volume.discountExcl)} excl. btw (
-                  {formatPrice(volume.discountIncl)} incl. 21% btw).
-                </p>
-              ) : !volume.codeApplied && volume.baseIncl > 0 ? (
-                <p className="mt-2 font-mono text-[13px]">
-                  Nog {formatPrice(volume.remainingExcl)} excl. btw ({formatPrice(volume.remainingIncl)} incl. 21% btw)
-                  tot €75 korting op je bestelling.
-                </p>
-              ) : null}
               <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-4 font-mono text-[14px]">
                 <div className="flex justify-between gap-3">
                   <dt>Totaal excl. btw</dt>

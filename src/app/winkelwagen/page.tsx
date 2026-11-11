@@ -248,7 +248,13 @@ export default function CartPage() {
           ) : null}
           {volume.applied ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              Korting vanaf €2.000: -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
+              Korting vanaf €2.500: -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
+            </p>
+          ) : null}
+          {lines.length > 0 && !volume.codeApplied ? (
+            <p className="mt-2 text-[13px] leading-snug text-kg-text-2">
+              Grote bestelling? Vanaf €2.500 krijg je €75 korting. Grote orders kunnen we efficiënter inkopen en in één
+              keer leveren, en dat voordeel geven we aan je door.
             </p>
           ) : null}
           <Link

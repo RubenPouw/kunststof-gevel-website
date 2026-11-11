@@ -3,8 +3,8 @@ import test from "node:test";
 
 import { quoteOrderDiscount } from "../src/lib/catalog/volume-discount.ts";
 
-test("€1.900 materiaal geeft geen korting", () => {
-  const quote = quoteOrderDiscount(1900);
+test("€2.400 materiaal geeft geen korting", () => {
+  const quote = quoteOrderDiscount(2400);
   assert.equal(quote.applied, false);
   assert.equal(quote.discountIncl, 0);
   assert.equal(quote.remainingIncl, 100);
@@ -17,8 +17,8 @@ test("€2.700 materiaal geeft €75 korting", () => {
   assert.equal(quote.remainingIncl, 0);
 });
 
-test("de drempel zelf telt mee", () => {
-  const quote = quoteOrderDiscount(2000);
+test("de drempel van €2.500 telt mee", () => {
+  const quote = quoteOrderDiscount(2500);
   assert.equal(quote.applied, true);
   assert.equal(quote.discountIncl, 75);
 });
