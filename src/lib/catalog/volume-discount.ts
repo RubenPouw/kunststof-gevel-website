@@ -1,38 +1,35 @@
 import { exclVat, roundMoney } from "@/lib/format";
 
-/** Materiaalsubtotaal inclusief btw vanaf waar 2,5% op de hele materiaalorder geldt. */
+/** Materiaalsubtotaal inclusief btw vanaf waar € 75 korting op de materiaalorder geldt. */
 export const ORDER_DISCOUNT_THRESHOLD_INCL = 2000;
-export const ORDER_DISCOUNT_RATE = 0.025;
+export const ORDER_DISCOUNT_INCL = 75;
 
 /**
- * 2,5% over het materiaalsubtotaal zodra dat € 2.000 incl. btw of meer is.
- * Verzending en montage horen niet in `materialIncl` en krijgen geen korting.
- * Een kortingscode van € 50 of € 100 incl. btw komt hier bovenop via stackCodeDiscount.
- * De code verlaagt het bedrag waarover de 2,5% wordt gerekend niet.
+ * Shopify automatic discount that mirrors this rule.
+ * It does not combine with order discounts, so checkout keeps one of the two.
  */
-export function quoteOrderDiscount(materialIncl: number) {
+export const SHOPIFY_ORDER_DISCOUNT_ID = "gid://shopify/DiscountAutomaticNode/1945432588626";
+
+/** Codes that replace the € 75. They do not stack with it. */
+export const REPLACING_DISCOUNT_CODES = ["popup50", "Bestelling100"] as const;
+
+/**
+ * € 75 over het materiaalsubtotaal zodra dat € 2.000 incl. btw of meer is.
+ * Verzending en montage horen niet in `materialIncl` en krijgen geen korting.
+ * Staat er een kortingscode op (popup50 of Bestelling100), dan vervalt de € 75.
+ */
+export function quoteOrderDiscount(materialIncl: number, codeApplied = false) {
   const baseIncl = roundMoney(Math.max(0, materialIncl));
-  const applied = baseIncl >= ORDER_DISCOUNT_THRESHOLD_INCL;
-  const discountIncl = applied ? roundMoney(baseIncl * ORDER_DISCOUNT_RATE) : 0;
-  const remainingIncl = applied ? 0 : roundMoney(ORDER_DISCOUNT_THRESHOLD_INCL - baseIncl);
+  const applied = !codeApplied && baseIncl >= ORDER_DISCOUNT_THRESHOLD_INCL;
+  const discountIncl = applied ? ORDER_DISCOUNT_INCL : 0;
+  const remainingIncl = codeApplied || applied ? 0 : roundMoney(ORDER_DISCOUNT_THRESHOLD_INCL - baseIncl);
   return {
     baseIncl,
     applied,
+    codeApplied,
     discountIncl,
     discountExcl: discountIncl ? exclVat(discountIncl) : 0,
     remainingIncl,
     remainingExcl: remainingIncl ? exclVat(remainingIncl) : 0,
-  };
-}
-
-/** Vaste codes stapelen op de 2,5%. Er is nog geen codeveld in de winkelwagen. */
-export function stackCodeDiscount(order: ReturnType<typeof quoteOrderDiscount>, codeIncl: number) {
-  const code = roundMoney(Math.max(0, codeIncl));
-  const discountIncl = roundMoney(order.discountIncl + code);
-  return {
-    ...order,
-    codeIncl: code,
-    discountIncl,
-    discountExcl: discountIncl ? exclVat(discountIncl) : 0,
   };
 }

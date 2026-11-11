@@ -197,7 +197,7 @@ export default function CartPage() {
             </div>
             {volume.applied ? (
               <div className="flex justify-between gap-3">
-                <dt>2,5% korting</dt>
+                <dt>Korting</dt>
                 <dd>
                   -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
                 </dd>
@@ -241,14 +241,14 @@ export default function CartPage() {
               verzending
             </p>
           ) : null}
-          {lines.length > 0 && volume.baseIncl > 0 && !volume.applied ? (
+          {lines.length > 0 && !volume.codeApplied && volume.baseIncl > 0 && !volume.applied ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              Nog <VatPrice incl={volume.remainingIncl} excl={volume.remainingExcl} /> tot 2,5% korting op je bestelling
+              Nog <VatPrice incl={volume.remainingIncl} excl={volume.remainingExcl} /> tot €75 korting op je bestelling
             </p>
           ) : null}
           {volume.applied ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              2,5% korting vanaf €2.000: -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
+              Korting vanaf €2.000: -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
             </p>
           ) : null}
           <Link

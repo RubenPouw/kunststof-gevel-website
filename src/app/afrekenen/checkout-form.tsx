@@ -165,13 +165,13 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
               </p>
               {volume.applied ? (
                 <p className="mt-2 font-mono text-[13px]">
-                  2,5% korting vanaf €2.000: -{formatPrice(volume.discountExcl)} excl. btw (
+                  Korting vanaf €2.000: -{formatPrice(volume.discountExcl)} excl. btw (
                   {formatPrice(volume.discountIncl)} incl. 21% btw).
                 </p>
-              ) : volume.baseIncl > 0 ? (
+              ) : !volume.codeApplied && volume.baseIncl > 0 ? (
                 <p className="mt-2 font-mono text-[13px]">
                   Nog {formatPrice(volume.remainingExcl)} excl. btw ({formatPrice(volume.remainingIncl)} incl. 21% btw)
-                  tot 2,5% korting op je bestelling.
+                  tot €75 korting op je bestelling.
                 </p>
               ) : null}
               <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-4 font-mono text-[14px]">
