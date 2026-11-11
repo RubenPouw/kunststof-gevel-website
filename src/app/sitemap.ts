@@ -37,6 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/merken",
     "/staalaanvraag",
     "/offerte",
+    "/offerte-montage",
     "/contact",
     "/zakelijk",
     "/projecten",
