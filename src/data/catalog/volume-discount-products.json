@@ -1,0 +1,216 @@
+[
+  {
+    "handle": "eurotexx-potdeksel-180",
+    "title": "Eurotexx potdeksel 180 mm",
+    "variantSkus": [
+      "ET-PD180-VEIK",
+      "ET-PD180-EIKN",
+      "ET-PD180-MERA",
+      "ET-PD180-ANTR",
+      "ET-PD180-VEIK-3M",
+      "ET-PD180-EIKN-3M",
+      "ET-PD180-MERA-3M",
+      "ET-PD180-ANTR-3M"
+    ]
+  },
+  {
+    "handle": "keralit-dakrand-paneel-200",
+    "title": "Keralit dakrand paneel 200 mm",
+    "variantSkus": [
+      "KER-DR200-ANTR",
+      "KER-DR200-VEIK",
+      "KER-DR200-GOLD",
+      "KER-DR200-CREM",
+      "KER-DR200-ZWPT"
+    ]
+  },
+  {
+    "handle": "keralit-dakrand-paneel-250",
+    "title": "Keralit dakrand paneel 250 mm",
+    "variantSkus": [
+      "KER-DR250-ANTR",
+      "KER-DR250-VEIK",
+      "KER-DR250-GOLD",
+      "KER-DR250-CREM",
+      "KER-DR250-ZWPT"
+    ]
+  },
+  {
+    "handle": "keralit-dakrand-paneel-300",
+    "title": "Keralit dakrand paneel 300 mm",
+    "variantSkus": [
+      "KER-DR300-ANTR",
+      "KER-DR300-VEIK",
+      "KER-DR300-GOLD",
+      "KER-DR300-CREM",
+      "KER-DR300-ZWPT"
+    ]
+  },
+  {
+    "handle": "keralit-potdeksel-177",
+    "title": "Keralit potdeksel 177 mm",
+    "variantSkus": [
+      "KER-PD177-ANTR",
+      "KER-PD177-VEIK",
+      "KER-PD177-GOLD",
+      "KER-PD177-CREM",
+      "KER-PD177-ZWPT",
+      "KER-PD177-ANTR-3M",
+      "KER-PD177-VEIK-3M",
+      "KER-PD177-GOLD-3M",
+      "KER-PD177-CREM-3M",
+      "KER-PD177-ZWPT-3M"
+    ]
+  },
+  {
+    "handle": "keralit-sponning-143",
+    "title": "Keralit sponning 143 mm",
+    "variantSkus": [
+      "KER-SP143-ANTR",
+      "KER-SP143-VEIK",
+      "KER-SP143-GOLD",
+      "KER-SP143-CREM",
+      "KER-SP143-ZWPT",
+      "KER-SP143-ANTR-3M",
+      "KER-SP143-VEIK-3M",
+      "KER-SP143-GOLD-3M",
+      "KER-SP143-CREM-3M",
+      "KER-SP143-ZWPT-3M"
+    ]
+  },
+  {
+    "handle": "keralit-sponning-167",
+    "title": "Keralit sponning 167 mm",
+    "variantSkus": [
+      "KER-SP167-ANTR",
+      "KER-SP167-VEIK",
+      "KER-SP167-GOLD",
+      "KER-SP167-CREM",
+      "KER-SP167-ZWPT",
+      "KER-SP167-ANTR-3M",
+      "KER-SP167-VEIK-3M",
+      "KER-SP167-GOLD-3M",
+      "KER-SP167-CREM-3M",
+      "KER-SP167-ZWPT-3M"
+    ]
+  },
+  {
+    "handle": "keralit-sponning-190",
+    "title": "Keralit sponning 190 mm",
+    "variantSkus": [
+      "KER-SP190-ANTR",
+      "KER-SP190-VEIK",
+      "KER-SP190-GOLD",
+      "KER-SP190-CREM",
+      "KER-SP190-ZWPT",
+      "KER-SP190-ANTR-3M",
+      "KER-SP190-VEIK-3M",
+      "KER-SP190-GOLD-3M",
+      "KER-SP190-CREM-3M",
+      "KER-SP190-ZWPT-3M"
+    ]
+  },
+  {
+    "handle": "kerrafront-dubbel-sponningdeel-332",
+    "title": "Kerrafront dubbel sponningdeel 332 mm",
+    "variantSkus": [
+      "KF-DS332-ANTR",
+      "KF-DS332-WIT",
+      "KF-DS332-ZAND",
+      "KF-DS332-NOTE",
+      "KF-DS332-ANTR-3M",
+      "KF-DS332-WIT-3M",
+      "KF-DS332-ZAND-3M",
+      "KF-DS332-NOTE-3M"
+    ]
+  },
+  {
+    "handle": "kerrafront-multi-sponningdeel-332",
+    "title": "Kerrafront Multi sponningdeel 332 mm",
+    "variantSkus": [
+      "KF-MS332-ANTR",
+      "KF-MS332-WIT",
+      "KF-MS332-ZAND",
+      "KF-MS332-NOTE",
+      "KF-MS332-ANTR-3M",
+      "KF-MS332-WIT-3M",
+      "KF-MS332-ZAND-3M",
+      "KF-MS332-NOTE-3M"
+    ]
+  },
+  {
+    "handle": "milexx-volschuim-dakrand-hoek-35",
+    "title": "Milexx volschuim dakrandpanelen haakse hoek 35 mm",
+    "variantSkus": [
+      "MX-HK35-ANTR",
+      "MX-HK35-WIT",
+      "MX-HK35-BRUN"
+    ]
+  },
+  {
+    "handle": "profex-duafort-rabat-125",
+    "title": "Duafort Rabat 125 mm",
+    "variantSkus": [
+      "PX-DF125-ANTR",
+      "PX-DF125-BRUN",
+      "PX-DF125-GROE",
+      "PX-DF125-ANTR-3M",
+      "PX-DF125-BRUN-3M",
+      "PX-DF125-GROE-3M"
+    ]
+  },
+  {
+    "handle": "vinyplus-dakrandpaneel-200",
+    "title": "Vinyplus Dakrandpaneel 200 × 35 × 16 mm",
+    "variantSkus": [
+      "VP-DR200-ANTR",
+      "VP-DR200-WIT",
+      "VP-DR200-CREM",
+      "VP-DR200-VEIK",
+      "VP-DR200-MERA"
+    ]
+  },
+  {
+    "handle": "vinyplus-dakrandpaneel-295",
+    "title": "Vinyplus Dakrandpaneel 295 × 35 × 16 mm",
+    "variantSkus": [
+      "VP-DR295-ANTR",
+      "VP-DR295-WIT",
+      "VP-DR295-CREM",
+      "VP-DR295-VEIK",
+      "VP-DR295-MERA"
+    ]
+  },
+  {
+    "handle": "vinyplus-quattro-299",
+    "title": "Vinyplus Quattro 299 mm werkend",
+    "variantSkus": [
+      "VP-Q299-ANTR",
+      "VP-Q299-WIT",
+      "VP-Q299-CREM",
+      "VP-Q299-VEIK",
+      "VP-Q299-MERA",
+      "VP-Q299-ANTR-3M",
+      "VP-Q299-WIT-3M",
+      "VP-Q299-CREM-3M",
+      "VP-Q299-VEIK-3M",
+      "VP-Q299-MERA-3M"
+    ]
+  },
+  {
+    "handle": "vinyplus-rondkantpaneel-150",
+    "title": "Vinyplus Rondkantpaneel 150 mm",
+    "variantSkus": [
+      "VP-RK150-ANTR",
+      "VP-RK150-WIT",
+      "VP-RK150-CREM",
+      "VP-RK150-VEIK",
+      "VP-RK150-MERA",
+      "VP-RK150-ANTR-3M",
+      "VP-RK150-WIT-3M",
+      "VP-RK150-CREM-3M",
+      "VP-RK150-VEIK-3M",
+      "VP-RK150-MERA-3M"
+    ]
+  }
+]

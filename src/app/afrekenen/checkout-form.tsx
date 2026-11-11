@@ -8,6 +8,8 @@ import { beginCheckout } from "@/app/afrekenen/actions";
 import { shippingEstimateBothCopy, VatBoth } from "@/components/brand/vat-price";
 import { ColourName } from "@/components/catalog/colour-name";
 import { buttonVariants } from "@/components/ui/button";
+import { getStaticProduct } from "@/lib/catalog/static";
+import { isVolumeDiscountEligible, qualifyingInclFromLines, quoteVolumeDiscount } from "@/lib/catalog/volume-discount";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatPrice, inclVat, roundMoney } from "@/lib/format";
 import { site } from "@/lib/site";
@@ -17,7 +19,30 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
   const { lines, subtotal, remainingForFreeShipping, mountGevel, mountPrice } = useCart();
   const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
   const mount = mountGevel ? mountPrice : 0;
-  const net = subtotal + mount + shipping;
+  const volume = quoteVolumeDiscount(
+    qualifyingInclFromLines(
+      lines.flatMap((line) => {
+        const resolved = resolveCartLine(line);
+        if (!resolved || resolved.kind !== "product") return [];
+        const product = getStaticProduct(line.productSlug);
+        return [
+          {
+            unitExcl: resolved.unitExcl,
+            qty: line.qty,
+            eligible: isVolumeDiscountEligible({
+              name: product?.name ?? resolved.name,
+              slug: line.productSlug,
+              category: product?.category,
+              brandSlug: product?.brandSlug,
+              productType: product?.productType,
+              saleUnit: product?.saleUnit,
+            }),
+          },
+        ];
+      }),
+    ),
+  );
+  const net = subtotal - volume.discountExcl + mount + shipping;
   const vat = roundMoney(net * 0.21);
   const totalIncl = roundMoney(net + vat);
   const [step, setStep] = useState<1 | 2>(1);
@@ -161,6 +186,17 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
                   ? `. Nog ${formatPrice(remainingForFreeShipping)} excl. btw (${formatPrice(inclVat(remainingForFreeShipping))} incl. 21% btw) tot gratis verzending`
                   : ""}
               </p>
+              {volume.applied ? (
+                <p className="mt-2 font-mono text-[13px]">
+                  2,5% volumekorting op panelen: -{formatPrice(volume.discountExcl)} excl. btw (
+                  {formatPrice(volume.discountIncl)} incl. 21% btw). Deze korting staat nog niet in de Shopify-checkout.
+                </p>
+              ) : volume.eligibleIncl > 0 ? (
+                <p className="mt-2 font-mono text-[13px]">
+                  Nog {formatPrice(volume.remainingExcl)} excl. btw ({formatPrice(volume.remainingIncl)} incl. 21% btw)
+                  aan panelen tot 2,5% extra korting.
+                </p>
+              ) : null}
               <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-4 font-mono text-[14px]">
                 <div className="flex justify-between gap-3">
                   <dt>Totaal excl. btw</dt>
