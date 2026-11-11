@@ -101,7 +101,7 @@ function findVariant(
 }
 
 async function createStorefrontCart(input: {
-  lines: { merchandiseId: string; quantity: number; attributes?: { key: string; value: string }[] }[];
+  lines: { merchandiseId: string; quantity: number }[];
   customer: CheckoutCustomer;
   note: string;
   ads?: AdsState | null;
@@ -112,7 +112,6 @@ async function createStorefrontCart(input: {
       lines: input.lines.map((line) => ({
         merchandiseId: line.merchandiseId,
         quantity: line.quantity,
-        ...(line.attributes?.length ? { attributes: line.attributes } : {}),
       })),
       note: input.note,
       buyerIdentity: {
@@ -149,7 +148,7 @@ function variantNumericId(gid: string) {
 }
 
 async function createAdminDraft(input: {
-  lines: { merchandiseId: string; quantity: number; name: string; attributes?: { key: string; value: string }[] }[];
+  lines: { merchandiseId: string; quantity: number; name: string }[];
   customer: CheckoutCustomer;
   note: string;
   ads?: AdsState | null;
@@ -171,9 +170,6 @@ async function createAdminDraft(input: {
         line_items: input.lines.map((line) => ({
           variant_id: Number(variantNumericId(line.merchandiseId)),
           quantity: line.quantity,
-          ...(line.attributes?.length
-            ? { properties: line.attributes.map((item) => ({ name: item.key, value: item.value })) }
-            : {}),
         })),
         email: input.customer.email.trim(),
         phone,
