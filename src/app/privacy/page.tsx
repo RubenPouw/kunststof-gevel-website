@@ -48,7 +48,7 @@ export default function PrivacyPage() {
       <section>
         <h2>Met wie we delen</h2>
         <p className="mt-3">
-          Shopify verwerkt de catalogus en de betaling. Als e-mail of ActiveCampaign is ingesteld, gaat een aanvraag naar {site.email} of naar dat systeem. Na toestemming in de cookiebanner kan onze server een gebeurtenis doorsturen naar Google, voor statistiek en advertentiemeting. Zonder die toestemming gebeurt dat niet. We verkopen geen adressen. Verwerkers zitten in de EU of werken met een passende doorgifte.
+          Shopify verwerkt de catalogus en de betaling. Als e-mail of ActiveCampaign is ingesteld, gaat een aanvraag naar {site.email} of naar dat systeem. Na toestemming in de cookiebanner kan Google Tag Manager op kunststof-gevel.nl meten, en kan onze server een gebeurtenis doorsturen naar Google, voor statistiek en advertentiemeting. Zonder die toestemming gebeurt dat niet. We verkopen geen adressen. Verwerkers zitten in de EU of werken met een passende doorgifte.
         </p>
       </section>
       <section>
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
       <section>
         <h2>Cookies</h2>
         <p className="mt-3">
-          De winkelwagen en een eventueel account staan in uw browser. We laden geen script van Google of een andere meetpartij.
+          De winkelwagen en een eventueel account staan in uw browser. Op kunststof-gevel.nl laadt de browser Google Tag Manager (GTM-N3DQ6G5). Cookies voor statistiek en advertenties blijven uit tot u accepteert, en ook als u weigert. Op een onrender.com-adres laden we die container niet.
           De keuze incl. of excl. btw bewaren we een jaar in een functionele cookie en in deze browser, zodat de volgende pagina dezelfde prijzen toont. Daar zit geen account of meting in.
         </p>
         <p className="mt-3">

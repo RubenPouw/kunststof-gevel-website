@@ -1,6 +1,8 @@
 # Meting
 
-De site laadt geen script van Google, Tag Manager of een andere meetpartij. De browser stuurt een gebeurtenis naar een eigen adres. Alleen als de bijbehorende vlag aan staat én de bezoeker in de cookiebanner heeft geaccepteerd, stuurt de server die gebeurtenis door naar GA4 (Measurement Protocol) of Google Ads (upload van klikconversies, met gehashte contactgegevens).
+Op kunststof-gevel.nl en www.kunststof-gevel.nl laadt de browser Google Tag Manager, container GTM-N3DQ6G5. Op een host die op `.onrender.com` eindigt laadt hij niet: het script stopt vóór het verzoek, en de preview-response zet een Content-Security-Policy die `googletagmanager.com` als script en frame weigert. `GTM_ID` leeg laten. `GTM_ID=uit` (opnieuw bouwen) zet de container ook op het live domein uit. Een andere container is `GTM_ID=GTM-XXXX`. De cookiebanner zet Consent Mode: tot accepteren blijven advertentie- en statistiekcookies uit.
+
+Daarnaast stuurt de browser een gebeurtenis naar een eigen adres. Alleen als de bijbehorende vlag aan staat én de bezoeker in de cookiebanner heeft geaccepteerd, stuurt de server die gebeurtenis door naar GA4 (Measurement Protocol) of Google Ads (upload van klikconversies, met gehashte contactgegevens).
 
 Beide vlaggen staan standaard uit. Ontbreekt een geheim terwijl de vlag aan staat, dan slaat de server dat kanaal stil over. Een offerte, staalaanvraag of bestelling mislukt niet als het doorsturen faalt.
 

@@ -15,6 +15,7 @@ import { SampleTrayProvider } from "@/lib/samples";
 import { organizationJsonLd } from "@/lib/seo/schema";
 import { site } from "@/lib/site";
 import { CLICK_CAPTURE_SCRIPT } from "@/lib/tracking/capture-script";
+import { gtmDataLayerScript, gtmLoaderScript, gtmMarkupId, gtmNoscriptHtml } from "@/lib/tracking/gtm";
 import { VAT_BOOT_SCRIPT } from "@/lib/vat-mode";
 
 import "./globals.css";
@@ -56,13 +57,19 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const gtmId = gtmMarkupId(process.env.GTM_ID);
   return (
     <html
       lang="nl"
       className={`${plexSans.variable} ${plexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: gtmDataLayerScript() }} />
+        {gtmId ? <script dangerouslySetInnerHTML={{ __html: gtmLoaderScript(process.env.GTM_ID) }} /> : null}
+      </head>
       <body className="flex min-h-full flex-col">
+        {gtmId ? <noscript dangerouslySetInnerHTML={{ __html: gtmNoscriptHtml(gtmId) }} /> : null}
         <script dangerouslySetInnerHTML={{ __html: VAT_BOOT_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: CLICK_CAPTURE_SCRIPT }} />
         <svg width="0" height="0" className="absolute" aria-hidden>

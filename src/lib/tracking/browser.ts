@@ -31,6 +31,23 @@ export function clearPendingClicks() {
   }
 }
 
+/** Zet Consent Mode bij, zodat GTM de keuze hoort zonder herladen. */
+export function pushGtmConsent(choice: BrowserConsent) {
+  const win = window as Window & { dataLayer?: unknown[] };
+  win.dataLayer = win.dataLayer || [];
+  const state = choice === "granted" ? "granted" : "denied";
+  win.dataLayer.push([
+    "consent",
+    "update",
+    {
+      ad_storage: state,
+      ad_user_data: state,
+      ad_personalization: state,
+      analytics_storage: state,
+    },
+  ]);
+}
+
 /** Zet of wist de httpOnly-cookie. De keuze in localStorage doet de banner zelf. */
 export async function publishConsent(choice: BrowserConsent) {
   const clicks = choice === "granted" ? readPendingClicks() : {};

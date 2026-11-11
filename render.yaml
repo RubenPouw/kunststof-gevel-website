@@ -50,6 +50,10 @@ services:
         sync: false
       - key: NOINDEX
         sync: false
+      # Leeg laten op de preview. Het productiedomein laadt GTM-N3DQ6G5 vanzelf.
+      # *.onrender.com laadt de container niet. GTM_ID=uit zet hem ook op het live domein uit.
+      - key: GTM_ID
+        sync: false
       - key: DATABASE_URL
         sync: false
       - key: SHOPIFY_WEBHOOK_SECRET
