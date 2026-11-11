@@ -1,45 +1,22 @@
-import { exclVat, inclVat, roundMoney } from "@/lib/format";
-import { inferProductGroup } from "@/lib/catalog/measures";
-import { isHplSheetText } from "@/lib/catalog/text-rules";
+import { exclVat, roundMoney } from "@/lib/format";
 
-/** Subtotaal van kwalificerende panelen, inclusief btw, vanaf waar 2,5% geldt. */
-export const VOLUME_PANEL_THRESHOLD_INCL = 2000;
-export const VOLUME_PANEL_RATE = 0.025;
-
-export type VolumeDiscountProduct = {
-  name: string;
-  slug?: string;
-  category?: string;
-  brand?: string;
-  brandSlug?: string;
-  productType?: string;
-  saleUnit?: string;
-};
+/** Materiaalsubtotaal inclusief btw vanaf waar 2,5% op de hele materiaalorder geldt. */
+export const ORDER_DISCOUNT_THRESHOLD_INCL = 2000;
+export const ORDER_DISCOUNT_RATE = 0.025;
 
 /**
- * Panelen die meetellen voor de volumekorting.
- * Het Shopify-type en de collectie zijn niet leidend: type Dakrand bevat ook
- * profielen en lijm, en een potdeksel kan als "Heering overig" binnenkomen.
+ * 2,5% over het materiaalsubtotaal zodra dat € 2.000 incl. btw of meer is.
+ * Verzending en montage horen niet in `materialIncl` en krijgen geen korting.
+ * Een kortingscode van € 50 of € 100 incl. btw komt hier bovenop via stackCodeDiscount.
+ * De code verlaagt het bedrag waarover de 2,5% wordt gerekend niet.
  */
-export function isVolumeDiscountEligible(product: VolumeDiscountProduct) {
-  const text = `${product.name} ${product.slug ?? ""} ${product.brand ?? ""} ${product.brandSlug ?? ""}`
-    .replace(/-/g, " ")
-    .toLowerCase();
-  if (isRetiredBrand(text) || isExcluded(text)) return false;
-  if (isZiererStrip(text)) return true;
-  if (isHplPlate(product, text)) return true;
-  if (isCeilingPanel(text)) return true;
-  if (isListedDakrandPanel(text)) return true;
-  return isFacadeCladding(product, text);
-}
-
-export function quoteVolumeDiscount(qualifyingIncl: number) {
-  const eligibleIncl = roundMoney(Math.max(0, qualifyingIncl));
-  const applied = eligibleIncl >= VOLUME_PANEL_THRESHOLD_INCL;
-  const discountIncl = applied ? roundMoney(eligibleIncl * VOLUME_PANEL_RATE) : 0;
-  const remainingIncl = applied ? 0 : roundMoney(VOLUME_PANEL_THRESHOLD_INCL - eligibleIncl);
+export function quoteOrderDiscount(materialIncl: number) {
+  const baseIncl = roundMoney(Math.max(0, materialIncl));
+  const applied = baseIncl >= ORDER_DISCOUNT_THRESHOLD_INCL;
+  const discountIncl = applied ? roundMoney(baseIncl * ORDER_DISCOUNT_RATE) : 0;
+  const remainingIncl = applied ? 0 : roundMoney(ORDER_DISCOUNT_THRESHOLD_INCL - baseIncl);
   return {
-    eligibleIncl,
+    baseIncl,
     applied,
     discountIncl,
     discountExcl: discountIncl ? exclVat(discountIncl) : 0,
@@ -48,56 +25,14 @@ export function quoteVolumeDiscount(qualifyingIncl: number) {
   };
 }
 
-/** Incl. btw van de regels die meetellen. `unitExcl` is de stuksprijs excl. btw. */
-export function qualifyingInclFromLines(
-  lines: { unitExcl: number; qty: number; eligible: boolean }[],
-) {
-  return roundMoney(
-    lines.reduce((sum, line) => (line.eligible ? sum + inclVat(line.unitExcl * line.qty) : sum), 0),
-  );
-}
-
-function isRetiredBrand(text: string) {
-  return /\b(?:profex|duafort|canexel)\b/.test(text);
-}
-
-const EXCLUDED =
-  /wonderboard|hygi[eë]nische wand|sierlijst|profiel|hoekstuk|hoekprofiel|eindkap|eindprofiel|\bclips?\b|schroef|bevestiging|\blijm\b|\bkit\b|reiniger|startprofiel|verbind|stootvoeg|ventilatie|\btrim\b|\bkraal\b|tussenstuk|afdicht|verzend|vensterbank|\bkozijn\b/;
-
-function isExcluded(text: string) {
-  return EXCLUDED.test(text);
-}
-
-function isZiererStrip(text: string) {
-  return /steenstrip|leisteen/.test(text);
-}
-
-function isHplPlate(product: VolumeDiscountProduct, text: string) {
-  if (product.saleUnit === "sheet" || isHplSheetText(text)) return true;
-  return product.category === "hpl-platen" && /plaat/.test(text);
-}
-
-function isCeilingPanel(text: string) {
-  return /plafond\s*paneel|plafondpaneel|buitenplafond|binnenplafond/.test(text);
-}
-
-function isListedDakrandPanel(text: string) {
-  if (/unipanel/.test(text) && /bouwpaneel/.test(text)) {
-    return /(185|235|285|385|610)/.test(text);
-  }
-  if (/big board/.test(text)) {
-    return /(225|300|395)/.test(text) && /(?:x|×)\s*16|\bx16\b/.test(text);
-  }
-  if (/haakse hoek/.test(text) && /(milexx|volschuim)/.test(text)) {
-    return /\b35\b/.test(text) && !/\d{2,3}\s*(?:x|×)\s*35/.test(text);
-  }
-  if (!/dakrand\s*paneel|dakrandpaneel/.test(text)) return false;
-  if (/viny/.test(text)) return /(200|295)/.test(text);
-  if (/keralit/.test(text)) return /(200|250|300|350)/.test(text);
-  return false;
-}
-
-function isFacadeCladding(product: VolumeDiscountProduct, text: string) {
-  if (!/rabat|sponning|potdeksel|rondkant|quattro/.test(text)) return false;
-  return inferProductGroup(product.name, product.productType) === "gevelpaneel";
+/** Vaste codes stapelen op de 2,5%. Er is nog geen codeveld in de winkelwagen. */
+export function stackCodeDiscount(order: ReturnType<typeof quoteOrderDiscount>, codeIncl: number) {
+  const code = roundMoney(Math.max(0, codeIncl));
+  const discountIncl = roundMoney(order.discountIncl + code);
+  return {
+    ...order,
+    codeIncl: code,
+    discountIncl,
+    discountExcl: discountIncl ? exclVat(discountIncl) : 0,
+  };
 }

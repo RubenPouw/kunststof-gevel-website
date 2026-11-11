@@ -7,24 +7,10 @@ import { ProductPhoto } from "@/components/brand/product-photo";
 import { ColourName } from "@/components/catalog/colour-name";
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
-import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart, type CartLine } from "@/lib/cart";
-import { getStaticProduct } from "@/lib/catalog/static";
-import { isVolumeDiscountEligible, qualifyingInclFromLines, quoteVolumeDiscount } from "@/lib/catalog/volume-discount";
+import { quoteOrderDiscount } from "@/lib/catalog/volume-discount";
+import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
 import { cn } from "@/lib/utils";
-
-function panelQualifies(line: CartLine, resolvedName: string) {
-  const product = getStaticProduct(line.productSlug);
-  return isVolumeDiscountEligible({
-    name: product?.name ?? resolvedName,
-    slug: line.productSlug,
-    category: product?.category,
-    brand: product?.brand,
-    brandSlug: product?.brandSlug,
-    productType: product?.productType,
-    saleUnit: product?.saleUnit,
-  });
-}
 
 export default function CartPage() {
   const {
@@ -40,14 +26,7 @@ export default function CartPage() {
   } = useCart();
   const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
   const mount = mountGevel ? mountPrice : 0;
-  const qualifyingIncl = qualifyingInclFromLines(
-    lines.flatMap((line) => {
-      const resolved = resolveCartLine(line);
-      if (!resolved || resolved.kind !== "product") return [];
-      return [{ unitExcl: resolved.unitExcl, qty: line.qty, eligible: panelQualifies(line, resolved.name) }];
-    }),
-  );
-  const volume = quoteVolumeDiscount(qualifyingIncl);
+  const volume = quoteOrderDiscount(inclVat(subtotal));
   const net = subtotal - volume.discountExcl + mount + shipping;
   const vat = inclVat(net) - net;
   const totalIncl = inclVat(net);
@@ -218,7 +197,7 @@ export default function CartPage() {
             </div>
             {volume.applied ? (
               <div className="flex justify-between gap-3">
-                <dt>2,5% volumekorting op panelen</dt>
+                <dt>2,5% korting</dt>
                 <dd>
                   -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
                 </dd>
@@ -262,15 +241,14 @@ export default function CartPage() {
               verzending
             </p>
           ) : null}
-          {lines.length > 0 && volume.eligibleIncl > 0 && !volume.applied ? (
+          {lines.length > 0 && volume.baseIncl > 0 && !volume.applied ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              Nog <VatPrice incl={volume.remainingIncl} excl={volume.remainingExcl} /> aan panelen tot 2,5% extra
-              korting
+              Nog <VatPrice incl={volume.remainingIncl} excl={volume.remainingExcl} /> tot 2,5% korting op je bestelling
             </p>
           ) : null}
           {volume.applied ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              2,5% volumekorting op panelen: -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
+              2,5% korting vanaf €2.000: -<VatPrice incl={volume.discountIncl} excl={volume.discountExcl} />
             </p>
           ) : null}
           <Link
@@ -290,8 +268,7 @@ export default function CartPage() {
             Bewaar als offerte
           </Link>
           <p className="mt-4 font-mono text-[13px] text-kg-text-2">
-            Levertijd bevestigen we na bestelling. Betalen doet u in de Shopify-checkout. Montage en de volumekorting
-            zitten niet in dat bedrag. Er is geen kortingscode op deze winkelwagen.
+            Levertijd bevestigen we na bestelling. Betalen doet u in de Shopify-checkout. Montage zit niet in dat bedrag.
           </p>
         </aside>
       </div>
