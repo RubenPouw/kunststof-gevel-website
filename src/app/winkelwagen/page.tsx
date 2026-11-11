@@ -19,6 +19,7 @@ function panelQualifies(line: CartLine, resolvedName: string) {
     name: product?.name ?? resolvedName,
     slug: line.productSlug,
     category: product?.category,
+    brand: product?.brand,
     brandSlug: product?.brandSlug,
     productType: product?.productType,
     saleUnit: product?.saleUnit,

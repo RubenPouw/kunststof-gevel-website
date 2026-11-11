@@ -33,6 +33,7 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
               name: product?.name ?? resolved.name,
               slug: line.productSlug,
               category: product?.category,
+              brand: product?.brand,
               brandSlug: product?.brandSlug,
               productType: product?.productType,
               saleUnit: product?.saleUnit,

@@ -10,6 +10,7 @@ export type VolumeDiscountProduct = {
   name: string;
   slug?: string;
   category?: string;
+  brand?: string;
   brandSlug?: string;
   productType?: string;
   saleUnit?: string;
@@ -21,8 +22,10 @@ export type VolumeDiscountProduct = {
  * profielen en lijm, en een potdeksel kan als "Heering overig" binnenkomen.
  */
 export function isVolumeDiscountEligible(product: VolumeDiscountProduct) {
-  const text = `${product.name} ${product.slug ?? ""}`.replace(/-/g, " ").toLowerCase();
-  if (isExcluded(text)) return false;
+  const text = `${product.name} ${product.slug ?? ""} ${product.brand ?? ""} ${product.brandSlug ?? ""}`
+    .replace(/-/g, " ")
+    .toLowerCase();
+  if (isRetiredBrand(text) || isExcluded(text)) return false;
   if (isZiererStrip(text)) return true;
   if (isHplPlate(product, text)) return true;
   if (isCeilingPanel(text)) return true;
@@ -52,6 +55,10 @@ export function qualifyingInclFromLines(
   return roundMoney(
     lines.reduce((sum, line) => (line.eligible ? sum + inclVat(line.unitExcl * line.qty) : sum), 0),
   );
+}
+
+function isRetiredBrand(text: string) {
+  return /\b(?:profex|duafort|canexel)\b/.test(text);
 }
 
 const EXCLUDED =

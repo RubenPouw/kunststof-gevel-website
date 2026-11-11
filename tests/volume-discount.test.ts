@@ -181,6 +181,23 @@ test("plafond, HPL en Zierer-steenstrips wel, hulpstukken en Wonderboard niet", 
     }),
     false,
   );
+  assert.equal(isVolumeDiscountEligible(bySlug("profex-duafort-rabat-125")), false);
+  assert.equal(
+    isVolumeDiscountEligible({
+      name: "Rabat 125 mm",
+      slug: "rabat-125",
+      brand: "Profex",
+      brandSlug: "profex",
+    }),
+    false,
+  );
+  assert.equal(
+    isVolumeDiscountEligible({
+      name: "Canexel rabat",
+      slug: "canexel-rabat",
+    }),
+    false,
+  );
 });
 
 test("the Shopify list matches every qualifying product in this catalog", () => {
@@ -190,7 +207,8 @@ test("the Shopify list matches every qualifying product in this catalog", () => 
     .sort();
   const listed = volumeList.map((row) => row.handle).sort();
   assert.deepEqual(listed, expected);
-  assert.equal(listed.length, 16);
+  assert.equal(listed.length, 15);
+  assert.equal(listed.includes("profex-duafort-rabat-125"), false);
   for (const row of volumeList) {
     const product = bySlug(row.handle);
     assert.equal(row.title, product.name);

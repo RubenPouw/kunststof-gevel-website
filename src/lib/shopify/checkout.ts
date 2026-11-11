@@ -248,6 +248,7 @@ export async function createShopifyCheckout(input: {
       isVolumeDiscountEligible({
         name: item.product.name,
         slug: item.product.slug,
+        brandSlug: "brandSlug" in item.product ? String(item.product.brandSlug ?? "") : undefined,
       })
         ? [{ key: "_kg_volume_panel", value: "1" }]
         : [],
