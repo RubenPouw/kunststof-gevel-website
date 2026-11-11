@@ -65,7 +65,7 @@ export default async function OfferteBedanktPage({
             Bewaar de referentie in uw account
           </Link>
           <Link href={site.phoneHref} className="self-center text-[14px] underline">
-            Liever bellen? {site.phone}
+            Liever bellen? <a href={site.phoneHref}>{site.phone}</a>
           </Link>
         </div>
       </div>

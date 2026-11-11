@@ -604,7 +604,7 @@ export function StaalWizard({
 
           {current.type === "empty" ? (
             <p className="mt-6 text-[15px]">
-              Voor {current.label} staan er nu geen stalen in de catalogus. Bel {site.phone} of WhatsApp {site.mobileDisplay}.
+              Voor {current.label} staan er nu geen stalen in de catalogus. Bel <a href={site.phoneHref}>{site.phone}</a> of WhatsApp <a href={site.mobileHref}>{site.mobileDisplay}</a>.
             </p>
           ) : null}
 

@@ -54,7 +54,7 @@ export function ProductListing({
   view?: ListingView;
   sort?: ListingSort;
   showStockChip?: boolean;
-  emptyMessage?: string;
+  emptyMessage?: React.ReactNode;
 }) {
   const [cards, setCards] = useState(initialCards);
   const [total, setTotal] = useState(initialTotal);

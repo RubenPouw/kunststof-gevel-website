@@ -79,7 +79,12 @@ export async function CategoryListing({
         }
         emptyMessage={
           slug === "hpl-platen" && all.length === 0
-            ? `De HPL platen komen uit de shopcollectie. Ziet u ze nog niet, bel ${site.phone}. Een plaat is 3050 × 1300 × 6 mm, hele plaat, 3,965 m².`
+            ? (
+                <>
+                  De HPL platen komen uit de shopcollectie. Ziet u ze nog niet, bel{" "}
+                  <a href={site.phoneHref}>{site.phone}</a>. Een plaat is 3050 × 1300 × 6 mm, hele plaat, 3,965 m².
+                </>
+              )
             : undefined
         }
       />

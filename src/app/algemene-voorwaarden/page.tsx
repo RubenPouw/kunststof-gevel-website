@@ -20,7 +20,7 @@ export default function TermsPage() {
       <section>
         <h2>1. Wie</h2>
         <p className="mt-3">
-          {site.company}, {site.address}, KvK {site.kvk}, BTW {site.btw}. Contact: {site.email}, {site.phone}.
+          {site.company}, {site.address}, KvK {site.kvk}, BTW {site.btw}. Contact: {site.email}, <a href={site.phoneHref}>{site.phone}</a>.
         </p>
       </section>
       <section>

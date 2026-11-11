@@ -50,7 +50,12 @@ export async function BrandListing({
           sort={presentation.sort}
           emptyMessage={
             all.length === 0
-              ? `${brand.name} staat nu niet in de webshopvoorraad. Bel ${site.phone} of vraag een offerte, dan kijken we of we het kunnen leveren.`
+              ? (
+                  <>
+                    {brand.name} staat nu niet in de webshopvoorraad. Bel <a href={site.phoneHref}>{site.phone}</a> of
+                    vraag een offerte, dan kijken we of we het kunnen leveren.
+                  </>
+                )
               : undefined
           }
         />

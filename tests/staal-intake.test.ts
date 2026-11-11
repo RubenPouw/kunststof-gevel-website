@@ -83,10 +83,15 @@ test("dealflow posts the Fillout submission and logs the dashboard status", asyn
 test("ActiveCampaign upserts the contact, lists it and reuses existing staal tags", async () => {
   assert.deepEqual(staalAcTags(["Keralit sponning: Wit 9016", "VinyPlus rabat: Antraciet"]), [
     "staalaanvraag",
-    "staal-keralit",
     "staal-vinyplus",
+    "staal-keralit",
   ]);
-  assert.deepEqual(staalAcTags(["Eurotexx: Wit"]), ["staalaanvraag"]);
+  assert.deepEqual(staalAcTags(["Eurotexx potdeksel: Wit"]), ["staalaanvraag", "staal-overig"]);
+  assert.deepEqual(staalAcTags(["Keralit sponning: Antraciet", "Eurotexx potdeksel: Wit"]), [
+    "staalaanvraag",
+    "staal-keralit",
+    "staal-overig",
+  ]);
 
   const previousUrl = process.env.ACTIVECAMPAIGN_API_URL;
   const previousKey = process.env.ACTIVECAMPAIGN_API_KEY;

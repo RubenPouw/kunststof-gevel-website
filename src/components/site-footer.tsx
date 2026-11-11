@@ -25,7 +25,13 @@ export function SiteFooter() {
             <br />
             {site.addressNote}
             <br />
-            {site.phone} · {site.mobileDisplay}
+            <a href={site.phoneHref} className="text-kg-kalk no-underline hover:underline">
+              {site.phone}
+            </a>
+            {" · "}
+            <a href={site.mobileHref} className="text-kg-kalk no-underline hover:underline">
+              {site.mobileDisplay}
+            </a>
             <br />
             {site.hours}
           </p>

@@ -44,7 +44,7 @@ export default async function StalenBedanktPage({
             Verder winkelen
           </Link>
           <Link href="/contact" className="self-center text-[14px] underline">
-            Liever bellen? {site.phone}
+            Liever bellen? <a href={site.phoneHref}>{site.phone}</a>
           </Link>
         </div>
       </div>

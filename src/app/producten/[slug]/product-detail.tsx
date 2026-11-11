@@ -348,6 +348,57 @@ export function ProductDetail({
             </fieldset>
           </div>
 
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+            {canBuy ? (
+              <button
+                type="button"
+                onClick={() => onAdd()}
+                disabled={!selected.inStock}
+                className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1")}
+              >
+                In bestelling · <VatPrice incl={selected.price * qty} excl={unitExcl * qty} />
+              </button>
+            ) : (
+              <Link href="/offerte" className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1 no-underline")}>
+                Vraag de prijs
+              </Link>
+            )}
+            {staalHref ? (
+              <span className="flex flex-col">
+                <Link href={staalHref} className={cn(buttonVariants({ variant: "secondary" }), "h-12 no-underline hover:no-underline")}>
+                  Gratis staal
+                </Link>
+                <span className="mt-1 text-[13px] text-kg-text-2">Zie de kleur eerst in het echt</span>
+              </span>
+            ) : null}
+            {product.sampleable ? (
+              <SampleAddButton
+                sample={{
+                  id: selected.sampleId,
+                  brandSlug: product.brandSlug,
+                  brandName: product.brand,
+                  colorName: selected.colorName,
+                  hex: selected.hex,
+                  ral: selected.ral,
+                }}
+                label="Staal"
+                className="h-12"
+              />
+            ) : null}
+            <Link href="/offerte" className="flex h-12 items-center px-3 text-[15px] font-medium text-kg-text-2">
+              Montage via offerte
+            </Link>
+          </div>
+          {added ? (
+            <p className="font-mono text-[13px] text-kg-stock">
+              Toegevoegd. <Link href="/winkelwagen">Naar winkelwagen</Link>
+            </p>
+          ) : (
+            <p className="font-mono text-[13px] text-kg-text-2">
+              {sheet ? "Hele plaat. Je zaagwerk doen wij niet." : "10 jaar garantie op kleur, volgens het merkvoorschrift."}
+            </p>
+          )}
+
           {sheet ? (
             <SheetCalculator
               sheetM2={product.sheetM2}
@@ -367,54 +418,6 @@ export function ProductDetail({
               onOrder={(panels) => onAdd(panels)}
             />
           ) : null}
-
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            {canBuy ? (
-              <button
-                type="button"
-                onClick={() => onAdd()}
-                disabled={!selected.inStock}
-                className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1")}
-              >
-                In bestelling · <VatPrice incl={selected.price * qty} excl={unitExcl * qty} />
-              </button>
-            ) : (
-              <Link href="/offerte" className={cn(buttonVariants({ variant: "primary" }), "h-12 flex-1 no-underline")}>
-                Vraag de prijs
-              </Link>
-            )}
-            {product.sampleable ? (
-              <SampleAddButton
-                sample={{
-                  id: selected.sampleId,
-                  brandSlug: product.brandSlug,
-                  brandName: product.brand,
-                  colorName: selected.colorName,
-                  hex: selected.hex,
-                  ral: selected.ral,
-                }}
-                label="Staal"
-                className="h-12"
-              />
-            ) : null}
-            <Link href="/offerte" className="flex h-12 items-center px-3 text-[15px] font-medium text-kg-text-2">
-              Montage via offerte
-            </Link>
-            {staalHref ? (
-              <Link href={staalHref} className="flex h-12 items-center px-3 text-[15px] font-medium">
-                Gratis staalaanvraag
-              </Link>
-            ) : null}
-          </div>
-          {added ? (
-            <p className="font-mono text-[13px] text-kg-stock">
-              Toegevoegd. <Link href="/winkelwagen">Naar winkelwagen</Link>
-            </p>
-          ) : (
-            <p className="font-mono text-[13px] text-kg-text-2">
-              {sheet ? "Hele plaat. Je zaagwerk doen wij niet." : "10 jaar garantie op kleur, volgens het merkvoorschrift."}
-            </p>
-          )}
         </div>
       </div>
 
@@ -479,12 +482,12 @@ export function ProductDetail({
         </section>
       ) : null}
 
-      <div className="sticky bottom-0 z-30 -mx-6 mt-10 border-t border-kg-lijn bg-white px-6 py-3 lg:hidden">
+      <div className="sticky bottom-0 z-30 -mx-6 mt-10 flex gap-2 border-t border-kg-lijn bg-white px-6 py-3 lg:hidden">
         <button
           type="button"
           onClick={() => (canBuy ? onAdd() : router.push("/offerte"))}
           disabled={canBuy && !selected.inStock}
-          className={cn(buttonVariants({ variant: "primary", block: true }))}
+          className={cn(buttonVariants({ variant: "primary" }), "h-12 min-w-0 flex-1")}
         >
           {canBuy ? (
             <>
@@ -494,6 +497,11 @@ export function ProductDetail({
             "Vraag de prijs"
           )}
         </button>
+        {staalHref ? (
+          <Link href={staalHref} className={cn(buttonVariants({ variant: "secondary" }), "h-12 shrink-0 no-underline hover:no-underline")}>
+            Gratis staal
+          </Link>
+        ) : null}
       </div>
     </div>
   );

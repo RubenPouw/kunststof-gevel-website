@@ -13,7 +13,11 @@ export const STAAL_PRICE_QUESTION =
 export const STAAL_PRICE_YES = "Ja, ik wil graag een prijs indicatie";
 export const STAAL_PRICE_NO = "Nee direct stalen ontvangen!";
 export const STAAL_CONTACT_HINT = "Bijna daar. Laatste vragen";
-export const STAAL_HEADING = "Gratis staalaanvraag";
+export const STAAL_HEADING = "Vraag gratis kleurstalen aan";
+export const STAAL_DESCRIPTION =
+  "Vraag gratis kleurstalen aan voor je gevel. Zie de kleur eerst in het echt, tegen je eigen gevel in daglicht. Je krijgt ze binnen een paar werkdagen in de brievenbus.";
+export const STAAL_INTRO =
+  "Wil je de kleur eerst in het echt zien, tegen je eigen gevel in daglicht? Vraag gratis kleurstalen aan. Je krijgt ze binnen een paar werkdagen in de brievenbus. Geen verplichtingen. Kies het paneel en de kleur, vul je gegevens in en verstuur de aanvraag. Twijfel je tussen kleuren, vraag er gerust een paar aan.";
 
 export type StaalGroupId = "gevel" | "dakrand" | "vensterbank" | "hpl";
 

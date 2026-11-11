@@ -40,7 +40,7 @@ export function CategoryPage({
   presentation?: ListingPresentation;
   showStockChip?: boolean;
   sheetCalculator?: boolean;
-  emptyMessage?: string;
+  emptyMessage?: React.ReactNode;
   sampleHref?: string;
   belowIntro?: React.ReactNode;
 }) {

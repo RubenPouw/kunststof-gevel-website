@@ -40,7 +40,7 @@ export default function ShippingPage() {
           <Link href="/herroepingsrecht">herroepingsrecht</Link>. Panelen op maat, gezaagde lengtes en duidelijk op bestelling gemaakte artikelen nemen we niet retour.
         </p>
         <p className="mt-3">
-          Meld de retour eerst via {site.email} of {site.phone}. We geven dan het retouradres. Lever geen pallets af op het showroomadres zonder afspraak. De kosten van de terugzending zijn voor u als u de koop herroept zonder gebrek.
+          Meld de retour eerst via {site.email} of <a href={site.phoneHref}>{site.phone}</a>. We geven dan het retouradres. Lever geen pallets af op het showroomadres zonder afspraak. De kosten van de terugzending zijn voor u als u de koop herroept zonder gebrek.
         </p>
         <p className="mt-3">
           Is het artikel beschadigd of wijkt het af, dan lost u het op via de <Link href="/klachtenprocedure">klachtenprocedure</Link>. Die retour is voor ons.
