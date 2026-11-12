@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import test from "node:test";
 
+import handles from "../data/seo/catalog-handles.json" with { type: "json" };
+import brands from "../src/data/catalog/brands.json" with { type: "json" };
+import { pageSeo } from "../src/data/seo/category-pages.ts";
 import { staticProducts } from "../src/lib/catalog/static.ts";
+import { publicProductSlug } from "../src/lib/catalog/dedupe.ts";
 import { projectBrands, projectWordCount, projects } from "../src/data/projects.ts";
 import { findProjectProduct, projectStaalHref } from "../src/lib/projects.ts";
 
@@ -50,6 +54,16 @@ test("project pages use the instagram set, without invented places or measures",
     belgium.map((project) => project.slug),
     ["keralit-190mm-plafond-overkapping"],
   );
+});
+
+test("project article links point at a real product, brand or page", () => {
+  const products = new Set((handles as string[]).map((handle) => `/producten/${publicProductSlug(handle)}`));
+  const brandPages = new Set(brands.map((brand) => `/merken/${brand.slug}`));
+  const pages = new Set(Object.values(pageSeo).map((page) => page.path));
+  for (const project of projects) {
+    const href = project.article.href;
+    assert.equal(products.has(href) || brandPages.has(href) || pages.has(href), true, href);
+  }
 });
 
 test("a known panel preselects the sample wizard, an unknown line does not", () => {

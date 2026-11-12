@@ -46,7 +46,7 @@ export const projects: Project[] = [
     rowText:
       "Deze uitbouw is bekleed met VinyPlus Quattro in een lichte houtlook. De panelen liggen horizontaal. Het brede profiel houdt de wand rustig, met weinig naden.",
     facts: ["VinyPlus", "Quattro", "Houtlook"],
-    article: { href: "/producten/vinyplus-quattro-299", label: "Lees meer over VinyPlus Quattro" },
+    article: { href: "/producten/vinyplus-quattro-299mm", label: "Lees meer over VinyPlus Quattro" },
     product: { brandSlug: "vinyplus", includes: ["quattro"] },
     photos: [
       {
@@ -79,7 +79,7 @@ export const projects: Project[] = [
     rowText:
       "Boven dit terras in België ligt een plafond van Keralit 190 mm, in lichte houtlook. Het brede sponningdeel maakt het vlak onder de overkapping. Schilderen hoeft niet. Reinigen is het onderhoud.",
     facts: ["Keralit", "190 mm", "Houtlook", "België"],
-    article: { href: "/producten/keralit-sponning-190", label: "Lees meer over Keralit sponning 190 mm" },
+    article: { href: "/producten/keralit-sponningdeel-190mm", label: "Lees meer over Keralit sponning 190 mm" },
     product: { brandSlug: "keralit", includes: ["190"] },
     photos: [
       {
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     rowText:
       "Deze gevel is door de klant zelf geplaatst. Het paneel is VinyPlus Quattro in Turner eiken. Wij leverden het materiaal.",
     facts: ["VinyPlus", "Quattro", "Turner eiken", "Zelf geplaatst"],
-    article: { href: "/producten/vinyplus-quattro-299", label: "Lees meer over VinyPlus Quattro" },
+    article: { href: "/producten/vinyplus-quattro-299mm", label: "Lees meer over VinyPlus Quattro" },
     product: { brandSlug: "vinyplus", includes: ["quattro"] },
     photos: [
       {
@@ -228,7 +228,7 @@ export const projects: Project[] = [
     rowText:
       "Het overstek boven deze entree is afgewerkt met VinyPlus rondkantpaneel in Turners eiken shadow. Shadow is de donkere, vergrijsde kant van die eikenfolie. Het paneel zit in het plafond boven de deur.",
     facts: ["VinyPlus", "Rondkantpaneel", "Turners eiken shadow"],
-    article: { href: "/producten/vinyplus-rondkantpaneel-150", label: "Lees meer over VinyPlus rondkantpaneel" },
+    article: { href: "/producten/vinyplus-rondkantpaneel-150-mm", label: "Lees meer over VinyPlus rondkantpaneel" },
     product: { brandSlug: "vinyplus", includes: ["rondkantpaneel"] },
     photos: [
       {
