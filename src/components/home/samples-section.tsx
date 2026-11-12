@@ -1,61 +1,54 @@
-"use client";
+import Link from "next/link";
 
-import { useEffect } from "react";
-
-import { SectionHead } from "@/components/brand/section-head";
-import { ColourName } from "@/components/catalog/colour-name";
-import { SampleTrayCard } from "@/components/samples/sample-tray-card";
+import { buttonVariants } from "@/components/ui/button";
 import type { SampleColor } from "@/lib/catalog/types";
-import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
-export function SamplesSection({ colors }: { colors: SampleColor[] }) {
-  const { has, toggle, count, items } = useSamples();
+function previewSwatches(colors: SampleColor[]) {
+  const seen = new Set<string>();
+  const swatches: { id: string; hex: string }[] = [];
+  for (const color of colors) {
+    const hex = color.hex.trim().toLowerCase();
+    if (!hex || seen.has(hex)) continue;
+    seen.add(hex);
+    swatches.push({ id: color.id, hex: color.hex });
+    if (swatches.length >= 6) break;
+  }
+  return swatches;
+}
 
-  useEffect(() => {
-    if (window.location.hash !== "#stalen") return;
-    document.getElementById("stalen")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
+export function SamplesSection({ colors }: { colors: SampleColor[] }) {
+  const swatches = previewSwatches(colors);
 
   return (
     <section id="stalen" className="container-kg section-kg scroll-mt-[130px]">
-      <div className="grid gap-8 lg:grid-cols-[8fr_4fr]">
-        <div>
-          <SectionHead title="Kies je kleur" aside="Gratis · maximaal 4 stalen" />
-          <p className="mb-5 max-w-[560px] text-kg-text-2">
-            Echte paneelstalen, binnen 2 werkdagen thuis. Kies in daglicht, niet op een scherm.
+      <div className="flex flex-col gap-6 bg-kg-navy px-6 py-8 text-kg-kalk sm:px-10 sm:py-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+        <div className="max-w-xl">
+          <p className="font-mono text-[13px] text-kg-grind">Gratis · maximaal 4 stalen</p>
+          <h2 className="mt-3 text-[28px] leading-[1.1] font-bold tracking-[-0.03em] sm:text-[34px]">
+            Gratis kleurstalen
+          </h2>
+          <p className="mt-4 max-w-md text-[15px] leading-[1.5] text-kg-grind">
+            Echte paneelstalen, gratis en binnen 2 werkdagen thuis. Kies in daglicht, niet op een scherm.
           </p>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-3 sm:grid-cols-4 md:grid-cols-6">
-            {colors.slice(0, 12).map((color) => {
-              const selected = has(color.id);
-              const pos = items.findIndex((item) => item.id === color.id);
-              const blocked = !selected && count >= SAMPLE_LIMIT;
-              return (
-                <button
-                  key={color.id}
-                  type="button"
-                  onClick={() => toggle(color)}
-                  disabled={blocked}
-                  className="relative text-left disabled:opacity-45"
-                >
-                  <div
-                    className={cn("relative aspect-square", selected && "outline outline-2 outline-offset-2 outline-kg-navy")}
-                    style={{ background: color.hex }}
-                  >
-                    {selected ? (
-                      <span className="absolute top-1.5 right-1.5 bg-kg-navy px-1.5 py-0.5 font-mono text-[11px] text-kg-signal">
-                        {String(pos + 1).padStart(2, "0")}
-                      </span>
-                    ) : null}
-                  </div>
-                  <ColourName value={color.colorName} className="mt-2 block text-[15px] font-medium" />
-                  <span className="block font-mono text-[12px] text-kg-text-2">{color.ral ?? color.brandName}</span>
-                </button>
-              );
-            })}
-          </div>
+          {swatches.length > 0 ? (
+            <ul className="mt-5 flex" aria-hidden="true">
+              {swatches.map((swatch) => (
+                <li
+                  key={swatch.id}
+                  className="-ml-2 size-9 border-2 border-kg-navy first:ml-0"
+                  style={{ background: swatch.hex }}
+                />
+              ))}
+            </ul>
+          ) : null}
         </div>
-        <SampleTrayCard className="h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)]" />
+        <Link
+          href="/staalaanvraag"
+          className={cn(buttonVariants({ variant: "signal" }), "w-fit no-underline hover:no-underline")}
+        >
+          Gratis stalen aanvragen
+        </Link>
       </div>
     </section>
   );

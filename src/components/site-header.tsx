@@ -6,7 +6,6 @@ import { FormEvent, useEffect, useId, useRef, useState, type AriaAttributes, typ
 
 import { Logo } from "@/components/brand/logo";
 import { VatSwitch } from "@/components/brand/vat-switch";
-import { SampleTraySheet } from "@/components/samples/sample-tray-sheet";
 import { useAccount } from "@/lib/account";
 import { useCart } from "@/lib/cart";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
@@ -209,7 +208,6 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [kozijnenOpen, setKozijnenOpen] = useState(false);
-  const [trayOpen, setTrayOpen] = useState(false);
   const [query, setQuery] = useState("");
 
   function onSearch(event: FormEvent<HTMLFormElement>) {
@@ -217,19 +215,6 @@ export function SiteHeader() {
     const next = query.trim();
     router.push(next ? `/zoeken?q=${encodeURIComponent(next)}` : "/zoeken");
     setMenuOpen(false);
-  }
-
-  function onSamplesClick() {
-    if (typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches) {
-      setTrayOpen(true);
-      setMenuOpen(false);
-      return;
-    }
-    if (pathname === "/") {
-      document.getElementById("stalen")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      return;
-    }
-    router.push("/#stalen");
   }
 
   const trayDots = Array.from({ length: SAMPLE_LIMIT }, (_, index) => items[index]?.hex ?? "#DDD9D0");
@@ -300,10 +285,9 @@ export function SiteHeader() {
           >
             {site.phone}
           </a>
-          <button
-            type="button"
-            onClick={onSamplesClick}
-            className="hidden h-10 items-center gap-2.5 border border-[var(--kg-grind)] px-3 text-[14px] font-medium text-kg-kalk transition-colors duration-150 hover:bg-kg-navy-2 sm:inline-flex"
+          <Link
+            href="/staalaanvraag"
+            className="hidden h-10 items-center gap-2.5 border border-[var(--kg-grind)] px-3 text-[14px] font-medium text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline sm:inline-flex"
             aria-label={`Stalen ${sampleCount} van ${SAMPLE_LIMIT}`}
           >
             <span className="flex pl-1">
@@ -316,7 +300,7 @@ export function SiteHeader() {
               ))}
             </span>
             <span className="hidden xl:inline">Stalen</span> <span className="font-mono">{sampleCount}/4</span>
-          </button>
+          </Link>
           <Link
             href={accountHref}
             className="hidden h-10 items-center px-3 font-mono text-[13px] text-kg-grind no-underline hover:text-kg-kalk hover:no-underline min-[1360px]:inline-flex"
@@ -422,13 +406,13 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <button
-              type="button"
-              onClick={onSamplesClick}
-              className="flex min-h-11 items-center text-left text-[15px] font-medium text-kg-kalk"
+            <Link
+              href="/staalaanvraag"
+              onClick={() => setMenuOpen(false)}
+              className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk hover:no-underline"
             >
               Stalen {sampleCount}/{SAMPLE_LIMIT}
-            </button>
+            </Link>
             <Link
               href={accountHref}
               onClick={() => setMenuOpen(false)}
@@ -459,7 +443,6 @@ export function SiteHeader() {
         />
       </form>
 
-      <SampleTraySheet open={trayOpen} onOpenChange={setTrayOpen} />
     </header>
   );
 }
