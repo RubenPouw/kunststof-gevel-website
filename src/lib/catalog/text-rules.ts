@@ -12,7 +12,6 @@ const PRODUCT_LINES: { slug: string; re: RegExp }[] = [
   { slug: "eurotexx", re: /\beurotexx\b/i },
   { slug: "zierer", re: /\bzierer\b/i },
   { slug: "milexx", re: /\bmilexx\b/i },
-  { slug: "profex", re: /\b(?:profex|duafort)\b/i },
   { slug: "unipanel", re: /\bunipanel\b/i },
   { slug: "florence", re: /\bflorence\b/i },
   { slug: "fronto", re: /\bfronto\b/i },

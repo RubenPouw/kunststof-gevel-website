@@ -30,11 +30,6 @@
     { "skuSuffix": "ROOD", "colorName": "Rood wildverband", "hex": "#8B3A32" },
     { "skuSuffix": "ANTR", "colorName": "Antraciet wildverband", "hex": "#3A3D41" }
   ],
-  "profex": [
-    { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41", "popular": true },
-    { "skuSuffix": "BRUN", "colorName": "Bruin", "hex": "#6B4A32" },
-    { "skuSuffix": "GROE", "colorName": "Groen", "hex": "#4A5A45" }
-  ],
   "milexx": [
     { "skuSuffix": "ANTR", "colorName": "Antraciet", "ral": "RAL 7016", "hex": "#3A3D41", "popular": true },
     { "skuSuffix": "WIT", "colorName": "Wit", "ral": "RAL 9010", "hex": "#F4F1EA" },

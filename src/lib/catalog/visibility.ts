@@ -1,7 +1,7 @@
 /**
  * Linerio is drafted in Shopify. Wonderboard and hygienische wandbekleding
- * stay active for hygienischewandbekleding.nl. Neither belongs on kunststof-gevel.nl.
- * The handle check still drops them when productType mapping misses.
+ * stay active for hygienischewandbekleding.nl. Profex and Duafort are no longer
+ * sold here. None of them belong on kunststof-gevel.nl. Shopify itself is unchanged.
  */
 
 function fold(value: string) {
@@ -13,7 +13,7 @@ function fold(value: string) {
     .trim();
 }
 
-const HIDDEN_NAME = /linerio|wonderboard/i;
+const HIDDEN_NAME = /linerio|wonderboard|profex|duafort|canexel/i;
 const HIDDEN_TYPE = "hygienische wandbekleding";
 
 export function isHiddenOnKunststofGevel(product: {

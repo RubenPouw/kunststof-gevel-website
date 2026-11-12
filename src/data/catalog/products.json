@@ -203,27 +203,7 @@
       "inStock": true,
       "priceNote": "Prijs live shop niet op de kaart; indicatie tot leverancierslijst."
     },
-    {
-      "slug": "profex-duafort-rabat-125",
-      "name": "Duafort Rabat 125 mm",
-      "vendor": "Profex",
-      "brandSlug": "profex",
-      "category": "gevelbekleding",
-      "description": "Duafort rabat 125 mm, gebruikt als Canexel-vervanger. Licht, onderhoudsarm, klassieke overlapping.",
-      "specs": [
-        { "label": "Werkende breedte", "value": "125 mm" },
-        { "label": "Lengte", "value": "6 m" },
-        { "label": "Materiaal", "value": "PVC" },
-        { "label": "Toepassing", "value": "Canexel-vervanger" }
-      ],
-      "relatedSlugs": [],
-      "paletteId": "profex",
-      "skuPrefix": "PX-DF125",
-      "length": "6 m",
-      "price": 43.09,
-      "inStock": true
-    },
-    {
+        {
       "slug": "zierer-hoekstuk-50x50x345",
       "name": "Zierer hoekstuk 50 × 50 × 345 mm wildverband",
       "vendor": "Zierer",
@@ -495,33 +475,7 @@
         }
       ]
     },
-    {
-      "slug": "afdichtingsprofiel-pvc-45",
-      "name": "Afdichtingsprofiel PVC 45 mm breed toepassing horizontaal",
-      "vendor": "Profex",
-      "brandSlug": "profex",
-      "category": "kozijnafwerking",
-      "description": "Horizontaal afdichtingsprofiel 45 mm PVC, voor aansluiting plaat of kozijn.",
-      "specs": [
-        { "label": "Breedte", "value": "45 mm" },
-        { "label": "Toepassing", "value": "Horizontaal" },
-        { "label": "Materiaal", "value": "PVC" }
-      ],
-      "relatedSlugs": [],
-      "variants": [
         {
-          "sku": "PX-AF45-WIT",
-          "ean": "",
-          "colorName": "Wit",
-          "ral": "RAL 9010",
-          "hex": "#F4F1EA",
-          "length": "stuk",
-          "price": 14.52,
-          "inStock": true
-        }
-      ]
-    },
-    {
       "slug": "vinyplus-montage-eindprofiel-3m",
       "name": "Vinyplus Montage eindprofiel 3 m¹",
       "vendor": "VinyPlus",
