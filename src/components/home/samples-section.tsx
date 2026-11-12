@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const POINTS = [
   "Gratis, geen verplichting",
-  "Binnen 2 werkdagen thuis",
+  "Binnen 3 werkdagen thuis",
   "Echte kleur, niet het scherm",
 ] as const;
 
