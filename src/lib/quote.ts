@@ -16,6 +16,8 @@ export type QuoteInput = {
   message: string;
   wantsMontage: boolean;
   companyWebsite: string;
+  /** Leeg of afwezig als het formulier de keuze niet toont. */
+  parts?: string[];
 };
 
 export type QuoteEstimate = {
@@ -64,6 +66,13 @@ export function parseQuoteBody(raw: unknown): QuoteInput | null {
   const montageRaw = o.wantsMontage;
   const wantsMontage =
     montageRaw === false || montageRaw === "nee" || montageRaw === "0" ? false : true;
+  const partsRaw = o.parts;
+  const parts = Array.isArray(partsRaw)
+    ? partsRaw.filter((part): part is string => typeof part === "string")
+    : str("parts")
+        .split(",")
+        .map((part) => part.trim())
+        .filter(Boolean);
   return {
     name: str("name"),
     email: str("email"),
@@ -74,5 +83,6 @@ export function parseQuoteBody(raw: unknown): QuoteInput | null {
     message: str("message"),
     wantsMontage,
     companyWebsite: str("companyWebsite"),
+    parts,
   };
 }

@@ -34,8 +34,10 @@ export function MontageQuoteCard({
               idPrefix={idPrefix}
               defaultMontage
               plain
+              montageExtras
               initialArea={draft?.areaM2 ?? ""}
               initialMessage={draft?.message ?? ""}
+              initialParts={draft?.parts ?? []}
               indicativeNote={draft && draft.montageIncl > 0 ? montageQuoteNote(draft) : undefined}
             />
           ) : (

@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "52mb",
+    },
+  },
   skipTrailingSlashRedirect: true,
   allowedDevOrigins: ["127.0.0.1", "localhost"],
   images: {

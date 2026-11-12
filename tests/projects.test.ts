@@ -32,6 +32,19 @@ test("project pages use the instagram set, without invented places or measures",
     }
   }
 
+  for (const project of projects) {
+    const row = [project.rowTitle, project.rowText, ...project.facts, project.article.label].join("\n");
+    assert.equal(row.includes("\u2014") || row.includes("\u2013"), false, project.slug);
+    assert.equal(/duafort|profex|canexel|linerio|wonderboard/i.test(row), false, project.slug);
+    assert.match(project.article.href, /^\//);
+    assert.ok(project.rowText.split(/[.!?]/).filter((sentence) => sentence.trim()).length >= 2);
+  }
+  const mounted = projects.filter((project) => project.facts.includes("Gemonteerd door Cavemen"));
+  assert.deepEqual(
+    mounted.map((project) => project.slug),
+    ["kerrafront-chalet"],
+  );
+
   const belgium = projects.filter((project) => /belgië/i.test(project.paragraphs.join(" ")));
   assert.deepEqual(
     belgium.map((project) => project.slug),

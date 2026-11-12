@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useMemo } from "react";
 
 import { CavemenMark } from "@/components/brand/marks";
 import { ProductPhoto } from "@/components/brand/product-photo";
@@ -29,26 +30,34 @@ export default function CartPage() {
   const volume = quoteOrderDiscount(inclVat(subtotal));
   const net = subtotal - volume.discountExcl + shipping;
   const montageViaOfferte = mountGevel && gevelM2 > 0;
-  const montageDraft = montageViaOfferte
-    ? buildMontageQuoteDraft({
-        areaM2: gevelM2,
-        montageIncl: inclVat(mountPrice),
-        materialIncl: inclVat(subtotal),
-        lines: lines.flatMap((line) => {
-          const resolved = resolveCartLine(line);
-          if (!resolved) return [];
-          return [
-            {
-              name: resolved.name,
-              color: resolved.colorName,
-              sku: resolved.skuLabel,
-              length: resolved.length,
-              qty: line.qty,
-            },
-          ];
-        }),
-      })
-    : null;
+  const montageDraft = useMemo(
+    () =>
+      montageViaOfferte
+        ? buildMontageQuoteDraft({
+            areaM2: gevelM2,
+            montageIncl: inclVat(mountPrice),
+            materialIncl: inclVat(subtotal),
+            lines: lines.flatMap((line) => {
+              const resolved = resolveCartLine(line);
+              if (!resolved) return [];
+              return [
+                {
+                  name: resolved.name,
+                  color: resolved.colorName,
+                  sku: resolved.skuLabel,
+                  length: resolved.length,
+                  qty: line.qty,
+                  kind: resolved.kind,
+                },
+              ];
+            }),
+          })
+        : null,
+    [gevelM2, lines, montageViaOfferte, mountPrice, subtotal],
+  );
+  useEffect(() => {
+    if (montageDraft) saveMontageQuoteDraft(montageDraft);
+  }, [montageDraft]);
   const vat = inclVat(net) - net;
   const totalIncl = inclVat(net);
 

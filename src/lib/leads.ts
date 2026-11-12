@@ -14,6 +14,7 @@ import {
 import { customerStaalText, describeStaalLine, shopStaalText } from "@/lib/staal/messages";
 import { resolveStaalLine, type StaalRequest } from "@/lib/staal/validate";
 import type { StaalTree } from "@/lib/staal/tree";
+import type { LeadAttachment } from "@/lib/mail";
 import { site } from "@/lib/site";
 
 export type SampleLeadResult =
@@ -185,6 +186,7 @@ async function deliverLead(input: {
   subject: string;
   text: string;
   note: string;
+  attachments?: LeadAttachment[];
 }) {
   const { firstName, lastName } = splitName(input.name);
   const [email, ac] = await Promise.all([
@@ -192,6 +194,7 @@ async function deliverLead(input: {
       subject: input.subject,
       text: input.text,
       replyTo: input.email.trim(),
+      attachments: input.attachments,
     }),
     syncActiveCampaignContact({
       email: input.email.trim(),
@@ -212,7 +215,10 @@ async function deliverLead(input: {
   return leadDeliveryError();
 }
 
-export async function submitQuoteLead(input: QuoteInput): Promise<QuoteResult> {
+export async function submitQuoteLead(
+  input: QuoteInput,
+  attachments: LeadAttachment[] = [],
+): Promise<QuoteResult> {
   if (input.companyWebsite.trim()) {
     return { ok: true, reference: "SKIP", estimate: estimateRange(1, true) };
   }
@@ -224,8 +230,16 @@ export async function submitQuoteLead(input: QuoteInput): Promise<QuoteResult> {
   const estimate = estimateRange(area, input.wantsMontage);
   const ref = reference("KG");
 
-  const note = `Offerte ${ref}. ${area} m², ${input.profile}, montage ${input.wantsMontage ? "ja" : "nee"}, ${input.city.trim()}. ${input.message.trim()}`;
-  console.info("[offerte]", { reference: ref, city: input.city.trim(), areaM2: area });
+  const parts = (input.parts ?? []).filter(Boolean);
+  const note = `Offerte ${ref}. ${area} m², ${input.profile}, montage ${input.wantsMontage ? "ja" : "nee"}, ${input.city.trim()}.${parts.length ? ` Waar: ${parts.join(", ")}.` : ""} ${input.message.trim()}`;
+  console.info("[offerte]", {
+    reference: ref,
+    city: input.city.trim(),
+    areaM2: area,
+    parts,
+    photos: attachments.map((file) => ({ name: file.filename, bytes: file.content.length, type: file.contentType })),
+    notes: input.message.trim(),
+  });
 
   const deliveryError = await deliverLead({
     email: input.email,
@@ -241,9 +255,12 @@ export async function submitQuoteLead(input: QuoteInput): Promise<QuoteResult> {
       `Oppervlak: ${area} m2`,
       `Profiel: ${input.profile}`,
       `Montage: ${input.wantsMontage ? "ja" : "nee"}`,
+      `Waar gaat het om: ${parts.length ? parts.join(", ") : "-"}`,
+      `Foto's: ${attachments.length ? attachments.map((file) => file.filename).join(", ") : "-"}`,
       `Bericht: ${input.message.trim() || "-"}`,
     ].join("\n"),
     note,
+    attachments,
   });
   if (deliveryError) return { ok: false, error: deliveryError };
 

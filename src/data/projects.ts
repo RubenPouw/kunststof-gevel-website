@@ -16,6 +16,11 @@ export type Project = {
   color: string;
   /** One quiet line on the card. */
   card: string;
+  /** Short row on /projecten. Only facts that are already in the photos or the text. */
+  rowTitle: string;
+  rowText: string;
+  facts: string[];
+  article: { href: string; label: string };
   paragraphs: string[];
   photos: ProjectPhoto[];
   /** Match a gevel product in the catalog for the sample link. */
@@ -37,6 +42,11 @@ export const projects: Project[] = [
     brandSlug: "vinyplus",
     color: "Houtlook",
     card: "Uitbouw in lichte houtlook.",
+    rowTitle: "Uitbouw in VinyPlus Quattro",
+    rowText:
+      "Deze uitbouw is bekleed met VinyPlus Quattro in een lichte houtlook. De panelen liggen horizontaal. Het brede profiel houdt de wand rustig, met weinig naden.",
+    facts: ["VinyPlus", "Quattro", "Houtlook"],
+    article: { href: "/producten/vinyplus-quattro-299", label: "Lees meer over VinyPlus Quattro" },
     product: { brandSlug: "vinyplus", includes: ["quattro"] },
     photos: [
       {
@@ -65,6 +75,11 @@ export const projects: Project[] = [
     brandSlug: "keralit",
     color: "Houtlook",
     card: "Plafond onder een overkapping.",
+    rowTitle: "Plafond in België, Keralit 190 mm",
+    rowText:
+      "Boven dit terras in België ligt een plafond van Keralit 190 mm, in lichte houtlook. Het brede sponningdeel maakt het vlak onder de overkapping. Schilderen hoeft niet. Reinigen is het onderhoud.",
+    facts: ["Keralit", "190 mm", "Houtlook", "België"],
+    article: { href: "/producten/keralit-sponning-190", label: "Lees meer over Keralit sponning 190 mm" },
     product: { brandSlug: "keralit", includes: ["190"] },
     photos: [
       {
@@ -93,6 +108,11 @@ export const projects: Project[] = [
     brandSlug: "kerrafront",
     color: "Houtlook",
     card: "Chalet in houtlook, antraciet kozijnen.",
+    rowTitle: "Chalet in Kerrafront houtlook",
+    rowText:
+      "Dit chalet is rondom vernieuwd met Kerrafront in houtlook. De kozijnen zijn antraciet. Levering en montage zijn door Cavemen gedaan.",
+    facts: ["Kerrafront", "Houtlook", "Antraciet kozijnen", "Gemonteerd door Cavemen"],
+    article: { href: "/merken/kerrafront", label: "Lees meer over Kerrafront" },
     photos: [
       {
         src: "/projecten/kerrafront-chalet-gevel.webp",
@@ -121,6 +141,11 @@ export const projects: Project[] = [
     brandSlug: "vinyplus",
     color: "Turner eiken",
     card: "Zelf geplaatst, Turner eiken.",
+    rowTitle: "VinyPlus Quattro in Turner eiken",
+    rowText:
+      "Deze gevel is door de klant zelf geplaatst. Het paneel is VinyPlus Quattro in Turner eiken. Wij leverden het materiaal.",
+    facts: ["VinyPlus", "Quattro", "Turner eiken", "Zelf geplaatst"],
+    article: { href: "/producten/vinyplus-quattro-299", label: "Lees meer over VinyPlus Quattro" },
     product: { brandSlug: "vinyplus", includes: ["quattro"] },
     photos: [
       {
@@ -144,6 +169,11 @@ export const projects: Project[] = [
     brandSlug: "vinyplus",
     color: "Turners eiken",
     card: "Turners eiken met antraciet.",
+    rowTitle: "VinyPlus in Turners eiken en antraciet",
+    rowText:
+      "Een gevel in VinyPlus Turners eiken, met antraciet in het kader. Het warme paneel en het koele accent staan naast elkaar.",
+    facts: ["VinyPlus", "Turners eiken", "Antraciet"],
+    article: { href: "/merken/vinyplus", label: "Lees meer over VinyPlus" },
     photos: [
       {
         src: "/projecten/vinyplus-turner-eiken-antraciet.webp",
@@ -166,6 +196,11 @@ export const projects: Project[] = [
     brandSlug: "keralit",
     color: "Houtlook",
     card: "Gevel vernieuwd in 190 mm.",
+    rowTitle: "Gevel in Keralit 190 mm",
+    rowText:
+      "De gevel is vernieuwd met Keralit 190 mm in houtlook. Het brede sponningdeel geeft minder naden dan een smal deel. Het onderhoud is reinigen, niet schilderen.",
+    facts: ["Keralit", "190 mm", "Houtlook"],
+    article: { href: "/keralit-gevelbekleding", label: "Lees meer over Keralit gevelbekleding" },
     product: { brandSlug: "keralit", includes: ["190"] },
     photos: [
       {
@@ -189,6 +224,11 @@ export const projects: Project[] = [
     brandSlug: "vinyplus",
     color: "Turners eiken shadow",
     card: "Overstek bij de entree.",
+    rowTitle: "Overstek in VinyPlus rondkantpaneel",
+    rowText:
+      "Het overstek boven deze entree is afgewerkt met VinyPlus rondkantpaneel in Turners eiken shadow. Shadow is de donkere, vergrijsde kant van die eikenfolie. Het paneel zit in het plafond boven de deur.",
+    facts: ["VinyPlus", "Rondkantpaneel", "Turners eiken shadow"],
+    article: { href: "/producten/vinyplus-rondkantpaneel-150", label: "Lees meer over VinyPlus rondkantpaneel" },
     product: { brandSlug: "vinyplus", includes: ["rondkantpaneel"] },
     photos: [
       {

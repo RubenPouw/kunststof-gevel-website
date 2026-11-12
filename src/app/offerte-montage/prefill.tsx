@@ -9,7 +9,8 @@ export function MontageQuotePrefill() {
   const [draft, setDraft] = useState<MontageQuoteDraft | null | undefined>(undefined);
 
   useEffect(() => {
-    setDraft(readMontageQuoteRequest(window.location.search, sessionStorage.getItem(MONTAGE_QUOTE_KEY)));
+    const stored = localStorage.getItem(MONTAGE_QUOTE_KEY) ?? sessionStorage.getItem(MONTAGE_QUOTE_KEY);
+    setDraft(readMontageQuoteRequest(window.location.search, stored));
   }, []);
 
   return (

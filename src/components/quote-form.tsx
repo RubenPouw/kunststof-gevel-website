@@ -1,11 +1,13 @@
 "use client";
 
-import { useActionState, useState, type ReactNode } from "react";
+import { useActionState, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { submitQuote, type QuoteActionState } from "@/app/offerte/actions";
 import { buttonVariants } from "@/components/ui/button";
 import { useLeadDefaults } from "@/lib/account";
 import { formatPrice } from "@/lib/format";
+import { MONTAGE_PARTS, type MontagePart } from "@/lib/montage-quote";
+import { photoError } from "@/lib/quote-photos";
 import { estimateRange, quoteProfiles } from "@/lib/quote";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +22,9 @@ export function QuoteForm({
   plain = false,
   initialArea = "",
   initialMessage = "",
+  initialParts = [],
   indicativeNote,
+  montageExtras = false,
 }: {
   idPrefix?: string;
   /** Montage staat aan. De bezoeker kan het uitvinken. */
@@ -29,20 +33,25 @@ export function QuoteForm({
   plain?: boolean;
   initialArea?: string;
   initialMessage?: string;
+  initialParts?: readonly MontagePart[];
   /** Vaste indicatie uit de winkelwagen. Vervangt de bandbreedte. */
   indicativeNote?: string;
+  /** Foto's en de keuze waar het om gaat. Alleen op de montage-offerte. */
+  montageExtras?: boolean;
 } = {}) {
   const defaults = useLeadDefaults();
   return (
     <QuoteFields
-      key={`${idPrefix}-${defaults.email || "gast"}-${defaultMontage ? "montage" : "materiaal"}-${initialArea}`}
+      key={`${idPrefix}-${defaults.email || "gast"}-${defaultMontage ? "montage" : "materiaal"}-${initialArea}-${initialMessage.length}-${initialParts.join(",")}`}
       defaults={defaults}
       idPrefix={idPrefix}
       defaultMontage={defaultMontage}
       plain={plain}
       initialArea={initialArea}
       initialMessage={initialMessage}
+      initialParts={initialParts}
       indicativeNote={indicativeNote}
+      montageExtras={montageExtras}
     />
   );
 }
@@ -54,7 +63,9 @@ function QuoteFields({
   plain,
   initialArea,
   initialMessage,
+  initialParts,
   indicativeNote,
+  montageExtras,
 }: {
   defaults: { name: string; email: string; phone: string };
   idPrefix: string;
@@ -62,7 +73,9 @@ function QuoteFields({
   plain: boolean;
   initialArea: string;
   initialMessage: string;
+  initialParts: readonly MontagePart[];
   indicativeNote?: string;
+  montageExtras: boolean;
 }) {
   const [state, action, pending] = useActionState(submitQuote, initialState);
   const [name, setName] = useState(defaults.name);
@@ -71,17 +84,52 @@ function QuoteFields({
   const [areaM2, setAreaM2] = useState(initialArea);
   const [message, setMessage] = useState(initialMessage);
   const [montage, setMontage] = useState(defaultMontage);
+  const [parts, setParts] = useState<MontagePart[]>([...initialParts]);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoMessage, setPhotoMessage] = useState<string | null>(null);
+  const photoInput = useRef<HTMLInputElement>(null);
   const fieldId = (name: string) => `${idPrefix}-${name}`;
 
   const area = Number(areaM2.replace(",", "."));
   const liveEstimate = Number.isFinite(area) && area >= 1 ? estimateRange(area, montage) : null;
+
+  function syncPhotos(next: File[]) {
+    setPhotos(next);
+    const input = photoInput.current;
+    if (!input) return;
+    const list = new DataTransfer();
+    for (const file of next) list.items.add(file);
+    input.files = list.files;
+  }
+
+  function addPhotos(incoming: File[]) {
+    const next = [...photos, ...incoming];
+    const problem = photoError(next.map((file) => ({ name: file.name, type: file.type, size: file.size })));
+    if (problem) {
+      setPhotoMessage(problem);
+      syncPhotos(photos);
+      return;
+    }
+    setPhotoMessage(null);
+    syncPhotos(next);
+  }
 
   return (
     <form
       action={action}
       autoComplete="off"
       className={plain ? "" : "border border-[var(--color-border)] bg-surface p-6 sm:p-8"}
+      onSubmit={(event) => {
+        if (montageExtras && parts.length === 0) {
+          event.preventDefault();
+          setPhotoMessage("Kies waar het om gaat.");
+        }
+      }}
     >
+      {montageExtras ? <input type="hidden" name="montageExtras" value="1" /> : null}
+      {parts.map((part) => (
+        <input key={part} type="hidden" name="parts" value={part} />
+      ))}
       <p className="sr-only" aria-hidden>
         <label>
           Website
@@ -145,6 +193,36 @@ function QuoteFields({
             onChange={(event) => setAreaM2(event.target.value)}
           />
         </Field>
+        {montageExtras ? (
+          <div className="sm:col-span-2">
+            <fieldset>
+              <legend className="text-[13px] font-semibold">Waar gaat het om?</legend>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {MONTAGE_PARTS.map((part) => {
+                  const on = parts.includes(part);
+                  return (
+                    <button
+                      key={part}
+                      type="button"
+                      aria-pressed={on}
+                      onClick={() =>
+                        setParts((current) =>
+                          current.includes(part) ? current.filter((item) => item !== part) : [...current, part],
+                        )
+                      }
+                      className={cn(
+                        "min-h-11 border px-3 text-[14px]",
+                        on ? "border-kg-navy bg-kg-navy text-kg-kalk" : "border-kg-lijn bg-white text-kg-navy",
+                      )}
+                    >
+                      {part}
+                    </button>
+                  );
+                })}
+              </div>
+            </fieldset>
+          </div>
+        ) : null}
         <Field label="Profiel" htmlFor={fieldId("profile")}>
           <select id={fieldId("profile")} name="profile" defaultValue="Nog niet zeker" className={fieldClass}>
             {quoteProfiles.map((option) => (
@@ -175,7 +253,7 @@ function QuoteFields({
           </label>
         </div>
         <div className="sm:col-span-2">
-          <Field label="Toelichting (optioneel)" htmlFor={fieldId("message")}>
+          <Field label={montageExtras ? "Notities" : "Toelichting (optioneel)"} htmlFor={fieldId("message")}>
             <textarea
               id={fieldId("message")}
               name="message"
@@ -187,6 +265,47 @@ function QuoteFields({
             />
           </Field>
         </div>
+        {montageExtras ? (
+          <div className="sm:col-span-2">
+            <label htmlFor={fieldId("photos")} className="text-[13px] font-semibold">
+              Foto&apos;s toevoegen (optioneel)
+            </label>
+            <input
+              ref={photoInput}
+              id={fieldId("photos")}
+              name="photos"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"
+              multiple
+              className="mt-2 block w-full text-[14px]"
+              onChange={(event) => {
+                const incoming = event.target.files ? [...event.target.files] : [];
+                event.target.value = "";
+                addPhotos(incoming);
+              }}
+            />
+            <p className="mt-1 text-[13px] text-[var(--color-text-muted)]">Jpg, png, heic of webp. Hooguit 5 foto&apos;s, 10 MB per stuk.</p>
+            {photos.length ? (
+              <ul className="mt-3 grid gap-2">
+                {photos.map((file) => (
+                  <li key={`${file.name}-${file.size}-${file.lastModified}`} className="flex items-center justify-between gap-3 border border-kg-lijn px-3 py-2 text-[14px]">
+                    <span className="flex min-w-0 items-center gap-3">
+                      <PhotoThumb file={file} />
+                      <span className="min-w-0 truncate">{file.name}</span>
+                    </span>
+                    <button
+                      type="button"
+                      className="shrink-0 font-mono text-[12px] underline"
+                      onClick={() => syncPhotos(photos.filter((item) => item !== file))}
+                    >
+                      Verwijderen
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
       </div>
 
       {indicativeNote ? (
@@ -197,6 +316,12 @@ function QuoteFields({
           <strong className="font-heading text-[22px] font-bold">
             {formatPrice(liveEstimate.low)} tot {formatPrice(liveEstimate.high)}
           </strong>
+        </p>
+      ) : null}
+
+      {photoMessage ? (
+        <p className="mt-4 border border-kg-ink px-4 py-3 text-[14px] text-kg-ink" role="alert">
+          {photoMessage}
         </p>
       ) : null}
 
@@ -216,6 +341,18 @@ function QuoteFields({
       </div>
     </form>
   );
+}
+
+function PhotoThumb({ file }: { file: File }) {
+  const [url, setUrl] = useState("");
+  useEffect(() => {
+    if (!file.type.startsWith("image/") || /heic|heif/i.test(file.type)) return;
+    const next = URL.createObjectURL(file);
+    setUrl(next);
+    return () => URL.revokeObjectURL(next);
+  }, [file]);
+  if (!url) return null;
+  return <img src={url} alt="" className="size-12 shrink-0 object-cover" />;
 }
 
 function Field({

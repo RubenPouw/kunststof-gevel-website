@@ -3,12 +3,19 @@ import tls from "node:tls";
 
 import { site } from "@/lib/site";
 
+export type LeadAttachment = {
+  filename: string;
+  contentType: string;
+  content: Buffer;
+};
+
 export type LeadEmail = {
   subject: string;
   text: string;
   replyTo?: string;
   /** Defaults to LEAD_EMAIL_TO. Set this for the customer confirmation. */
   to?: string;
+  attachments?: LeadAttachment[];
 };
 
 export type LeadEmailResult =
@@ -112,6 +119,11 @@ async function sendResend(message: LeadEmail, from: string, to: string): Promise
       subject: message.subject,
       text: message.text,
       reply_to: message.replyTo || undefined,
+      attachments: message.attachments?.map((file) => ({
+        filename: file.filename,
+        content: file.content.toString("base64"),
+        content_type: file.contentType,
+      })),
     }),
     signal: AbortSignal.timeout(10000),
   });
@@ -134,6 +146,11 @@ async function sendMailerSend(message: LeadEmail, from: string, to: string): Pro
       subject: message.subject,
       text: message.text,
       reply_to: message.replyTo ? { email: message.replyTo } : undefined,
+      attachments: message.attachments?.map((file) => ({
+        filename: file.filename,
+        content: file.content.toString("base64"),
+        disposition: "attachment",
+      })),
     }),
     signal: AbortSignal.timeout(10000),
   });
@@ -178,6 +195,47 @@ function smtpCommand(socket: net.Socket | tls.TLSSocket, command: string) {
     socket.on("error", onError);
     if (command) socket.write(`${command}\r\n`);
   });
+}
+
+function wrapBase64(value: string) {
+  return value.replace(/.{1,76}/g, "$&\r\n").trim();
+}
+
+export function smtpPayload(message: LeadEmail, from: string, to: string) {
+  const subject = message.subject.replace(/[\r\n]+/g, " ");
+  const headers = [
+    `From: ${site.name} <${from}>`,
+    `To: ${to}`,
+    message.replyTo ? `Reply-To: ${message.replyTo}` : "",
+    `Subject: ${subject}`,
+    "MIME-Version: 1.0",
+  ].filter(Boolean);
+  const attachments = message.attachments ?? [];
+  if (!attachments.length) {
+    return [...headers, "Content-Type: text/plain; charset=utf-8", "", message.text.replace(/^\./gm, "..")].join("\r\n");
+  }
+  const boundary = `kg-${Date.now().toString(36)}`;
+  const parts = [
+    ...headers,
+    `Content-Type: multipart/mixed; boundary="${boundary}"`,
+    "",
+    `--${boundary}`,
+    "Content-Type: text/plain; charset=utf-8",
+    "",
+    message.text.replace(/^\./gm, ".."),
+  ];
+  for (const file of attachments) {
+    parts.push(
+      `--${boundary}`,
+      `Content-Type: ${file.contentType || "application/octet-stream"}; name="${file.filename}"`,
+      "Content-Transfer-Encoding: base64",
+      `Content-Disposition: attachment; filename="${file.filename}"`,
+      "",
+      wrapBase64(file.content.toString("base64")),
+    );
+  }
+  parts.push(`--${boundary}--`);
+  return parts.join("\r\n");
 }
 
 function logSmtpFailure(host: string, port: number, secure: boolean, detail: string) {
@@ -225,19 +283,7 @@ async function sendSmtp(message: LeadEmail, from: string, to: string): Promise<L
     await smtpCommand(channel, `MAIL FROM:<${from}>`);
     await smtpCommand(channel, `RCPT TO:<${to}>`);
     await smtpCommand(channel, "DATA");
-    const headers = [
-      `From: ${site.name} <${from}>`,
-      `To: ${to}`,
-      message.replyTo ? `Reply-To: ${message.replyTo}` : "",
-      `Subject: ${message.subject.replace(/[\r\n]+/g, " ")}`,
-      "MIME-Version: 1.0",
-      "Content-Type: text/plain; charset=utf-8",
-      "",
-      message.text.replace(/^\./gm, ".."),
-    ]
-      .filter(Boolean)
-      .join("\r\n");
-    await smtpCommand(channel, `${headers}\r\n.`);
+    await smtpCommand(channel, `${smtpPayload(message, from, to)}\r\n.`);
     await smtpCommand(channel, "QUIT");
     channel.end();
     return { ok: true, skipped: false, provider: "smtp" };
