@@ -147,6 +147,35 @@ export default function KozijnenHubPage() {
                     {paragraph}
                   </p>
                 ))}
+                {section.heading === "Samen met de gevel" ? (
+                  <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[15px]">
+                    <li>
+                      <Link href="/gevel-en-kozijnen-renoveren" className="text-kg-signal">
+                        Gevel en kozijnen tegelijk renoveren
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/kleur-kozijn-en-gevelbekleding" className="text-kg-signal">
+                        kleur kozijn en gevelbekleding
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/gevelbekleding" className="text-kg-signal">
+                        Gevelbekleding
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/staalaanvraag" className="text-kg-signal">
+                        Kleurstalen
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/offerte-montage?delen=Gevel,Kozijnen" className="text-kg-signal">
+                        Offerte gevel en kozijnen
+                      </Link>
+                    </li>
+                  </ul>
+                ) : null}
               </div>
             ))}
             <p>

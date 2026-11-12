@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   buildMontageQuoteDraft,
   montageQuoteHref,
+  montageQuoteShouldIndex,
   readMontageQuoteRequest,
 } from "../src/lib/montage-quote.ts";
 
@@ -49,4 +50,13 @@ test("dakrand en gevel worden apart gekozen, notities blijven uit de url", () =>
   const fromStore = readMontageQuoteRequest(href.slice(href.indexOf("?")), JSON.stringify(mixed));
   assert.match(fromStore?.message ?? "", /2 stuks/);
   assert.match(fromStore?.message ?? "", /10 stuks/);
+});
+
+test("delen zonder m2 vult de chips, en die url blijft uit de index", () => {
+  const draft = readMontageQuoteRequest("?delen=Gevel,Kozijnen", null);
+  assert.deepEqual(draft?.parts, ["Gevel", "Kozijnen"]);
+  assert.equal(draft?.areaM2, "");
+  assert.equal(montageQuoteShouldIndex({}), true);
+  assert.equal(montageQuoteShouldIndex({ delen: "Gevel,Kozijnen" }), false);
+  assert.equal(montageQuoteShouldIndex({ m2: "12" }), false);
 });

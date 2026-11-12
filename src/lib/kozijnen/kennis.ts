@@ -23,6 +23,7 @@ const sharedLinks: LinkItem[] = [
   { href: categoryPath("dakranden"), label: "Dakranden" },
   { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
   { href: "/staalaanvraag", label: "Kleurstalen gevel" },
+  { href: "/gevel-en-kozijnen-renoveren", label: "Gevel en kozijnen tegelijk" },
 ];
 
 export const articles: Article[] = [
@@ -113,7 +114,10 @@ export const articles: Article[] = [
         a: "Ja. De configurator waarschuwt. U verstuurt de aanvraag toch. We beoordelen die maat handmatig.",
       },
     ],
-    links: sharedLinks,
+    links: [
+      { href: "/volgorde-kozijnen-en-gevel", label: "eerst kozijnen of eerst de gevel" },
+      ...sharedLinks,
+    ],
   },
   {
     slug: "draairichting-en-aanslag",
@@ -319,15 +323,16 @@ export const articles: Article[] = [
   },
   {
     slug: "montage",
-    title: "Zelf plaatsen en het oude kozijn afvoeren",
-    description: "Zelf plaatsen: wat u nodig hebt, en wat er met het oude kozijn gebeurt. Wij leveren het kozijn en monteren niet.",
+    title: "Kozijnen plaatsen: zelf of door Cavemen",
+    description:
+      "Zelf plaatsen of montage door Cavemen, alleen of samen met de gevel. Wat u nodig hebt, en wat er met het oude kozijn gebeurt. Vraag een offerte aan.",
     kicker: "Plaatsing",
     sections: [
       {
-        heading: "Wij leveren, u plaatst",
+        heading: "Leveren, en desgewenst monteren",
         paragraphs: [
-          "Wij maken het kozijn op maat en leveren het. Wij plaatsen het niet en komen niet inmeten. Plaatsen doet u zelf, als u het stellen, het ankaren en het afdichten aandurft, of u schakelt uw eigen installateur in.",
-          "Bij een schuifpui of een deur is het gewicht en de dorpel de reden om een eigen installateur te vragen. Een vast raam in een bestaande sparing is het meest overzichtelijk.",
+          "Wij maken het kozijn op maat en leveren het. Montage door Cavemen kan, alleen of samen met de gevel, via dezelfde offerte. Zelf plaatsen blijft mogelijk. U meet zelf met de meetinstructie.",
+          "Bij een schuifpui of een deur tellen het gewicht en de dorpel. Montage door Cavemen kan dat meenemen. Een vast raam in een bestaande sparing is het meest overzichtelijk als u zelf plaatst.",
         ],
       },
       {
@@ -340,7 +345,7 @@ export const articles: Article[] = [
       {
         heading: "Het oude kozijn",
         paragraphs: [
-          "Hout en glas gaan niet bij het huisvuil. Glas is apart, hout kan naar de milieustraat. Wij nemen het oude kozijn niet mee, omdat wij niet komen plaatsen. We zetten geen tarief op deze pagina.",
+          "Hout en glas gaan niet bij het huisvuil. Glas is apart, hout kan naar de milieustraat. Of Cavemen het oude kozijn meeneemt bij montage, zetten we op de offerte. Dat is geen standaardbelofte op deze pagina, en we noemen hier geen tarief.",
         ],
       },
     ],
@@ -351,6 +356,8 @@ export const articles: Article[] = [
       },
     ],
     links: [
+      { href: "/offerte-montage", label: "Offerte montage" },
+      { href: "/aansluiting-kozijn-gevel", label: "aansluiting kozijn en gevelbekleding" },
       { href: "/kunststof-kozijnen/kennisbank/hoe-moet-je-meten", label: "Meetinstructie" },
       { href: "/contact", label: "Contact" },
       ...sharedLinks,
@@ -454,7 +461,7 @@ export const articles: Article[] = [
       },
       {
         q: "Plaatsen jullie ook?",
-        a: "Nee. Wij maken het kozijn op maat en leveren het. Plaatsen doet u zelf of uw eigen installateur. In de configurator stelt u het kozijn samen.",
+        a: "Ja, montage door Cavemen kan, alleen of samen met de gevel. Vraag het aan via de offerte. Zelf plaatsen blijft mogelijk. In de configurator stelt u het kozijn samen.",
       },
       {
         q: "Hoe meet ik?",

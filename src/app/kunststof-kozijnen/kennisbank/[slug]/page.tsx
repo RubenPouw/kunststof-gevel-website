@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = getArticle(slug);
   if (!article) return { title: "Kennisbank" };
   return {
-    title: article.title,
+    title: article.slug === "montage" ? { absolute: article.title } : article.title,
     description: article.description,
     alternates: { canonical: `/kunststof-kozijnen/kennisbank/${article.slug}` },
   };
@@ -63,6 +63,13 @@ export default async function KennisArticlePage({ params }: Props) {
         </p>
         <h1 className="mt-3 max-w-3xl">{article.title}</h1>
         <p className="mt-4 text-[16px] leading-normal text-kg-text-2">{article.description}</p>
+        {article.slug === "montage" ? (
+          <p className="mt-6">
+            <Link href="/offerte-montage" className="font-medium">
+              Offerte montage aanvragen
+            </Link>
+          </p>
+        ) : null}
       </header>
       <div className="container-kg max-w-3xl space-y-8 py-10">
         {article.slug === "hoe-moet-je-meten" ? <MeasureFigures /> : null}

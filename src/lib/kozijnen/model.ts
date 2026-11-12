@@ -92,7 +92,7 @@ export const STEPS: { id: StepId; label: string; article: string; hint: string }
     id: "extra",
     label: "Extra",
     article: "montage",
-    hint: "Horren. Wij leveren het kozijn. Plaatsen doet u zelf.",
+    hint: "Horren. Wij leveren het kozijn. Zelf plaatsen kan, montage door Cavemen ook.",
   },
   {
     id: "overzicht",

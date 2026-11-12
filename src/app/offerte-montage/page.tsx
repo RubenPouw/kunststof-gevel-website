@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { montageQuoteShouldIndex } from "@/lib/montage-quote";
+
 import { MontageQuotePrefill } from "./prefill";
 
 type Props = {
@@ -8,11 +10,11 @@ type Props = {
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const params = await searchParams;
-  const prefilled = Boolean(params.m2 || params.notitie);
+  const prefilled = !montageQuoteShouldIndex(params);
   return {
     title: "Offerte montage",
     description:
-      "Vraag vrijblijvend een montage-offerte aan. Cavemen monteert de gevelbekleding.",
+      "Vraag vrijblijvend een montage-offerte aan. Cavemen monteert gevelbekleding en kozijnen.",
     alternates: { canonical: "/offerte-montage" },
     ...(prefilled ? { robots: { index: false, follow: true } } : {}),
   };

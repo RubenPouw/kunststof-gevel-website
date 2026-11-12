@@ -26,7 +26,7 @@ export function MontageQuoteCard({
           {heading}
         </Heading>
         <p className="mt-3 max-w-xl text-[16px] leading-normal text-kg-text-2">
-          Onze vakmensen (Cavemen) monteren je gevelbekleding vakkundig. Vraag vrijblijvend een offerte aan.
+          Onze vakmensen (Cavemen) monteren gevelbekleding en kozijnen. U kunt het vinkje uitzetten als u alleen materiaal wilt.
         </p>
         <div className="mt-8">
           {ready ? (

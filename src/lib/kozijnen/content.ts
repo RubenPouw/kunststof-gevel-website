@@ -20,7 +20,7 @@ export const hubCopy = {
       heading: "Samen met de gevel",
       paragraphs: [
         "Antraciet op het kozijn en antraciet op de gevel zijn niet vanzelf dezelfde folie. Bestel een kleurstaal van de gevelbekleding en leg die naast de kozijnkleur in de aanvraag. Dakrand en vensterbank lopen in dezelfde lijn mee.",
-        "Het kozijn, de bank en de gevel hoeven niet in één winkelwagen. Ze kunnen wel in één gesprek, met dezelfde kleur als vertrekpunt.",
+        "Het kozijn, de bank en de gevel hoeven niet in één winkelwagen. Ze kunnen wel in één gesprek, met dezelfde kleur als vertrekpunt. Montage door Cavemen kan voor de gevel en de kozijnen, in één offerte.",
       ],
     },
     {
@@ -42,7 +42,7 @@ export const hubCopy = {
     },
     {
       q: "Meten jullie in?",
-      a: "U meet zelf met de meetinstructie. Wij maken het kozijn op maat en leveren het. Plaatsen doet u zelf, of uw eigen installateur. Wij monteren kozijnen niet.",
+      a: "U meet zelf met de meetinstructie. Wij maken het kozijn op maat en leveren het. Montage door Cavemen kan, alleen of samen met de gevel. Zelf plaatsen blijft mogelijk.",
     },
     {
       q: "Staat er hang- en sluitwerk op?",

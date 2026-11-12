@@ -28,17 +28,25 @@ export async function submitQuote(
   const photoProblem = photoError(files.map((file) => ({ name: file.name, type: file.type, size: file.size })));
   if (photoProblem) return { error: photoProblem };
 
+  const textField = (key: string) => {
+    const value = formData.get(key);
+    return typeof value === "string" ? value : "";
+  };
   const input = parseQuoteBody({
-    name: String(formData.get("name") ?? ""),
-    email: String(formData.get("email") ?? ""),
-    phone: String(formData.get("phone") ?? ""),
-    city: String(formData.get("city") ?? ""),
-    areaM2: String(formData.get("areaM2") ?? ""),
-    profile: String(formData.get("profile") ?? "Nog niet zeker"),
-    message: String(formData.get("message") ?? ""),
+    name: textField("name"),
+    email: textField("email"),
+    phone: textField("phone"),
+    city: textField("city"),
+    areaM2: textField("areaM2"),
+    profile: textField("profile") || "Nog niet zeker",
+    message: textField("message"),
     wantsMontage: formData.get("wantsMontage") === "ja" ? "ja" : "nee",
-    companyWebsite: String(formData.get("companyWebsite") ?? ""),
+    companyWebsite: textField("companyWebsite"),
     parts,
+    montageForm: extras,
+    colour: textField("colour"),
+    frameCount: textField("frameCount"),
+    removal: textField("removal"),
   });
 
   if (!input) {

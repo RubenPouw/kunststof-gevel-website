@@ -47,30 +47,34 @@ test("kozijn routes get the kozijn bar, the rest keep montage and colour guarant
   assert.match(line(uspBySection.kozijnen), /Duidelijke meetinstructie/);
 });
 
-test("kozijn copy does not sell installation, stock or a colour guarantee", () => {
+test("kozijn copy offers Cavemen montage without promising a survey or removal", () => {
   const article = getArticle("montage");
   assert.ok(article);
+  assert.equal(article.title, "Kozijnen plaatsen: zelf of door Cavemen");
+  assert.match(article.description, /Vraag een offerte aan\.$/);
   const montage = JSON.stringify(article);
-  assert.match(montage, /leveren/);
-  assert.match(montage, /monteren niet/);
-  assert.equal(/Montage via offerte|aparte offerte|Montage door ons|met de montage mee/i.test(montage), false);
+  assert.match(montage, /Montage door Cavemen/);
+  assert.match(montage, /U meet zelf/);
+  assert.match(montage, /geen standaardbelofte/);
+  assert.equal(/monteren niet|plaatsen het niet|nemen het oude kozijn niet mee|wij komen inmeten/i.test(montage), false);
 
   const measure = hubCopy.faqs.find((item) => item.q === "Meten jullie in?");
   assert.ok(measure);
-  assert.match(measure.a, /leveren/);
-  assert.match(measure.a, /monteren kozijnen niet/);
-  assert.equal(/opname|aparte offerte/i.test(measure.a), false);
+  assert.match(measure.a, /U meet zelf/);
+  assert.match(measure.a, /Montage door Cavemen/);
+  assert.equal(/monteren kozijnen niet|opname/i.test(measure.a), false);
 
   const extra = STEPS.find((step) => step.id === "extra");
   assert.ok(extra);
   assert.equal(/Montage vraagt u apart/i.test(extra.hint), false);
   assert.match(extra.hint, /leveren/);
+  assert.match(extra.hint, /Cavemen/);
   assert.equal(extra.article, "montage");
 
   const place = articles.flatMap((item) => item.faqs).find((item) => item.q === "Plaatsen jullie ook?");
   assert.ok(place);
-  assert.match(place.a, /^Nee\./);
-  assert.equal(/offerte/i.test(place.a), false);
+  assert.match(place.a, /^Ja, montage door Cavemen/);
+  assert.match(place.a, /offerte/);
 
   const blob = [
     JSON.stringify(hubCopy),

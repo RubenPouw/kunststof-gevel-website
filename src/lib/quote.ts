@@ -1,3 +1,5 @@
+import { frameRemovalLabel, FRAME_REMOVAL_OPTIONS } from "@/lib/montage-quote";
+
 export const quoteProfiles = [
   "Nog niet zeker",
   "Rabat",
@@ -18,6 +20,12 @@ export type QuoteInput = {
   companyWebsite: string;
   /** Leeg of afwezig als het formulier de keuze niet toont. */
   parts?: string[];
+  /** Alleen de montage-offerte. De korte offerte laat deze velden weg. */
+  montageForm?: boolean;
+  colour?: string;
+  frameCount?: string;
+  /** zelf of vraag. Afvoer is een vraag, geen belofte. */
+  removal?: string;
 };
 
 export type QuoteEstimate = {
@@ -44,6 +52,15 @@ export function validateQuote(input: QuoteInput): string | null {
   }
   if (!(quoteProfiles as readonly string[]).includes(input.profile)) {
     return "Kies een profiel.";
+  }
+  if ((input.colour ?? "").trim().length > 160) return "Houd de kleur kort.";
+  const kozijnen = (input.parts ?? []).includes("Kozijnen");
+  if (kozijnen) {
+    const count = Number(String(input.frameCount ?? "").replace(",", "."));
+    if (!Number.isInteger(count) || count < 1 || count > 200) return "Vul het aantal kozijnen in.";
+    if (input.removal && !FRAME_REMOVAL_OPTIONS.some((item) => item.value === input.removal)) {
+      return "Kies of afvoer een vraag op de offerte is.";
+    }
   }
   return null;
 }
@@ -84,5 +101,39 @@ export function parseQuoteBody(raw: unknown): QuoteInput | null {
     wantsMontage,
     companyWebsite: str("companyWebsite"),
     parts,
+    montageForm: o.montageForm === true,
+    colour: str("colour"),
+    frameCount: str("frameCount"),
+    removal: str("removal"),
   };
+}
+
+export function quoteDeliveryLines(
+  input: QuoteInput,
+  extras: { area: number; reference: string; photoNames: string[] },
+) {
+  const parts = (input.parts ?? []).filter(Boolean);
+  const kozijnen = parts.includes("Kozijnen");
+  const lines = [
+    `Nieuwe offerteaanvraag ${extras.reference}`,
+    `Naam: ${input.name.trim()}`,
+    `E-mail: ${input.email.trim()}`,
+    `Telefoon: ${input.phone.trim()}`,
+    `Plaats: ${input.city.trim()}`,
+    `Oppervlak: ${extras.area} m2`,
+    `Profiel: ${input.profile}`,
+    `${input.montageForm ? "Montage door Cavemen" : "Montage"}: ${input.wantsMontage ? "ja" : "nee"}`,
+    `Waar gaat het om: ${parts.length ? parts.join(", ") : "-"}`,
+  ];
+  if (input.montageForm) {
+    lines.push(`Kleur: ${input.colour?.trim() || "-"}`);
+    lines.push(`Aantal kozijnen: ${kozijnen ? input.frameCount?.trim() || "-" : "-"}`);
+    if (kozijnen) {
+      lines.push("Inmeten: klant meet zelf");
+      lines.push(`Afvoer oud kozijn: ${frameRemovalLabel(input.removal) || "-"}`);
+    }
+  }
+  lines.push(`Foto's: ${extras.photoNames.length ? extras.photoNames.join(", ") : "-"}`);
+  lines.push(`Bericht: ${input.message.trim() || "-"}`);
+  return lines;
 }

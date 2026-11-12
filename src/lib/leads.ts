@@ -1,8 +1,10 @@
 import { missingActiveCampaignEnv, syncActiveCampaignContact } from "@/lib/activecampaign";
 import { missingMailEnv, sendLeadEmail } from "@/lib/mail";
 import { buildDealflowPayload, missingDealflowEnv, postDealflow } from "@/lib/staal/dealflow";
+import { frameRemovalLabel } from "@/lib/montage-quote";
 import {
   estimateRange,
+  quoteDeliveryLines,
   validateQuote,
   type QuoteInput,
   type QuoteResult,
@@ -231,7 +233,13 @@ export async function submitQuoteLead(
   const ref = reference("KG");
 
   const parts = (input.parts ?? []).filter(Boolean);
-  const note = `Offerte ${ref}. ${area} m², ${input.profile}, montage ${input.wantsMontage ? "ja" : "nee"}, ${input.city.trim()}.${parts.length ? ` Waar: ${parts.join(", ")}.` : ""} ${input.message.trim()}`;
+  const kozijnen = parts.includes("Kozijnen");
+  const colourNote = input.montageForm ? ` Kleur: ${input.colour?.trim() || "-"}.` : "";
+  const frameNote = input.montageForm ? ` Aantal kozijnen: ${kozijnen ? input.frameCount?.trim() || "-" : "-"}.` : "";
+  const surveyNote = input.montageForm && kozijnen ? " Inmeten: klant meet zelf." : "";
+  const removalNote =
+    input.montageForm && kozijnen ? ` Afvoer oud kozijn: ${frameRemovalLabel(input.removal) || "-"}.` : "";
+  const note = `Offerte ${ref}. ${area} m², ${input.profile}, montage ${input.wantsMontage ? "ja" : "nee"}, ${input.city.trim()}.${parts.length ? ` Waar: ${parts.join(", ")}.` : ""}${colourNote}${frameNote}${surveyNote}${removalNote} ${input.message.trim()}`;
   console.info("[offerte]", {
     reference: ref,
     city: input.city.trim(),
@@ -246,19 +254,11 @@ export async function submitQuoteLead(
     name: input.name,
     phone: input.phone,
     subject: `Offerte ${ref}`,
-    text: [
-      `Nieuwe offerteaanvraag ${ref}`,
-      `Naam: ${input.name.trim()}`,
-      `E-mail: ${input.email.trim()}`,
-      `Telefoon: ${input.phone.trim()}`,
-      `Plaats: ${input.city.trim()}`,
-      `Oppervlak: ${area} m2`,
-      `Profiel: ${input.profile}`,
-      `Montage: ${input.wantsMontage ? "ja" : "nee"}`,
-      `Waar gaat het om: ${parts.length ? parts.join(", ") : "-"}`,
-      `Foto's: ${attachments.length ? attachments.map((file) => file.filename).join(", ") : "-"}`,
-      `Bericht: ${input.message.trim() || "-"}`,
-    ].join("\n"),
+    text: quoteDeliveryLines(input, {
+      area,
+      reference: ref,
+      photoNames: attachments.map((file) => file.filename),
+    }).join("\n"),
     note,
     attachments,
   });

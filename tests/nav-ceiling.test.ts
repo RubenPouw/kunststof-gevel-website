@@ -12,7 +12,7 @@ import type { Product } from "../src/lib/catalog/types.ts";
 import { kozijnNav, productNav, shopNav } from "../src/lib/site.ts";
 
 const PRODUCT_HREFS = ["/gevelbekleding", "/plafondpanelen", "/boeidelen", "/hpl-plaat", "/montage"];
-const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking", "/kunststof-vensterbank"];
+const KOZIJN_HREFS = ["/kunststof-kozijnen", "/kozijnafwerking", "/kunststof-vensterbank", "/gevel-en-kozijnen-renoveren"];
 
 test("categories sit under Producten and kozijnen has its own menu", () => {
   const underProducts = productNav.map((item) => item.href);
@@ -26,7 +26,7 @@ test("categories sit under Producten and kozijnen has its own menu", () => {
   );
   assert.deepEqual(
     kozijnNav.map((item) => item.label),
-    ["Kozijnen (overzicht)", "Kozijnafwerking", "Vensterbanken"],
+    ["Kozijnen (overzicht)", "Kozijnafwerking", "Vensterbanken", "Gevel en kozijnen"],
   );
   const top = shopNav.map((item) => item.href);
   for (const href of [...PRODUCT_HREFS, ...KOZIJN_HREFS]) {

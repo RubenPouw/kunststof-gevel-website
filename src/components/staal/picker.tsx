@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 
@@ -310,7 +311,11 @@ export function StaalPicker({
       <div className="grid gap-8 lg:grid-cols-[8fr_4fr]">
         <div>
           <h1 className="display-plp max-w-3xl">{STAAL_HEADING}</h1>
-          <p className="mt-4 mb-8 max-w-2xl text-[17px] leading-normal text-kg-text-2">{STAAL_INTRO}</p>
+          <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-text-2">{STAAL_INTRO}</p>
+          <p className="mt-3 mb-8 max-w-2xl text-[15px] leading-normal text-kg-text-2">
+            Leg een gevelstaal naast het kozijn. Lees over{" "}
+            <Link href="/kleur-kozijn-en-gevelbekleding">kleur kozijn en gevelbekleding</Link>.
+          </p>
           {active ? (
             <div id="staal-kleuren" className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
               <button type="button" onClick={backToPanels} className={buttonVariants({ size: "sm" })}>

@@ -7,7 +7,7 @@ export function HomeGuides() {
     <section className="container-kg py-14">
       <p className="font-mono text-[13px] text-kg-text-2">Kennis</p>
       <h2 className="mt-2 text-[28px] font-bold tracking-[-0.03em]">Voor u bestelt</h2>
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {homeGuides.map((guide) => (
           <Link
             key={guide.href}

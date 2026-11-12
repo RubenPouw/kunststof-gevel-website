@@ -168,6 +168,7 @@ const corePosts: BlogPost[] = [
     links: [
       { href: "/montage", label: "Montagemateriaal" },
       { href: "/offerte", label: "Montage aanvragen" },
+      { href: "/volgorde-kozijnen-en-gevel", label: "eerst kozijnen of eerst de gevel" },
       { href: "/blog/wat-kost-kunststof-gevelbekleding", label: "Prijs per m²" },
     ],
   },
