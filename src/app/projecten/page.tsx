@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { MontageQuoteCard } from "@/components/montage-quote-card";
-import { ProjectFigure } from "@/components/projects/project-figure";
 import { projectBrands, projects, type ProjectBrand } from "@/data/projects";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -53,30 +53,55 @@ export default async function ProjectenPage({ searchParams }: Props) {
         </nav>
       </header>
 
-      <ul className="mt-6 flex flex-col gap-20 sm:mt-14 sm:gap-28 lg:gap-36">
-        {list.map((project, index) => (
-          <li key={project.slug}>
-            <Link
-              href={`/projecten/${project.slug}`}
-              className="group block text-inherit no-underline hover:no-underline"
+      <ul className="mt-10 flex flex-col gap-12 sm:mt-14 sm:gap-16">
+        {list.map((project, index) => {
+          const photo = project.photos[0];
+          const flipped = index % 2 === 1;
+          return (
+            <li
+              key={project.slug}
+              className={cn(
+                "grid items-center gap-5 lg:gap-12",
+                flipped ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)]" : "lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]",
+              )}
             >
-              <ProjectFigure
-                photo={project.photos[0]}
-                priority={index === 0}
-                sizes="(min-width: 1024px) 1248px, 100vw"
-                imageClassName="transition-transform duration-700 ease-out group-hover:scale-[1.015]"
-              />
-              <div className="mt-6 max-w-xl sm:mt-8">
+              <Link
+                href={`/projecten/${project.slug}`}
+                className={cn("block max-w-[420px] no-underline hover:no-underline", flipped && "lg:order-2 lg:justify-self-end")}
+              >
+                <span className="relative block aspect-[4/3] overflow-hidden rounded-[10px] bg-kg-kalk">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    priority={index === 0}
+                    sizes="(min-width: 1024px) 420px, 100vw"
+                    className="object-cover"
+                    style={{ objectPosition: photo.position ?? "center" }}
+                  />
+                </span>
+              </Link>
+              <div className="max-w-xl">
                 <h2 className="text-[22px] leading-snug font-medium tracking-[-0.03em] sm:text-[26px]">
-                  {project.title}
+                  <Link href={`/projecten/${project.slug}`} className="text-inherit no-underline hover:underline">
+                    {project.rowTitle}
+                  </Link>
                 </h2>
-                <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-                  {project.brand} · {project.color}
+                <p className="mt-3 text-[16px] leading-[1.6] text-kg-text-2">{project.rowText}</p>
+                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-kg-text-2">
+                  {project.facts.map((fact) => (
+                    <li key={fact}>{fact}</li>
+                  ))}
+                </ul>
+                <p className="mt-4">
+                  <Link href={project.article.href} className="text-[15px] text-kg-navy">
+                    {project.article.label}
+                  </Link>
                 </p>
               </div>
-            </Link>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
 
       <p className="mt-24 font-mono text-[13px] text-kg-text-2 sm:mt-32">

@@ -22,28 +22,31 @@ const draft = buildMontageQuoteDraft({
   ],
 });
 
-test("de offerte neemt m², prijs en winkelwagenregels mee", () => {
+test("de offerte neemt titel, kleur, aantal, m² en prijs mee", () => {
   assert.equal(draft.areaM2, "31,0");
-  assert.match(draft.message, /€ 1\.425,38 incl\. btw voor 31,0 m²/);
-  assert.match(draft.message, /Keralit sponningdeel 143mm, Zwart classic nerf, 28141260, 6\.000 mm, aantal 35/);
-  assert.match(draft.message, /Materiaalsubtotaal: € 783,00 incl\. btw/);
+  assert.match(draft.message, /Keralit sponningdeel 143mm, Zwart classic nerf, 6\.000 mm, 35 stuks/);
+  assert.match(draft.message, /Totaal: 31,0 m²/);
+  assert.match(draft.message, /Indicatieve montageprijs: € 1\.425,38 incl\. btw/);
+  assert.deepEqual(draft.parts, ["Gevel"]);
   assert.equal(draft.message.includes("—"), false);
-  assert.equal(draft.message.includes("Caveman"), false);
 });
 
-test("een korte toelichting past in de url, een lange blijft in de sessie", () => {
-  const href = montageQuoteHref(draft);
-  assert.match(href, /^\/offerte-montage\?/);
-  assert.match(href, /montage=ja/);
-  assert.match(href, /m2=31/);
-  const fromUrl = readMontageQuoteRequest(href.slice(href.indexOf("?")), null);
-  assert.equal(fromUrl?.areaM2, "31,0");
-  assert.match(fromUrl?.message ?? "", /aantal 35/);
-
-  const long = { ...draft, message: "regel\n".repeat(400) };
-  const shortHref = montageQuoteHref(long);
-  assert.equal(shortHref.includes("notitie="), false);
-  const fromStore = readMontageQuoteRequest(shortHref.slice(shortHref.indexOf("?")), JSON.stringify(long));
-  assert.equal(fromStore?.message, long.message);
-  assert.equal(fromStore?.montageIncl, 1425.38);
+test("dakrand en gevel worden apart gekozen, notities blijven uit de url", () => {
+  const mixed = buildMontageQuoteDraft({
+    areaM2: 12,
+    montageIncl: 500,
+    materialIncl: 800,
+    lines: [
+      { name: "VinyPlus dakrandpaneel", color: "Antraciet", sku: "VP", length: "", qty: 2, kind: "product" },
+      { name: "Keralit sponningdeel", color: "Wit", sku: "KER", length: "", qty: 10, kind: "product" },
+    ],
+  });
+  assert.deepEqual(mixed.parts, ["Dakrand", "Gevel"]);
+  const href = montageQuoteHref(mixed);
+  assert.equal(href.includes("notitie="), false);
+  assert.match(href, /van=winkelwagen/);
+  assert.match(href, /delen=Dakrand/);
+  const fromStore = readMontageQuoteRequest(href.slice(href.indexOf("?")), JSON.stringify(mixed));
+  assert.match(fromStore?.message ?? "", /2 stuks/);
+  assert.match(fromStore?.message ?? "", /10 stuks/);
 });
