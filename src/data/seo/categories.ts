@@ -55,6 +55,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
     links: [
       { href: "/blog/wat-kost-kunststof-gevelbekleding", label: "Wat kost het per m²" },
       { href: "/blog/keralit-of-vinyplus", label: "Keralit of VinyPlus" },
+      { href: "/aansluiting-kozijn-gevel", label: "aansluiting kozijn en gevelbekleding" },
       { href: "/offerte", label: "Offerte aanvragen" },
     ],
   },
@@ -68,6 +69,7 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
         paragraphs: [
           "Een nieuwe gevel met een houten boei die blijft schilferen is half werk. Kunststof boeidelen en hoeken dekken het overstek af en lopen in kleur mee.",
           "Reken hoeken per stuk. De m²-prijs van gevelpanelen geldt niet voor een dakrand. In de offerte nemen wij gevel en dakrand samen op.",
+          "Nieuwe kozijnen onder een houten boei pakt u in dezelfde ronde. Lees hoe dakrand en kader in één lijn komen, en vraag gevel, dakrand en kozijnen desgewenst samen aan.",
         ],
       },
     ],
@@ -79,6 +81,8 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
     ],
     links: [
       { href: "/merken/milexx", label: "Milexx dakranden" },
+      { href: "/boeidelen-en-kozijnen", label: "boeidelen en kozijnen" },
+      { href: "/offerte-montage?delen=Gevel,Kozijnen", label: "Offerte gevel en kozijnen" },
       { href: "/offerte", label: "Gevel en dakrand laten rekenen" },
     ],
   },
@@ -129,6 +133,8 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
     links: [
       { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
       { href: "/kunststof-kozijnen", label: "Kozijnen configureren" },
+      { href: "/aansluiting-kozijn-gevel", label: "aansluiting kozijn en gevelbekleding" },
+      { href: "/offerte-montage?delen=Gevel,Kozijnen", label: "Offerte gevel en kozijnen" },
     ],
   },
   vensterbanken: {

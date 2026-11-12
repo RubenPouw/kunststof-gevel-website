@@ -205,6 +205,7 @@ export const boeiKeralitArticle: {
       heading: "Gevel en dakrand samen",
       paragraphs: [
         "Werk gevel en dakrand in één systeem af. De Keralit gevelbekleding staat op de Keralit-landingspagina. Twijfel je over de kleur, vraag eerst een staal aan.",
+        "Past u de dakrand samen met nieuwe kozijnen aan, lees dan hoe die twee in één lijn komen.",
       ],
     },
   ],
@@ -225,6 +226,8 @@ export const boeiKeralitArticle: {
   links: [
     { href: "/keralit-gevelbekleding", label: "Keralit gevelbekleding" },
     { href: "/boeidelen", label: "Alle boeidelen" },
+    { href: "/boeidelen-en-kozijnen", label: "dakrand in lijn met het kozijn" },
+    { href: "/offerte-montage?delen=Gevel,Kozijnen", label: "Offerte gevel en kozijnen" },
     { href: "/staalaanvraag", label: "Gratis kleurstaal" },
     { href: "/offerte", label: "Offerte aanvragen" },
   ],

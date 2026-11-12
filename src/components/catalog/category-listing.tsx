@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CategoryPage } from "@/components/catalog/category-page";
+import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SeoArticle } from "@/components/seo/article";
 import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
@@ -88,6 +89,7 @@ export async function CategoryListing({
             : undefined
         }
       />
+      {slug === "gevelbekleding" ? <KozijnPassenBlock /> : null}
       {story ? <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} /> : null}
     </>
   );

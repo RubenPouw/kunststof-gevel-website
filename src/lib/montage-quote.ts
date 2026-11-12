@@ -6,6 +6,27 @@ export const MONTAGE_QUOTE_PATH = "/offerte-montage";
 export const MONTAGE_PARTS = ["Dakrand", "Gevel", "Isolatie", "Kozijnen"] as const;
 export type MontagePart = (typeof MONTAGE_PARTS)[number];
 
+/** Afvoer van het oude kozijn is een vraag op de offerte, geen belofte. */
+export const FRAME_REMOVAL_OPTIONS = [
+  { value: "zelf", label: "Ik voer zelf af" },
+  { value: "vraag", label: "Afvoer als vraag op de offerte" },
+] as const;
+export type FrameRemoval = (typeof FRAME_REMOVAL_OPTIONS)[number]["value"];
+
+export function frameRemovalLabel(value: string | undefined) {
+  return FRAME_REMOVAL_OPTIONS.find((item) => item.value === value)?.label ?? "";
+}
+
+/** Query-varianten zoals ?delen= blijven uit de index. De canonical blijft /offerte-montage. */
+export function montageQuoteShouldIndex(search: Record<string, string | string[] | undefined>) {
+  const present = (key: string) => {
+    const value = search[key];
+    if (Array.isArray(value)) return value.some((item) => item.trim().length > 0);
+    return Boolean(value && value.trim());
+  };
+  return !(present("m2") || present("notitie") || present("delen"));
+}
+
 export type MontageQuoteLine = {
   name: string;
   color: string;
@@ -142,10 +163,10 @@ export function readMontageQuoteRequest(search: string, storedRaw: string | null
   const fromCart = params.get("van") === "winkelwagen";
   const areaM2 = params.get("m2") || stored?.areaM2 || "";
   const message = (fromCart ? stored?.message : "") || params.get("notitie") || stored?.message || "";
-  if (!areaM2 && !message && !fromCart) return null;
+  const parts = partsFromParam(params.get("delen"));
+  if (!areaM2 && !message && !fromCart && parts.length === 0) return null;
   const prijs = Number(params.get("prijs") ?? "");
   const materiaal = Number(params.get("materiaal") ?? "");
-  const parts = partsFromParam(params.get("delen"));
   return {
     areaM2,
     montageIncl: Number.isFinite(prijs) && params.has("prijs") ? prijs : (stored?.montageIncl ?? 0),

@@ -7,6 +7,7 @@ import { allLayouts, GROUPS, layoutPath } from "@/lib/kozijnen/layouts";
 import { staticBrands } from "@/lib/catalog/static";
 import { getCatalog } from "@/lib/catalog";
 import { categoryPath, pageSeo } from "@/data/seo/category-pages";
+import { clusterList } from "@/data/seo/kozijn-cluster";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
 
 export const revalidate = 3600;
@@ -38,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/staalaanvraag",
     "/offerte",
     "/offerte-montage",
+    ...clusterList.map((page) => page.path),
     "/contact",
     "/zakelijk",
     "/projecten",

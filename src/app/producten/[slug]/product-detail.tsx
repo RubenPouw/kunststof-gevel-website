@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { AreaCalculator } from "@/components/catalog/area-calculator";
+import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { ProductCard } from "@/components/brand/product-card";
 import { ProductPhoto } from "@/components/brand/product-photo";
@@ -468,6 +469,8 @@ export function ProductDetail({
           </div>
         </div>
       </section>
+
+      {product.category === "gevelbekleding" ? <KozijnPassenBlock plain /> : null}
 
       {product.category === "gevelbekleding" && related.length > 0 ? (
         <RelatedProfiles related={related} />

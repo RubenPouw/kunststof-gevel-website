@@ -1,4 +1,5 @@
 import { CategoryPage } from "@/components/catalog/category-page";
+import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { SeoArticle } from "@/components/seo/article";
 import { getLandingStory, isLandingSlug } from "@/data/seo/landings";
 import { brandsInProducts } from "@/lib/catalog";
@@ -52,6 +53,7 @@ export async function LandingListing({
             : undefined
         }
       />
+      {slug === "keralit-gevelbekleding" ? <KozijnPassenBlock /> : null}
       <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} />
     </>
   );

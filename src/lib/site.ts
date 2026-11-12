@@ -63,6 +63,7 @@ export const kozijnNav = [
   { href: "/kunststof-kozijnen", label: "Kozijnen (overzicht)" },
   { href: categoryPath("kozijnafwerking"), label: "Kozijnafwerking" },
   { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
+  { href: "/gevel-en-kozijnen-renoveren", label: "Gevel en kozijnen" },
 ] as const;
 
 export const shopNav = [
@@ -89,6 +90,7 @@ export const footerColumns = [
     links: [
       { href: "/contact", label: "Contact" },
       { href: "/offerte", label: "Offerte" },
+      { href: "/gevel-en-kozijnen-renoveren", label: "Gevel en kozijnen" },
       { href: "/staalaanvraag", label: "Kleurstalen" },
       { href: "/staalaanvraag", label: "Staalaanvraag" },
       { href: "/blog", label: "Kennis" },
@@ -180,6 +182,12 @@ export const homeGuides = [
     kicker: "Dakrand",
     title: "Keralit boeideel",
     description: "Boeidelen en dakranden 200 tot 350 mm, in kleur bij je gevel.",
+  },
+  {
+    href: "/gevel-en-kozijnen-renoveren",
+    kicker: "Kozijn",
+    title: "kunststof kozijnen en gevelbekleding",
+    description: "Gevel en kozijnen tegelijk renoveren. Montage door Cavemen, in één offerte.",
   },
 ] as const;
 

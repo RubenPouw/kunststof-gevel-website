@@ -128,6 +128,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       { href: "/montage?merk=keralit", label: "Montageprofielen Keralit" },
       { href: "/boeidelen/keralit", label: "Keralit boeidelen" },
       { href: "/staalaanvraag?groep=gevel", label: "Gratis kleurstaal" },
+      { href: "/kleur-kozijn-en-gevelbekleding", label: "kleur kozijn en gevelbekleding" },
       { href: "/offerte", label: "Offerte aanvragen" },
     ],
   },

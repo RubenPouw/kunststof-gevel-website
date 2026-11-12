@@ -6,9 +6,10 @@ import { submitQuote, type QuoteActionState } from "@/app/offerte/actions";
 import { buttonVariants } from "@/components/ui/button";
 import { useLeadDefaults } from "@/lib/account";
 import { formatPrice } from "@/lib/format";
-import { MONTAGE_PARTS, type MontagePart } from "@/lib/montage-quote";
+import { FRAME_REMOVAL_OPTIONS, MONTAGE_PARTS, type MontagePart } from "@/lib/montage-quote";
 import { photoError } from "@/lib/quote-photos";
 import { estimateRange, quoteProfiles } from "@/lib/quote";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
@@ -85,6 +86,9 @@ function QuoteFields({
   const [message, setMessage] = useState(initialMessage);
   const [montage, setMontage] = useState(defaultMontage);
   const [parts, setParts] = useState<MontagePart[]>([...initialParts]);
+  const [colour, setColour] = useState("");
+  const [frameCount, setFrameCount] = useState("");
+  const [removal, setRemoval] = useState("zelf");
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoMessage, setPhotoMessage] = useState<string | null>(null);
   const photoInput = useRef<HTMLInputElement>(null);
@@ -92,6 +96,12 @@ function QuoteFields({
 
   const area = Number(areaM2.replace(",", "."));
   const liveEstimate = Number.isFinite(area) && area >= 1 ? estimateRange(area, montage) : null;
+  const kozijnenOn = parts.includes("Kozijnen");
+  const montageHint = montageExtras
+    ? "Geldt voor gevel en kozijnen, en voor de dakrand als die chip aan staat. Uitvinken als u alleen materiaal wilt."
+    : indicativeNote
+      ? "Uitvinken als u alleen materiaal wilt."
+      : "Uitvinken als u alleen materiaal wilt. De bandbreedte past mee.";
 
   function syncPhotos(next: File[]) {
     setPhotos(next);
@@ -123,6 +133,14 @@ function QuoteFields({
         if (montageExtras && parts.length === 0) {
           event.preventDefault();
           setPhotoMessage("Kies waar het om gaat.");
+          return;
+        }
+        if (montageExtras && kozijnenOn) {
+          const count = Number(frameCount.replace(",", "."));
+          if (!Number.isInteger(count) || count < 1) {
+            event.preventDefault();
+            setPhotoMessage("Vul het aantal kozijnen in.");
+          }
         }
       }}
     >
@@ -181,7 +199,7 @@ function QuoteFields({
             className={fieldClass}
           />
         </Field>
-        <Field label="Oppervlak (m²)" htmlFor={fieldId("area")}>
+        <Field label={montageExtras ? "Geveloppervlak (m²)" : "Oppervlak (m²)"} htmlFor={fieldId("area")}>
           <input
             id={fieldId("area")}
             name="areaM2"
@@ -223,6 +241,7 @@ function QuoteFields({
             </fieldset>
           </div>
         ) : null}
+        {montageExtras ? <MontageCheck id={fieldId("montage")} montage={montage} onChange={setMontage} hint={montageHint} label="Montage door Cavemen" /> : null}
         <Field label="Profiel" htmlFor={fieldId("profile")}>
           <select id={fieldId("profile")} name="profile" defaultValue="Nog niet zeker" className={fieldClass}>
             {quoteProfiles.map((option) => (
@@ -232,26 +251,63 @@ function QuoteFields({
             ))}
           </select>
         </Field>
-        <div className="sm:col-span-2">
-          <label className="flex items-start gap-3 text-[15px]">
-            <input
-              type="checkbox"
-              name="wantsMontage"
-              value="ja"
-              checked={montage}
-              onChange={(event) => setMontage(event.target.checked)}
-              className="mt-1 size-4 accent-[var(--kg-navy)]"
-            />
-            <span>
-              Inclusief montage in de offerte
-              <span className="mt-1 block text-[13px] text-[var(--color-text-muted)]">
-                {indicativeNote
-                  ? "Uitvinken als u alleen materiaal wilt."
-                  : "Uitvinken als u alleen materiaal wilt. De bandbreedte past mee."}
-              </span>
-            </span>
-          </label>
-        </div>
+        {montageExtras ? (
+          <>
+            <div className={kozijnenOn ? "grid gap-5 sm:col-span-2 sm:grid-cols-2" : "sm:col-span-2"}>
+            <Field label="Kleur (optioneel)" htmlFor={fieldId("colour")}>
+              <input
+                id={fieldId("colour")}
+                name="colour"
+                value={colour}
+                onChange={(event) => setColour(event.target.value)}
+                placeholder="Antraciet gevel, kozijn nog niet zeker"
+                maxLength={160}
+                className={fieldClass}
+              />
+            </Field>
+            {kozijnenOn ? (
+              <Field label="Aantal kozijnen" htmlFor={fieldId("frames")}>
+                <input
+                  id={fieldId("frames")}
+                  name="frameCount"
+                  type="number"
+                  inputMode="numeric"
+                  min={1}
+                  max={200}
+                  required
+                  value={frameCount}
+                  onChange={(event) => setFrameCount(event.target.value)}
+                  className={fieldClass}
+                />
+              </Field>
+            ) : null}
+            </div>
+            {kozijnenOn ? (
+              <div className="sm:col-span-2">
+                <Field label="Afvoer oud kozijn" htmlFor={fieldId("removal")}>
+                  <select
+                    id={fieldId("removal")}
+                    name="removal"
+                    value={removal}
+                    onChange={(event) => setRemoval(event.target.value)}
+                    className={fieldClass}
+                  >
+                    {FRAME_REMOVAL_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <p className="mt-2 text-[13px] text-[var(--color-text-muted)]">
+                  U meet zelf met de meetinstructie. Inmeten ter plaatse is geen belofte. Afvoer van het oude kozijn is een vraag op de offerte, geen standaard.
+                </p>
+              </div>
+            ) : null}
+          </>
+        ) : (
+          <MontageCheck id={fieldId("montage")} montage={montage} onChange={setMontage} hint={montageHint} label="Inclusief montage in de offerte" />
+        )}
         <div className="sm:col-span-2">
           <Field label={montageExtras ? "Notities" : "Toelichting (optioneel)"} htmlFor={fieldId("message")}>
             <textarea
@@ -337,9 +393,49 @@ function QuoteFields({
         </button>
         <p className="text-[13px] text-[var(--color-text-muted)]">
           Geen spam. We gebruiken uw gegevens alleen voor deze aanvraag.
+          {montageExtras ? (
+            <>
+              {" "}
+              Liever bellen? <a href={site.phoneHref}>{site.phone}</a>.
+            </>
+          ) : null}
         </p>
       </div>
     </form>
+  );
+}
+
+function MontageCheck({
+  id,
+  montage,
+  onChange,
+  hint,
+  label,
+}: {
+  id: string;
+  montage: boolean;
+  onChange: (value: boolean) => void;
+  hint: string;
+  label: string;
+}) {
+  return (
+    <div className="sm:col-span-2">
+      <label className="flex items-start gap-3 text-[15px]" htmlFor={id}>
+        <input
+          id={id}
+          type="checkbox"
+          name="wantsMontage"
+          value="ja"
+          checked={montage}
+          onChange={(event) => onChange(event.target.checked)}
+          className="mt-1 size-4 accent-[var(--kg-navy)]"
+        />
+        <span>
+          {label}
+          <span className="mt-1 block text-[13px] text-[var(--color-text-muted)]">{hint}</span>
+        </span>
+      </label>
+    </div>
   );
 }
 
