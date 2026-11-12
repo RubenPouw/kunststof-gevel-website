@@ -19,7 +19,6 @@ import {
   listCategories,
   listProducts,
 } from "@/lib/catalog";
-import { listSampleColors } from "@/lib/catalog/derive";
 import { faqJsonLd } from "@/lib/seo/schema";
 import { getReviewSnapshot } from "@/lib/reviews/read";
 import { faqs } from "@/lib/site";
@@ -44,7 +43,6 @@ export default async function HomePage() {
       products.filter((product) => product.category === category.slug).length,
     ]),
   );
-  const samples = listSampleColors(products).slice(0, 12);
   const reviews = await getReviewSnapshot();
 
   return (
@@ -55,7 +53,7 @@ export default async function HomePage() {
       <AssortmentGrid counts={counts} total={products.length} images={categoryImages} />
       <BrandMarquee brands={brands} />
       <Bestsellers products={featured} />
-      <SamplesSection colors={samples} />
+      <SamplesSection />
       <ProjectMosaic />
       <HomeQuotes reviews={reviews.reviews} />
       <BusinessBand />

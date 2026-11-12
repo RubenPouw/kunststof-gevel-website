@@ -1,61 +1,101 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
 
-import { useEffect } from "react";
-
-import { SectionHead } from "@/components/brand/section-head";
-import { ColourName } from "@/components/catalog/colour-name";
-import { SampleTrayCard } from "@/components/samples/sample-tray-card";
-import type { SampleColor } from "@/lib/catalog/types";
-import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function SamplesSection({ colors }: { colors: SampleColor[] }) {
-  const { has, toggle, count, items } = useSamples();
+const POINTS = [
+  "Gratis, geen verplichting",
+  "Binnen 3 werkdagen thuis",
+  "Echte kleur, niet het scherm",
+] as const;
 
-  useEffect(() => {
-    if (window.location.hash !== "#stalen") return;
-    document.getElementById("stalen")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
+const TILES = [
+  {
+    src: "/staal/fillout/keralit-kleur-167-mm-21-wit-9016.jpg",
+    label: "Wit",
+    turn: "max-sm:-rotate-[4deg] sm:-rotate-[7deg]",
+    lift: "sm:translate-y-3",
+  },
+  {
+    src: "/staal/fillout/keralit-kleur-167-mm-17-vergrijsd-ceder.jpg",
+    label: "Vergrijsd ceder",
+    turn: "max-sm:-rotate-[1deg] sm:-rotate-[2deg]",
+    lift: "sm:-translate-y-3",
+  },
+  {
+    src: "/staal/fillout/keralit-kleur-190-mm-11-bruin-eiken.jpg",
+    label: "Bruin eiken",
+    turn: "max-sm:rotate-[2deg] sm:rotate-[3deg]",
+    lift: "sm:translate-y-2",
+  },
+  {
+    src: "/staal/fillout/keralit-kleur-167-mm-2-antraciet-7016.jpg",
+    label: "Antraciet",
+    turn: "max-sm:rotate-[5deg] sm:rotate-[8deg]",
+    lift: "sm:-translate-y-1",
+  },
+] as const;
 
+export function SamplesSection() {
   return (
     <section id="stalen" className="container-kg section-kg scroll-mt-[130px]">
-      <div className="grid gap-8 lg:grid-cols-[8fr_4fr]">
-        <div>
-          <SectionHead title="Kies je kleur" aside="Gratis · maximaal 4 stalen" />
-          <p className="mb-5 max-w-[560px] text-kg-text-2">
-            Echte paneelstalen, binnen 2 werkdagen thuis. Kies in daglicht, niet op een scherm.
-          </p>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-3 sm:grid-cols-4 md:grid-cols-6">
-            {colors.slice(0, 12).map((color) => {
-              const selected = has(color.id);
-              const pos = items.findIndex((item) => item.id === color.id);
-              const blocked = !selected && count >= SAMPLE_LIMIT;
-              return (
-                <button
-                  key={color.id}
-                  type="button"
-                  onClick={() => toggle(color)}
-                  disabled={blocked}
-                  className="relative text-left disabled:opacity-45"
+      <div className="bg-kg-navy text-kg-kalk">
+        <div className="h-1.5 bg-kg-signal" />
+        <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
+          <div className="px-6 py-8 sm:px-10 sm:py-10 lg:py-12">
+            <p className="font-mono text-[13px] text-kg-signal">Maximaal 4 stalen</p>
+            <h2 className="mt-3 text-[32px] leading-[1.02] font-bold tracking-[-0.03em] text-white sm:text-[40px]">
+              Gratis
+              <span className="block text-kg-signal">kleurstalen</span>
+            </h2>
+            <ul className="mt-5 grid gap-2.5">
+              {POINTS.map((point) => (
+                <li key={point} className="flex items-center gap-2.5 text-[16px] font-medium text-white">
+                  <span className="text-[18px] leading-none text-kg-signal" aria-hidden>
+                    ✓
+                  </span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/staalaanvraag"
+              className={cn(
+                buttonVariants({ variant: "signal", size: "lg" }),
+                "kg-stalen-cta mt-7 h-14 min-h-14 w-full px-8 text-[17px] no-underline transition-colors duration-150 hover:text-kg-navy hover:no-underline sm:w-fit",
+              )}
+            >
+              Gratis stalen aanvragen
+            </Link>
+            <p className="mt-3 font-mono text-[13px] text-kg-kalk">Kies in daglicht, niet op een scherm.</p>
+          </div>
+          <div className="flex items-center justify-center bg-kg-navy-2 px-4 pt-8 pb-12 sm:px-8 sm:py-12">
+            <ul className="flex items-center justify-center">
+              {TILES.map((tile, index) => (
+                <li
+                  key={tile.src}
+                  className={cn(
+                    "relative h-[132px] w-[92px] shrink-0 overflow-hidden border-[3px] border-white bg-white shadow-[0_16px_28px_rgb(0_0_0/0.38)] sm:h-[176px] sm:w-[124px] lg:h-[220px] lg:w-[156px]",
+                    index > 0 && "-ml-4 sm:-ml-6 lg:-ml-9",
+                    tile.turn,
+                    tile.lift,
+                  )}
+                  style={{ zIndex: index + 1 }}
                 >
-                  <div
-                    className={cn("relative aspect-square", selected && "outline outline-2 outline-offset-2 outline-kg-navy")}
-                    style={{ background: color.hex }}
-                  >
-                    {selected ? (
-                      <span className="absolute top-1.5 right-1.5 bg-kg-navy px-1.5 py-0.5 font-mono text-[11px] text-kg-signal">
-                        {String(pos + 1).padStart(2, "0")}
-                      </span>
-                    ) : null}
-                  </div>
-                  <ColourName value={color.colorName} className="mt-2 block text-[15px] font-medium" />
-                  <span className="block font-mono text-[12px] text-kg-text-2">{color.ral ?? color.brandName}</span>
-                </button>
-              );
-            })}
+                  <Image
+                    src={tile.src}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 152px, 120px"
+                    className="object-cover object-[78%_46%]"
+                  />
+                  <span className="sr-only">{tile.label}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <SampleTrayCard className="h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)]" />
       </div>
     </section>
   );

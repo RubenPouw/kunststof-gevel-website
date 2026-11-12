@@ -333,6 +333,12 @@ html[data-btw="excl"] .kg-price-incl {
   display: none;
 }
 
+a.kg-stalen-cta:hover {
+  background-color: var(--kg-orange-hover);
+  color: var(--kg-navy);
+  text-decoration: none;
+}
+
 @keyframes kg-marquee {
   from {
     transform: translateX(0);
