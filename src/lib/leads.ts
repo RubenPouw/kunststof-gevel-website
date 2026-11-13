@@ -17,6 +17,13 @@ import { customerStaalText, describeStaalLine, shopStaalText } from "@/lib/staal
 import { resolveStaalLine, type StaalRequest } from "@/lib/staal/validate";
 import type { StaalTree } from "@/lib/staal/tree";
 import type { LeadAttachment } from "@/lib/mail";
+import {
+  projectQuoteMail,
+  projectQuoteName,
+  PROJECT_QUOTE_SOURCE,
+  validateProjectQuote,
+  type ProjectQuoteInput,
+} from "@/lib/project-quote";
 import { site } from "@/lib/site";
 
 export type SampleLeadResult =
@@ -352,4 +359,37 @@ export async function submitWithdrawalLead(
   });
   if (error) return { ok: false, error };
   return { ok: true, reference: ref };
+}
+
+export async function submitProjectQuoteLead(
+  input: ProjectQuoteInput,
+  attachments: LeadAttachment[] = [],
+): Promise<{ ok: true; reference: string; quiet: boolean } | { ok: false; error: string }> {
+  if (input.companyWebsite.trim()) {
+    return { ok: true, reference: "SKIP", quiet: true };
+  }
+
+  const error = validateProjectQuote(input);
+  if (error) return { ok: false, error };
+
+  const ref = `OF-${Date.now().toString(36).toUpperCase()}`;
+  const photoNames = attachments.map((file) => file.filename);
+  const name = projectQuoteName(input);
+  console.info("[projecten-offerte]", {
+    reference: ref,
+    photos: photoNames.length,
+    gclid: Boolean(input.attribution.gclid),
+  });
+
+  const deliveryError = await deliverLead({
+    email: input.email,
+    name,
+    phone: input.telefoon,
+    subject: `${PROJECT_QUOTE_SOURCE} ${ref}`,
+    text: projectQuoteMail(input, { reference: ref, photoNames }).join("\n"),
+    note: `Bron: ${PROJECT_QUOTE_SOURCE}. ${ref}. ${name}.`,
+    attachments,
+  });
+  if (deliveryError) return { ok: false, error: deliveryError };
+  return { ok: true, reference: ref, quiet: false };
 }
