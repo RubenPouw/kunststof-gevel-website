@@ -8,7 +8,7 @@ import { KozijnDrawing } from "@/components/kozijnen/drawing";
 import { KozijnOrderSummary } from "@/components/kozijnen/order-summary";
 import { DETAIL_PHOTOS } from "@/lib/kozijnen/detail-photos";
 import { buttonVariants } from "@/components/ui/button";
-import { FRAME_COLORS, LAMINATED, LOW_GLASS, publicProfileName } from "@/lib/kozijnen/config";
+import { FRAME_COLORS, LAMINATED, LOW_GLASS, PROFILE, publicProfileName } from "@/lib/kozijnen/config";
 import { layoutPath, layoutsIn, type Layout } from "@/lib/kozijnen/layouts";
 import { VatPrice } from "@/components/brand/vat-price";
 import { addBasketItem, readBasket, writeBasket } from "@/lib/kozijnen/basket";
@@ -41,7 +41,7 @@ const choiceGrid = "grid grid-cols-1 gap-6 sm:grid-cols-2";
 
 export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; pricesActive: boolean }) {
   const init = useRef<string | null>(null);
-  const focusRef = useRef<HTMLDivElement>(null);
+  const focusRef = useRef<HTMLOListElement>(null);
   const [config, setConfig] = useState<KozijnConfig>(() => defaultConfig(layout));
   const [ready, setReady] = useState(false);
   const [askResume, setAskResume] = useState(false);
@@ -142,8 +142,6 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   }, [config.step, layout.slug, price, pricesActive, ready]);
 
   const flow = flowForStep(config.step);
-  const flowIndex = Math.max(0, FLOW.findIndex((item) => item.id === flow.id));
-  const meta = STEPS.find((step) => step.id === flow.steps[0]) ?? STEPS[0];
   const inRange = sizeInRange(layout, config.width, config.height);
   const lines = useMemo(() => summaryLines(config), [config]);
   const pdfHref = `/api/kozijnen/pdf?layout=${encodeURIComponent(layout.slug)}&${serializeConfig(config)}`;
@@ -224,126 +222,102 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
 
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(300px,400px)] lg:gap-12">
         <div className="min-w-0">
-          <nav aria-label="Stappen" className="max-w-full overflow-x-auto lg:overflow-visible">
-            <ol className="flex w-max gap-2 lg:w-auto lg:flex-wrap">
-              {FLOW.map((item, index) => {
-                const current = item.id === flow.id;
-                const done = index < flowIndex;
-                return (
-                  <li key={item.id}>
-                    <button
-                      type="button"
-                      onClick={() => go(item.steps[0])}
-                      aria-current={current ? "step" : undefined}
-                      className={cn(
-                        "flex h-11 items-center gap-2 border-2 px-3 text-[14px]",
-                        current ? "border-kg-navy bg-kg-navy text-white" : done ? "border-kg-navy bg-white text-kg-navy" : "border-kg-lijn bg-white text-kg-text-2",
-                      )}
-                    >
-                      <span className="font-mono text-[13px]">{index + 1}</span>
-                      <span>{item.label}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-
-          {flowIndex > 0 ? (
-            <ol className="mt-8 divide-y divide-kg-lijn border-y border-kg-lijn">
-              {FLOW.slice(0, flowIndex).map((item, index) => (
-                <li key={item.id} className="flex items-center justify-between gap-4 py-4">
-                  <p className="min-w-0">
-                    <span className="font-mono text-[13px] text-kg-text-2">{index + 1}</span>
-                    <span className="ml-3 font-medium">{item.label}</span>
-                    <span className="mt-1 block truncate text-[14px] text-kg-text-2 sm:mt-0 sm:ml-3 sm:inline">{flowSummary(item.id, layout, config)}</span>
-                  </p>
+          <ol ref={focusRef} id="kozijn-stap" data-flow={flow.id} aria-label="Stappen" className="scroll-mt-28 border border-kg-lijn bg-white">
+            {FLOW.map((item, index) => {
+              const open = item.id === flow.id;
+              const next = FLOW[index + 1];
+              const stepMeta = STEPS.find((step) => step.id === item.steps[0]);
+              return (
+                <li key={item.id} className="border-b border-kg-lijn last:border-b-0">
                   <button
                     type="button"
-                    className="shrink-0 text-[14px] underline underline-offset-[3px]"
-                    aria-label={`Wijzig ${item.label}`}
+                    aria-expanded={open}
+                    aria-controls={`kozijn-paneel-${item.id}`}
                     onClick={() => go(item.steps[0])}
+                    className={cn("flex w-full items-start gap-4 px-4 py-4 text-left", open ? "bg-kg-kalk" : "bg-white")}
                   >
-                    wijzig
+                    <span className="font-mono text-[15px]">{index + 1}.</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[17px] font-medium">{item.label}</span>
+                      {open ? null : (
+                        <span className="mt-1 block truncate text-[14px] text-kg-text-2">{flowSummary(item.id, layout, config)}</span>
+                      )}
+                    </span>
+                    <span className="shrink-0 font-mono text-[12px] text-kg-text-2">{open ? "Open" : "Wijzig"}</span>
                   </button>
+                  {open ? (
+                    <div id={`kozijn-paneel-${item.id}`} className="border-t border-kg-lijn bg-kg-kalk px-4 pt-5 pb-6">
+                      {stepMeta ? (
+                        <p className="max-w-2xl text-[15px] leading-normal text-kg-text-2">
+                          {stepMeta.hint}{" "}
+                          <Link href={`/kunststof-kozijnen/kennisbank/${stepMeta.article}`}>Uitleg</Link>
+                        </p>
+                      ) : null}
+                      <div className="mt-6">
+                        {item.id === "maten" ? <SizeStep layout={layout} config={config} inRange={inRange} onChange={patch} /> : null}
+                        {item.id === "profiel" ? (
+                          <ProfileStep
+                            layout={layout}
+                            pricesActive={pricesActive}
+                            price={price}
+                            onPick={() => {
+                              if (next) go(next.steps[0]);
+                            }}
+                          />
+                        ) : null}
+                        {item.id === "vakvulling" ? <TypeStep layout={layout} config={config} onChange={patch} /> : null}
+                        {item.id === "eigenschappen" ? (
+                          <div className="space-y-12">
+                            <CornerStep config={config} onChange={patch} />
+                            <SillStep config={config} onChange={patch} />
+                            <HardwareStep config={config} onChange={patch} />
+                            <ExtraStep layout={layout} config={config} onChange={patch} />
+                          </div>
+                        ) : null}
+                        {item.id === "kleur" ? <ColorStep layout={layout} config={config} onChange={patch} /> : null}
+                        {item.id === "glas" ? <GlassStep config={config} onChange={patch} /> : null}
+                        {item.id === "ventilatie" ? (
+                          <VentStep
+                            config={config}
+                            onChange={(partial) => {
+                              patch(partial);
+                              if (next) go(next.steps[0]);
+                            }}
+                          />
+                        ) : null}
+                        {item.id === "overzicht" ? (
+                          <Overview
+                            lines={lines}
+                            pdfHref={pdfHref}
+                            share={share}
+                            price={shownPrice}
+                            sent={sent}
+                            error={formError}
+                            sending={sending}
+                            onQuote={onQuote}
+                            onBasket={() => {
+                              const basket = addBasketItem(readBasket(), {
+                                layout: layout.slug,
+                                query: serializeConfig(config),
+                                title: `${layout.title} ${config.width} × ${config.height} mm`,
+                              });
+                              writeBasket(basket);
+                              setBasketNote(`${basket.length} ${basket.length === 1 ? "kozijn" : "kozijnen"} in de offertemand.`);
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                      {next ? (
+                        <button type="button" className={cn(buttonVariants(), "mt-8")} onClick={() => go(next.steps[0])}>
+                          Ga naar {next.label.toLowerCase()}
+                        </button>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </li>
-              ))}
-            </ol>
-          ) : null}
-
-          <div ref={focusRef} id="kozijn-stap" data-flow={flow.id} className="scroll-mt-28 mt-8">
-            <p className="font-mono text-[13px] text-kg-text-2">
-              Stap {flowIndex + 1} van {FLOW.length}
-            </p>
-            <h2 className="mt-2">{flow.label}</h2>
-            <p className="mt-3 max-w-2xl text-[16px] leading-normal text-kg-text-2">
-              {meta.hint}{" "}
-              <Link href={`/kunststof-kozijnen/kennisbank/${meta.article}`}>Uitleg over {flow.label.toLowerCase()}</Link>
-            </p>
-
-            <div className="mt-8">
-              {flow.id === "type" ? <TypeStep layout={layout} config={config} onChange={patch} /> : null}
-              {flow.id === "maten" ? <SizeStep layout={layout} config={config} inRange={inRange} onChange={patch} /> : null}
-              {flow.id === "profiel" ? (
-                <div className="space-y-12">
-                  <CornerStep layout={layout} config={config} onChange={patch} />
-                  <SillStep config={config} onChange={patch} />
-                </div>
-              ) : null}
-              {flow.id === "kleur" ? <ColorStep layout={layout} config={config} onChange={patch} /> : null}
-              {flow.id === "glas" ? <GlassStep config={config} onChange={patch} /> : null}
-              {flow.id === "beslag" ? (
-                <div className="space-y-12">
-                  <HardwareStep config={config} onChange={patch} />
-                  <ExtraStep layout={layout} config={config} onChange={patch} />
-                </div>
-              ) : null}
-              {flow.id === "ventilatie" ? <VentStep config={config} onChange={patch} /> : null}
-              {flow.id === "overzicht" ? (
-                <Overview
-                  lines={lines}
-                  pdfHref={pdfHref}
-                  share={share}
-                  price={shownPrice}
-                  sent={sent}
-                  error={formError}
-                  sending={sending}
-                  onQuote={onQuote}
-                  onBasket={() => {
-                    const next = addBasketItem(readBasket(), {
-                      layout: layout.slug,
-                      query: serializeConfig(config),
-                      title: `${layout.title} ${config.width} × ${config.height} mm`,
-                    });
-                    writeBasket(next);
-                    setBasketNote(`${next.length} ${next.length === 1 ? "kozijn" : "kozijnen"} in de offertemand.`);
-                  }}
-                />
-              ) : null}
-            </div>
-          </div>
-
-          {flow.id !== "overzicht" ? (
-            <div className="mt-10 flex flex-wrap gap-3">
-              <button
-                type="button"
-                className={buttonVariants({ variant: "secondary" })}
-                disabled={flowIndex === 0}
-                onClick={() => go(FLOW[flowIndex - 1].steps[0])}
-              >
-                Terug
-              </button>
-              <button type="button" className={buttonVariants()} onClick={() => go(FLOW[flowIndex + 1].steps[0])}>
-                Volgende
-              </button>
-            </div>
-          ) : (
-            <div className="mt-10">
-              <button type="button" className={buttonVariants({ variant: "secondary" })} onClick={() => go(FLOW[flowIndex - 1].steps[0])}>
-                Terug
-              </button>
-            </div>
-          )}
+              );
+            })}
+          </ol>
           <p className="mt-4 text-[13px] text-kg-text-2">Je stappen blijven in de link op dit apparaat.</p>
         </div>
 
@@ -353,23 +327,27 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
       </div>
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t-4 border-kg-signal bg-kg-navy text-kg-kalk print:hidden lg:hidden">
-        <button
-          type="button"
-          className="flex h-14 w-full items-center justify-between gap-4 px-5 pr-16 text-left"
-          aria-expanded={sheetOpen}
-          aria-controls="kozijn-tekening"
-          onClick={() => setSheetOpen((open) => !open)}
-        >
-          <span className="min-w-0">
-            <span className="block font-mono text-[13px]">
+        <div className="flex items-center justify-between gap-4 px-5 py-3">
+          <div className="min-w-0">
+            <p className="font-mono text-[13px]">
               {config.width} × {config.height} mm
-            </span>
-            <span className="block truncate text-[14px]">Buitenaanzicht, van buiten gezien</span>
-          </span>
-          <span className="shrink-0 text-[14px] text-kg-signal underline underline-offset-[3px]">{sheetOpen ? "Sluiten" : "Tonen"}</span>
-        </button>
+            </p>
+            <p className="font-mono text-[16px]">
+              <PriceLine pricesActive={pricesActive} price={shownPrice} />
+            </p>
+          </div>
+          <button
+            type="button"
+            className="shrink-0 text-[14px] text-kg-signal underline underline-offset-[3px]"
+            aria-expanded={sheetOpen}
+            aria-controls="kozijn-tekening"
+            onClick={() => setSheetOpen((open) => !open)}
+          >
+            {sheetOpen ? "Sluiten" : "Tekening"}
+          </button>
+        </div>
         {sheetOpen ? (
-          <div id="kozijn-tekening" className="max-h-[70vh] overflow-y-auto border-t border-kg-lijn bg-kg-kalk px-5 py-5">
+          <div id="kozijn-tekening" className="max-h-[70vh] overflow-y-auto border-t border-kg-lijn bg-kg-kalk px-5 py-5 text-kg-navy">
             <Preview layout={layout} config={config} pricesActive={pricesActive} price={price} basketNote={basketNote} prefix={`${layout.slug}-mobiel`} />
           </div>
         ) : null}
@@ -401,20 +379,61 @@ function Preview({
         <KozijnDrawing layout={layout} config={config} prefix={prefix} />
       </div>
       <KozijnOrderSummary config={config} />
-      {pricesActive && price && "totalExcl" in price ? (
-        <p className="mt-5 font-mono text-[18px]">
-          <VatPrice incl={price.totalIncl} excl={price.totalExcl} />
-        </p>
-      ) : (
-        <p className="mt-5 text-[14px] leading-snug text-kg-text-2">Geen prijs op het scherm. De offerte is vrijblijvend.</p>
-      )}
+      <div className="mt-5 font-mono text-[18px] text-kg-navy">
+        <PriceLine pricesActive={pricesActive} price={price} />
+      </div>
       {basketNote ? <p className="mt-3 text-[14px]">{basketNote}</p> : null}
     </div>
   );
 }
 
+function profileCardName(layout: Layout) {
+  if (layout.group === "schuifpuien") return publicProfileName(layout.slug);
+  return PROFILE.systemName;
+}
+
+function PriceLine({ pricesActive, price }: { pricesActive: boolean; price: PriceResponse | null }) {
+  if (pricesActive && price && "totalIncl" in price) {
+    return <VatPrice incl={price.totalIncl} excl={price.totalExcl} />;
+  }
+  if (pricesActive && price === null) return <span className="text-[14px]">Prijs laden</span>;
+  return <span className="text-[14px] font-sans">Prijs in de offerte</span>;
+}
+
+function ProfileStep({
+  layout,
+  pricesActive,
+  price,
+  onPick,
+}: {
+  layout: Layout;
+  pricesActive: boolean;
+  price: PriceResponse | null;
+  onPick: () => void;
+}) {
+  const name = profileCardName(layout);
+  return (
+    <button
+      type="button"
+      aria-pressed="true"
+      onClick={onPick}
+      className="block w-full max-w-sm border-2 border-kg-navy bg-white text-left text-kg-navy"
+    >
+      <span className="grid aspect-[4/3] place-items-center bg-kg-kalk px-6">
+        <img src="/kozijnen/doorsnede.webp" alt="Doorsnede van het kunststof kader" width={800} height={800} className="max-h-40 w-auto object-contain" />
+      </span>
+      <span className="block px-4 pt-4 text-[16px] leading-snug font-medium">{name}</span>
+      <span className="block px-4 pt-1 font-mono text-[13px]">Levertijd {PROFILE.leadTimeWeeks} weken</span>
+      <span className="block px-4 py-4 font-mono text-[16px]">
+        <PriceLine pricesActive={pricesActive} price={price} />
+      </span>
+    </button>
+  );
+}
+
 function flowSummary(id: string, layout: Layout, config: KozijnConfig) {
-  if (id === "type") {
+  if (id === "profiel") return `${profileCardName(layout)} · ${PROFILE.leadTimeWeeks} weken`;
+  if (id === "vakvulling" || id === "type") {
     const bits = [layout.title];
     if (layout.chooseSide) bits.push(config.side === "links" ? "scharnier links" : "scharnier rechts");
     if (layout.chooseDirection) bits.push(config.direction === "binnen" ? "naar binnen" : "naar buiten");
@@ -433,11 +452,12 @@ function flowSummary(id: string, layout: Layout, config: KozijnConfig) {
     return bits.join(" · ");
   }
   if (id === "maten") return `${config.width} × ${config.height} mm`;
-  if (id === "profiel") {
+  if (id === "eigenschappen") {
     const corner = config.corner === "hvl" ? "HVL" : "Verstek";
     const rebate = config.rebate === "aanslag" ? "met aanslag" : "stomp";
     const sill = config.sill === "laag" ? "lage dorpel" : "doorlopende dorpel";
-    return `${corner} · ${rebate} · ${sill}`;
+    const hardware = config.hardware === "zwaar" ? "zwaarder beslag" : "basisbeslag";
+    return `${corner} · ${rebate} · ${sill} · ${hardware}`;
   }
   if (id === "kleur") return colorSummary(layout, config);
   if (id === "glas") {
@@ -644,14 +664,9 @@ function TypeStep({
   );
 }
 
-function CornerStep({ layout, config, onChange }: { layout: Layout; config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
+function CornerStep({ config, onChange }: { config: KozijnConfig; onChange: (partial: Partial<KozijnConfig>) => void }) {
   return (
     <div className="space-y-8">
-      {layout.group === "schuifpuien" ? null : (
-        <div className="max-w-md">
-          <DetailPhotoCard photo={DETAIL_PHOTOS.profile} note="Aluplast Ideal 7000 NL. Eén profiel voor de ramen en deuren." />
-        </div>
-      )}
       <fieldset>
         <legend className="text-[17px] font-medium">Hoekuitvoering</legend>
         <div className={cn(choiceGrid, "mt-4")}>

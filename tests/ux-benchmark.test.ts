@@ -114,8 +114,11 @@ test("Novicell stays its own brand when the supplier is Heering", () => {
 });
 
 test("lead time stays empty until a week count is confirmed", () => {
-  for (const weeks of Object.values(leadTimeWeeksByCategory)) assert.equal(weeks, null);
-  assert.equal(confirmedLeadTimeWeeks("kozijnen", "draaikiepraam"), null);
+  assert.equal(leadTimeWeeksByCategory.kozijnen, 4);
+  for (const [key, weeks] of Object.entries(leadTimeWeeksByCategory)) {
+    if (key !== "kozijnen") assert.equal(weeks, null, key);
+  }
+  assert.equal(confirmedLeadTimeWeeks("kozijnen", "draaikiepraam"), 4);
   assert.equal(confirmedLeadTimeWeeks("gevelbekleding"), null);
   assert.equal(leadTimeLabel(null, "Op voorraad"), "Op voorraad");
   assert.equal(leadTimeLabel(null, "Levertijd 5 werkdagen"), "Levertijd 5 werkdagen");

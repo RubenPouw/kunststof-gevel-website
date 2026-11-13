@@ -8,7 +8,7 @@ export const hubCopy = {
   title: "Kunststof kozijnen op maat",
   description:
     `Kunststof ramen en deuren in ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}. Zelf samenstellen en een vrijblijvende offerte aanvragen, zonder account.`,
-  lead: `Ramen en deuren: ${PROFILE.name}. Een 2-delige schuifpui: ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. U stelt het kozijn samen op buitenwerkse maat. Op de site staat nog geen bedrag. De configurator eindigt in een vrijblijvende offerte.`,
+  lead: `Ramen en deuren: ${PROFILE.name}. Een 2-delige schuifpui: ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. U stelt het kozijn samen op buitenwerkse maat. De prijs staat bij de samenstelling, inclusief btw. De configurator eindigt in een vrijblijvende offerte.`,
   sections: [
     {
       heading: "Waarom één profiel",
@@ -27,7 +27,7 @@ export const hubCopy = {
       heading: "Van maat tot offerte",
       paragraphs: [
         "U vult de buitenwerkse breedte en hoogte in. De configurator zegt meteen of die maat binnen de online grenzen valt. Daarbuiten versturen we de aanvraag nog steeds, en beoordelen we hem handmatig.",
-        "Daarna indeling, hoek, kleur binnen en buiten, glas, ventilatie, dorpel en beslag. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
+        "Daarna profiel, vakvulling, eigenschappen, kleur, glas en ventilatie. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
       ],
     },
   ] as CopyBlock[],

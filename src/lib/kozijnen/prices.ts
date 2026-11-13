@@ -3,34 +3,50 @@
  * De API geeft alleen het berekende verkoopbedrag terug, excl. en incl. btw.
  *
  * Inkoop is excl. btw. Verkoop excl. btw = inkoop × (1 + opslag / 100).
- * De standaardopslag is priceBook.marginPercent (80).
+ * De standaardopslag is priceBook.marginPercent (70): verkoop = inkoop × 1,70.
  * Een optie mag een eigen opslag hebben.
  * Het ventilatierooster en de Duco-klep gebruiken 50 procent.
  * De overige toeslagen volgen de standaard.
  * Incl. btw = verkoop excl. × 1,21.
  *
+ * Profiel: Aluplast Ideal 7000 NL 84 mm (was 64 mm aanzicht).
+ * Wit draaikiepraam, één vak, HR++ (zelfde inkoop als het standaardglas):
+ * inkoop = 69,08 + 21,95 per meter omtrek + 74,29 per m² buitenwerk.
+ * Omtrek = 2 × (breedte + hoogte). De formule zit binnen € 1,40 van de
+ * meetpunten 800×1000 = 207, 1000×1200 = 255, 1500×1200 = 322 en
+ * 1000×2000 = 349. Op 1000×1200 is de formule 254,81. Verkoop daarvan is
+ * 433,17 excl. en 524,14 incl. Het afgeronde meetpunt 255 × 1,70 komt op
+ * 434 excl. en, op hele euro's, 525 incl.
+ *
  * Meetpunt opties: één draaikiepraam, één vak, 1000×1200 mm, wit, HR++,
- * standaard afstandhouder, verstek, geen rooster. De gemeten inkoop van dat
- * raam is 253.54. De basisformule hieronder is de eerdere kromme en is op dit
- * meetpunt niet herijkt. Het bedrag op een optieregel is de gemeten netto
- * meerprijs op die maat. De mode rekent die om naar een andere maat.
- * Dit is één meetpunt. Meer prijspunten volgen.
+ * standaard afstandhouder, verstek, geen rooster. Het bedrag op een
+ * optieregel is de netto meerprijs op die maat. De mode rekent die om
+ * naar een andere maat.
  *
  * Schaal vanaf dat meetpunt:
- * - triple: per m² glas (glass_m2)
- * - zwarte afstandhouder: per m omtrek glas (glass_m)
+ * - triple: +54 inkoop op 1000×1200, daarna per m² glas (glass_m2)
+ * - antracietfolie buiten: +45 inkoop op 1000×1200, per m omtrek kader (frame_m)
+ * - antracietfolie twee zijden: +79 op die maat, zelfde schaal
+ * - antracietfolie alleen binnen: niet apart gemeten. Aanname: één zijde,
+ *   hetzelfde bedrag als buiten (45), niet 79 min 45
+ * - HR++ (Ug 1,0) heeft geen toeslag. Dat is het glas in de basis
+ * - vast raam: de eerdere kromme is geschaald tot 186 inkoop op 1000×1200.
+ *   Andere maten volgen die vorm. Er is één meetpunt
+ * - zwaarder beslag: 0. De nieuwe witte basis is het standaardraam, en de
+ *   configurator zet dat zwaardere beslag standaard aan. De oude 61,49
+ *   meerprijs van het 64 mm-boek telt daar niet nog eens bovenop
+ * - zwarte afstandhouder: per m omtrek glas (glass_m), oud meetpunt
  * - HVL: per vak. Een hoekverbinding is nog geen aparte maat (pane)
- * - Duco-klep: per m breedte (width_m)
+ * - Duco-klep: per m breedte (width_m), oud meetpunt
  * - ventilatierooster: per stuk, uit een eerder meetpunt rond 1000 mm (piece)
  * - krukkleur en afsluitbare kruk: per vleugel (sash). Wit is 0
- * - crème in de massa en antraciet: per m omtrek van het kozijn (frame_m)
- * - RAL naar keuze: één zijde, 70.44 op de referentiemaat. Dat is ongeveer
- *   27,6 procent van het witte raam. De schaal is voorlopig een percentage
- *   van de inkoopbasis, zodat dit meetpunt exact 70.44 blijft. Onder 5 stuks
- *   bicolor hoort hier nog een onbekende toeslag bij. De klant ziet geen
- *   bedrag. De regel blijft op aanvraag en telt alleen in de interne offerte.
+ * - crème in de massa: per m omtrek van het kozijn (frame_m), oud meetpunt
+ * - RAL naar keuze: één zijde, 70.44 op de referentiemaat. De schaal is een
+ *   percentage van de inkoopbasis, zodat dit meetpunt exact 70.44 blijft.
+ *   Onder 5 stuks bicolor hoort hier nog een onbekende toeslag bij. De klant
+ *   ziet geen bedrag. De regel blijft op aanvraag en telt alleen intern.
  *
- * Het glasoppervlak is de opening binnen het kadervooraanzicht van 64 mm, per vak.
+ * Het glasoppervlak is de opening binnen het kadervooraanzicht van 84 mm, per vak.
  * De sponning van de vleugel en een tussenstijl zijn nog niet gemeten.
  * Bij een schuifpui hoort dat vooraanzicht niet bij dit profiel. Daar telt het vakvlak.
  * Antraciet en antraciet houtnerf delen dit ene antracietbedrag tot er een apart punt is.
@@ -41,8 +57,9 @@
  * voorlopig de draaikiepformule.
  * TODO(kalibratie): de schuifpui is gemeten op hoogte 2100. Andere hoogtes
  * gebruiken dezelfde breedtelijn tot er een hoogteterm is.
- * TODO(kalibratie): gelaagd en zwaarder beslag zijn nog een vast bedrag van
- * één samenstelling. Het rooster schaalt nog niet met de breedte.
+ * TODO(kalibratie): gelaagd glas is nog een vast bedrag van één samenstelling.
+ * Zwaarder beslag zit in de witte basis (0 extra) tot er een nieuw verschil is.
+ * Het rooster schaalt nog niet met de breedte.
  */
 
 import { frameFaceMm } from "./drawing";
@@ -112,8 +129,10 @@ export type PriceBook = {
   options: PriceSlot[];
 };
 
-const VAST: FrameCurve = { base: 38.54, perMeter: 14.52, perM2: 67.64 };
-const TURN_TILT: FrameCurve = { base: 75.67, perMeter: 22.97, perM2: 66.27 };
+/** Eerdere vast-kromme, geschaald tot 186 inkoop op 1000×1200. */
+const VAST: FrameCurve = { base: 39.04, perMeter: 14.71, perM2: 68.53 };
+/** Wit draaikiepraam, 84 mm: 69,08 + 21,95 per meter omtrek + 74,29 per m². */
+const TURN_TILT: FrameCurve = { base: 69.08, perMeter: 21.95, perM2: 74.29 };
 
 function slot(
   id: string,
@@ -144,9 +163,9 @@ const OPTION_REFERENCE: PriceInput = {
   optionIds: [],
 };
 
-/** Productieboek. Standaardopslag 80. Bedragen zijn netto inkoop, excl. btw. */
+/** Productieboek. Standaardopslag 70. Bedragen zijn netto inkoop, excl. btw. */
 export const priceBook: PriceBook = {
-  marginPercent: 80,
+  marginPercent: 70,
   paneVast: VAST,
   paneTurnTilt: TURN_TILT,
   layouts: {
@@ -165,13 +184,13 @@ export const priceBook: PriceBook = {
     "openslaande-tuindeuren": { mode: "quote" },
   },
   options: [
-    slot("glas.triple", "Triple glas", "glass_m2", 19.37),
+    slot("glas.triple", "Triple glas", "glass_m2", 54),
     slot("glas.gelaagd", "Gelaagd glas", "fixed", 53),
     slot("glas.gelaagd.extra", "Gelaagd aan de tweede zijde", "fixed", null),
     slot("kleur.creme", "Crème in de massa", "frame_m", 22.56),
-    slot("kleur.antraciet.buiten", "Antraciet buiten", "frame_m", 43.02),
-    slot("kleur.antraciet.binnen", "Antraciet binnen", "frame_m", 53.95),
-    slot("kleur.antraciet.beide", "Antraciet twee zijden", "frame_m", 77.97),
+    slot("kleur.antraciet.buiten", "Antraciet buiten", "frame_m", 45),
+    slot("kleur.antraciet.binnen", "Antraciet binnen", "frame_m", 45),
+    slot("kleur.antraciet.beide", "Antraciet twee zijden", "frame_m", 79),
     slot("kleur.ontbreekt", "Kleur op aanvraag", "fixed", null),
     slot("kleur.vleugel", "Afwijkende vleugelkleur", "fixed", null),
     slot("kleur.ral", "RAL naar keuze", "percent", (RAL_ONE_SIDE_NET / rectNet(TURN_TILT, 1000, 1200)) * 100, { withheld: true }),
@@ -182,7 +201,7 @@ export const priceBook: PriceBook = {
     slot("kruk.zwart", "Kruk zwart", "sash", 0.04),
     slot("dorpel.laag", "Lage dorpel", "fixed", null),
     slot("aanslag", "Aanslag", "fixed", null),
-    slot("beslag.zwaar", "Zwaarder beslag", "fixed", 61.49),
+    slot("beslag.zwaar", "Zwaarder beslag", "fixed", 0),
     slot("hoek.hvl", "HVL-hoek", "pane", 49.04),
     slot("kruk.afsluitbaar", "Afsluitbare kruk", "sash", 4.24),
     slot("hor.inzet", "Inzethor", "fixed", null),
