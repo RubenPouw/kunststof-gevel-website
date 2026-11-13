@@ -8,7 +8,7 @@ export const hubCopy = {
   title: "Kunststof kozijnen op maat",
   description:
     `Kunststof ramen en deuren in ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}. Zelf samenstellen en een vrijblijvende offerte aanvragen, zonder account.`,
-  lead: `Ramen en deuren: ${PROFILE.name}. Een 2-delige schuifpui: ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. U stelt het kozijn samen op buitenwerkse maat. Op de site staat nog geen bedrag. De configurator eindigt in een vrijblijvende offerte.`,
+  lead: `Ramen en deuren: ${PROFILE.name}. Een 2-delige schuifpui: ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. U stelt het kozijn samen op buitenwerkse maat. De prijs staat bij de samenstelling, inclusief btw. De configurator eindigt in een vrijblijvende offerte.`,
   sections: [
     {
       heading: "Waarom één profiel",
@@ -20,14 +20,14 @@ export const hubCopy = {
       heading: "Samen met de gevel",
       paragraphs: [
         "Antraciet op het kozijn en antraciet op de gevel zijn niet vanzelf dezelfde folie. Bestel een kleurstaal van de gevelbekleding en leg die naast de kozijnkleur in de aanvraag. Dakrand en vensterbank lopen in dezelfde lijn mee.",
-        "Het kozijn, de bank en de gevel hoeven niet in één winkelwagen. Ze kunnen wel in één gesprek, met dezelfde kleur als vertrekpunt. Montage door Cavemen kan voor de gevel en de kozijnen, in één offerte.",
+        "Het kozijn, de bank en de gevel hoeven niet in één winkelwagen. Ze kunnen wel in één gesprek, met dezelfde kleur als vertrekpunt. Montage door ons kan voor de gevel en de kozijnen, in één offerte.",
       ],
     },
     {
       heading: "Van maat tot offerte",
       paragraphs: [
         "U vult de buitenwerkse breedte en hoogte in. De configurator zegt meteen of die maat binnen de online grenzen valt. Daarbuiten versturen we de aanvraag nog steeds, en beoordelen we hem handmatig.",
-        "Daarna indeling, hoek, kleur binnen en buiten, glas, ventilatie, dorpel en beslag. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
+        "Daarna profiel, vakvulling, eigenschappen, kleur, glas en ventilatie. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
       ],
     },
   ] as CopyBlock[],
@@ -42,7 +42,7 @@ export const hubCopy = {
     },
     {
       q: "Meten jullie in?",
-      a: "U meet zelf met de meetinstructie. Wij maken het kozijn op maat en leveren het. Montage door Cavemen kan, alleen of samen met de gevel. Zelf plaatsen blijft mogelijk.",
+      a: "U meet zelf met de meetinstructie. Wij maken het kozijn op maat en leveren het. Montage door ons kan, alleen of samen met de gevel. Zelf plaatsen blijft mogelijk.",
     },
     {
       q: "Staat er hang- en sluitwerk op?",

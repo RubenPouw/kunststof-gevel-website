@@ -9,8 +9,8 @@ export const PROFILE = {
   id: "ideal-7000-nl",
   /** Klantzichtbare naam. */
   name: "Aluplast Ideal 7000 NL",
-  /** Officiële systeemnaam. De 64 mm is de aanzichthoogte van het kader, niet de inbouwdiepte. */
-  systemName: "Aluplast Ideal 7000 NL 64 mm",
+  /** Officiële systeemnaam. De 84 mm is de aanzichthoogte van het kader, niet de inbouwdiepte. */
+  systemName: "Aluplast Ideal 7000 NL 84 mm",
   /** Kamers in het kader. */
   frameChambers: 3,
   /** Kamers in de vleugel. */
@@ -19,7 +19,7 @@ export const PROFILE = {
   gaskets: 2,
   /** Maximale glasdikte in mm. */
   glassMaxMm: 52,
-  /** Inbouwdiepte van het kader in mm. De aanzichthoogte van 64 mm is dit niet. */
+  /** Inbouwdiepte van het kader in mm. De aanzichthoogte van 84 mm is dit niet. */
   depthMm: 120,
   /** Berekende Uw van het kozijn met dubbel glas, in W/m²K. */
   uwDouble: 1.3,
@@ -29,8 +29,10 @@ export const PROFILE = {
   uwWithVent: 1.4,
   /** Geen certificaten publiceren. */
   certificates: [] as string[],
-  /** Geen levertijd publiceren. */
+  /** Geen levertijd in werkdagen. De levertijd staat in weken. */
   leadTimeWorkdays: null as number | null,
+  /** Levertijd van het kozijn, in weken. */
+  leadTimeWeeks: 4,
   colorExtraWorkdays: null as number | null,
   /** Geen garantie publiceren. */
   warranty: null as {
@@ -47,16 +49,16 @@ export const SLIDING_NAME = "Aluplast Smart-Slide schuifpui";
 export function publicProfileName(slug: string) {
   if (slug === "schuifpui-2-delig") return SLIDING_NAME;
   if (slug === "schuifpui-4-delig") return "Kunststof schuifpui";
-  return PROFILE.name;
+  return PROFILE.systemName;
 }
 
 function decimalComma(value: number) {
   return value.toFixed(1).replace(".", ",");
 }
 
-/** Klantzichtbare specificatie. Geen certificaten, garantie of levertijd. */
+/** Klantzichtbare specificatie. Geen certificaten of garantie. Wel de levertijd in weken. */
 export function profileSpecSentence() {
-  return `Kader ${PROFILE.frameChambers} kamers, vleugel ${PROFILE.sashChambers} kamers, ${PROFILE.gaskets} dichtingen, glas tot ${PROFILE.glassMaxMm} mm. Inbouwdiepte ${PROFILE.depthMm} mm. In de berekening komt dit profiel op Uw ${decimalComma(PROFILE.uwDouble)} met dubbel glas en Uw ${decimalComma(PROFILE.uwTriple)} met triple.`;
+  return `Kader ${PROFILE.frameChambers} kamers, vleugel ${PROFILE.sashChambers} kamers, ${PROFILE.gaskets} dichtingen, glas tot ${PROFILE.glassMaxMm} mm. Inbouwdiepte ${PROFILE.depthMm} mm. In de berekening komt dit profiel op Uw ${decimalComma(PROFILE.uwDouble)} met dubbel glas en Uw ${decimalComma(PROFILE.uwTriple)} met triple. Levertijd ${PROFILE.leadTimeWeeks} weken.`;
 }
 
 export type SizeBox = {

@@ -47,13 +47,14 @@ test("kozijn routes get the kozijn bar, the rest keep montage and colour guarant
   assert.match(line(uspBySection.kozijnen), /Duidelijke meetinstructie/);
 });
 
-test("kozijn copy offers Cavemen montage without promising a survey or removal", () => {
+test("kozijn copy offers our montage without promising a survey or removal", () => {
   const article = getArticle("montage");
   assert.ok(article);
-  assert.equal(article.title, "Kozijnen plaatsen: zelf of door Cavemen");
+  assert.equal(article.title, "Kozijnen plaatsen: zelf of door ons");
   assert.match(article.description, /Vraag een offerte aan\.$/);
   const montage = JSON.stringify(article);
-  assert.match(montage, /Montage door Cavemen/);
+  assert.match(montage, /Montage door ons/);
+  assert.equal(/Cavemen/.test(montage), false);
   assert.match(montage, /U meet zelf/);
   assert.match(montage, /geen standaardbelofte/);
   assert.equal(/monteren niet|plaatsen het niet|nemen het oude kozijn niet mee|wij komen inmeten/i.test(montage), false);
@@ -61,19 +62,21 @@ test("kozijn copy offers Cavemen montage without promising a survey or removal",
   const measure = hubCopy.faqs.find((item) => item.q === "Meten jullie in?");
   assert.ok(measure);
   assert.match(measure.a, /U meet zelf/);
-  assert.match(measure.a, /Montage door Cavemen/);
+  assert.match(measure.a, /Montage door ons/);
+  assert.equal(/Cavemen/.test(measure.a), false);
   assert.equal(/monteren kozijnen niet|opname/i.test(measure.a), false);
 
   const extra = STEPS.find((step) => step.id === "extra");
   assert.ok(extra);
   assert.equal(/Montage vraagt u apart/i.test(extra.hint), false);
   assert.match(extra.hint, /leveren/);
-  assert.match(extra.hint, /Cavemen/);
+  assert.match(extra.hint, /door ons/);
+  assert.equal(/Cavemen/.test(extra.hint), false);
   assert.equal(extra.article, "montage");
 
   const place = articles.flatMap((item) => item.faqs).find((item) => item.q === "Plaatsen jullie ook?");
   assert.ok(place);
-  assert.match(place.a, /^Ja, montage door Cavemen/);
+  assert.match(place.a, /^Ja, wij monteren/);
   assert.match(place.a, /offerte/);
 
   const blob = [

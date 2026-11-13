@@ -125,7 +125,7 @@ export async function deliverKozijnQuotes(
     `Beste ${contact.name},`,
     "",
     `We hebben uw aanvraag voor ${entries.length} ${entries.length === 1 ? "kozijn" : "kozijnen"} ontvangen. Kenmerk ${ref}.`,
-    "Er staat nog geen prijs op. U ontvangt een vrijblijvende offerte.",
+    "Het bedrag op de site is een indicatie, inclusief btw. U ontvangt een vrijblijvende offerte.",
     "",
     spec,
     "",

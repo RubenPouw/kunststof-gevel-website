@@ -90,6 +90,10 @@ services:
         value: "false"
       - key: BETALEN_RIVERTY_ACTIEF
         value: "false"
+      - key: KOZIJNEN_PRIJZEN_ACTIEF
+        value: "true"
+      - key: KOZIJNEN_CHECKOUT_ACTIEF
+        value: "false"
   - type: cron
     name: kunststofgevel-catalogus-controle
     runtime: node
