@@ -943,7 +943,7 @@ function ExtraStep({
         </div>
       </fieldset>
       <p className="max-w-2xl text-[15px] leading-normal text-kg-text-2">
-        Wij leveren het kozijn. U meet zelf. Zelf plaatsen blijft mogelijk. Montage door ons kan, alleen of samen met de gevel, via de offerte. Horren vraagt u in de offerte, niet als bedrag in deze stap.{" "}
+        Wij leveren het kozijn. U meet zelf. Zelf plaatsen blijft mogelijk. Montage door Cavemen kan, alleen of samen met de gevel, via de offerte. Horren vraagt u in de offerte, niet als bedrag in deze stap.{" "}
         {extra ? <Link href={`/kunststof-kozijnen/kennisbank/${extra.article}`}>Uitleg over plaatsen</Link> : null}
       </p>
     </div>

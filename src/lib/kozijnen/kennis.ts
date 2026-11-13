@@ -323,16 +323,16 @@ export const articles: Article[] = [
   },
   {
     slug: "montage",
-    title: "Kozijnen plaatsen: zelf of door ons",
+    title: "Kozijnen plaatsen: zelf of door Cavemen",
     description:
-      "Zelf plaatsen of montage door ons, alleen of samen met de gevel. Wat u nodig hebt, en wat er met het oude kozijn gebeurt. Vraag een offerte aan.",
+      "Zelf plaatsen of montage door Cavemen, alleen of samen met de gevel. Wat u nodig hebt, en wat er met het oude kozijn gebeurt. Vraag een offerte aan.",
     kicker: "Plaatsing",
     sections: [
       {
         heading: "Leveren, en desgewenst monteren",
         paragraphs: [
-          "Wij maken het kozijn op maat en leveren het. Montage door ons kan, alleen of samen met de gevel, via dezelfde offerte. Zelf plaatsen blijft mogelijk. U meet zelf met de meetinstructie.",
-          "Bij een schuifpui of een deur tellen het gewicht en de dorpel. Wij kunnen dat meenemen bij de montage. Een vast raam in een bestaande sparing is het meest overzichtelijk als u zelf plaatst.",
+          "Wij maken het kozijn op maat en leveren het. Montage door Cavemen kan, alleen of samen met de gevel, via dezelfde offerte. Zelf plaatsen blijft mogelijk. U meet zelf met de meetinstructie.",
+          "Bij een schuifpui of een deur tellen het gewicht en de dorpel. Montage door Cavemen kan dat meenemen. Een vast raam in een bestaande sparing is het meest overzichtelijk als u zelf plaatst.",
         ],
       },
       {
@@ -345,7 +345,7 @@ export const articles: Article[] = [
       {
         heading: "Het oude kozijn",
         paragraphs: [
-          "Hout en glas gaan niet bij het huisvuil. Glas is apart, hout kan naar de milieustraat. Of wij het oude kozijn meenemen bij montage, zetten we op de offerte. Dat is geen standaardbelofte op deze pagina, en we noemen hier geen tarief.",
+          "Hout en glas gaan niet bij het huisvuil. Glas is apart, hout kan naar de milieustraat. Of Cavemen het oude kozijn meeneemt bij montage, zetten we op de offerte. Dat is geen standaardbelofte op deze pagina, en we noemen hier geen tarief.",
         ],
       },
     ],
@@ -461,7 +461,7 @@ export const articles: Article[] = [
       },
       {
         q: "Plaatsen jullie ook?",
-        a: "Ja, wij monteren, alleen of samen met de gevel. Vraag het aan via de offerte. Zelf plaatsen blijft mogelijk. In de configurator stelt u het kozijn samen.",
+        a: "Ja, montage door Cavemen kan, alleen of samen met de gevel. Vraag het aan via de offerte. Zelf plaatsen blijft mogelijk. In de configurator stelt u het kozijn samen.",
       },
       {
         q: "Hoe meet ik?",
