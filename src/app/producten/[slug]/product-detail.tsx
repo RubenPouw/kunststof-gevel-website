@@ -58,11 +58,19 @@ export function ProductDetail({
   product,
   related,
   categoryName,
+  categoryHref,
+  crumbs,
+  heading,
+  deliveryNote,
   staalHref,
 }: {
   product: Product;
   related: Product[];
   categoryName: string;
+  categoryHref?: string;
+  crumbs?: { name: string; path: string }[];
+  heading?: string;
+  deliveryNote?: string;
   staalHref?: string;
 }) {
   const router = useRouter();
@@ -146,17 +154,30 @@ export function ProductDetail({
   return (
     <div className="container-kg py-8 sm:py-10">
       <nav aria-label="Kruimelpad" className="font-mono text-[13px] text-kg-text-2">
-        <Link href="/" className="no-underline hover:underline">
-          Home
-        </Link>
-        {" / "}
-        <Link href={`/${product.category}`} className="no-underline hover:underline">
-          {categoryName}
-        </Link>
-        {" / "}
-        <Link href={`/merken/${product.brandSlug}`} className="no-underline hover:underline">
-          {product.brand}
-        </Link>
+        {crumbs ? (
+          crumbs.map((crumb, index) => (
+            <span key={crumb.path}>
+              {index > 0 ? " / " : null}
+              <Link href={crumb.path} className="no-underline hover:underline">
+                {crumb.name}
+              </Link>
+            </span>
+          ))
+        ) : (
+          <>
+            <Link href="/" className="no-underline hover:underline">
+              Home
+            </Link>
+            {" / "}
+            <Link href={categoryHref ?? `/${product.category}`} className="no-underline hover:underline">
+              {categoryName}
+            </Link>
+            {" / "}
+            <Link href={`/merken/${product.brandSlug}`} className="no-underline hover:underline">
+              {product.brand}
+            </Link>
+          </>
+        )}
       </nav>
 
       <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
@@ -226,7 +247,7 @@ export function ProductDetail({
           <p className="font-mono text-[13px] text-kg-text-2">
             Art. {skuShort} · {product.brand}
           </p>
-          <h1 className="display-pdp">{product.name}</h1>
+          <h1 className="display-pdp">{heading ?? product.name}</h1>
 
           <dl className="grid grid-cols-2 gap-x-4 border-y border-kg-lijn py-3 font-mono text-[14px]">
             {specs.map(([label, value]) => (
@@ -461,7 +482,8 @@ export function ProductDetail({
           <div className="border border-kg-lijn bg-white p-5 font-mono text-[14px]">
             <p className="font-medium">Levering en retour</p>
             <p className="mt-2 text-kg-text-2">
-              Levertijd bevestigen we na bestelling. Retour binnen 14 dagen als het artikel ongewijzigd is.{" "}
+              {deliveryNote ? `${deliveryNote} ` : "Levertijd bevestigen we na bestelling. "}
+              Retour binnen 14 dagen als het artikel ongewijzigd is.{" "}
               {sheet ? "Wij zagen de plaat niet. " : "Panelen op maat zijn uitgesloten. "}
               Zie{" "}
               <Link href="/verzenden-retour">verzenden en retour</Link>.

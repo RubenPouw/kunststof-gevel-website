@@ -54,9 +54,9 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     title: pageSeo.keralit.h1,
     metaTitle: pageSeo.keralit.title,
     description:
-      "Keralit planken en panelen: sponning 143, 167, 190 mm en potdeksel 177 mm, plus profielen. Gratis kleurstaal, op voorraad in max. 4 werkdagen.",
+      "Keralit planken en panelen: sponning 143, 167, 190 mm en potdeksel 177 mm, plus profielen. Gratis kleurstaal, op voorraad in max. 3 werkdagen.",
     intro:
-      "Keralit gevelbekleding bestel je bij ons als Keralit planken van 600 cm, met de prijs direct bij elk paneel. Kies uit vier modellen: sponning 143, 167 of 190 mm en potdeksel 177 mm, in tientallen kleuren. Alle montageprofielen, schroeven en reiniger bestel je in dezelfde order. Vraag eerst gratis een kleurstaal aan. Op voorraad heb je het binnen maximaal 4 werkdagen in huis. Liever inclusief montage? Vraag een offerte aan.",
+      "Keralit gevelbekleding bestel je bij ons als Keralit planken van 600 cm, met de prijs direct bij elk paneel. Kies uit vier modellen: sponning 143, 167 of 190 mm en potdeksel 177 mm, in tientallen kleuren. Alle montageprofielen, schroeven en reiniger bestel je in dezelfde order. Vraag eerst gratis een kleurstaal aan. Op voorraad heb je het binnen max. 3 werkdagen in huis.  Liever inclusief montage? Vraag een offerte aan.",
     sampleHref: "/staalaanvraag?groep=gevel",
     sections: [
       {
@@ -89,7 +89,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Kleur kiezen en bestellen",
         paragraphs: [
-          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfel je? Vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Producten op voorraad heb je binnen maximaal 4 werkdagen in huis en vanaf €499 is de verzending gratis. Groot project? Vraag een offerte aan.",
+          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfel je? Vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Producten op voorraad heb je binnen max. 3 werkdagen in huis en vanaf €499 is de verzending gratis.  Groot project? Vraag een offerte aan.",
         ],
       },
     ],
@@ -120,7 +120,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Hoe snel heb ik mijn Keralit in huis?",
-        a: "Producten op voorraad heb je binnen maximaal 4 werkdagen. Vanaf €499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
+        a: "Producten op voorraad heb je binnen max. 3 werkdagen. Vanaf €499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
       },
     ],
     links: [
@@ -184,9 +184,9 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     title: categoryPageSeo.vensterbanken.h1,
     metaTitle: categoryPageSeo.vensterbanken.title,
     description:
-      "Overzet vensterbank voor binnen: Milinboard 380 mm schuif je over je oude bank. Wit of crème, met eindkappen. Voorraad in max. 4 werkdagen.",
+      "Overzet vensterbank voor binnen: Milinboard 380 mm schuif je over je oude bank. Met eindkappen. Voorraad in max. 3 werkdagen.",
     intro:
-      "Zoek je een overzet vensterbank kunststof voor binnen? Met een overzet vensterbank van Milinboard werk je je oude vensterbank strak af zonder breekwerk. De overzetvensterbank van 380 mm in wit of crème plaats je direct over de oude bank en werk je af met bijpassende eindkappen. Het materiaal is stevig en vlak, waterbestendig en krasvast. Zo heb je in 1 dagdeel een nieuwe, onderhoudsarme vensterbank.",
+      "Zoek je een overzet vensterbank voor binnen? Deze pagina is de eigenaar van die term. Met een overzet vensterbank van Milinboard werk je de oude vensterbank af zonder breekwerk. De uitvoering van 380 mm staat op een eigen productpagina. Op voorraad leveren we in max. 3 werkdagen.",
     sampleHref: "/staalaanvraag?groep=vensterbank",
     sections: [
       {
@@ -198,14 +198,13 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Waarom kunststof voor binnen?",
         paragraphs: [
-          "Een vensterbank krijgt binnen zon en condens te verduren. De Milinboard overzet vensterbank 380 mm is waterafstotend, UV-bestendig en krasvast. Hout moet je schuren en schilderen. Deze vensterbank niet: een vochtige doek met een mild schoonmaakmiddel is genoeg.",
-          "De bank is 380 mm diep en komt per lengte van 600 cm. Je zaagt hem zelf op maat. Kies uit wit of crème. De spitse ronde neus geeft een strakke voorkant. De zijkanten werk je af met de bijpassende eindkap.",
+          "Een vensterbank krijgt binnen zon en condens te verduren. De Milinboard overzet vensterbank is 380 mm diep. De kleur en de lengte staan bij het artikel. De zijkant werk je af met de bijpassende eindkap.",
         ],
       },
       {
         heading: "Meten en monteren in het kort",
         paragraphs: [
-          "Meet de lengte op drie plekken en bestel op de langste maat. Meet de diepte vanaf het kozijn tot de voorkant van de bank, inclusief de neus. Maak de oude bank schoon en droog, pas de vensterbank eerst droog, zaag op maat en zet hem vast met een lijm die geschikt is voor kunststof. Reken op ongeveer 1 dagdeel. Het volledige stappenplan staat in het blog over meten en monteren.",
+          "Maak de oude bank schoon en droog. Pas de vensterbank eerst droog. Zaag alleen als het artikel langer is dan de opening. Zet hem vast met lijm of kit die geschikt is voor kunststof, plaats de eindkappen en laat de lijm uitharden. Het meetverhaal staat in het blog over meten en monteren.",
         ],
       },
       {
@@ -217,7 +216,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Bestellen",
         paragraphs: [
-          "Producten op voorraad heb je binnen maximaal 4 werkdagen in huis. Vanaf €499 is de verzending gratis en op de kunststof zit 10 jaar garantie. Wil je de kleur eerst zien, vraag een staal aan. Groot project? Vraag een offerte aan.",
+          "Op voorraad leveren we in max. 3 werkdagen. Kleurstalen zijn binnen 3 werkdagen thuis. Wil je de kleur eerst zien, vraag een staal aan. Groot project? Vraag een offerte aan.",
         ],
       },
     ],
@@ -228,19 +227,24 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Welke maat en kleuren zijn er?",
-        a: "De Milinboard overzet vensterbank is 380 mm diep en 600 cm lang per stuk. Je kiest uit wit of crème en zaagt hem zelf op maat.",
+        a: "De Milinboard overzet vensterbank op deze pagina is 380 mm diep. De lengte en de kleur staan bij het artikel.",
       },
       {
         q: "Hoe werk ik de zijkanten af?",
-        a: "Met de bijpassende eindkap, in wit of crème. Zonder eindkap blijft de zijkant open.",
+        a: "Met de bijpassende eindkap. Zonder eindkap blijft de zijkant open.",
       },
       {
-        q: "Hoe lang duurt de montage?",
-        a: "Gemiddeld 1 dagdeel. Je plaatst de vensterbank direct over de oude bank. Is die bank rot, hol of sterk scheef, kies dan een vaste kunststof vensterbank.",
+        q: "Wanneer kies ik geen overzetbank?",
+        a: "Als de oude bank rot, hol of sterk scheef is. Dan is een vaste kunststof vensterbank de betere keuze. Die staat op dezelfde pagina.",
       },
     ],
     links: [
       { href: "/blog/overzet-vensterbank-meten", label: "Overzet vensterbank meten en monteren" },
+      {
+        href: "/producten/milinboard-overzetvensterbank-380-mm",
+        label: "Overzet vensterbank 380 mm",
+        slugs: ["milinboard-overzetvensterbank-380-mm", "milinboard-overzetvensterbank-380"],
+      },
       { href: "/kunststof-vensterbank", label: "Kunststof vensterbank" },
       { href: "/staalaanvraag?groep=vensterbank", label: "Gratis staal" },
       { href: "/offerte", label: "Offerte aanvragen" },

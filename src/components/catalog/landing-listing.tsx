@@ -2,7 +2,8 @@ import { CategoryPage } from "@/components/catalog/category-page";
 import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { SeoArticle } from "@/components/seo/article";
 import { getLandingStory, isLandingSlug } from "@/data/seo/landings";
-import { brandsInProducts } from "@/lib/catalog";
+import { resolveSprintLink } from "@/data/seo/product-sprint";
+import { brandsInProducts, listProducts } from "@/lib/catalog";
 import { productsForLanding } from "@/lib/catalog/landing-products";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import type { ListingFilters } from "@/lib/catalog/types";
@@ -23,6 +24,12 @@ export async function LandingListing({
   const story = getLandingStory(slug);
   if (!story) return null;
   const all = await productsForLanding(slug);
+  const products = await listProducts();
+  const links = story.links.flatMap((link) => {
+    if (!link.slugs?.length) return [link];
+    const resolved = resolveSprintLink(link, products);
+    return resolved ? [resolved] : [];
+  });
   const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
 
   return (
@@ -54,7 +61,7 @@ export async function LandingListing({
         }
       />
       {slug === "keralit-gevelbekleding" ? <KozijnPassenBlock /> : null}
-      <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} />
+      <SeoArticle sections={story.sections} faqs={story.faqs} links={links} />
     </>
   );
 }

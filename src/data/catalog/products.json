@@ -819,6 +819,46 @@
       "length": "6 m",
       "price": 28.89,
       "inStock": true
+    },
+    {
+      "slug": "vinyplus-rabatdeel-150-mm",
+      "name": "Vinyplus rabatdeel 150 mm",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "gevelbekleding",
+      "description": "Kunststof rabatdeel. Werkende breedte 150 mm. De prijs komt uit de shop.",
+      "specs": [{ "label": "Werkende breedte", "value": "150 mm" }],
+      "relatedSlugs": ["vinyplus-montage-eindprofiel-3m", "vinyplus-schroeven-35x30"],
+      "variants": [
+        {
+          "sku": "04004160",
+          "colorName": "F39",
+          "hex": "#F4F1EA",
+          "length": "stuk",
+          "price": 0,
+          "inStock": true
+        }
+      ]
+    },
+    {
+      "slug": "vinyplus-vario-299mm",
+      "name": "Vinyplus Vario 299 mm",
+      "vendor": "VinyPlus",
+      "brandSlug": "vinyplus",
+      "category": "gevelbekleding",
+      "description": "Extra breed VinyPlus gevelpaneel. Werkende breedte 299 mm. De prijs komt uit de shop.",
+      "specs": [{ "label": "Werkende breedte", "value": "299 mm" }],
+      "relatedSlugs": ["vinyplus-montage-eindprofiel-3m"],
+      "variants": [
+        {
+          "sku": "04325560",
+          "colorName": "E86",
+          "hex": "#C4A36A",
+          "length": "stuk",
+          "price": 0,
+          "inStock": true
+        }
+      ]
     }
   ]
 }
