@@ -15,6 +15,7 @@ export type SeoFaq = {
 export type SeoLink = {
   href: string;
   label: string;
+  slugs?: string[];
 };
 
 export type BrandStory = {

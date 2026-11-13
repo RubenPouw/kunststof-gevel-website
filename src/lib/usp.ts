@@ -4,14 +4,14 @@ export type UspItem = { k: string; v: string };
 export const uspBySection = {
   site: [
     { k: "Showroom", v: "op afspraak in Hedel" },
-    { k: "Levering", v: "in overleg" },
+    { k: "Levering", v: "max. 3 werkdagen" },
     { k: "10 jaar", v: "garantie op kleur" },
     { k: "Montage", v: "via offerte" },
   ],
   kozijnen: [
     { k: "Aluplast", v: "kozijnen op maat" },
     { k: "Werktekening", v: "met maten" },
-    { k: "Meerdere kozijnen", v: "in één offertemand" },
+    { k: "Levering", v: "4 weken" },
     { k: "Duidelijke", v: "meetinstructie" },
   ],
 } as const satisfies Record<string, readonly UspItem[]>;

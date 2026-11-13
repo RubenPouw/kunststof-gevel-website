@@ -54,6 +54,7 @@ export function summaryLines(config: KozijnConfig): SummaryLine[] {
     { label: "Indeling", value: title },
     { label: "Opening", value: layout ? vakken(layout, config) : title },
     { label: "Buitenwerk", value: `${config.width} × ${config.height} mm` },
+    { label: "Levering", value: "4 weken" },
     { label: "Maat", value: inRange ? "binnen de online grenzen" : "buiten de online grenzen, handmatig beoordelen" },
   ];
   if (layout?.chooseSide) lines.push({ label: "Scharnierzijde", value: `${SIDE[config.side]}, van buiten gezien` });

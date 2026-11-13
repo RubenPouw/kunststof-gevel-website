@@ -90,7 +90,7 @@ export default function CartPage() {
                   const resolved = resolveCartLine(line);
                   if (!resolved) return null;
                   const lead =
-                    resolved.kind === "kozijn" || !resolved.inStock ? "Levertijd in overleg" : "Op voorraad";
+                    resolved.kind === "kozijn" ? "4 weken" : "max. 3 werkdagen";
                   const leadColor = resolved.kind === "kozijn" || !resolved.inStock ? "var(--kg-navy)" : "var(--kg-stock)";
                   return (
                     <li

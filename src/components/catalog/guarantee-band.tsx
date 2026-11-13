@@ -11,7 +11,7 @@ export function GuaranteeBand() {
         <ul className="mt-6 grid gap-3 font-mono text-[14px] sm:grid-cols-2">
           {[
             "10 jaar kleurvastheid",
-            "Levering in vaste weken",
+            "Levering in max. 3 werkdagen",
             "Gratis kleurstalen, geen verplichting",
             "Hulpstukken in dezelfde folie",
           ].map((item) => (
