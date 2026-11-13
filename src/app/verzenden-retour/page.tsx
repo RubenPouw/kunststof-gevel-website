@@ -24,7 +24,7 @@ export default function ShippingPage() {
           We leveren in Nederland. Onder {formatPrice(site.freeShippingFrom)} rekenen we in de winkelwagen {formatPrice(49)} verzending als indicatie. Daarboven is de indicatie gratis. Het bedrag in de Shopify-checkout is leidend, omdat de vervoerder en het gewicht daar worden bepaald.
         </p>
         <p className="mt-3">
-          Lange panelen gaan mee met een lengtetransport. Een levertijd op de site is geen belofte van een vaste week. We bevestigen de levertijd na de bestelling.
+          Lange panelen gaan mee met een lengtetransport. Producten op voorraad leveren we in max. 3 werkdagen. Kozijnen leveren we in 4 weken.
         </p>
       </section>
       <section>
