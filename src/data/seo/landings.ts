@@ -184,7 +184,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     title: categoryPageSeo.vensterbanken.h1,
     metaTitle: categoryPageSeo.vensterbanken.title,
     description:
-      "Overzet vensterbank voor binnen: Milinboard 380 mm schuif je over je oude bank. Met eindkappen. Voorraad in max. 3 werkdagen.",
+      "Overzet vensterbank voor binnen: schuif je over de bestaande bank, zonder sloop. Met eindkappen. Levering in max. 3 werkdagen.",
     intro:
       "Zoek je een overzet vensterbank voor binnen? Deze pagina is de eigenaar van die term. Met een overzet vensterbank van Milinboard werk je de oude vensterbank af zonder breekwerk. De uitvoering van 380 mm staat op een eigen productpagina. Op voorraad leveren we in max. 3 werkdagen.",
     sampleHref: "/staalaanvraag?groep=vensterbank",

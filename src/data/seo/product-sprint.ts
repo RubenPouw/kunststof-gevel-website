@@ -53,7 +53,7 @@ export const productSprints: SprintStory[] = [
   {
     id: "keralit-143",
     slugs: ["keralit-sponningdeel-143mm", "keralit-sponning-143"],
-    title: "Keralit sponningdeel 143 mm kopen | 6 meter paneel | Kunststof-gevel.nl",
+    title: "Keralit sponningdeel 143 mm kopen | Kunststof-gevel.nl",
     h1: "Keralit sponningdeel 143 mm",
     description: `Keralit sponningdeel 143 mm (artikel 2814) kopen. Werkende breedte 143 mm, lengte 6 m. Inclusief hulpstukken en advies. ${deliveryTail}`,
     crumbs: [home, gevel],
@@ -191,7 +191,7 @@ export const productSprints: SprintStory[] = [
     slugs: ["vinyplus-vario-299mm", "vinyplus-vario-299mm-1"],
     title: "Vinyplus Vario 299 mm gevelpaneel kopen | Kunststof-gevel.nl",
     h1: "Vinyplus Vario 299 mm gevelpaneel",
-    description: `Vinyplus Vario 299 mm: extra breed kunststof gevelpaneel. Geschikt voor nieuwbouw en renovatie. Inclusief bijpassende profielen. ${deliveryTail}`,
+    description: `Vinyplus Vario 299 mm: extra breed gevelpaneel. Geschikt voor nieuwbouw en renovatie. Inclusief bijpassende profielen. ${deliveryTail}`,
     crumbs: [home, gevel],
     intro: [
       "VinyPlus Vario is het extra brede gevelpaneel, 299 mm werkend. U dekt een vlak met minder naden dan met het rabat van 150 mm. De kleuren kiest u op deze pagina.",
@@ -246,7 +246,7 @@ export const productSprints: SprintStory[] = [
   {
     id: "keralit-dakrand-250",
     slugs: ["keralit-dakrandpaneel-250mm", "keralit-dakrand-paneel-250"],
-    title: "Keralit boeideel 250 mm kopen | Dakrandpaneel 6 m | Kunststof-gevel.nl",
+    title: "Keralit boeideel 250 mm kopen | Dakrandpaneel 6 m",
     h1: "Keralit boeideel 250 mm (dakrandpaneel)",
     description: `Keralit boeideel 250 mm (artikel 2825), ook wel dakrandpaneel. Lengte 6 m. Kies 250 mm als die breedte uw dakrand dekt. ${deliveryTail}`,
     crumbs: [home, boei, boeiKeralit],

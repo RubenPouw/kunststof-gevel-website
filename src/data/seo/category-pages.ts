@@ -59,7 +59,7 @@ export const categoryPageSeo: Record<CategorySlug, CategoryPageSeo> = {
     title: "Overzet vensterbank binnen | Kunststof vensterbank",
     h1: "Kunststof overzet vensterbank voor binnen",
     description:
-      "Overzet vensterbank voor binnen: Milinboard 380 mm schuif je over je oude bank. Met eindkappen. Voorraad in max. 3 werkdagen.",
+      "Overzet vensterbank voor binnen: schuif je over de bestaande bank, zonder sloop. Met eindkappen. Levering in max. 3 werkdagen.",
     previousSlugs: ["vensterbanken"],
     direct: true,
   },
@@ -78,7 +78,7 @@ export const categoryPageSeo: Record<CategorySlug, CategoryPageSeo> = {
     title: "HPL plaat kopen | Voor gevel en dakkapel",
     h1: "HPL plaat voor gevel, dakkapel en boeiboord",
     description:
-      "HPL plaat 3050 x 1300 x 6 mm. Hele plaat, ongeveer 3,965 m². Compact exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Levering in max. 3 werkdagen.",
+      "HPL plaat en HPL gevelplaat voor gevel, dakkapel en dakrand. Hele platen, onderhoudsarm. Compact, FR, Renolit en Abet. Levering in max. 3 werkdagen.",
     previousSlugs: ["hpl-platen"],
     direct: true,
   },

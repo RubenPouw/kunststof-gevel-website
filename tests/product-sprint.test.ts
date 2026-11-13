@@ -87,6 +87,46 @@ test("a priced product without a real review has an offer and no rating", () => 
   assert.equal(offers.url.endsWith(`/producten/${priced.slug}`), true);
 });
 
+test("reviewed titles and metas stay within the character limits", () => {
+  const expectLength = (label: string, value: string, length: number) => {
+    assert.equal(value.length, length, `${label}: ${value.length} «${value}»`);
+    assert.equal(value.includes("—"), false, label);
+    assert.equal(/4 werkdagen/.test(value), false, label);
+  };
+  const byId = Object.fromEntries(productSprints.map((story) => [story.id, story]));
+  expectLength("sponning title", byId["keralit-143"].title, 54);
+  expectLength("vario meta", byId["vinyplus-vario"].description, 148);
+  expectLength("dakrand title", byId["keralit-dakrand-250"].title, 49);
+  assert.equal(byId["keralit-143"].title, "Keralit sponningdeel 143 mm kopen | Kunststof-gevel.nl");
+  assert.equal(
+    byId["vinyplus-vario"].description,
+    "Vinyplus Vario 299 mm: extra breed gevelpaneel. Geschikt voor nieuwbouw en renovatie. Inclusief bijpassende profielen. Levering in max. 3 werkdagen.",
+  );
+  assert.equal(byId["keralit-dakrand-250"].title, "Keralit boeideel 250 mm kopen | Dakrandpaneel 6 m");
+
+  const bankMeta = categoryPageSeo.vensterbanken.description;
+  const bankStory = getLandingStory("kunststof-vensterbank");
+  assert.ok(bankStory);
+  assert.equal(bankStory.description, bankMeta);
+  expectLength("vensterbank meta", bankMeta, 126);
+  assert.equal(bankMeta.includes("Milinboard"), false);
+  assert.equal(bankMeta.includes("380"), false);
+  assert.equal(/buiten/i.test(bankMeta), false);
+  assert.equal(
+    bankMeta,
+    "Overzet vensterbank voor binnen: schuif je over de bestaande bank, zonder sloop. Met eindkappen. Levering in max. 3 werkdagen.",
+  );
+
+  const hplMeta = categoryPageSeo["hpl-platen"].description;
+  expectLength("hpl meta", hplMeta, 148);
+  assert.equal(hplMeta.startsWith("HPL plaat"), true);
+  assert.equal(hplMeta.includes("3050"), false);
+  assert.equal(
+    hplMeta,
+    "HPL plaat en HPL gevelplaat voor gevel, dakkapel en dakrand. Hele platen, onderhoudsarm. Compact, FR, Renolit en Abet. Levering in max. 3 werkdagen.",
+  );
+});
+
 test("color and filter query strings stay out of the product index", () => {
   assert.equal(productQueryRobots({}), undefined);
   assert.deepEqual(productQueryRobots({ attribute: "antraciet" }), { index: false, follow: true });
