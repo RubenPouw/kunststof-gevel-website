@@ -21,6 +21,11 @@ const LINE_LABEL: Record<string, string> = {
   milin: "Milin",
 };
 
+/** Display name for a known sample line. Unknown slugs stay unnamed. */
+export function sampleBrandLabel(slug: string) {
+  return LINE_LABEL[slug];
+}
+
 /** Drop the Shopify placeholder and a stray millimetre token from a sample name. */
 export function tidySampleName(value: string) {
   return value

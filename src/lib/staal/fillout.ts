@@ -1,5 +1,6 @@
 import filloutColors from "@/data/staal/fillout-colors.json" with { type: "json" };
 
+import { isBannedSampleText } from "./banned";
 import type { StaalNode, StaalTree } from "./tree";
 
 type FilloutColor = { label: string; image: string };
@@ -133,6 +134,7 @@ export function applyFillout(tree: StaalTree): StaalTree {
   collapseDakrandLine(next, "keralit", "Keralit dakrand");
   collapseDakrandLine(next, "vinyplus", "VinyPlus dakrand");
   for (const step of STEPS) {
+    if (isBannedSampleText(`${step.section} ${step.step} ${step.groupTitle} ${step.needles.join(" ")}`)) continue;
     const sectionId = step.section === "Dakrand" ? "dakrand" : "gevel";
     const group = next.groups.find((item) => item.id === sectionId);
     if (!group) continue;
