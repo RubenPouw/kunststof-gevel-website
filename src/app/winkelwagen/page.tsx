@@ -11,6 +11,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { quoteOrderDiscount } from "@/lib/catalog/volume-discount";
 import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
 import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
+import { PROFILE } from "@/lib/kozijnen/config";
 import { buildMontageQuoteDraft, montageQuoteHref, saveMontageQuoteDraft } from "@/lib/montage-quote";
 import { cn } from "@/lib/utils";
 
@@ -90,7 +91,11 @@ export default function CartPage() {
                   const resolved = resolveCartLine(line);
                   if (!resolved) return null;
                   const lead =
-                    resolved.kind === "kozijn" || !resolved.inStock ? "Levertijd in overleg" : "Op voorraad";
+                    resolved.kind === "kozijn"
+                      ? `${PROFILE.leadTimeWeeks} weken`
+                      : resolved.inStock
+                        ? "Op voorraad"
+                        : "Levertijd in overleg";
                   const leadColor = resolved.kind === "kozijn" || !resolved.inStock ? "var(--kg-navy)" : "var(--kg-stock)";
                   return (
                     <li

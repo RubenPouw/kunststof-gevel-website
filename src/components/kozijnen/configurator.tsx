@@ -8,6 +8,8 @@ import { KozijnDrawing } from "@/components/kozijnen/drawing";
 import { KozijnOrderSummary } from "@/components/kozijnen/order-summary";
 import { DETAIL_PHOTOS } from "@/lib/kozijnen/detail-photos";
 import { buttonVariants } from "@/components/ui/button";
+import { useCart } from "@/lib/cart";
+import { kozijnCartLine, kozijnConfigQuery } from "@/lib/kozijnen/cart-line";
 import { FRAME_COLORS, LAMINATED, LOW_GLASS, PROFILE, publicProfileName } from "@/lib/kozijnen/config";
 import { layoutPath, layoutsIn, type Layout } from "@/lib/kozijnen/layouts";
 import { VatPrice } from "@/components/brand/vat-price";
@@ -39,7 +41,15 @@ type PriceResponse =
 
 const choiceGrid = "grid grid-cols-1 gap-6 sm:grid-cols-2";
 
-export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; pricesActive: boolean }) {
+export function KozijnConfigurator({
+  layout,
+  pricesActive,
+  checkoutActive = false,
+}: {
+  layout: Layout;
+  pricesActive: boolean;
+  checkoutActive?: boolean;
+}) {
   const init = useRef<string | null>(null);
   const focusRef = useRef<HTMLOListElement>(null);
   const [config, setConfig] = useState<KozijnConfig>(() => defaultConfig(layout));
@@ -47,6 +57,11 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   const [askResume, setAskResume] = useState(false);
   const [pending, setPending] = useState<string | null>(null);
   const [price, setPrice] = useState<PriceResponse | null>(null);
+  const [priceFor, setPriceFor] = useState<string | null>(null);
+  const [added, setAdded] = useState(false);
+  const [cartNote, setCartNote] = useState<string | null>(null);
+  const [cartNoteFor, setCartNoteFor] = useState<string | null>(null);
+  const cart = useCart();
   const [sent, setSent] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
@@ -101,8 +116,16 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
       signal: controller.signal,
     })
       .then((response) => (response.ok ? response.json() : { pricesActive: false }))
-      .then((body: PriceResponse) => setPrice(body))
-      .catch(() => setPrice({ pricesActive: false }));
+      .then((body: PriceResponse) => {
+        if (controller.signal.aborted) return;
+        setPrice(body);
+        setPriceFor(query);
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted || (error instanceof Error && error.name === "AbortError")) return;
+        setPrice({ pricesActive: false });
+        setPriceFor(query);
+      });
     return () => controller.abort();
   }, [config, layout.slug, pricesActive]);
 
@@ -147,6 +170,25 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
   const pdfHref = `/api/kozijnen/pdf?layout=${encodeURIComponent(layout.slug)}&${serializeConfig(config)}`;
   const share = `${site.origin}${layoutPath(layout)}?${serializeConfig(config)}`;
   const shownPrice = pricesActive ? price : { pricesActive: false as const };
+  const priceQuery = serializeConfig(config);
+  const priceReady = Boolean(checkoutActive && inRange && price && "totalExcl" in price && priceFor === priceQuery);
+  const configKey = kozijnConfigQuery(config);
+  const shownAdded = added && cartNoteFor === configKey;
+  const shownCartNote = cartNoteFor === configKey ? cartNote : null;
+
+  function addToCart() {
+    if (!priceReady || !price || !("totalExcl" in price)) return;
+    cart.add(kozijnCartLine(config, price.totalExcl));
+    setCartNoteFor(configKey);
+    setAdded(true);
+    setCartNote("Toegevoegd aan de winkelwagen.");
+    window.setTimeout(() => setAdded(false), 1600);
+  }
+
+  function openQuote() {
+    go("overzicht");
+    window.setTimeout(() => document.getElementById("kozijn-offerte")?.scrollIntoView({ block: "start" }), 50);
+  }
 
   function patch(partial: Partial<KozijnConfig>) {
     setConfig((current) => applyLaminatedDefault({ ...current, ...partial }, layout));
@@ -200,7 +242,7 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
 
   return (
     <div className="bg-kg-kalk">
-    <div className="container-kg py-10 pb-28 lg:pb-16">
+    <div className={cn("container-kg py-10 lg:pb-16", checkoutActive ? "pb-44" : "pb-28")}>
       {resumeVisible(config.step, askResume) ? (
         <div className="mb-8 border border-kg-navy bg-white p-5">
           <div className="flex items-start justify-between gap-4">
@@ -322,23 +364,52 @@ export function KozijnConfigurator({ layout, pricesActive }: { layout: Layout; p
         </div>
 
         <aside className="kg-soft-card hidden p-6 lg:sticky lg:top-[calc(var(--kg-chrome)+12px)] lg:block lg:max-h-[calc(100vh-var(--kg-chrome)-1.5rem)] lg:overflow-y-auto">
-          <Preview layout={layout} config={config} pricesActive={pricesActive} price={price} basketNote={basketNote} prefix={`${layout.slug}-paneel`} />
+          <Preview
+            layout={layout}
+            config={config}
+            pricesActive={pricesActive}
+            price={price}
+            basketNote={basketNote}
+            prefix={`${layout.slug}-paneel`}
+            checkoutActive={checkoutActive}
+            priceReady={priceReady}
+            added={shownAdded}
+            cartNote={shownCartNote}
+            onAdd={addToCart}
+            onQuote={openQuote}
+          />
         </aside>
       </div>
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t-4 border-kg-signal bg-kg-navy text-kg-kalk print:hidden lg:hidden">
-        <div className="flex items-center justify-between gap-4 px-5 py-3">
+        <div className={cn("flex items-end justify-between gap-3 px-4 py-3", checkoutActive && "pr-24")}>
           <div className="min-w-0">
             <p className="font-mono text-[13px]">
               {config.width} × {config.height} mm
+              {checkoutActive ? ` · ${PROFILE.leadTimeWeeks} weken` : ""}
             </p>
             <p className="font-mono text-[16px]">
               <PriceLine pricesActive={pricesActive} price={shownPrice} />
             </p>
+            {checkoutActive ? (
+              <div className="mt-2 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  disabled={!priceReady}
+                  onClick={addToCart}
+                  className={buttonVariants({ variant: "signal", size: "sm" })}
+                >
+                  {shownAdded ? "Toegevoegd" : "In winkelwagen"}
+                </button>
+                <button type="button" onClick={openQuote} className="text-[14px] underline underline-offset-[3px]">
+                  Offerte
+                </button>
+              </div>
+            ) : null}
           </div>
           <button
             type="button"
-            className="shrink-0 text-[14px] text-kg-signal underline underline-offset-[3px]"
+            className="shrink-0 pb-1 text-[14px] text-kg-signal underline underline-offset-[3px]"
             aria-expanded={sheetOpen}
             aria-controls="kozijn-tekening"
             onClick={() => setSheetOpen((open) => !open)}
@@ -364,6 +435,12 @@ function Preview({
   price,
   basketNote,
   prefix,
+  checkoutActive = false,
+  priceReady = false,
+  added = false,
+  cartNote = null,
+  onAdd,
+  onQuote,
 }: {
   layout: Layout;
   config: KozijnConfig;
@@ -371,18 +448,45 @@ function Preview({
   price: PriceResponse | null;
   basketNote: string | null;
   prefix: string;
+  checkoutActive?: boolean;
+  priceReady?: boolean;
+  added?: boolean;
+  cartNote?: string | null;
+  onAdd?: () => void;
+  onQuote?: () => void;
 }) {
+  const quoteOnly = checkoutActive && price && !("totalExcl" in price);
   return (
     <div>
       <p className="font-mono text-[12px] text-kg-text-2">Buitenaanzicht</p>
       <div className="mt-3">
         <KozijnDrawing layout={layout} config={config} prefix={prefix} />
       </div>
-      <KozijnOrderSummary config={config} />
       <div className="mt-5 font-mono text-[18px] text-kg-navy">
         <PriceLine pricesActive={pricesActive} price={price} />
       </div>
+      {checkoutActive ? <p className="mt-2 font-mono text-[13px] text-kg-text-2">Levertijd {PROFILE.leadTimeWeeks} weken</p> : null}
+      {checkoutActive ? (
+        <div className="mt-4 grid gap-2">
+          <button type="button" disabled={!priceReady} onClick={onAdd} className={buttonVariants({ variant: "primary", block: true })}>
+            {added ? "Toegevoegd" : "In winkelwagen"}
+          </button>
+          <button type="button" onClick={onQuote} className={buttonVariants({ variant: "secondary", block: true })}>
+            Vrijblijvende offerte
+          </button>
+          {cartNote ? (
+            <p className="text-[14px]">
+              {cartNote}{" "}
+              <Link href="/winkelwagen" className="underline underline-offset-[3px]">
+                Naar winkelwagen
+              </Link>
+            </p>
+          ) : null}
+          {quoteOnly ? <p className="text-[13px] text-kg-text-2">Deze samenstelling gaat via de offerte.</p> : null}
+        </div>
+      ) : null}
       {basketNote ? <p className="mt-3 text-[14px]">{basketNote}</p> : null}
+      <KozijnOrderSummary config={config} />
     </div>
   );
 }
@@ -1010,7 +1114,8 @@ function Overview({
         <p className="border border-kg-navy bg-white p-5">Aanvraag {sent} is verstuurd. U hoort op een werkdag van ons.</p>
       ) : (
         <form
-          className="grid gap-5 sm:grid-cols-2"
+          id="kozijn-offerte"
+          className="grid scroll-mt-28 gap-5 sm:grid-cols-2"
           onSubmit={(event) => {
             event.preventDefault();
             onQuote(new FormData(event.currentTarget));
