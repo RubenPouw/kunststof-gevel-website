@@ -7,6 +7,14 @@ import { site } from "@/lib/site";
 import { adsCheckoutAttributes } from "@/lib/tracking/checkout-attrs";
 import type { AdsState } from "@/lib/tracking/identity";
 
+import {
+  clampKozijnQty,
+  createMixedDraftOrder,
+  kozijnCheckoutEnabled,
+  priceKozijnOrder,
+  type PricedKozijn,
+} from "@/lib/kozijnen/checkout";
+
 import { storefrontFetch } from "./client";
 import { getShopifyConfig } from "./config";
 
@@ -16,6 +24,9 @@ export type CheckoutLineInput = {
   quantity: number;
   shopifyVariantId?: string;
   kind?: "product" | "kozijn";
+  /** Samenstelling. De server rekent het bedrag. Een meegestuurde prijs wordt genegeerd. */
+  kozijnLayout?: string;
+  kozijnQuery?: string;
 };
 
 export type CheckoutCustomer = {
@@ -202,6 +213,117 @@ async function createAdminDraft(input: {
   return { ok: true as const, checkoutUrl: invoice };
 }
 
+async function createKozijnCartCheckout(
+  input: {
+    lines: CheckoutLineInput[];
+    customer: CheckoutCustomer;
+    montage: boolean;
+    ads?: AdsState | null;
+  },
+  kozijnLines: CheckoutLineInput[],
+): Promise<CheckoutResult> {
+  const priced = kozijnLines.map((line) => {
+    const order = priceKozijnOrder(line.kozijnLayout ?? "", line.kozijnQuery ?? "");
+    if (!order) return null;
+    return { ...order, quantity: clampKozijnQty(line.quantity) };
+  });
+  if (priced.some((line) => !line)) {
+    return failure("Dit kozijn heeft geen online prijs. Vraag een offerte aan, of haal het uit de winkelwagen.");
+  }
+  const kozijnen = priced.filter((line): line is PricedKozijn & { quantity: number } => line != null);
+
+  const domain = process.env.SHOPIFY_STORE_DOMAIN?.trim();
+  const token = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN?.trim();
+  if (!domain || !token) {
+    return failure(`Betalen is nog niet gekoppeld. Bel ${site.phone} of mail ${site.email}. Er is niets besteld.`);
+  }
+
+  const productLines = input.lines.filter((line) => line.kind !== "kozijn");
+  const catalog: { variantId: number; quantity: number }[] = [];
+  if (productLines.length) {
+    const catalogData = await getCatalog();
+    const resolved = findVariant(productLines, catalogData.products);
+    const missing = resolved.filter((item) => !item.variant?.shopifyVariantId);
+    if (missing.length) {
+      return failure(
+        `Deze artikelen kunnen niet naar de betaalpagina. Bel ${site.phone}, dan zetten we de bestelling klaar.`,
+      );
+    }
+    const unpaid = resolved.filter((item) => !item.variant || !hasPurchasePrice(item.variant.price));
+    if (unpaid.length) {
+      return failure("Een artikel zonder prijs kan niet besteld worden. Vraag een offerte voor de prijs op aanvraag.");
+    }
+    for (const item of resolved) {
+      const variantId = Number(variantNumericId(item.variant!.shopifyVariantId!));
+      if (!variantId) {
+        return failure(
+          `Deze artikelen kunnen niet naar de betaalpagina. Bel ${site.phone}, dan zetten we de bestelling klaar.`,
+        );
+      }
+      catalog.push({
+        variantId,
+        quantity: Math.min(999, Math.max(1, Math.round(item.line.quantity))),
+      });
+    }
+  }
+
+  const paymentLabel = {
+    checkout: "Betalen in de Shopify-checkout",
+    rekening: "Op rekening",
+    klarna: "Klarna, via Shopify Payments",
+    riverty: "Riverty, nog niet gekoppeld",
+  }[input.customer.payment ?? "checkout"];
+  const { firstName, lastName } = splitName(input.customer.name);
+  const phone = toE164(input.customer.phone);
+  const note = [
+    "Bestelling via kunststof-gevel.nl",
+    "Kozijn op maat. Het bedrag hoort bij de samenstelling en is opnieuw berekend bij het afrekenen.",
+    ...kozijnen.map((line) => line.summary),
+    input.montage ? "Klant wil montage meerekenen. Montage zit niet in deze betaling en loopt via de offerte." : "",
+    `Betaling: ${paymentLabel}`,
+    input.customer.pickup ? "Afhalen in de showroom in Hedel, op afspraak" : "Bezorgen",
+    input.customer.reference ? `Referentie: ${input.customer.reference}` : "",
+    input.customer.deliveryDate ? `Gewenste leverdatum: ${input.customer.deliveryDate}` : "",
+    input.customer.company ? `Bedrijf: ${input.customer.company}` : "",
+    input.customer.kvk ? `KvK: ${input.customer.kvk}` : "",
+    input.customer.btw ? `Btw: ${input.customer.btw}` : "",
+    `${input.customer.name}, ${input.customer.phone}, ${input.customer.address}, ${input.customer.postcode} ${input.customer.city}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const draft = await createMixedDraftOrder({
+    catalog,
+    kozijnen,
+    email: input.customer.email,
+    phone,
+    note,
+    noteAttributes: adsCheckoutAttributes(input.ads).map((item) => ({ name: item.key, value: item.value })),
+    shippingAddress: {
+      first_name: firstName,
+      last_name: lastName,
+      address1: input.customer.address.trim(),
+      city: input.customer.city.trim(),
+      zip: input.customer.postcode.trim(),
+      country: "Netherlands",
+      phone,
+      company: input.customer.company?.trim() || undefined,
+    },
+  });
+  if (!draft.ok) {
+    if (draft.reason === "btw") {
+      return failure(`De btw-instelling van de winkel is niet gelezen. Er is niets besteld. Bel ${site.phone}.`);
+    }
+    return failure(
+      `De betaling is niet gestart en er is geen bestelling geplaatst. Bel ${site.phone} of WhatsApp ${site.mobileDisplay}.`,
+    );
+  }
+  if (!isShopifyCheckoutUrl(draft.checkoutUrl)) {
+    return failure("Shopify gaf geen betaallink terug.");
+  }
+  return { ok: true, checkoutUrl: draft.checkoutUrl };
+}
+
 export async function createShopifyCheckout(input: {
   lines: CheckoutLineInput[];
   customer: CheckoutCustomer;
@@ -211,10 +333,14 @@ export async function createShopifyCheckout(input: {
   if (!input.lines.length) {
     return failure("De winkelwagen is leeg.");
   }
-  if (input.lines.some((line) => line.kind === "kozijn")) {
-    return failure(
-      `Kozijnen op maat lopen via de offerte, niet via deze betaling. Bel ${site.phone} of haal het kozijn uit de winkelwagen.`,
-    );
+  const kozijnLines = input.lines.filter((line) => line.kind === "kozijn");
+  if (kozijnLines.length) {
+    if (!kozijnCheckoutEnabled()) {
+      return failure(
+        `Kozijnen op maat lopen via de offerte, niet via deze betaling. Bel ${site.phone} of haal het kozijn uit de winkelwagen.`,
+      );
+    }
+    return createKozijnCartCheckout(input, kozijnLines);
   }
 
   if (!getShopifyConfig()) {

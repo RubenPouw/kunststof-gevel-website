@@ -31,6 +31,8 @@ export type CartLine = {
   price?: number;
   shopifyVariantId?: string;
   kind?: "product" | "kozijn";
+  kozijnLayout?: string;
+  kozijnQuery?: string;
   hex?: string;
   image?: string;
   length?: string;
@@ -115,14 +117,14 @@ function resolveLine(line: CartLine): ResolvedLine | undefined {
   if (line.kind === "kozijn" && line.name && typeof line.price === "number") {
     return {
       name: line.name,
-      brand: line.brand ?? "Kömmerling 76",
+      brand: line.brand ?? "Kunststof kozijn",
       colorName: labelColour(line.colorName ?? ""),
       unitExcl: line.price,
       hex: line.hex ?? "#3b3f42",
       length: line.length ?? "",
       areaM2: 0,
       kind: "kozijn",
-      skuLabel: line.skuLabel ?? "Kömmerling 76",
+      skuLabel: line.skuLabel ?? "Kunststof kozijn",
       inStock: true,
     };
   }

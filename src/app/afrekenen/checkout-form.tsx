@@ -58,6 +58,8 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
               quantity: line.qty,
               shopifyVariantId: line.shopifyVariantId,
               kind: line.kind,
+              kozijnLayout: line.kozijnLayout,
+              kozijnQuery: line.kozijnQuery,
             })),
           )}
         />
@@ -138,10 +140,11 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
                   const resolved = resolveCartLine(line);
                   if (!resolved) return null;
                   const lineExcl = resolved.unitExcl * line.qty;
+                  const detail = resolved.kind === "kozijn" ? resolved.skuLabel : line.variantSku;
                   return (
                     <li key={line.variantSku} className="flex items-start justify-between gap-4">
                       <span>
-                        {resolved.name} · <ColourName value={resolved.colorName} /> · {line.variantSku} × {line.qty}
+                        {resolved.name} · <ColourName value={resolved.colorName} /> · {detail} × {line.qty}
                       </span>
                       <VatBoth incl={inclVat(lineExcl)} excl={lineExcl} className="text-[14px] font-bold" />
                     </li>
