@@ -5,27 +5,29 @@ import { SectionHead } from "@/components/brand/section-head";
 import type { CategorySlug, ProductImage } from "@/lib/catalog/types";
 
 /**
- * Category photos for the four cards that otherwise show a colour tile or the
- * first SKU packshot. Own uploads and project photos, cropped to 4:3.
+ * Packshots only. Gevel and kozijnen are loose products on white.
+ * Dakrand and bevestiging stay the existing close product crops.
  */
 const CATEGORY_PHOTO: Record<string, ProductImage> = {
   "/gevelbekleding": {
-    url: "/categorie/gevelbekleding.webp",
-    alt: "Kunststof gevelbekleding op een woning",
+    url: "/categorie/gevelbekleding-product.webp",
+    alt: "Keralit sponningdeel 143 mm",
   },
   "/dakranden": {
     url: "/categorie/dakranden.webp",
     alt: "Witte kunststof dakrand langs de gevel",
   },
   "/kunststof-kozijnen": {
-    url: "/categorie/kozijnen.webp",
-    alt: "Antraciet kozijn in een gevel met kunststof bekleding",
+    url: "/categorie/kozijnen-product.webp",
+    alt: "Kunststof kozijn doorsnede",
   },
   "/montage": {
     url: "/categorie/bevestiging.webp",
     alt: "Torx schroeven voor gevelbekleding",
   },
 };
+
+const LOOSE_PRODUCT = new Set(["/gevelbekleding", "/kunststof-kozijnen"]);
 
 const APPS = [
   {
@@ -95,6 +97,7 @@ export function AssortmentGrid({
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {APPS.map((app) => {
           const curated = CATEGORY_PHOTO[app.href];
+          const loose = LOOSE_PRODUCT.has(app.href);
           const image = curated ?? (app.slug ? images[app.slug] : undefined);
           return (
             <Link
@@ -107,10 +110,10 @@ export function AssortmentGrid({
                 alt={app.name}
                 sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw"
                 fallback={app.bg}
-                fit={curated ? "cover" : "contain"}
+                fit={curated && !loose ? "cover" : "contain"}
                 className="aspect-[4/3]"
                 imageClassName={
-                  curated
+                  curated && !loose
                     ? "transition-transform duration-200 group-hover:scale-[1.03]"
                     : "p-3 transition-transform duration-200 group-hover:scale-[1.03]"
                 }
