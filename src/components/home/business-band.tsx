@@ -12,7 +12,7 @@ export function BusinessBand() {
         <h2 className="mt-5 text-[28px] leading-[1.1] font-bold tracking-[-0.03em] sm:text-[34px]">
           Materiaal geregeld.
           <br />
-          <span className="text-kg-signal">Ook laten zetten?</span>
+          <span className="text-kg-signal">Ook laten monteren?</span>
         </h2>
         <p className="mt-4 max-w-md text-[15px] leading-[1.5] text-kg-grind">
           Montage rekenen we apart, na foto of opname. U krijgt één offerte, materiaal en werk zichtbaar.
@@ -31,9 +31,12 @@ export function BusinessBand() {
         <h2 className="mt-3 text-[28px] leading-[1.1] font-bold tracking-[-0.03em] sm:text-[34px]">
           Bestelt u voor uw zaak?
         </h2>
-        <ul className="mt-6 divide-y divide-kg-lijn border-y border-kg-lijn">
+        <ul className="mt-5 grid gap-2.5">
           {businessPoints.map((point) => (
-            <li key={point} className="py-3 font-mono text-[14px]">
+            <li key={point} className="flex items-center gap-2.5 text-[16px] font-medium text-kg-navy">
+              <span className="text-[18px] leading-none" aria-hidden>
+                ✓
+              </span>
               {point}
             </li>
           ))}

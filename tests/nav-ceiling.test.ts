@@ -32,7 +32,7 @@ test("categories sit under Producten and kozijnen has its own menu", () => {
   for (const href of [...PRODUCT_HREFS, ...KOZIJN_HREFS]) {
     assert.equal(top.includes(href), false, href);
   }
-  assert.deepEqual(top, ["/merken", "/projecten", "/zakelijk"]);
+  assert.deepEqual(top, ["/merken", "/zakelijk"]);
   assert.equal(productNav[0]?.label, "Gevelbekleding");
   assert.equal(productNav[1]?.label, "Plafondpanelen");
   assert.equal(productNav[2]?.label, "Dakranden");

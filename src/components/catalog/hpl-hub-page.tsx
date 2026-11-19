@@ -8,9 +8,11 @@ import { site } from "@/lib/site";
 export async function HplHubPage({
   basePath,
   searchParams,
+  embedded = false,
 }: {
   basePath: string;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
+  embedded?: boolean;
 }) {
   const query = parseHplHubSearch(await searchParams);
   const products = await listProducts();
@@ -20,8 +22,8 @@ export async function HplHubPage({
 
   return (
     <>
-      <HplHub plates={plates} related={related} query={query} basePath={basePath} />
-      {onPlates ? (
+      <HplHub plates={plates} related={related} query={query} basePath={basePath} embedded={embedded} />
+      {!embedded && onPlates ? (
         <section className="container-kg border-t border-kg-lijn py-14">
           <h2 className="text-[22px] font-bold tracking-[-0.03em]">Hele plaat</h2>
           <p className="mt-3 max-w-2xl text-[16px] leading-[1.5] text-kg-text-2">

@@ -18,6 +18,9 @@ export function SiteFooter() {
           <p className="mt-4 max-w-sm text-[15px] text-kg-grind">
             Nooit meer schilderen. Vervang hout door kunststof.
           </p>
+          <a href={site.phoneHref} className="mt-4 inline-block font-mono text-[20px] text-kg-kalk no-underline hover:underline">
+            {site.phone}
+          </a>
           <p className="mt-4 font-mono text-[13px] text-kg-grind">
             {site.company}
             <br />
@@ -25,10 +28,6 @@ export function SiteFooter() {
             <br />
             {site.addressNote}
             <br />
-            <a href={site.phoneHref} className="text-kg-kalk no-underline hover:underline">
-              {site.phone}
-            </a>
-            {" · "}
             <a href={site.mobileHref} className="text-kg-kalk no-underline hover:underline">
               {site.mobileDisplay}
             </a>
