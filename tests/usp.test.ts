@@ -40,7 +40,7 @@ test("kozijn routes get the kozijn bar, the shop bar keeps shipping and colour g
   const shop = line(uspForPath("/gevelbekleding"));
   assert.equal(
     shop,
-    "Gratis verzending vanaf €499 binnen Nederland | Afhalen uit voorraad mogelijk!* | Levering op afroep | 10 jaar garantie op kleur | Showroom op afspraak in Hedel",
+    "Gratis verzending vanaf €499 binnen Nederland | Afhalen uit voorraad mogelijk | 10 jaar garantie op kleur | Showroom op afspraak in Hedel",
   );
   assert.equal(/Montage via offerte/.test(shop), false);
   assert.equal(line(uspForPath("/")), line(uspBySection.site));

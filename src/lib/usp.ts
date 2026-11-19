@@ -4,9 +4,7 @@ export type UspItem = { k: string; v: string };
 export const uspBySection = {
   site: [
     { k: "Gratis verzending", v: "vanaf €499 binnen Nederland" },
-    // Het sterretje blijft staan. De voetnoottekst komt nog van Ruben.
-    { k: "Afhalen", v: "uit voorraad mogelijk!*" },
-    { k: "Levering", v: "op afroep" },
+    { k: "Afhalen", v: "uit voorraad mogelijk" },
     { k: "10 jaar", v: "garantie op kleur" },
     { k: "Showroom", v: "op afspraak in Hedel" },
   ],
