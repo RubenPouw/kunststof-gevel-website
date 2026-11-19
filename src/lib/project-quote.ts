@@ -38,6 +38,8 @@ export const PROJECT_QUOTE_MAX_FILES = 3;
 export const PROJECT_QUOTE_MAX_BYTES = 10 * 1024 * 1024;
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const postcodeRe = /^([1-9][0-9]{3})\s?([A-Za-z]{2})$/;
+const houseNumberRe = /^[1-9]\d{0,4}(?:[\s-][A-Za-z0-9]{1,8}|[A-Za-z]{1,8})?$/;
 const buckets = new Map<string, number[]>();
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_HITS = 5;
@@ -59,8 +61,8 @@ export type ProjectQuoteInput = {
   voornaam: string;
   achternaam: string;
   telefoon: string;
-  adres: string;
-  plaats: string;
+  postcode: string;
+  huisnummer: string;
   montage: string[];
   delen: string[];
   maand: string;
@@ -92,6 +94,13 @@ export function projectQuoteName(input: Pick<ProjectQuoteInput, "voornaam" | "ac
     .filter(Boolean)
     .join(" ");
   return person || input.bedrijfsnaam.trim() || "Onbekend";
+}
+
+/** Lege invoer blijft leeg. Een geldige code wordt 1234 AB. */
+export function formatProjectPostcode(value: string) {
+  const match = value.trim().match(postcodeRe);
+  if (!match) return "";
+  return `${match[1]} ${match[2].toUpperCase()}`;
 }
 
 function oneLine(value: string, max: number) {
@@ -131,8 +140,10 @@ export function validateProjectQuote(input: ProjectQuoteInput): string | null {
   if (input.voornaam.trim().length > 400) return "Houd de voornaam kort.";
   if (input.achternaam.trim().length > 400) return "Houd de achternaam kort.";
   if (input.telefoon.trim().length > 40) return "Houd het telefoonnummer kort.";
-  if (input.adres.trim().length > 400) return "Houd het adres kort.";
-  if (input.plaats.trim().length > 400) return "Houd de plaats kort.";
+  if (input.postcode.trim() && !formatProjectPostcode(input.postcode)) return "Vul de postcode in als 1234 AB.";
+  if (input.huisnummer.trim() && !houseNumberRe.test(input.huisnummer.trim())) {
+    return "Vul een huisnummer in. Een toevoeging mag, bijvoorbeeld 12 of 12a.";
+  }
   if (input.afmetingen.trim().length > 2000) return "Houd de toelichting onder 2000 tekens.";
   if (input.maand && !PROJECT_MONTHS.includes(input.maand as (typeof PROJECT_MONTHS)[number])) {
     return "Kies een maand uit de lijst.";
@@ -178,8 +189,8 @@ export function projectQuoteMail(
     `Achternaam: ${input.achternaam.trim() || "-"}`,
     `Naam: ${projectQuoteName(input)}`,
     `Telefoonnummer: ${input.telefoon.trim() || "-"}`,
-    `Adres: ${input.adres.trim() || "-"}`,
-    `Plaats: ${input.plaats.trim() || "-"}`,
+    `Postcode: ${formatProjectPostcode(input.postcode) || input.postcode.trim() || "-"}`,
+    `Huisnummer: ${input.huisnummer.trim() || "-"}`,
     `Offerte: ${input.montage.length ? input.montage.join(", ") : "-"}`,
     `Deel van het huis: ${input.delen.length ? input.delen.join(", ") : "-"}`,
     `Maand: ${input.maand.trim() || "-"}`,
@@ -203,8 +214,8 @@ export function emptyProjectQuote(raw: {
   voornaam?: string;
   achternaam?: string;
   telefoon?: string;
-  adres?: string;
-  plaats?: string;
+  postcode?: string;
+  huisnummer?: string;
   montage?: string[];
   delen?: string[];
   maand?: string;
@@ -219,8 +230,8 @@ export function emptyProjectQuote(raw: {
     voornaam: oneLine(raw.voornaam ?? "", 400),
     achternaam: oneLine(raw.achternaam ?? "", 400),
     telefoon: oneLine(raw.telefoon ?? "", 40),
-    adres: oneLine(raw.adres ?? "", 400),
-    plaats: oneLine(raw.plaats ?? "", 400),
+    postcode: formatProjectPostcode(raw.postcode ?? "") || oneLine(raw.postcode ?? "", 20),
+    huisnummer: oneLine(raw.huisnummer ?? "", 20).replace(/\s+/g, " "),
     montage: chosen(raw.montage ?? [], PROJECT_MONTAGE_OPTIONS),
     delen: chosen(raw.delen ?? [], PROJECT_HOUSE_PARTS),
     maand: maand === "Selecteer" ? "" : maand,

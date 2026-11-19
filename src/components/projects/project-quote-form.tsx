@@ -83,13 +83,16 @@ export function ProjectQuoteForm({
 
             <div className="mt-8 grid gap-5 sm:grid-cols-2">
               <fieldset className="sm:col-span-2">
-                <legend className="text-[13px] font-semibold">
-                  Wilt u de offerte voor alleen materiaal of met montage?
-                </legend>
+                <legend className="text-[13px] font-semibold">Deel van het huis</legend>
                 <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-6">
-                  {PROJECT_MONTAGE_OPTIONS.map((option) => (
+                  {PROJECT_HOUSE_PARTS.map((option) => (
                     <label key={option} className="flex min-h-11 items-center gap-3 text-[15px]">
-                      <input type="checkbox" name="montage" value={option} className="size-4 accent-[var(--kg-navy)]" />
+                      <input
+                        type="checkbox"
+                        name="deel_van_het_huis"
+                        value={option}
+                        className="size-4 accent-[var(--kg-navy)]"
+                      />
                       {option}
                     </label>
                   ))}
@@ -145,36 +148,36 @@ export function ProjectQuoteForm({
                   className={fieldClass}
                 />
               </Field>
-              <Field label="Adres" htmlFor="offerte-adres">
+              <Field label="Postcode" htmlFor="offerte-postcode">
                 <input
-                  id="offerte-adres"
-                  name="adres"
-                  autoComplete="street-address"
-                  maxLength={400}
+                  id="offerte-postcode"
+                  name="postcode"
+                  autoComplete="postal-code"
+                  inputMode="text"
+                  maxLength={7}
+                  placeholder="1234 AB"
                   className={fieldClass}
                 />
               </Field>
-              <Field label="Plaats" htmlFor="offerte-plaats">
+              <Field label="Huisnummer" htmlFor="offerte-huisnummer">
                 <input
-                  id="offerte-plaats"
-                  name="plaats"
-                  autoComplete="address-level2"
-                  maxLength={400}
+                  id="offerte-huisnummer"
+                  name="huisnummer"
+                  autoComplete="off"
+                  maxLength={20}
+                  placeholder="12a"
                   className={fieldClass}
                 />
               </Field>
 
               <fieldset className="sm:col-span-2">
-                <legend className="text-[13px] font-semibold">Deel van het huis</legend>
+                <legend className="text-[13px] font-semibold">
+                  Wilt u de offerte voor alleen materiaal of met montage?
+                </legend>
                 <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-6">
-                  {PROJECT_HOUSE_PARTS.map((option) => (
+                  {PROJECT_MONTAGE_OPTIONS.map((option) => (
                     <label key={option} className="flex min-h-11 items-center gap-3 text-[15px]">
-                      <input
-                        type="checkbox"
-                        name="deel_van_het_huis"
-                        value={option}
-                        className="size-4 accent-[var(--kg-navy)]"
-                      />
+                      <input type="checkbox" name="montage" value={option} className="size-4 accent-[var(--kg-navy)]" />
                       {option}
                     </label>
                   ))}
