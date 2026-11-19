@@ -68,7 +68,6 @@ export const kozijnNav = [
 
 export const shopNav = [
   { href: "/merken", label: "Merken" },
-  { href: "/projecten", label: "Projecten" },
   { href: "/zakelijk", label: "Zakelijk" },
 ] as const;
 
@@ -102,7 +101,7 @@ export const footerColumns = [
     title: "Bedrijf",
     links: [
       { href: "/over-ons", label: "Over ons" },
-      { href: "/projecten", label: "Projecten" },
+      { href: "/projecten", label: "Montage projecten" },
       { href: "/reviews", label: "Reviews" },
       { href: "/zakelijk", label: "Zakelijk" },
       { href: "/montage", label: "Montage" },
@@ -140,9 +139,9 @@ export const uspItems = [
 ] as const;
 
 export const businessPoints = [
-  "Zelfde prijs voor aannemer en particulier",
-  "Bestellen op rekening na eenmalige check",
-  "Voorraad van de merken die we zelf plaatsen",
+  "Zakelijk kopen met voordeel",
+  "Bestellen op rekening is mogelijk",
+  "Gemakkelijk herbestellen",
 ] as const;
 
 export const faqs = [

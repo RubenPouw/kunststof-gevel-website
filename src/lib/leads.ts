@@ -387,7 +387,7 @@ export async function submitProjectQuoteLead(
     phone: input.telefoon,
     subject: `${PROJECT_QUOTE_SOURCE} ${ref}`,
     text: projectQuoteMail(input, { reference: ref, photoNames }).join("\n"),
-    note: `Bron: ${PROJECT_QUOTE_SOURCE}. ${ref}. ${name}.`,
+    note: `Bron: ${PROJECT_QUOTE_SOURCE}. ${ref}. ${name}. Postcode: ${input.postcode.trim() || "-"}. Huisnummer: ${input.huisnummer.trim() || "-"}.`,
     attachments,
   });
   if (deliveryError) return { ok: false, error: deliveryError };

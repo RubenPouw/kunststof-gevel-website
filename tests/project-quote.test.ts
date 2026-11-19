@@ -9,6 +9,7 @@ import {
   cleanProjectAttribution,
   cleanProjectQuoteReference,
   emptyProjectQuote,
+  formatProjectPostcode,
   projectQuoteDataLayer,
   projectQuoteFileError,
   projectQuoteMail,
@@ -26,8 +27,8 @@ const base: ProjectQuoteInput = {
   voornaam: "TEST",
   achternaam: "Webshop",
   telefoon: "0302271397",
-  adres: "Binnenkamp 7a",
-  plaats: "Hedel",
+  postcode: "5321 KA",
+  huisnummer: "7a",
   montage: ["Met montage"],
   delen: ["Gevel", "Kozijnen"],
   maand: "Maart",
@@ -54,7 +55,15 @@ test("only a successful send produces lead_submit", () => {
 
 test("the live offerte fields stay optional except e-mail", () => {
   assert.match(validateProjectQuote({ ...base, email: "" }) ?? "", /e-mail/i);
-  assert.equal(validateProjectQuote({ ...base, voornaam: "", achternaam: "", telefoon: "", adres: "", plaats: "" }), null);
+  assert.equal(validateProjectQuote({ ...base, voornaam: "", achternaam: "", telefoon: "", postcode: "", huisnummer: "" }), null);
+  assert.equal(formatProjectPostcode("5321ka"), "5321 KA");
+  assert.equal(formatProjectPostcode("5321 KA"), "5321 KA");
+  assert.equal(formatProjectPostcode("0123 AB"), "");
+  assert.match(validateProjectQuote({ ...base, postcode: "5321" }) ?? "", /1234 AB/);
+  assert.equal(validateProjectQuote({ ...base, postcode: "5321ka" }), null);
+  assert.equal(validateProjectQuote({ ...base, huisnummer: "12 bis" }), null);
+  assert.equal(validateProjectQuote({ ...base, huisnummer: "12-A" }), null);
+  assert.match(validateProjectQuote({ ...base, huisnummer: "bis" }) ?? "", /huisnummer/);
   assert.match(validateProjectQuote({ ...base, maand: "Week" }) ?? "", /maand/);
   assert.match(validateProjectQuote({ ...base, montage: ["Sloop"] }) ?? "", /montage|materiaal/);
   const parsed = emptyProjectQuote({
@@ -74,6 +83,10 @@ test("mail names the source, the test name and utm or gclid, and drops a short c
   const text = lines.join("\n");
   assert.match(text, new RegExp(`Bron: ${PROJECT_QUOTE_SOURCE}`));
   assert.match(text, /Naam: TEST Webshop/);
+  assert.match(text, /Postcode: 5321 KA/);
+  assert.match(text, /Huisnummer: 7a/);
+  assert.equal(text.includes("Adres:"), false);
+  assert.equal(text.includes("Plaats:"), false);
   assert.match(text, /utm_campaign: Search \| Montage door Cavemen/);
   assert.match(text, /gclid: TeStGclid1234/);
   assert.equal(text.includes("gbraid"), false);
@@ -122,6 +135,14 @@ test("the page puts the form after the first project and keeps the filter urls",
   assert.match(page, /href=\{`\/projecten\?merk=\$\{brand\.slug\}`\}/);
   assert.equal(page.includes("MontageQuoteCard"), false);
   assert.match(form, /name="email"/);
+  assert.match(form, /name="postcode"/);
+  assert.match(form, /name="huisnummer"/);
+  assert.equal(form.includes('name="adres"'), false);
+  assert.equal(form.includes('name="plaats"'), false);
+  const parts = form.indexOf("Deel van het huis");
+  const email = form.indexOf('name="email"');
+  const montage = form.indexOf("Wilt u de offerte voor alleen materiaal of met montage?");
+  assert.ok(parts >= 0 && email > parts && montage > email);
   assert.match(form, /\["foto1", "foto2", "foto3"\]/);
   assert.match(form, /projectQuoteDataLayer\(tracked\)/);
   assert.equal(form.split("dataLayer.push").length - 1, 1);

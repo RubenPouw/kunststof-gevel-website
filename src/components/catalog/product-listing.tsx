@@ -202,7 +202,7 @@ export function ProductListing({
         presentation={presentation}
         onFilter={onFilter}
       />
-      <div className="mt-8 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
+      <div className="mt-8 grid min-w-0 gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,9fr)] lg:gap-5">
         <aside className="hidden h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)] lg:block">
           {showFilters ? (
             <div className="kg-soft-card p-5">
@@ -212,7 +212,7 @@ export function ProductListing({
           ) : null}
         </aside>
 
-        <div className="lg:order-none pb-24 lg:pb-0">
+        <div className="min-w-0 pb-24 lg:min-w-0 lg:pb-0">
           <ActiveFilterChips
             filters={filters}
             facets={facets}

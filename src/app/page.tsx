@@ -12,13 +12,7 @@ import { HomeQuotes } from "@/components/reviews/home-quotes";
 import { ReviewScoreStrip } from "@/components/reviews/score-strip";
 import { SamplesSection } from "@/components/home/samples-section";
 import { JsonLd } from "@/components/seo/json-ld";
-import {
-  getCategoryImages,
-  getFeaturedProducts,
-  listBrands,
-  listCategories,
-  listProducts,
-} from "@/lib/catalog";
+import { getFeaturedProducts, listBrands, listCategories, listProducts } from "@/lib/catalog";
 import { faqJsonLd } from "@/lib/seo/schema";
 import { getReviewSnapshot } from "@/lib/reviews/read";
 import { faqs } from "@/lib/site";
@@ -30,12 +24,11 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [featured, brands, categories, products, categoryImages] = await Promise.all([
+  const [featured, brands, categories, products] = await Promise.all([
     getFeaturedProducts(),
     listBrands(),
     listCategories(),
     listProducts(),
-    getCategoryImages(),
   ]);
   const counts = Object.fromEntries(
     categories.map((category) => [
@@ -50,7 +43,7 @@ export default async function HomePage() {
       <JsonLd data={faqJsonLd(faqs)} />
       <ReviewScoreStrip snapshot={reviews} />
       <HomeHero />
-      <AssortmentGrid counts={counts} total={products.length} images={categoryImages} />
+      <AssortmentGrid counts={counts} total={products.length} />
       <BrandMarquee brands={brands} />
       <Bestsellers products={featured} />
       <SamplesSection />

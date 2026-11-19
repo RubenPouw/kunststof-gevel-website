@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CategoryPage } from "@/components/catalog/category-page";
+import { HplHubPage } from "@/components/catalog/hpl-hub-page";
 import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SeoArticle } from "@/components/seo/article";
@@ -22,6 +23,7 @@ export async function CategoryListing({
   presentation = DEFAULT_PRESENTATION,
   heading,
   article,
+  searchParams,
 }: {
   slug: CategorySlug;
   filters: ListingFilters;
@@ -29,6 +31,7 @@ export async function CategoryListing({
   presentation?: ListingPresentation;
   heading?: { h1: string; path: string; description: string; intro: string };
   article?: { sections: SeoSection[]; faqs: SeoFaq[]; links: SeoLink[] };
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const category = await getCategory(slug);
   if (!category) return null;
@@ -70,7 +73,7 @@ export async function CategoryListing({
         belowIntro={
           slug === "hpl-platen" ? (
             <p className="mt-4">
-              <Link href="/hpl-plaat">Kleur en structuur</Link>
+              <Link href="#kleur-en-structuur">Kleur en structuur</Link>
             </p>
           ) : slug === "montage" && (filters.brandSlug === "zierer" || filters.brandSlugs?.includes("zierer")) ? (
             <p className="mt-4">
@@ -90,6 +93,13 @@ export async function CategoryListing({
         }
       />
       {slug === "gevelbekleding" ? <KozijnPassenBlock /> : null}
+      {slug === "hpl-platen" ? (
+        <HplHubPage
+          basePath={path}
+          searchParams={searchParams ?? Promise.resolve({})}
+          embedded
+        />
+      ) : null}
       {story ? <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} /> : null}
     </>
   );

@@ -70,7 +70,7 @@ export function SamplesSection() {
             </Link>
             <p className="mt-3 font-mono text-[13px] text-kg-kalk">Kies in daglicht, niet op een scherm.</p>
           </div>
-          <div className="flex items-center justify-center bg-kg-navy-2 px-4 pt-8 pb-12 sm:px-8 sm:py-12">
+          <div className="flex items-center justify-center bg-kg-navy px-4 pt-8 pb-12 sm:px-8 sm:py-12">
             <ul className="flex items-center justify-center">
               {TILES.map((tile, index) => (
                 <li

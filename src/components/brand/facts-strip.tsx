@@ -22,9 +22,9 @@ export function FactsStrip({
       className="bevel-24 print:hidden"
       style={{ background: "var(--gradient-signal)" }}
     >
-      <div className="container-kg grid grid-cols-2 gap-y-2 py-3.5 font-mono text-[13px] text-kg-navy sm:text-[14px] lg:grid-cols-4">
+      <div className="container-kg flex flex-wrap gap-x-6 gap-y-2 py-3.5 font-mono text-[13px] text-kg-navy sm:text-[14px]">
         {items.map((item) => (
-          <span key={item.k}>
+          <span key={`${item.k}-${item.v}`} className="max-w-full">
             <b className="font-bold">{item.k}</b> {item.v}
           </span>
         ))}

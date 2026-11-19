@@ -83,7 +83,7 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
   }
 
   return (
-    <article className="kg-soft-card flex flex-col gap-3 p-4 lg:flex-row lg:items-center lg:gap-3">
+    <article className="kg-soft-card flex w-full min-w-0 flex-col gap-3 p-4 lg:flex-row lg:flex-wrap lg:items-center lg:gap-3">
       <div className="flex min-w-0 gap-3 lg:contents">
         <Link href={`/producten/${card.slug}`} className="shrink-0 text-inherit no-underline hover:no-underline">
           <ProductPhoto
@@ -106,14 +106,14 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
           {lengthChoices.length > 0 && card.workingWidthMm ? (
             <p className="mt-1 font-mono text-[13px] text-kg-text-2">{card.workingWidthMm} mm werkend</p>
           ) : null}
-          <p className="mt-1 font-mono text-[13px] whitespace-nowrap" style={{ color: status.color }}>
+          <p className="mt-1 font-mono text-[13px]" style={{ color: status.color }}>
             {delivery}
           </p>
         </div>
       </div>
 
       {card.swatches.length > 0 ? (
-        <div className="w-full lg:w-[220px] lg:shrink-0">
+        <div className="w-full min-w-0 lg:w-[220px] lg:max-w-full lg:shrink">
           <CardSwatches card={card} activeIndex={index} onHover={setHover} onPick={pickColour} name={swatch?.name ?? ""} />
         </div>
       ) : null}
