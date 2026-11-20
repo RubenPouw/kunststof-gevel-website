@@ -6,7 +6,7 @@ import { preserveClickSearch } from "../tracking/clicks";
 export type RedirectRow = {
   from: string;
   to: string;
-  status: "200" | "301";
+  status: "200" | "301" | "308";
   reason: string;
 };
 
@@ -96,6 +96,9 @@ export function retiredKgTarget(path: string): string | null {
 
 export function lookupRedirect(pathname: string): RedirectRow {
   const path = normalizePath(pathname);
+  if (path === "/dakkapel-renovatie") {
+    return { from: path, to: "/blog/dakkapel-renovatie", status: "308", reason: "blogpost" };
+  }
   const retired = retiredKgTarget(path);
   if (retired) {
     return { from: path, to: retired, status: "301", reason: "niet-op-kunststof-gevel" };

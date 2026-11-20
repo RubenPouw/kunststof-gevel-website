@@ -69,6 +69,11 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   };
 }
 
+/** Zichtbare linksyntax `[label](/pad)` wordt platte tekst in JSON-LD. */
+export function faqPlainText(text: string) {
+  return text.replace(/\[([^\]]+)\]\((\/[^)\s]+)\)/g, "$1");
+}
+
 export function faqJsonLd(faqs: readonly { q: string; a: string }[]) {
   if (!faqs.length) return null;
   return {
@@ -77,7 +82,7 @@ export function faqJsonLd(faqs: readonly { q: string; a: string }[]) {
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.q,
-      acceptedAnswer: { "@type": "Answer", text: faq.a },
+      acceptedAnswer: { "@type": "Answer", text: faqPlainText(faq.a) },
     })),
   };
 }

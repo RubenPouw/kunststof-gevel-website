@@ -29,6 +29,34 @@ test("every crawled URL is a one-hop redirect or the same canonical URL", () => 
   }
 });
 
+test("dakkapel renovatie redirects to the blog in one hop", () => {
+  for (const path of ["/dakkapel-renovatie", "/dakkapel-renovatie/"]) {
+    const row = lookupRedirect(path);
+    assert.equal(row.status, "308", path);
+    assert.equal(row.to, "/blog/dakkapel-renovatie", path);
+    const decision = resolveNavigation({
+      host: "www.kunststof-gevel.nl",
+      pathname: path,
+      search: "",
+    });
+    assert.equal(decision.action, "redirect", path);
+    if (decision.action !== "redirect") continue;
+    assert.equal(decision.pathname, "/blog/dakkapel-renovatie", path);
+    assert.equal(decision.host, null, path);
+  }
+
+  const apex = resolveNavigation({
+    host: "kunststof-gevel.nl",
+    pathname: "/dakkapel-renovatie/",
+    search: "",
+  });
+  assert.equal(apex.action, "redirect");
+  if (apex.action !== "redirect") return;
+  assert.equal(apex.pathname, "/blog/dakkapel-renovatie");
+  assert.equal(apex.host, "www.kunststof-gevel.nl");
+  assert.equal(lookupRedirect("/blog/dakkapel-renovatie").status, "200");
+});
+
 test("trailing slash and apex host collapse in one redirect", () => {
   const decision = resolveNavigation({
     host: "kunststof-gevel.nl",
