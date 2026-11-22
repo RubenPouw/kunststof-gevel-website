@@ -15,7 +15,7 @@ test("dakkapel renovatie post keeps the brief", () => {
   assert.equal(post.image?.src, "/images/blog/dakkapel-rabat-2026-11-20.jpg");
   assert.equal(
     post.image?.alt,
-    "Dakkapel gerenoveerd met crème Keralit rabatdelen en nieuwe witte kozijnen",
+    "Dakkapel gerenoveerd met witte kunststof rabatdelen en nieuwe witte kozijnen",
   );
   assert.doesNotMatch(post.image?.alt ?? "", /\d|\bRAL\b/);
   assert.equal(post.faqs.length, 7);
