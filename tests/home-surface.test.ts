@@ -63,6 +63,19 @@ test("HPL category uses the shared listing and keeps the colour hub", () => {
   assert.equal(gevel.includes("photoGrid"), false);
 });
 
+test("listing rows keep a readable name and aligned controls", () => {
+  const row = read("../src/components/catalog/listing-row.tsx");
+  assert.equal(row.includes("lg:contents"), false);
+  assert.match(row, /min-w-0 flex-1/);
+  assert.match(row, /break-words/);
+  assert.match(row, /@min-\[640px\]:grid-cols-\[minmax\(7\.5rem,1fr\)_7\.5rem_8\.5rem_10\.5rem\]/);
+  const listing = read("../src/components/catalog/category-listing.tsx");
+  assert.match(listing, /photoGrid=\{slug === "hpl-platen"\}/);
+  const products = read("../src/components/catalog/product-listing.tsx");
+  assert.match(products, /photoGrid \? \(\s*<ListingPhotoGrid/);
+  assert.match(products, /<ListingRow/);
+});
+
 test("category cards are a carousel of packshots in the fixed order", () => {
   const grid = read("../src/components/home/assortment-grid.tsx");
   assert.equal(grid.includes("/categorie/gevelbekleding.webp"), false);
