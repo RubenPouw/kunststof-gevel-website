@@ -35,7 +35,7 @@ const corePosts: BlogPost[] = [
     kicker: "Dakkapel",
     image: {
       src: "/images/blog/dakkapel-rabat-2026-11-20.jpg",
-      alt: "Dakkapel gerenoveerd met crème Keralit rabatdelen en nieuwe witte kozijnen",
+      alt: "Dakkapel gerenoveerd met witte kunststof rabatdelen en nieuwe witte kozijnen",
     },
     intro:
       "Dakkapel renovatie met kunststof betekent dat de constructie blijft staan en de buitenkant helemaal nieuw wordt. Je bekleedt wangen, front en boeidelen met onderhoudsvrije [Keralit gevelbekleding](/keralit-gevelbekleding). Nooit meer schilderen, en je krijgt 10 jaar garantie op het materiaal. Wil je het niet zelf doen? Dan kunnen wij de montage voor je verzorgen.",
