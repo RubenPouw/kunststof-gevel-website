@@ -5,10 +5,10 @@ import { HplHubPage } from "@/components/catalog/hpl-hub-page";
 import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SeoArticle } from "@/components/seo/article";
+import { ReviewBar } from "@/components/reviews/review-bar";
 import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 import { getCategoryStory } from "@/data/seo/categories";
-import { site } from "@/lib/site";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/seo/schema";
@@ -35,16 +35,16 @@ export async function CategoryListing({
 }) {
   const category = await getCategory(slug);
   if (!category) return null;
-  const all = await getProductsByCategory(slug);
-  const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
   const story = article ?? getCategoryStory(slug);
   const seo = categoryPageSeo[slug];
   const path = heading?.path ?? categoryPath(slug);
   const h1 = heading?.h1 ?? seo.h1;
   const description = heading?.description ?? seo.description;
+  const intro = heading?.intro ?? category.summary;
   const staalGroep = categoryStaalGroup(slug);
+  const sampleHref = staalGroep ? `/staalaanvraag?groep=${staalGroep}` : undefined;
 
-  return (
+  const schema = (
     <>
       <JsonLd
         data={breadcrumbJsonLd([
@@ -53,10 +53,48 @@ export async function CategoryListing({
         ])}
       />
       <JsonLd data={collectionPageJsonLd({ name: h1, description, path })} />
+    </>
+  );
+
+  if (slug === "hpl-platen") {
+    return (
+      <>
+        {schema}
+        <div className="bg-kg-kalk">
+          <div className="container-kg pt-10 pb-8 sm:pt-12 sm:pb-10">
+            <p className="font-mono text-[13px] text-kg-text-2">Assortiment</p>
+            <h1 className="display-plp mt-2 max-w-3xl">{h1}</h1>
+            <p className="mt-4 max-w-2xl text-kg-text-2">{intro}</p>
+            {sampleHref ? (
+              <p className="mt-4">
+                <Link href={sampleHref}>Gratis kleurstalen aanvragen</Link>
+              </p>
+            ) : null}
+          </div>
+        </div>
+        <HplHubPage
+          basePath={path}
+          searchParams={searchParams ?? Promise.resolve({})}
+          embedded
+        />
+        <ReviewBar />
+        {story ? (
+          <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} faqAccordion />
+        ) : null}
+      </>
+    );
+  }
+
+  const all = await getProductsByCategory(slug);
+  const view = prepareListing(all, filters, page, CATEGORY_PAGE_SIZE, presentation.sort);
+
+  return (
+    <>
+      {schema}
       <CategoryPage
         kicker="Assortiment"
         title={h1}
-        intro={heading?.intro ?? category.summary}
+        intro={intro}
         cards={view.cards}
         total={view.total}
         totalUnfiltered={view.totalUnfiltered}
@@ -68,39 +106,16 @@ export async function CategoryListing({
         filters={filters}
         presentation={presentation}
         showStockChip
-        photoGrid={slug === "hpl-platen"}
-        sheetCalculator={slug === "hpl-platen"}
-        sampleHref={staalGroep ? `/staalaanvraag?groep=${staalGroep}` : undefined}
+        sampleHref={sampleHref}
         belowIntro={
-          slug === "hpl-platen" ? (
-            <p className="mt-4">
-              <Link href="#kleur-en-structuur">Kleur en structuur</Link>
-            </p>
-          ) : slug === "montage" && (filters.brandSlug === "zierer" || filters.brandSlugs?.includes("zierer")) ? (
+          slug === "montage" && (filters.brandSlug === "zierer" || filters.brandSlugs?.includes("zierer")) ? (
             <p className="mt-4">
               <Link href={ZIERER_MANUAL.href}>{ZIERER_MANUAL.label} (PDF)</Link>
             </p>
           ) : null
         }
-        emptyMessage={
-          slug === "hpl-platen" && all.length === 0
-            ? (
-                <>
-                  De HPL platen komen uit de shopcollectie. Ziet u ze nog niet, bel{" "}
-                  <a href={site.phoneHref}>{site.phone}</a>. Een plaat is 3050 × 1300 × 6 mm, hele plaat, 3,965 m².
-                </>
-              )
-            : undefined
-        }
       />
       {slug === "gevelbekleding" ? <KozijnPassenBlock /> : null}
-      {slug === "hpl-platen" ? (
-        <HplHubPage
-          basePath={path}
-          searchParams={searchParams ?? Promise.resolve({})}
-          embedded
-        />
-      ) : null}
       {story ? <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} /> : null}
     </>
   );

@@ -23,7 +23,7 @@ export async function HplHubPage({
   return (
     <>
       <HplHub plates={plates} related={related} query={query} basePath={basePath} embedded={embedded} />
-      {!embedded && onPlates ? (
+      {onPlates ? (
         <section className="container-kg border-t border-kg-lijn py-14">
           <h2 className="text-[22px] font-bold tracking-[-0.03em]">Hele plaat</h2>
           <p className="mt-3 max-w-2xl text-[16px] leading-[1.5] text-kg-text-2">
