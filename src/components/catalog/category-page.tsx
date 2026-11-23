@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { ProductListing } from "@/components/catalog/product-listing";
+import { ReviewBar } from "@/components/reviews/review-bar";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
 import { DEFAULT_PRESENTATION, type ListingCardModel, type ListingFacets, type ListingPresentation } from "@/lib/catalog/listing";
 import type { Brand, ListingFilters } from "@/lib/catalog/types";
@@ -46,7 +47,7 @@ export function CategoryPage({
 }) {
   return (
     <div className="bg-kg-kalk">
-    <div className="container-kg py-10 sm:py-12">
+    <div className="container-kg pt-10 sm:pt-12">
       <p className="font-mono text-[13px] text-kg-text-2">{kicker}</p>
       <h1 className="display-plp mt-2 max-w-3xl">{title}</h1>
       <p className="mt-4 max-w-2xl text-kg-text-2">{intro}</p>
@@ -62,7 +63,13 @@ export function CategoryPage({
           <SheetCalculator />
         </div>
       ) : null}
+    </div>
 
+    <div className="mt-8">
+      <ReviewBar />
+    </div>
+
+    <div className="container-kg pt-8 pb-10 sm:pb-12">
       <ProductListing
         cards={cards}
         total={total}

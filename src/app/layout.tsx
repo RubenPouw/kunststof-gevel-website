@@ -12,6 +12,7 @@ import { SiteHeader } from "@/components/site-header";
 import { AccountProvider } from "@/lib/account";
 import { CartProvider } from "@/lib/cart";
 import { SampleTrayProvider } from "@/lib/samples";
+import { getWebwinkelkeurScore } from "@/lib/reviews/read";
 import { organizationJsonLd } from "@/lib/seo/schema";
 import { site } from "@/lib/site";
 import { CLICK_CAPTURE_SCRIPT } from "@/lib/tracking/capture-script";
@@ -54,9 +55,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const webwinkelkeur = await getWebwinkelkeurScore();
   const gtmId = gtmMarkupId(process.env.GTM_ID);
   return (
     <html
@@ -89,7 +91,7 @@ export default function RootLayout({
                 <FactsStrip />
               </StickyChrome>
               <main className="flex-1">{children}</main>
-              <SiteFooter />
+              <SiteFooter webwinkelkeur={webwinkelkeur} />
               <ChatButton />
               <ConsentAndGtm />
             </SampleTrayProvider>

@@ -4,7 +4,7 @@ import test from "node:test";
 
 import type { Sql } from "../src/lib/db/client.ts";
 import { GOOGLE_REVIEW_STAT } from "../src/lib/reviews/config.ts";
-import { googleRowExpired, googleScoreLabel } from "../src/lib/reviews/format.ts";
+import { googleReviewHref, googleReviewScoreText, googleRowExpired, googleScoreLabel, webwinkelkeurFootnote } from "../src/lib/reviews/format.ts";
 import {
   mapGoogleReview,
   mapWebwinkelkeurRating,
@@ -123,14 +123,73 @@ test("google stars map onto 1 to 5 and a row older than 30 days expires", () => 
 test("the static Google line stays separate from WebwinkelKeur", () => {
   assert.equal(googleScoreLabel(GOOGLE_REVIEW_STAT.rating, GOOGLE_REVIEW_STAT.count), "Google 4,9 / 126 reviews");
   assert.equal(GOOGLE_REVIEW_STAT.href.includes("placeid=ChIJpTqzqNL_hy8RDIC8CeY0l9g"), true);
+  assert.equal(GOOGLE_REVIEW_STAT.count, 126);
+  assert.equal(googleReviewScoreText(), "4,9");
+  assert.equal(googleReviewHref(), GOOGLE_REVIEW_STAT.href);
+  assert.equal(
+    webwinkelkeurFootnote(9.81, 144),
+    "Ook beoordeeld op WebwinkelKeur: 9,8 / 10 (144 beoordelingen)",
+  );
+  assert.equal(webwinkelkeurFootnote(9.8, 144).includes("\u2014"), false);
 });
 
 test("company schema does not mark up review scores", () => {
   const schema = readFileSync(new URL("../src/lib/seo/schema.ts", import.meta.url), "utf8");
   const pages = readFileSync(new URL("../src/app/reviews/page.tsx", import.meta.url), "utf8");
+  const strip = readFileSync(new URL("../src/components/reviews/score-strip.tsx", import.meta.url), "utf8");
+  const line = readFileSync(new URL("../src/components/reviews/google-line.tsx", import.meta.url), "utf8");
+  const product = readFileSync(new URL("../src/app/producten/[slug]/product-detail.tsx", import.meta.url), "utf8");
   assert.equal(schema.includes("AggregateRating"), false);
   assert.equal(schema.includes("Review"), false);
   assert.equal(pages.includes("AggregateRating"), false);
+  assert.equal(strip.includes("AggregateRating"), false);
+  assert.equal(line.includes("AggregateRating"), false);
+  assert.equal(product.includes("AggregateRating"), false);
+});
+
+test("variant C shows Google from the static total and keeps WebwinkelKeur as a footnote", () => {
+  const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
+  const strip = read("../src/components/reviews/score-strip.tsx");
+  const line = read("../src/components/reviews/google-line.tsx");
+  const usp = read("../src/components/brand/usp-bar.tsx");
+  const product = read("../src/app/producten/[slug]/product-detail.tsx");
+  const category = read("../src/components/catalog/category-page.tsx");
+  const cart = read("../src/app/winkelwagen/page.tsx");
+  const checkout = read("../src/app/afrekenen/page.tsx");
+  const footer = read("../src/components/site-footer.tsx");
+  const home = read("../src/app/page.tsx");
+  const reviews = read("../src/app/reviews/page.tsx");
+  const pdp = read("../src/app/producten/[slug]/page.tsx");
+
+  assert.match(strip, /Lees alle reviews/);
+  assert.match(strip, /webwinkelkeurFootnote/);
+  assert.match(strip, /tone="signal"/);
+  assert.match(strip, /GOOGLE_REVIEW_STAT/);
+  assert.match(strip, /w-full no-underline hover:no-underline sm:w-auto/);
+  assert.equal(strip.includes("KeurmerkLink"), false);
+  assert.equal(strip.includes("126"), false);
+  assert.equal(strip.includes("4,9"), false);
+
+  assert.match(line, /Google \{score\}/);
+  assert.match(line, /GOOGLE_REVIEW_STAT\.count/);
+  assert.match(line, /tone="signal"/);
+  assert.equal(line.includes("126"), false);
+  assert.equal(line.includes("4,9"), false);
+
+  assert.match(usp, /GoogleReviewInline/);
+  assert.equal(usp.includes("Google 4,9 / 5"), false);
+  assert.equal(usp.includes("126"), false);
+
+  const priceAt = product.indexOf("font-mono text-[32px]");
+  const lineAt = product.indexOf("<GoogleReviewInline");
+  const shipAt = product.indexOf("<ShippingEstimate");
+  assert.ok(priceAt >= 0 && lineAt > priceAt && shipAt > lineAt);
+
+  assert.ok(category.indexOf("<ReviewBar") < category.indexOf("<ProductListing"));
+  for (const source of [home, reviews, pdp, cart, checkout]) {
+    assert.match(source, /<ReviewBar/);
+  }
+  assert.match(footer, /<ReviewScoreStrip/);
 });
 
 test("sync stores ratings without email and skips quarantine", async () => {

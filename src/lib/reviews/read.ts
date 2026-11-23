@@ -1,7 +1,25 @@
+import { cache } from "react";
+
 import { getSql } from "@/lib/db/client";
 import { GOOGLE_REVIEW_STAT, googleBusinessConfig } from "@/lib/reviews/config";
 import { googleRowExpired } from "@/lib/reviews/format";
 import { readReviewSummary, SUMMARY_GOOGLE, SUMMARY_WEBWINKELKEUR } from "@/lib/reviews/store";
+
+export type WebwinkelkeurScore = { average: number; amount: number };
+
+/** Live WebwinkelKeur summary only. Google totals stay on GOOGLE_REVIEW_STAT. */
+export const getWebwinkelkeurScore = cache(async (): Promise<WebwinkelkeurScore | null> => {
+  try {
+    const sql = getSql();
+    if (!sql) return null;
+    const summary = await readReviewSummary(sql, SUMMARY_WEBWINKELKEUR);
+    if (!summary) return null;
+    return { average: summary.ratingAverage, amount: summary.amount };
+  } catch (error) {
+    console.error("[reviews] webwinkelkeur lezen mislukt", error instanceof Error ? error.message : "fout");
+    return null;
+  }
+});
 
 export type PublicReview = {
   id: string;
@@ -14,7 +32,7 @@ export type PublicReview = {
 };
 
 export type ReviewSnapshot = {
-  webwinkelkeur: { average: number; amount: number } | null;
+  webwinkelkeur: WebwinkelkeurScore | null;
   google: { rating: number; count: number; href: string };
   reviews: PublicReview[];
 };
@@ -36,8 +54,7 @@ export async function getReviewSnapshot(): Promise<ReviewSnapshot> {
   try {
     const sql = getSql();
     if (!sql) return snapshot;
-    const summary = await readReviewSummary(sql, SUMMARY_WEBWINKELKEUR);
-    if (summary) snapshot.webwinkelkeur = { average: summary.ratingAverage, amount: summary.amount };
+    snapshot.webwinkelkeur = await getWebwinkelkeurScore();
 
     if (googleBusinessConfig()) {
       const google = await readReviewSummary(sql, SUMMARY_GOOGLE);

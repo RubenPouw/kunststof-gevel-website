@@ -9,7 +9,7 @@ import { HomeGuides } from "@/components/seo/home-guides";
 import { HomeHero } from "@/components/home/home-hero";
 import { ProjectMosaic } from "@/components/home/project-mosaic";
 import { HomeQuotes } from "@/components/reviews/home-quotes";
-import { ReviewScoreStrip } from "@/components/reviews/score-strip";
+import { ReviewBar } from "@/components/reviews/review-bar";
 import { SamplesSection } from "@/components/home/samples-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getFeaturedProducts, listBrands, listCategories, listProducts } from "@/lib/catalog";
@@ -41,7 +41,7 @@ export default async function HomePage() {
   return (
     <div className="pb-8">
       <JsonLd data={faqJsonLd(faqs)} />
-      <ReviewScoreStrip snapshot={reviews} />
+      <ReviewBar />
       <HomeHero />
       <AssortmentGrid counts={counts} total={products.length} />
       <BrandMarquee brands={brands} />

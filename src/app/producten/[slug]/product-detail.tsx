@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
+import { GoogleReviewInline } from "@/components/reviews/google-line";
 import { AreaCalculator } from "@/components/catalog/area-calculator";
 import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
@@ -242,6 +243,7 @@ export function ProductDetail({
               <p className="font-mono text-[32px] leading-none font-bold">
                 {canBuy ? <VatPrice incl={selected.price} excl={unitExcl} labeled={false} /> : "Prijs op aanvraag"}
               </p>
+              <GoogleReviewInline className="mt-2" />
               <p className="mt-1 text-[14px] text-kg-text-2">
                 {canBuy ? (
                   sheet ? (
