@@ -1,4 +1,5 @@
 import type { CategorySlug } from "@/lib/catalog/types";
+import { euroPlain, FREE_SHIPPING_FROM } from "@/lib/format";
 
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
 
@@ -107,7 +108,7 @@ export const pageSeo = {
     title: "Kunststof plafond badkamer kopen | Plafondpanelen",
     h1: "Kunststof plafond voor de badkamer",
     description:
-      "Kunststof plafondpanelen voor de badkamer: vochtbestendig, strak en onderhoudsarm. Prijs per paneel staat bij het product. Gratis verzending vanaf €499.",
+      `Kunststof plafondpanelen voor de badkamer: vochtbestendig, strak en onderhoudsarm. Prijs per paneel staat bij het product. Gratis verzending vanaf ${euroPlain(FREE_SHIPPING_FROM)}.`,
   },
   plafondOverstek: {
     path: "/plafondpanelen/overstek",
@@ -120,7 +121,7 @@ export const pageSeo = {
     title: "Keralit boeideel en dakranden kopen | 200 tot 350 mm",
     h1: "Keralit boeideel en dakranden",
     description:
-      "Keralit boeideel in 200, 250, 300 of 350 mm, met profielen en hoekstukken. Zelfde kleur als je gevel. Gratis verzending vanaf €499.",
+      `Keralit boeideel in 200, 250, 300 of 350 mm, met profielen en hoekstukken. Zelfde kleur als je gevel. Gratis verzending vanaf ${euroPlain(FREE_SHIPPING_FROM)}.`,
     brand: "keralit",
   },
   boeiVinyplus: {

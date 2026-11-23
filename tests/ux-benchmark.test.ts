@@ -151,12 +151,14 @@ test("Klarna and Riverty stay off unless the flag is exactly true", () => {
   });
 });
 
-test("shipping copy uses the existing amounts", () => {
-  assert.equal(SHIPPING_FLAT, 49);
+test("shipping copy uses the customer incl amounts and the derived excl amounts", () => {
+  assert.equal(SHIPPING_FLAT, 49.95);
   assert.equal(FREE_SHIPPING_FROM, 499);
-  assert.match(shippingEstimateCopy(), /€\s*49,00/);
-  assert.match(shippingEstimateCopy(), /€\s*499,00/);
+  assert.match(shippingEstimateCopy(), /€\s*41,28/);
+  assert.match(shippingEstimateCopy(), /€\s*412,40/);
   assert.match(shippingEstimateCopy(), /excl\. btw/);
+  assert.equal(shippingEstimateCopy().includes("59,29"), false);
+  assert.equal(shippingEstimateCopy().includes("603,79"), false);
   assert.equal(shippingEstimateCopy().includes("—"), false);
 });
 

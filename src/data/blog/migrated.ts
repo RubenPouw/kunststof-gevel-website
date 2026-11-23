@@ -1,4 +1,5 @@
 import { categoryPath } from "@/data/seo/category-pages";
+import { euroPlain, FREE_SHIPPING_FROM } from "@/lib/format";
 
 import type { BlogPost } from "./posts";
 
@@ -334,7 +335,7 @@ export const migratedPosts: BlogPost[] = [
           "Hoekstukken, tussenstukken, eindprofielen en eventueel H-verbindingsprofielen",
           "Rvs schroeven en Torx schroeven op kleur",
           "Keralit kleurstift voor de afwerking",
-          "Alle onderdelen staan bij elkaar op de pagina Keralit dakranden en boeidelen. Vanaf €499 is de verzending gratis. Heb je een groot project of veel strekkende meters? Vraag via die pagina een prijs op maat aan.",
+          `Alle onderdelen staan bij elkaar op de pagina Keralit dakranden en boeidelen. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis. Heb je een groot project of veel strekkende meters? Vraag via die pagina een prijs op maat aan.`,
         ],
       },
       {

@@ -1,9 +1,11 @@
+import { euroPlain, FREE_SHIPPING_FROM } from "@/lib/format";
+
 export type UspItem = { k: string; v: string };
 
 /** Header-USP per deel van de site. Kozijnen: geen montage, geen kleurgarantie, geen voorraad. Alles is op maat. */
 export const uspBySection = {
   site: [
-    { k: "Gratis verzending", v: "vanaf €499 binnen Nederland" },
+    { k: "Gratis verzending", v: `vanaf ${euroPlain(FREE_SHIPPING_FROM)} binnen Nederland` },
     { k: "Afhalen", v: "uit voorraad mogelijk" },
     { k: "10 jaar", v: "garantie op kleur" },
     { k: "Showroom", v: "op afspraak in Hedel" },
