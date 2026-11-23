@@ -53,8 +53,14 @@ test("HPL category uses the shared listing and keeps the colour hub", () => {
   assert.match(page, /slug="hpl-platen"/);
   assert.match(listing, /HplHubPage/);
   assert.match(listing, /id="kleur-en-structuur"|embedded/);
+  assert.match(listing, /photoGrid=\{slug === "hpl-platen"\}/);
   const products = read("../src/components/catalog/product-listing.tsx");
   assert.match(products, /minmax\(0,3fr\)_minmax\(0,9fr\)/);
+  assert.match(products, /photoGrid \? \(\s*<ListingPhotoGrid/);
+  const defaults = read("../src/lib/catalog/listing.ts");
+  assert.match(defaults, /view: "lijst"/);
+  const gevel = read("../src/app/gevelbekleding/page.tsx");
+  assert.equal(gevel.includes("photoGrid"), false);
 });
 
 test("category cards are a carousel of packshots in the fixed order", () => {

@@ -21,6 +21,7 @@ export function CategoryPage({
   filters,
   presentation = DEFAULT_PRESENTATION,
   showStockChip = false,
+  photoGrid = false,
   sheetCalculator = false,
   emptyMessage,
   sampleHref,
@@ -40,6 +41,8 @@ export function CategoryPage({
   filters: ListingFilters;
   presentation?: ListingPresentation;
   showStockChip?: boolean;
+  /** HPL shows colour photos in a grid. Other categories keep the list. */
+  photoGrid?: boolean;
   sheetCalculator?: boolean;
   emptyMessage?: React.ReactNode;
   sampleHref?: string;
@@ -83,6 +86,7 @@ export function CategoryPage({
         view={presentation.view}
         sort={presentation.sort}
         showStockChip={showStockChip}
+        photoGrid={photoGrid}
         emptyMessage={emptyMessage}
       />
     </div>
