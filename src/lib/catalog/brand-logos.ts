@@ -29,7 +29,7 @@ export function brandLogoSrc(slug: string) {
 /**
  * Manufacturer marks for the homepage bar and /merken.
  * Navy wordmarks and reseller files are not in this map.
- * Werzalit, HPL, HPL Compact Exterieur, Overig, Profex and Abet have no official file here.
+ * Werzalit, HPL, HPL Compact Exterieur, Overig and Abet have no official file here.
  */
 export const officialBrandLogoFile: Record<string, string> = {
   eurotexx: "/brand/merken/eurotexx.svg",

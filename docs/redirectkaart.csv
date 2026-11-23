@@ -26,7 +26,7 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /klantenservice-advies-ondersteuning-voor-kunststof-gevelbekleding/,,200,,/contact
 /staalaanvraag/,,200,,/staalaanvraag
 /unipanel-bouwpaneel/,,200,,/merken/unipanel
-/profex-gevelbekleding/,,200,,/merken/profex
+/profex-gevelbekleding/,,200,,/gevelbekleding
 /kerrafront-gevelbekleding/,,200,,/merken/kerrafront
 /eurotexx-gevelbekleding/,,200,,/merken/eurotexx
 /kunststof-kozijnen-op-maat-prijs-berekenen-snel-geleverd/,,200,,/kunststof-kozijnen
@@ -78,7 +78,7 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /product/keralit-dakrand-paneel-200-mm/,,200,,/producten/keralit-dakrandpaneel-200mm
 /product/vinyplus-vario-299mm-gevelpaneel/,,200,,/producten/vinyplus-vario-299mm
 /product/vinyplus-rondkantpaneel/,,200,,/producten/vinyplus-rondkantpaneel-150-mm
-/product/duafort-rabat-125-mm-canexel-vervanger/,,200,,/merken/profex
+/product/duafort-rabat-125-mm-canexel-vervanger/,,200,,/rabatdelen
 /product/zierer-ventilatie-afsluitprofiel-65-x-17-mm/,,200,,/zierer-steenstrips
 /product/zierer-ventilatieprofiel-50-25-x-20-mm/,,200,,/zierer-steenstrips
 /product/zierer-steenstrips-wildverband/,,200,,/producten/zierer-steenstrip-1096-x-359-mm-wildverband-3-4m2
@@ -114,11 +114,11 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /product/stoelprofiel-16-mm-inwendig/,,200,,/montage
 /product/reparatiestift/,,200,,/montage
 /product/startprofiel-horizontale-bekleding-6-meter-per-lengte/,,200,,/montage
-/product/profex-duafort-hoekprofiel-2-delig/,,200,,/montage?merk=profex
-/product/profex-eindprofiel-2-delig/,,200,,/montage?merk=profex
-/product/profex-verbindingsprofiel-2-delig/,,200,,/montage?merk=profex
-/product/profex-ventilatieprofiel/,,200,,/montage?merk=profex
-/product/profex-duafort-velling-paneel/,,200,,/merken/profex
+/product/profex-duafort-hoekprofiel-2-delig/,,200,,/gevelbekleding
+/product/profex-eindprofiel-2-delig/,,200,,/gevelbekleding
+/product/profex-verbindingsprofiel-2-delig/,,200,,/gevelbekleding
+/product/profex-ventilatieprofiel/,,200,,/gevelbekleding
+/product/profex-duafort-velling-paneel/,,200,,/rabatdelen
 /product/pe-tape-3-x-12-mm-25-mtr-per-rol/,,200,,/montage
 /product/milyt-hpl-plaat/,,200,,/hpl-plaat
 /product/novaboard-eindkap/,,200,,/kunststof-vensterbank
@@ -166,7 +166,7 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /product/bevestigingsschroeven-35-x-30-mm/,,200,,/montage
 /product/kunststof-plafondpaneel-250-mm-voor-buiten-plafonds-of-carport/,,200,,/producten/florence-buitenplafond-paneel-250x16-5-mm
 /product/florence-buitenplafond-paneel-250x165-mm/,,200,,/producten/florence-buitenplafond-paneel-250x16-5-mm
-/product/profex-dubbel-rabat-270-mm/,,200,,/merken/profex
+/product/profex-dubbel-rabat-270-mm/,,200,,/rabatdelen
 /product/milexx-big-board-dakrandpaneel/,,200,,/boeidelen/milexx
 /product/keralit-verbindingsprofiel/,,200,,/montage?merk=keralit
 /product/keralit-basis-verbindingsprofiel/,,200,,/montage?merk=keralit
@@ -198,7 +198,7 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /product/keralit-tweezijdig-ventilatieprofiel/,,200,,/producten/tweezijdig-ventilatieprofiel
 /product/keralit-167-mm-sponning-kopen-onderhoudsarm-duurzaam/,,200,,/producten/keralit-sponningdeel-167mm
 /product/keralit-sponning-143-mm/,,200,,/producten/keralit-sponningdeel-143mm
-/product/profex-start-profiel-300-cm/,,200,,/montage?merk=profex
+/product/profex-start-profiel-300-cm/,,200,,/gevelbekleding
 /product/eindkap-inwendig-hoekprofiel-uitwendig-hoekprofiel-smal/,,200,,/montage
 /product/keralit-trim-kraal-aansluitprofiel-17mm/,,200,,/montage?merk=keralit
 /product/ongelijkzijdig-u-profiel-10-mm-omrandingsprofiel/,,200,,/montage
@@ -217,7 +217,7 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /merk/vinyplus/,,200,,/merken/vinyplus
 /merk/eurotexx/,,200,,/merken/eurotexx
 /merk/kerrafront/,,200,,/merken/kerrafront
-/merk/profex/,,200,,/merken/profex
+/merk/profex/,,200,,/gevelbekleding
 /merk/milexx/,,200,,/merken/milexx
 /merk/unipanel/,,200,,/merken/unipanel
 /merk/florence/,,200,,/merken/florence
@@ -245,8 +245,8 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding/keralit-panelen/,,200,,/keralit-gevelbekleding
 /product-categorie/kunststof-gevelbekleding/keralit-gevelbekleding/montage-materialen-keralit/,,200,,/montage?merk=keralit
 /product-categorie/kunststof-dakranden-boei-delen/unipanel-bouwpaneel/,,200,,/boeidelen?merk=unipanel
-/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding/,,200,,/merken/profex
-/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding/profex-duafort-profielen/,,200,,/merken/profex
+/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding/,,200,,/gevelbekleding
+/product-categorie/kunststof-gevelbekleding/profex-gevelbekleding/profex-duafort-profielen/,,200,,/gevelbekleding
 /product-categorie/binnenplafonds/,,200,,/plafondpanelen/badkamer
 /product-categorie/buitenplafonds/,,200,,/plafondpanelen/overstek
 /locations.kml/,,200,,/contact

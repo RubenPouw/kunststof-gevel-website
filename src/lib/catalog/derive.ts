@@ -49,7 +49,7 @@ export function inferProfileType(name: string, productType?: string): ProfileTyp
   if (/potdeksel/.test(t)) return "potdeksel";
   if (/rondkant/.test(t)) return "rondkant";
   if (/quattro/.test(t)) return "quattro";
-  if (/rabat|duafort/.test(t)) return "rabat";
+  if (/rabat/.test(t)) return "rabat";
   if (/dakrand|boeideel/.test(t)) return "dakrand";
   if (/vensterbank|overzet/.test(t)) return "vensterbank";
   if (/profiel|schroef|clip|verbind|startpr|eindkap|ventilatie|kit/.test(t)) return "profiel";
