@@ -6,6 +6,7 @@ import { getBrandStory } from "@/data/seo/brands";
 import { getBrand, getProductsByBrand, listBrands } from "@/lib/catalog";
 import { PAGE_SIZE } from "@/lib/catalog/listing";
 import { staticBrands } from "@/lib/catalog/static";
+import { isHiddenOnKunststofGevel } from "@/lib/catalog/visibility";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -14,10 +15,11 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const brands = await listBrands();
-  const slugs = new Set<string>([
-    ...staticBrands.map((brand) => brand.slug),
-    ...brands.map((brand) => brand.slug),
-  ]);
+  const slugs = new Set<string>(
+    [...staticBrands, ...brands]
+      .filter((brand) => !isHiddenOnKunststofGevel({ brandSlug: brand.slug, name: brand.name, brand: brand.summary }))
+      .map((brand) => brand.slug),
+  );
   return [...slugs].map((slug) => ({ slug }));
 }
 

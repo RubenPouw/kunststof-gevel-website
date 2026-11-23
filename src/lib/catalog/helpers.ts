@@ -213,7 +213,9 @@ function firstParam(value: string | string[] | undefined) {
 export function parseListingSearchParams(
   searchParams: Record<string, string | string[] | undefined>,
 ): ListingFilters {
-  const brandParts = splitCsv(firstParam(searchParams.merk));
+  const brandParts = splitCsv(firstParam(searchParams.merk)).filter(
+    (part) => !/^(profex|duafort|canexel)$/i.test(part),
+  );
   const voorraad = firstParam(searchParams.voorraad);
   const typeParts = splitCsv(firstParam(searchParams.type)).filter((item): item is ProfileType =>
     profileTypes.includes(item as ProfileType),

@@ -4,6 +4,7 @@ import { blogPosts } from "@/data/blog/posts";
 import { projects } from "@/data/projects";
 import { articles } from "@/lib/kozijnen/kennis";
 import { allLayouts, GROUPS, layoutPath } from "@/lib/kozijnen/layouts";
+import { isHiddenOnKunststofGevel } from "@/lib/catalog/visibility";
 import { staticBrands } from "@/lib/catalog/static";
 import { getCatalog } from "@/lib/catalog";
 import { categoryPath, pageSeo } from "@/data/seo/category-pages";
@@ -57,6 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const brands = new Map<string, { slug: string }>();
   for (const brand of [...staticBrands, ...catalog.brands]) {
     if (brand.slug === "overig") continue;
+    if (isHiddenOnKunststofGevel({ brandSlug: brand.slug, name: brand.name, brand: brand.summary })) continue;
     // New lines stay out of the sitemap until a product exists. Empty legacy brands stay.
     if (!stocked.has(brand.slug) && brand.slug.startsWith("hpl")) continue;
     if (!stocked.has(brand.slug) && (brand.slug === "renolit" || brand.slug === "abet")) continue;
@@ -72,10 +74,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${base}/merken/${brand.slug}`,
       lastModified: contentDate,
     })),
-    ...catalog.products.map((product) => ({
-      url: `${base}/producten/${product.slug}`,
-      ...(product.updatedAt ? { lastModified: new Date(product.updatedAt) } : {}),
-    })),
+    ...catalog.products
+      .filter((product) => !isHiddenOnKunststofGevel(product))
+      .map((product) => ({
+        url: `${base}/producten/${product.slug}`,
+        ...(product.updatedAt ? { lastModified: new Date(product.updatedAt) } : {}),
+      })),
     ...blogPosts.map((post) => ({
       url: `${base}/blog/${post.slug}`,
       lastModified: new Date(post.date),

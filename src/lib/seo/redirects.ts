@@ -24,7 +24,6 @@ const PUBLIC_BRANDS = [
   "unipanel",
   "florence",
   "zierer",
-  "profex",
 ] as const;
 
 export function normalizePath(pathname: string) {
@@ -46,8 +45,37 @@ function dakrandFallback(brand: string | undefined) {
 
 function brandOf(value: string) {
   const text = value.toLowerCase();
-  if (text.includes("duafort") || text.includes("canexel")) return "profex";
   return PUBLIC_BRANDS.find((brand) => text.includes(brand));
+}
+
+const RETIRED_BRAND = /profex|duafort|canexel/i;
+const RETIRED_PRODUCT_SLUGS = new Set(["afdichtingsprofiel-pvc-45"]);
+
+/** Old Profex, Duafort and Canexel URLs land on a page that does not name them. */
+export function retiredBrandTarget(path: string): string | null {
+  const text = path.toLowerCase();
+  const slug = text.startsWith("/producten/") ? text.slice("/producten/".length) : "";
+  if (!RETIRED_BRAND.test(text) && !RETIRED_PRODUCT_SLUGS.has(slug)) return null;
+  if (/velling/.test(text) || (/rabat/.test(text) && !/profiel/.test(text))) return "/rabatdelen";
+  return "/gevelbekleding";
+}
+
+/** Drop a retired brand from ?merk= without touching the other filters. */
+export function stripRetiredBrandQuery(search: string): string | null {
+  if (!search || !/merk=/i.test(search)) return null;
+  const params = new URLSearchParams(search.startsWith("?") ? search.slice(1) : search);
+  const merk = params.get("merk");
+  if (!merk) return null;
+  const parts = merk
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  const kept = parts.filter((part) => !/^(profex|duafort|canexel)$/i.test(part));
+  if (kept.length === parts.length) return null;
+  if (kept.length) params.set("merk", kept.join(","));
+  else params.delete("merk");
+  const next = params.toString();
+  return next ? `?${next}` : "";
 }
 
 /** Patterns for old URLs that were not in the crawled sitemap. */
@@ -87,6 +115,8 @@ export function fallbackTarget(path: string) {
 
 /** Linerio is off the shop. Wonderboard stays in Shopify for the other site. */
 export function retiredKgTarget(path: string): string | null {
+  const retiredBrand = retiredBrandTarget(path);
+  if (retiredBrand) return retiredBrand;
   if (path === "/merken/linerio" || path === "/merken/wonderboard") return "/gevelbekleding";
   if (!path.startsWith("/producten/")) return null;
   const slug = path.slice("/producten/".length);
@@ -139,13 +169,20 @@ export function resolveNavigation(
   const slash = input.pathname.length > 1 && input.pathname.endsWith("/");
   const pathChanged = target.pathname !== normalized;
   const carryQuery = row.reason === "categorie-slug" && !target.search;
-  if (!apex && !pathChanged && !slash && !target.search) {
+  const baseSearch = preserveClickSearch(
+    target.search || (pathChanged && !carryQuery ? "" : input.search),
+    input.search,
+  );
+  const stripped = stripRetiredBrandQuery(baseSearch);
+  const search = stripped ?? baseSearch;
+  const queryChanged = stripped !== null;
+  if (!apex && !pathChanged && !slash && !target.search && !queryChanged) {
     return { action: "next", noindex };
   }
   return {
     action: "redirect",
     pathname: target.pathname,
-    search: preserveClickSearch(target.search || (pathChanged && !carryQuery ? "" : input.search), input.search),
+    search,
     host: apex ? "www.kunststof-gevel.nl" : null,
     noindex,
   };

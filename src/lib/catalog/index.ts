@@ -138,7 +138,10 @@ function withColourLabels(data: CatalogData): CatalogData {
   const products = data.products
     .filter((product) => !isHiddenOnKunststofGevel(product))
     .map((product) => withManuals(enrichProduct({ ...product, category: resolvePublicCategory(product) })));
-  if (data.source === "static") return { ...data, products };
+  const brands = data.brands.filter(
+    (brand) => !isHiddenOnKunststofGevel({ brandSlug: brand.slug, name: brand.name, brand: brand.summary }),
+  );
+  if (data.source === "static") return { ...data, products, brands };
   return { ...data, products, brands: brandsFromProducts(products) };
 }
 
@@ -170,6 +173,7 @@ export async function getCategory(slug: string) {
 }
 
 export async function getBrand(slug: string) {
+  if (isHiddenOnKunststofGevel({ brandSlug: slug, slug })) return undefined;
   return (await listBrands()).find((brand) => brand.slug === slug) ?? getStaticBrand(slug);
 }
 

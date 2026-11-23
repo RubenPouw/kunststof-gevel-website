@@ -28,7 +28,6 @@ PUBLIC_BRANDS = [
     "unipanel",
     "florence",
     "zierer",
-    "profex",
 ]
 
 
@@ -90,7 +89,7 @@ PAGES = {
     "/kunststof-binnenplafonds": ("/merken/florence", "plafond-merk", 301),
     "/overstek-en-plafondpanelen": ("/merken/florence", "plafond-merk", 301),
     "/unipanel-bouwpaneel": ("/merken/unipanel", "brand", 301),
-    "/profex-gevelbekleding": ("/merken/profex", "brand", 301),
+    "/profex-gevelbekleding": ("/gevelbekleding", "retired-brand", 301),
     "/kerrafront-gevelbekleding": ("/merken/kerrafront", "brand", 301),
     "/eurotexx-gevelbekleding": ("/merken/eurotexx", "brand", 301),
     "/hpl-plaat": ("/hpl-platen", "hpl-categorie", 301),
@@ -129,12 +128,20 @@ PAGES = {
 
 def brand_of(slug: str) -> str | None:
     text = slug.lower()
-    if "duafort" in text or "canexel" in text:
-        return "profex"
     for brand in PUBLIC_BRANDS:
         if brand in text:
             return brand
     return None
+
+
+def retired_brand_target(text: str) -> str | None:
+    """Profex, Duafort and Canexel are gone. Panels go to rabat, the rest to gevelbekleding."""
+    low = text.lower()
+    if not re.search(r"profex|duafort|canexel", low):
+        return None
+    if "velling" in low or ("rabat" in low and "profiel" not in low):
+        return "/rabatdelen"
+    return "/gevelbekleding"
 
 
 def family_target(slug: str) -> tuple[str, str]:
@@ -187,6 +194,9 @@ def family_target(slug: str) -> tuple[str, str]:
 
 
 def product_target(slug: str, by_norm: dict[str, list[str]]) -> tuple[str, str]:
+    retired = retired_brand_target(slug)
+    if retired:
+        return retired, "retired-brand"
     if slug in EXPLICIT_PRODUCTS:
         return EXPLICIT_PRODUCTS[slug], "same-article"
     hits = by_norm.get(norm(slug), [])
@@ -197,6 +207,9 @@ def product_target(slug: str, by_norm: dict[str, list[str]]) -> tuple[str, str]:
 
 
 def image_target(path: str, parent: str, page_target: dict[str, str]) -> str:
+    retired = retired_brand_target(path)
+    if retired:
+        return retired
     name = path.lower()
     if "eurotexx" in name:
         return "/merken/eurotexx"
@@ -219,12 +232,17 @@ def image_target(path: str, parent: str, page_target: dict[str, str]) -> str:
     if "vensterbank" in name:
         return "/kozijnafwerking"
     target = page_target.get(parent, "/gevelbekleding")
+    if any(token in target for token in ("profex", "duafort", "canexel")):
+        return retired_brand_target(parent) or "/gevelbekleding"
     if target in {"/", ""}:
         return "/gevelbekleding"
     return target
 
 
 def category_target(path: str) -> tuple[str, str]:
+    retired = retired_brand_target(path)
+    if retired:
+        return retired, "retired-brand"
     text = path.lower()
     if "binnenplafond" in text:
         return "/merken/florence", "category"
@@ -320,7 +338,10 @@ def main() -> None:
             continue
         if path.startswith("/merk/"):
             slug = path.split("/merk/", 1)[1]
-            if slug in PUBLIC_BRANDS:
+            retired = retired_brand_target(slug)
+            if retired:
+                add(path, retired, "retired-brand", 301)
+            elif slug in PUBLIC_BRANDS:
                 add(path, f"/merken/{slug}", "brand", 301)
             else:
                 add(path, "/merken", "brand-index", 301)

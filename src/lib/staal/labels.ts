@@ -10,7 +10,6 @@ const LINE_LABEL: Record<string, string> = {
   eurotexx: "Eurotexx",
   zierer: "Zierer",
   milexx: "Milexx",
-  profex: "Profex",
   unipanel: "Unipanel",
   florence: "Florence",
   fronto: "Fronto",

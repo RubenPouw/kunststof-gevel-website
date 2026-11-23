@@ -190,16 +190,18 @@ test("a vensterbank leaves kozijnafwerking, by type, title or handle", () => {
       productType: "Kozijnafwerking",
       name: "Afdichtingsprofiel PVC 45 mm",
       slug: "afdichtingsprofiel-pvc-45",
-      brandSlug: "profex",
+      brandSlug: "overig",
     }),
     "kozijnafwerking",
   );
 });
 
 test("linerio and wonderboard stay out of the kunststof-gevel catalog", () => {
-  assert.equal(KNOWN_BRANDS.some((brand) => brand.slug === "linerio"), false);
+  assert.equal(KNOWN_BRANDS.some((brand) => brand.slug === "linerio" || brand.slug === "profex"), false);
   assert.equal(brandLogoSrc("linerio"), undefined);
   assert.equal(matchProductLine("Linerio wandpaneel S 115mm"), undefined);
+  assert.equal(matchProductLine("Profex Duafort rabat"), undefined);
+  assert.equal(matchProductLine("Canexel vervanger"), undefined);
 
   const catalog = assembleCatalog(
     [
@@ -240,6 +242,19 @@ test("linerio and wonderboard stay out of the kunststof-gevel catalog", () => {
         productType: "Gevelbekleding",
         vendor: "Keralit",
       }),
+      shop({
+        handle: "profex-duafort-rabat-125",
+        title: "Duafort Rabat 125 mm",
+        productType: "Gevelbekleding",
+        vendor: "Profex",
+        tags: ["canexel"],
+      }),
+      shop({
+        handle: "afdichtingsprofiel-pvc-45",
+        title: "Afdichtingsprofiel PVC 45 mm",
+        productType: "Kozijnafwerking",
+        vendor: "Profex",
+      }),
     ],
     [],
   );
@@ -253,6 +268,10 @@ test("linerio and wonderboard stay out of the kunststof-gevel catalog", () => {
   assert.equal(catalog.products.find((product) => product.brandSlug === "unipanel")?.category, "dakranden");
   assert.equal(catalog.products.find((product) => product.brandSlug === "florence")?.category, "plafondpanelen");
   assert.equal(catalog.products.find((product) => product.brandSlug === "keralit")?.category, "gevelbekleding");
-  assert.equal(catalog.brands.some((brand) => brand.slug === "linerio" || brand.slug === "wonderboard"), false);
+  assert.equal(catalog.brands.some((brand) => /linerio|wonderboard|profex|duafort|canexel/i.test(brand.slug)), false);
   assert.equal(mapShopifyProduct(shop({ handle: "linerio-startprofiel-s-2650x28x12", title: "Linerio startprofiel S" })), null);
+  assert.equal(
+    mapShopifyProduct(shop({ handle: "profex-duafort-velling-paneel", title: "Duafort vellingpaneel", vendor: "Profex" })),
+    null,
+  );
 });
