@@ -1,10 +1,15 @@
-import Link from "next/link";
-import type { ReactNode } from "react";
+"use client";
+
+import { lazy, Suspense, useState, type ReactNode } from "react";
 
 import { ReviewStars } from "@/components/reviews/stars";
 import { GOOGLE_REVIEW_STAT } from "@/lib/reviews/config";
-import { googleReviewHref, googleReviewScoreText } from "@/lib/reviews/format";
+import { googleReviewScoreText } from "@/lib/reviews/format";
 import { cn } from "@/lib/utils";
+
+const ReviewsModal = lazy(() =>
+  import("@/components/reviews/reviews-modal").then((mod) => ({ default: mod.ReviewsModal })),
+);
 
 export function GoogleReviewsLink({
   className,
@@ -15,22 +20,29 @@ export function GoogleReviewsLink({
   children: ReactNode;
   label?: string;
 }) {
-  const href = googleReviewHref();
-  if (href.startsWith("/")) {
-    return (
-      <Link href={href} className={className} aria-label={label}>
-        {children}
-      </Link>
-    );
-  }
+  const [open, setOpen] = useState(false);
   return (
-    <a href={href} className={className} aria-label={label} rel="noopener noreferrer">
-      {children}
-    </a>
+    <>
+      <button
+        type="button"
+        className={cn("cursor-pointer appearance-none border-0 bg-transparent p-0 text-left font-[inherit] text-inherit", className)}
+        aria-label={label}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
+      >
+        {children}
+      </button>
+      {open ? (
+        <Suspense fallback={null}>
+          <ReviewsModal onClose={() => setOpen(false)} />
+        </Suspense>
+      ) : null}
+    </>
   );
 }
 
-/** Compact Google line: score, yellow stars, review count. Links to the Google reviews. */
+/** Compact Google line: score, yellow stars, review count. Opens the reviews on this page. */
 export function GoogleReviewInline({ className, starSize = 14 }: { className?: string; starSize?: number }) {
   const score = googleReviewScoreText();
   const count = GOOGLE_REVIEW_STAT.count;
