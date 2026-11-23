@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { BrandRow } from "@/components/catalog/brand-row";
 import { ListingCard } from "@/components/catalog/listing-card";
 import { ActiveFilterChips, ListingFiltersPanel } from "@/components/catalog/listing-filters";
+import { ListingPhotoGrid } from "@/components/catalog/listing-photo-grid";
 import { ListingRow } from "@/components/catalog/listing-row";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -40,6 +41,7 @@ export function ProductListing({
   view: initialView = DEFAULT_PRESENTATION.view,
   sort: initialSort = DEFAULT_PRESENTATION.sort,
   showStockChip = false,
+  photoGrid = false,
   emptyMessage,
 }: {
   cards: ListingCardModel[];
@@ -54,6 +56,8 @@ export function ProductListing({
   view?: ListingView;
   sort?: ListingSort;
   showStockChip?: boolean;
+  /** Square photo cards instead of the list or the wide raster card. HPL only. */
+  photoGrid?: boolean;
   emptyMessage?: React.ReactNode;
 }) {
   const [cards, setCards] = useState(initialCards);
@@ -253,17 +257,21 @@ export function ProductListing({
                   <option value="prijs-af">Prijs hoog-laag</option>
                 </select>
               </label>
-              <ViewToggle
-                view={view}
-                listHref={listingPageHref(basePath, filters, 1, { view: "lijst", sort })}
-                gridHref={listingPageHref(basePath, filters, 1, { view: "raster", sort })}
-              />
+              {photoGrid ? null : (
+                <ViewToggle
+                  view={view}
+                  listHref={listingPageHref(basePath, filters, 1, { view: "lijst", sort })}
+                  gridHref={listingPageHref(basePath, filters, 1, { view: "raster", sort })}
+                />
+              )}
             </div>
           </div>
           {cards.length === 0 ? (
             <p className="kg-soft-card mt-4 px-6 py-12 text-center text-kg-text-2">
               {emptyMessage ?? "Geen producten met deze filters."}
             </p>
+          ) : photoGrid ? (
+            <ListingPhotoGrid cards={cards} />
           ) : view === "raster" ? (
             <div className="mt-4 grid gap-3 lg:grid-cols-2">
               {cards.map((card) => (

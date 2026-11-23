@@ -68,6 +68,7 @@ export async function CategoryListing({
         filters={filters}
         presentation={presentation}
         showStockChip
+        photoGrid={slug === "hpl-platen"}
         sheetCalculator={slug === "hpl-platen"}
         sampleHref={staalGroep ? `/staalaanvraag?groep=${staalGroep}` : undefined}
         belowIntro={

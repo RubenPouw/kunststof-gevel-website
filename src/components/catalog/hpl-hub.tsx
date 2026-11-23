@@ -299,19 +299,16 @@ function HplColorCard({ card }: { card: HplCard }) {
         </Link>
       </h2>
       {card.ral ? <p className="mt-1 font-mono text-[12px] text-kg-text-2">{card.ral}</p> : null}
-      <div className="mt-auto flex items-baseline justify-between border-t border-kg-lijn pt-2.5 font-mono text-[14px]">
-        <span className="text-kg-text-2">{card.ral ?? "hele plaat"}</span>
-        <span className="text-right">
-          {priced ? (
-            <>
-              <VatPrice incl={card.price} suffix=" /plaat" />
-              <SquareMetrePrice incl={perM2} />
-            </>
-          ) : (
-            "Prijs op aanvraag"
-          )}
-        </span>
-      </div>
+      <p className="mt-auto border-t border-kg-lijn pt-2.5 text-right font-mono text-[14px]">
+        {priced ? (
+          <>
+            <VatPrice incl={card.price} suffix=" /plaat" />
+            <SquareMetrePrice incl={perM2} />
+          </>
+        ) : (
+          "Prijs op aanvraag"
+        )}
+      </p>
     </article>
   );
 }
