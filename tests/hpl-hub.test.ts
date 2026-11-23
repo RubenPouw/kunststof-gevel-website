@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { enrichProduct } from "../src/lib/catalog/derive.ts";
@@ -14,6 +15,7 @@ import {
   tidyHplColorName,
 } from "../src/lib/catalog/hpl-hub.ts";
 import type { Product, ProductVariant } from "../src/lib/catalog/types.ts";
+import { getCategoryStory } from "../src/data/seo/categories.ts";
 import { isShopNavActive } from "../src/lib/site.ts";
 
 function variant(colorName: string, price = 211.86, sku = colorName): ProductVariant {
@@ -217,6 +219,20 @@ test("line and RAL or decor filters use the title, not a made-up attribute", () 
   const ral = filterHplCards(cards, parseHplHubSearch({ afwerking: "ral" }));
   assert.equal(ral.some((card) => card.afwerking !== "ral"), false);
   assert.ok(ral.some((card) => card.colorName === "Wijnrood"));
+});
+
+test("HPL customer copy keeps the colour-hub wording and has no em dash", () => {
+  const story = getCategoryStory("hpl-platen");
+  assert.ok(story);
+  assert.equal(story.sections[0]?.heading, "HPL plaat kopen");
+  assert.match(story.sections[0]?.paragraphs[0] ?? "", /Je bestelt de plaat heel/);
+  assert.equal(story.faqs[0]?.q, "Zagen jullie de plaat op maat?");
+  const hub = readFileSync(new URL("../src/components/catalog/hpl-hub.tsx", import.meta.url), "utf8");
+  assert.match(hub, /Compact Exterieur, Renolit eenzijdig en Milyt/);
+  assert.match(hub, /Platen 6 mm/);
+  assert.match(hub, /Sandwich en reiniger/);
+  const blob = `${JSON.stringify(story)}\n${hub}`;
+  assert.equal(blob.includes("—"), false);
 });
 
 test("hub links keep the competitor colour query and the nav points at the hub", () => {

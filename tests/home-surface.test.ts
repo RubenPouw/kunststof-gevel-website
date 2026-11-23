@@ -46,17 +46,32 @@ test("samples panel is one navy and the montage line says monteren", () => {
   assert.match(band, /✓/);
 });
 
-test("HPL category uses the shared listing and keeps the colour hub", () => {
+test("HPL category starts with the colour hub and leaves other listings alone", () => {
   const page = read("../src/app/hpl-plaat/page.tsx");
+  const alias = read("../src/app/hpl-platen/page.tsx");
   const listing = read("../src/components/catalog/category-listing.tsx");
+  const hubPage = read("../src/components/catalog/hpl-hub-page.tsx");
+  const article = read("../src/components/seo/article.tsx");
   assert.match(page, /CategoryListing/);
   assert.match(page, /slug="hpl-platen"/);
+  assert.match(alias, /searchParams/);
   assert.match(listing, /HplHubPage/);
-  assert.match(listing, /id="kleur-en-structuur"|embedded/);
-  assert.match(listing, /photoGrid=\{slug === "hpl-platen"\}/);
+  assert.match(listing, /embedded/);
+  assert.match(listing, /faqAccordion/);
+  assert.equal(listing.includes("photoGrid"), false);
+  assert.equal(listing.includes("sheetCalculator"), false);
+  const hubAt = listing.indexOf("<HplHubPage");
+  const articleAt = listing.indexOf("<SeoArticle");
+  assert.ok(hubAt > 0 && articleAt > hubAt);
+  assert.match(hubPage, /<SheetCalculator/);
+  assert.equal(/!embedded\s*&&\s*onPlates/.test(hubPage), false);
+  assert.match(article, /faqJsonLd/);
+  assert.match(article, /<details/);
+  assert.match(article, /<dl className="space-y-4">/);
   const products = read("../src/components/catalog/product-listing.tsx");
   assert.match(products, /minmax\(0,3fr\)_minmax\(0,9fr\)/);
   assert.match(products, /photoGrid \? \(\s*<ListingPhotoGrid/);
+  assert.match(products, /<ListingRow/);
   const defaults = read("../src/lib/catalog/listing.ts");
   assert.match(defaults, /view: "lijst"/);
   const gevel = read("../src/app/gevelbekleding/page.tsx");
@@ -69,8 +84,6 @@ test("listing rows keep a readable name and aligned controls", () => {
   assert.match(row, /min-w-0 flex-1/);
   assert.match(row, /break-words/);
   assert.match(row, /@min-\[640px\]:grid-cols-\[minmax\(7\.5rem,1fr\)_7\.5rem_8\.5rem_10\.5rem\]/);
-  const listing = read("../src/components/catalog/category-listing.tsx");
-  assert.match(listing, /photoGrid=\{slug === "hpl-platen"\}/);
   const products = read("../src/components/catalog/product-listing.tsx");
   assert.match(products, /photoGrid \? \(\s*<ListingPhotoGrid/);
   assert.match(products, /<ListingRow/);

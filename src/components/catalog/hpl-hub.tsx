@@ -215,7 +215,7 @@ export function HplHub({
               <ul className="mt-4 grid list-none grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {visible.map((card) => (
                   <li key={card.key}>
-                    <HplColorCard card={card} />
+                    <HplColorCard card={card} heading={embedded ? "h3" : "h2"} />
                   </li>
                 ))}
               </ul>
@@ -233,7 +233,7 @@ export function HplHub({
 
   if (embedded) {
     return (
-      <section id="kleur-en-structuur" className="container-kg section-kg">
+      <section id="kleur-en-structuur" className="container-kg scroll-mt-28 pt-8 pb-4 sm:pt-10">
         <h2 className="text-[28px] leading-[1.1] font-bold tracking-[-0.03em] sm:text-[34px]">Kleur en structuur</h2>
         <p className="mt-3 max-w-2xl text-[16px] leading-[1.5] text-kg-text-2">
           {onPlates
@@ -274,7 +274,8 @@ function FilterRow({ title, children }: { title: string; children: React.ReactNo
   );
 }
 
-function HplColorCard({ card }: { card: HplCard }) {
+function HplColorCard({ card, heading }: { card: HplCard; heading: "h2" | "h3" }) {
+  const Heading = heading;
   const priced = card.price > 0;
   const perM2 = pricePerSquareMetre({
     priceIncl: card.price,
@@ -293,11 +294,11 @@ function HplColorCard({ card }: { card: HplCard }) {
         />
       </Link>
       <p className="mt-3 font-mono text-[12px] text-kg-text-2">{card.lineLabel}</p>
-      <h2 className="mt-1 text-[16px] leading-snug font-medium">
+      <Heading className="mt-1 text-[16px] leading-snug font-medium">
         <Link href={card.href} className="text-inherit no-underline hover:no-underline">
           <ColourName value={card.colorName} />
         </Link>
-      </h2>
+      </Heading>
       {card.ral ? <p className="mt-1 font-mono text-[12px] text-kg-text-2">{card.ral}</p> : null}
       <p className="mt-auto border-t border-kg-lijn pt-2.5 text-right font-mono text-[14px]">
         {priced ? (

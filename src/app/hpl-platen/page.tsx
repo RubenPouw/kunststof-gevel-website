@@ -1,12 +1,18 @@
 import { CategoryListing } from "@/components/catalog/category-listing";
 import { categoryRouteMetadata } from "@/data/seo/categories";
+import { hasHplHubFilters, parseHplHubSearch } from "@/lib/catalog/hpl-hub";
 
 export const revalidate = 3600;
 
-export function generateMetadata() {
-  return categoryRouteMetadata("hpl-platen");
+type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+
+export async function generateMetadata({ searchParams }: Props) {
+  const query = parseHplHubSearch(await searchParams);
+  const base = await categoryRouteMetadata("hpl-platen");
+  if (hasHplHubFilters(query)) return { ...base, robots: { index: false, follow: true } };
+  return base;
 }
 
-export default function HplPlatenPage() {
-  return <CategoryListing slug="hpl-platen" filters={{}} page={1} />;
+export default function HplPlatenPage({ searchParams }: Props) {
+  return <CategoryListing slug="hpl-platen" filters={{}} page={1} searchParams={searchParams} />;
 }
