@@ -118,7 +118,7 @@ export function ListingCard({ card }: { card: ListingCardModel }) {
                 hex: selected.hex,
                 ral: selected.ral,
               }}
-              label="Staal"
+              label="Gratis staal"
             />
           ) : null}
         </div>
