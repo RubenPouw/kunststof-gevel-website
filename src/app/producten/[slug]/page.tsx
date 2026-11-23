@@ -6,8 +6,6 @@ import { ReviewBar } from "@/components/reviews/review-bar";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getCategory, getProduct, getRelatedProducts, listProducts } from "@/lib/catalog";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/schema";
-import { isFacadePanel } from "@/lib/catalog/derive";
-import { staalTarget } from "@/lib/staal/tree";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -49,8 +47,6 @@ export default async function ProductPage({ params }: Props) {
   const category = await getCategory(product.category);
 
   const categoryName = category?.name ?? product.category;
-  const staal = isFacadePanel(product) ? staalTarget(product) : null;
-  const staalHref = staal ? `/staalaanvraag?product=${encodeURIComponent(product.slug)}` : undefined;
   return (
     <>
       <JsonLd data={productJsonLd(product, categoryName)} />
@@ -62,7 +58,7 @@ export default async function ProductPage({ params }: Props) {
         ])}
       />
       <ReviewBar />
-      <ProductDetail product={product} related={related} categoryName={categoryName} staalHref={staalHref} />
+      <ProductDetail product={product} related={related} categoryName={categoryName} />
     </>
   );
 }
