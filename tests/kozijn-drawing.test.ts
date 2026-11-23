@@ -116,7 +116,7 @@ test("the working drawing follows size, hinge side and opening", () => {
   assert.equal(labels(right).filter((label) => label === "750").length >= 1, true);
   assert.equal(labels(right).includes("1500"), true);
   assert.equal(labels(right).includes("1400"), true);
-  assert.equal(labels(right).includes("64"), true);
+  assert.equal(labels(right).includes("84"), true);
   assert.equal(/EKO|three|webgl/i.test(right), false);
 
   const wider = workingDrawingSvg(pair, { ...config, width: 1800, height: 1600 });
@@ -140,9 +140,9 @@ test("the working drawing follows size, hinge side and opening", () => {
 
   const slide = workingDrawingSvg(smart, defaultConfig(smart));
   assert.match(slide, /data-slide="links"/);
-  assert.equal(labels(slide).includes("64"), false);
+  assert.equal(labels(slide).includes("84"), false);
   assert.equal(frameFaceMm(smart.slug), null);
-  assert.equal(frameFaceMm(turn.slug), 64);
+  assert.equal(frameFaceMm(turn.slug), 84);
   const slideLeft = workingDrawingSvg(smart, { ...defaultConfig(smart), active: "links" });
   assert.match(slideLeft, /data-slide="rechts"/);
 

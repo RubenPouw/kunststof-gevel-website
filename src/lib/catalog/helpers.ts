@@ -44,6 +44,28 @@ function assignList<T extends string>(list: T[]) {
   return { one: undefined, many: undefined };
 }
 
+/** Brand is one choice. A list keeps the first slug and drops the rest. */
+function soleBrand(list: readonly string[]) {
+  const one = list.find((item) => item.length > 0);
+  return one ? [one] : [];
+}
+
+/** The listing rewrite can leave `%2C` in the path segment. Decode, then keep the first brand. */
+function brandParam(value: string | undefined) {
+  if (!value) return [];
+  let current = value.trim();
+  for (let i = 0; i < 2 && current.includes("%"); i += 1) {
+    try {
+      const next = decodeURIComponent(current);
+      if (next === current) break;
+      current = next;
+    } catch {
+      break;
+    }
+  }
+  return soleBrand(splitCsv(current));
+}
+
 function pickList<T extends string>(
   patch: object,
   listKey: string,
@@ -66,7 +88,13 @@ function pickList<T extends string>(
 }
 
 export function selectedBrands(filters: ListingFilters) {
-  return filters.brandSlugs?.length ? filters.brandSlugs : filters.brandSlug ? [filters.brandSlug] : [];
+  const list = filters.brandSlugs?.length ? filters.brandSlugs : filters.brandSlug ? [filters.brandSlug] : [];
+  return soleBrand(list);
+}
+
+/** Clicking the active brand clears it. Clicking another brand replaces it. */
+export function nextBrandSelection(current: readonly string[], slug: string) {
+  return current[0] === slug ? [] : [slug];
 }
 
 export function selectedGroups(filters: ListingFilters) {
@@ -90,7 +118,9 @@ export function toggleValue<T extends string>(current: readonly T[], value: T): 
 }
 
 export function mergeListingFilters(current: ListingFilters, patch: ListingFilterPatch): ListingFilters {
-  const brands = assignList(pickList<string>(patch, "brandSlugs", "brandSlug", current.brandSlugs, current.brandSlug));
+  const brands = assignList(
+    soleBrand(pickList<string>(patch, "brandSlugs", "brandSlug", current.brandSlugs, current.brandSlug)),
+  );
   const groups = assignList(
     pickList<ProductGroup>(patch, "productGroups", "productGroup", current.productGroups, current.productGroup),
   );
@@ -213,7 +243,7 @@ function firstParam(value: string | string[] | undefined) {
 export function parseListingSearchParams(
   searchParams: Record<string, string | string[] | undefined>,
 ): ListingFilters {
-  const brandParts = splitCsv(firstParam(searchParams.merk));
+  const brandParts = brandParam(firstParam(searchParams.merk));
   const voorraad = firstParam(searchParams.voorraad);
   const typeParts = splitCsv(firstParam(searchParams.type)).filter((item): item is ProfileType =>
     profileTypes.includes(item as ProfileType),

@@ -1,4 +1,5 @@
 import { categoryPath } from "@/data/seo/category-pages";
+import { FREE_SHIPPING_FROM } from "@/lib/format";
 
 export const site = {
   name: "kunststof-gevel.nl",
@@ -27,7 +28,8 @@ export const site = {
   region: "Heel Nederland",
   kvk: "66527376",
   btw: "NL856594842B01",
-  freeShippingFrom: 499,
+  iban: "NL20INGB0007321511",
+  freeShippingFrom: FREE_SHIPPING_FROM,
   instagram: "https://www.instagram.com/kunststofgevel",
   instagramHandle: "@kunststofgevel",
   origin: "https://www.kunststof-gevel.nl",
@@ -68,7 +70,6 @@ export const kozijnNav = [
 
 export const shopNav = [
   { href: "/merken", label: "Merken" },
-  { href: "/projecten", label: "Projecten" },
   { href: "/zakelijk", label: "Zakelijk" },
 ] as const;
 
@@ -102,7 +103,7 @@ export const footerColumns = [
     title: "Bedrijf",
     links: [
       { href: "/over-ons", label: "Over ons" },
-      { href: "/projecten", label: "Projecten" },
+      { href: "/projecten", label: "Montage projecten" },
       { href: "/reviews", label: "Reviews" },
       { href: "/zakelijk", label: "Zakelijk" },
       { href: "/montage", label: "Montage" },
@@ -140,9 +141,9 @@ export const uspItems = [
 ] as const;
 
 export const businessPoints = [
-  "Zelfde prijs voor aannemer en particulier",
-  "Bestellen op rekening na eenmalige check",
-  "Voorraad van de merken die we zelf plaatsen",
+  "Zakelijk kopen met voordeel",
+  "Bestellen op rekening is mogelijk",
+  "Gemakkelijk herbestellen",
 ] as const;
 
 export const faqs = [

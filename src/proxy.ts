@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { boeiBrandSlugs, categoryInternalRewrite } from "@/data/seo/category-pages";
 import { listingRewriteTarget } from "@/lib/catalog/paths";
-import { normalizePath, resolveNavigation } from "@/lib/seo/redirects";
+import { lookupRedirect, normalizePath, resolveNavigation } from "@/lib/seo/redirects";
 import { isPreviewHost, PREVIEW_GTM_CSP } from "@/lib/tracking/gtm";
 
 const BOEI_BRANDS = new Set<string>(boeiBrandSlugs);
@@ -72,7 +72,8 @@ export function proxy(request: NextRequest) {
     url.hostname = decision.host;
     url.port = "";
   }
-  return seal(NextResponse.redirect(url, 301), host, decision.noindex);
+  const status = lookupRedirect(request.nextUrl.pathname).status === "308" ? 308 : 301;
+  return seal(NextResponse.redirect(url, status), host, decision.noindex);
 }
 
 export const config = {

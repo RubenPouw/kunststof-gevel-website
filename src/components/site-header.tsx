@@ -137,7 +137,7 @@ function NavMenu({
         href={href}
         controlRef={buttonRef}
         className={cn(
-          "px-1.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline focus-visible:outline-[var(--kg-kalk)] xl:px-2",
+          "px-1.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-signal hover:text-kg-navy hover:no-underline focus-visible:outline-[var(--kg-kalk)] xl:px-2",
           (open || active || (href && isShopNavActive(pathname, href))) &&
             "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
         )}
@@ -172,8 +172,8 @@ function NavMenu({
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex min-h-11 items-center px-3 text-[15px] font-medium text-kg-navy no-underline hover:bg-kg-kalk hover:text-kg-navy hover:no-underline",
-                    itemActive && "bg-kg-kalk",
+                    "flex min-h-11 items-center px-3 text-[15px] font-medium text-kg-navy no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline",
+                    itemActive && "bg-kg-signal text-kg-navy",
                   )}
                   aria-current={itemActive ? "page" : undefined}
                   onClick={() => close()}
@@ -225,9 +225,6 @@ export function SiteHeader() {
       <header className="relative z-20 border-b border-[var(--kg-line-dark)] bg-kg-navy print:hidden">
         <div className="container-kg flex min-h-[72px] items-center justify-between gap-4 py-2">
           <Logo size={20} tone="dark" lockup />
-          <a href={site.phoneHref} className="font-mono text-[14px] text-kg-kalk no-underline">
-            {site.phone}
-          </a>
         </div>
         <VatBar />
       </header>
@@ -249,7 +246,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-1.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline xl:px-2",
+                  "px-1.5 py-2 text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-signal hover:text-kg-navy hover:no-underline xl:px-2",
                   active && "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
                 )}
               >
@@ -279,16 +276,14 @@ export function SiteHeader() {
         </form>
 
         <div className="ml-auto flex shrink-0 items-center gap-2">
-          <a
-            href={site.phoneHref}
-            className="hidden font-mono text-[13px] text-kg-kalk no-underline hover:underline lg:inline"
-          >
-            {site.phone}
-          </a>
           <Link
             href="/staalaanvraag"
-            className="hidden h-10 items-center gap-2.5 border border-[var(--kg-grind)] px-3 text-[14px] font-medium text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-navy-2 hover:text-kg-kalk hover:no-underline sm:inline-flex"
-            aria-label={`Stalen ${sampleCount} van ${SAMPLE_LIMIT}`}
+            className={cn(
+              "hidden h-10 items-center gap-2.5 border border-[var(--kg-grind)] px-3 text-[14px] font-medium text-kg-kalk no-underline transition-colors duration-150 hover:bg-kg-signal hover:text-kg-navy hover:no-underline sm:inline-flex",
+              (pathname === "/staalaanvraag" || pathname.startsWith("/staalaanvraag/")) &&
+                "bg-kg-signal text-kg-navy hover:bg-kg-signal hover:text-kg-navy",
+            )}
+            aria-label={`Gratis Samples ${sampleCount} van ${SAMPLE_LIMIT}`}
           >
             <span className="flex pl-1">
               {trayDots.map((hex, index) => (
@@ -299,11 +294,15 @@ export function SiteHeader() {
                 />
               ))}
             </span>
-            <span className="hidden xl:inline">Stalen</span> <span className="font-mono">{sampleCount}/4</span>
+            <span className="hidden xl:inline">Gratis Samples</span> <span className="font-mono">{sampleCount}/4</span>
           </Link>
           <Link
             href={accountHref}
-            className="hidden h-10 items-center px-3 font-mono text-[13px] text-kg-grind no-underline hover:text-kg-kalk hover:no-underline min-[1360px]:inline-flex"
+            className={cn(
+              "hidden h-10 items-center px-3 font-mono text-[13px] text-kg-grind no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline min-[1360px]:inline-flex",
+              (pathname === accountHref || pathname.startsWith("/account") || pathname.startsWith("/inloggen")) &&
+                "bg-kg-signal text-kg-navy",
+            )}
           >
             Account
           </Link>
@@ -333,15 +332,16 @@ export function SiteHeader() {
       {menuOpen ? (
         <div className="border-t border-[var(--kg-line-dark)] bg-kg-navy px-6 py-4 lg:hidden">
           <nav className="flex flex-col" aria-label="Hoofdmenu">
-            <a href={site.phoneHref} className="flex min-h-11 items-center font-mono text-[15px] text-kg-kalk no-underline">
-              {site.phone}
-            </a>
             <a href={site.mobileHref} className="flex min-h-11 items-center font-mono text-[15px] text-kg-kalk no-underline">
               {site.mobileDisplay}
             </a>
             <button
               type="button"
-              className="flex min-h-11 items-center justify-between text-left text-[15px] font-medium text-kg-kalk"
+              className={cn(
+                "flex min-h-11 w-full items-center justify-between px-2 text-left text-[15px] font-medium text-kg-kalk hover:bg-kg-signal hover:text-kg-navy",
+                (productsOpen || productNav.some((item) => isShopNavActive(pathname, item.href))) &&
+                  "bg-kg-signal text-kg-navy",
+              )}
               aria-expanded={productsOpen}
               aria-controls="producten-mobiel"
               onClick={() => setProductsOpen((value) => !value)}
@@ -353,26 +353,43 @@ export function SiteHeader() {
             </button>
             {productsOpen ? (
               <div id="producten-mobiel" className="flex flex-col pb-2 pl-3">
-                {productNav.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk"
-                    aria-current={isShopNavActive(pathname, item.href) ? "page" : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                {productNav.map((item) => {
+                  const itemActive = isShopNavActive(pathname, item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={cn(
+                        "flex min-h-11 items-center px-2 text-[15px] font-medium text-kg-kalk no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline",
+                        itemActive && "bg-kg-signal text-kg-navy",
+                      )}
+                      aria-current={itemActive ? "page" : undefined}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
               </div>
             ) : null}
             <div className="flex min-h-11 items-center justify-between gap-3">
-              <Link href="/kunststof-kozijnen" onClick={() => setMenuOpen(false)} className="text-[15px] font-medium text-kg-kalk no-underline">
+              <Link
+                href="/kunststof-kozijnen"
+                onClick={() => setMenuOpen(false)}
+                className={cn(
+                  "flex min-h-11 flex-1 items-center px-2 text-[15px] font-medium text-kg-kalk no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline",
+                  (kozijnenOpen || kozijnNav.some((item) => isShopNavActive(pathname, item.href))) &&
+                    "bg-kg-signal text-kg-navy",
+                )}
+              >
                 Kozijnen
               </Link>
               <button
                 type="button"
-                className="grid size-11 place-items-center font-mono text-[13px] text-kg-kalk"
+                className={cn(
+                  "grid size-11 place-items-center font-mono text-[13px] text-kg-kalk hover:bg-kg-signal hover:text-kg-navy",
+                  kozijnenOpen && "bg-kg-signal text-kg-navy",
+                )}
                 aria-expanded={kozijnenOpen}
                 aria-controls="kozijnen-mobiel"
                 aria-label={kozijnenOpen ? "Kozijnen sluiten" : "Kozijnen openen"}
@@ -383,40 +400,60 @@ export function SiteHeader() {
             </div>
             {kozijnenOpen ? (
               <div id="kozijnen-mobiel" className="flex flex-col pb-2 pl-3">
-                {kozijnNav.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk"
-                    aria-current={isShopNavActive(pathname, item.href) ? "page" : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                {kozijnNav.map((item) => {
+                  const itemActive = isShopNavActive(pathname, item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={cn(
+                        "flex min-h-11 items-center px-2 text-[15px] font-medium text-kg-kalk no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline",
+                        itemActive && "bg-kg-signal text-kg-navy",
+                      )}
+                      aria-current={itemActive ? "page" : undefined}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
               </div>
             ) : null}
-            {shopNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {shopNav.map((item) => {
+              const itemActive = isShopNavActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={cn(
+                    "flex min-h-11 items-center px-2 text-[15px] font-medium text-kg-kalk no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline",
+                    itemActive && "bg-kg-signal text-kg-navy",
+                  )}
+                  aria-current={itemActive ? "page" : undefined}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <Link
               href="/staalaanvraag"
               onClick={() => setMenuOpen(false)}
-              className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline hover:text-kg-kalk hover:no-underline"
+              className={cn(
+                "flex min-h-11 items-center px-2 text-[15px] font-medium text-kg-kalk no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline",
+                (pathname === "/staalaanvraag" || pathname.startsWith("/staalaanvraag/")) && "bg-kg-signal text-kg-navy",
+              )}
             >
-              Stalen {sampleCount}/{SAMPLE_LIMIT}
+              Gratis Samples {sampleCount}/{SAMPLE_LIMIT}
             </Link>
             <Link
               href={accountHref}
               onClick={() => setMenuOpen(false)}
-              className="flex min-h-11 items-center text-[15px] font-medium text-kg-kalk no-underline"
+              className={cn(
+                "flex min-h-11 items-center px-2 text-[15px] font-medium text-kg-kalk no-underline hover:bg-kg-signal hover:text-kg-navy hover:no-underline",
+                (pathname === accountHref || pathname.startsWith("/account") || pathname.startsWith("/inloggen")) &&
+                  "bg-kg-signal text-kg-navy",
+              )}
             >
               Account
             </Link>

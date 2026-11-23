@@ -13,9 +13,9 @@ import { labelColour } from "@/lib/catalog/colours";
 import { getVariant } from "@/lib/catalog/helpers";
 import { getStaticProduct } from "@/lib/catalog/static";
 import { isFacadePanel } from "@/lib/catalog/derive";
-import { exclVat, FREE_SHIPPING_FROM, GEVEL_MOUNT_PER_M2, SHIPPING_FLAT } from "@/lib/format";
+import { exclVat, GEVEL_MOUNT_PER_M2, quoteShipping, type ShippingQuote } from "@/lib/format";
 
-export { FREE_SHIPPING_FROM };
+export { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/format";
 
 const STORAGE_KEY = "kg-cart-v2";
 const MOUNT_KEY = "kg-cart-mount-v1";
@@ -31,6 +31,8 @@ export type CartLine = {
   price?: number;
   shopifyVariantId?: string;
   kind?: "product" | "kozijn";
+  kozijnLayout?: string;
+  kozijnQuery?: string;
   hex?: string;
   image?: string;
   length?: string;
@@ -59,6 +61,7 @@ type CartContextValue = {
   count: number;
   subtotal: number;
   remainingForFreeShipping: number;
+  shippingQuote: ShippingQuote;
   mountGevel: boolean;
   setMountGevel: (value: boolean) => void;
   gevelM2: number;
@@ -115,14 +118,14 @@ function resolveLine(line: CartLine): ResolvedLine | undefined {
   if (line.kind === "kozijn" && line.name && typeof line.price === "number") {
     return {
       name: line.name,
-      brand: line.brand ?? "Kömmerling 76",
+      brand: line.brand ?? "Kunststof kozijn",
       colorName: labelColour(line.colorName ?? ""),
       unitExcl: line.price,
       hex: line.hex ?? "#3b3f42",
       length: line.length ?? "",
       areaM2: 0,
       kind: "kozijn",
-      skuLabel: line.skuLabel ?? "Kömmerling 76",
+      skuLabel: line.skuLabel ?? "Kunststof kozijn",
       inStock: true,
     };
   }
@@ -205,11 +208,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return sum + (resolved?.kind === "product" ? resolved.areaM2 : 0);
     }, 0);
     const mountPrice = Math.round(gevelM2 * GEVEL_MOUNT_PER_M2);
+    const shippingQuote = quoteShipping(subtotal, lines.length > 0);
     return {
       lines,
       count,
       subtotal,
-      remainingForFreeShipping: Math.max(0, FREE_SHIPPING_FROM - subtotal),
+      remainingForFreeShipping: shippingQuote.remainingExcl,
+      shippingQuote,
       mountGevel,
       setMountGevel,
       gevelM2,
@@ -230,4 +235,3 @@ export function useCart() {
   return ctx;
 }
 
-export { SHIPPING_FLAT };

@@ -3,7 +3,7 @@ import type { CategorySlug } from "@/lib/catalog/types";
 /**
  * Confirmed lead time in weeks, per category or per product slug.
  * Null means the number is not confirmed and must not be shown.
- * Kozijnen stay null until a supplier week count is confirmed.
+ * Kozijnen: 4 weken, bevestigd voor het 84 mm-profiel.
  */
 export const leadTimeWeeksByCategory: Record<CategorySlug | "kozijnen", number | null> = {
   gevelbekleding: null,
@@ -13,7 +13,7 @@ export const leadTimeWeeksByCategory: Record<CategorySlug | "kozijnen", number |
   vensterbanken: null,
   montage: null,
   "hpl-platen": null,
-  kozijnen: null,
+  kozijnen: 4,
 };
 
 export const leadTimeWeeksByProduct: Record<string, number> = {};

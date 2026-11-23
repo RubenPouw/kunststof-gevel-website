@@ -4,13 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Logo } from "@/components/brand/logo";
+import { ReviewScoreStrip, type WebwinkelkeurScore } from "@/components/reviews/score-strip";
 import { footerColumns, legalNav, site } from "@/lib/site";
 
-export function SiteFooter() {
+export function SiteFooter({ webwinkelkeur = null }: { webwinkelkeur?: WebwinkelkeurScore | null }) {
   const pathname = usePathname() ?? "/";
   if (pathname === "/afrekenen" || pathname.startsWith("/afrekenen/")) return null;
   return (
-    <footer className="mt-auto bg-kg-navy text-kg-grind print:hidden">
+    <footer className="mt-auto print:hidden">
+      <ReviewScoreStrip webwinkelkeur={webwinkelkeur} />
+      <div className="bg-kg-navy text-kg-grind">
       <div className="h-1.5" style={{ background: "var(--gradient-signal)" }} />
       <div className="container-kg grid gap-10 py-14 lg:grid-cols-[5fr_2fr_2fr_3fr] lg:gap-5">
         <div>
@@ -18,6 +21,9 @@ export function SiteFooter() {
           <p className="mt-4 max-w-sm text-[15px] text-kg-grind">
             Nooit meer schilderen. Vervang hout door kunststof.
           </p>
+          <a href={site.phoneHref} className="mt-4 inline-block font-mono text-[20px] text-kg-kalk no-underline hover:underline">
+            {site.phone}
+          </a>
           <p className="mt-4 font-mono text-[13px] text-kg-grind">
             {site.company}
             <br />
@@ -25,10 +31,6 @@ export function SiteFooter() {
             <br />
             {site.addressNote}
             <br />
-            <a href={site.phoneHref} className="text-kg-kalk no-underline hover:underline">
-              {site.phone}
-            </a>
-            {" · "}
             <a href={site.mobileHref} className="text-kg-kalk no-underline hover:underline">
               {site.mobileDisplay}
             </a>
@@ -39,6 +41,8 @@ export function SiteFooter() {
             KvK {site.kvk}
             <br />
             BTW {site.btw}
+            <br />
+            IBAN {site.iban}
           </p>
         </div>
         {footerColumns.map((column) => (
@@ -74,6 +78,7 @@ export function SiteFooter() {
             </li>
           ))}
         </ul>
+      </div>
       </div>
     </footer>
   );

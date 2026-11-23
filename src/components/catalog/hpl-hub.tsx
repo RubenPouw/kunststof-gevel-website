@@ -64,11 +64,14 @@ export function HplHub({
   related,
   query,
   basePath,
+  embedded = false,
 }: {
   plates: HplCard[];
   related: ListingCardModel[];
   query: HplHubQuery;
   basePath: string;
+  /** Extra sectie onder de gewone categorie, zelfde plek als andere categorie-extra's. */
+  embedded?: boolean;
 }) {
   const showRelatedTab = related.length > 0;
   const onPlates = query.onderdeel !== "overig";
@@ -81,21 +84,8 @@ export function HplHub({
   const filtered = Boolean(query.colors.length || query.lines.length || query.afwerking);
   const clearHref = hplHubHref(basePath, { colors: [], lines: [], onderdeel: "platen" });
 
-  return (
-    <div className="bg-kg-kalk">
-      <div className="container-kg py-10 sm:py-12">
-        <p className="font-mono text-[13px] text-kg-text-2">Assortiment</p>
-        <h1 className="display-plp mt-2 max-w-3xl">{onPlates ? HPL_HUB_TITLE : "Sandwich en reiniger"}</h1>
-        <p className="mt-4 max-w-2xl text-kg-text-2">
-          {onPlates
-            ? "Compact Exterieur, Renolit eenzijdig en Milyt. Hele plaat, 3050 × 1300 × 6 mm, 3,965 m². U kiest een kleur of een decor. Wij zagen niet op maat."
-            : "Sandwichpanelen, HPL-reiniger en de Milyt-plaat van 2 mm. De kleurwand is de plaat van 6 mm."}
-        </p>
-        <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-          <Link href="/staalaanvraag?groep=hpl">Gratis kleurstalen aanvragen</Link>
-          <Link href="/hpl-plaat">HPL plaat</Link>
-        </p>
-
+  const filters = (
+    <>
         {showRelatedTab ? (
           <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="HPL assortiment">
             <Chip href={hplHubHref(basePath, { ...query, onderdeel: "platen" })} active={onPlates}>
@@ -225,7 +215,7 @@ export function HplHub({
               <ul className="mt-4 grid list-none grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {visible.map((card) => (
                   <li key={card.key}>
-                    <HplColorCard card={card} />
+                    <HplColorCard card={card} heading={embedded ? "h3" : "h2"} />
                   </li>
                 ))}
               </ul>
@@ -238,6 +228,38 @@ export function HplHub({
             ))}
           </div>
         )}
+    </>
+  );
+
+  if (embedded) {
+    return (
+      <section id="kleur-en-structuur" className="container-kg scroll-mt-28 pt-8 pb-4 sm:pt-10">
+        <h2 className="text-[28px] leading-[1.1] font-bold tracking-[-0.03em] sm:text-[34px]">Kleur en structuur</h2>
+        <p className="mt-3 max-w-2xl text-[16px] leading-[1.5] text-kg-text-2">
+          {onPlates
+            ? "Compact Exterieur, Renolit eenzijdig en Milyt. Hele plaat, 3050 × 1300 × 6 mm, 3,965 m². U kiest een kleur of een decor. Wij zagen niet op maat."
+            : "Sandwichpanelen, HPL-reiniger en de Milyt-plaat van 2 mm. De kleurwand is de plaat van 6 mm."}
+        </p>
+        {filters}
+      </section>
+    );
+  }
+
+  return (
+    <div className="bg-kg-kalk">
+      <div className="container-kg py-10 sm:py-12">
+        <p className="font-mono text-[13px] text-kg-text-2">Assortiment</p>
+        <h1 className="display-plp mt-2 max-w-3xl">{onPlates ? HPL_HUB_TITLE : "Sandwich en reiniger"}</h1>
+        <p className="mt-4 max-w-2xl text-kg-text-2">
+          {onPlates
+            ? "Compact Exterieur, Renolit eenzijdig en Milyt. Hele plaat, 3050 × 1300 × 6 mm, 3,965 m². U kiest een kleur of een decor. Wij zagen niet op maat."
+            : "Sandwichpanelen, HPL-reiniger en de Milyt-plaat van 2 mm. De kleurwand is de plaat van 6 mm."}
+        </p>
+        <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+          <Link href="/staalaanvraag?groep=hpl">Gratis kleurstalen aanvragen</Link>
+          <Link href="/hpl-plaat">HPL plaat</Link>
+        </p>
+        {filters}
       </div>
     </div>
   );
@@ -252,7 +274,8 @@ function FilterRow({ title, children }: { title: string; children: React.ReactNo
   );
 }
 
-function HplColorCard({ card }: { card: HplCard }) {
+function HplColorCard({ card, heading }: { card: HplCard; heading: "h2" | "h3" }) {
+  const Heading = heading;
   const priced = card.price > 0;
   const perM2 = pricePerSquareMetre({
     priceIncl: card.price,
@@ -271,13 +294,13 @@ function HplColorCard({ card }: { card: HplCard }) {
         />
       </Link>
       <p className="mt-3 font-mono text-[12px] text-kg-text-2">{card.lineLabel}</p>
-      <h2 className="mt-1 text-[16px] leading-snug font-medium">
+      <Heading className="mt-1 text-[16px] leading-snug font-medium">
         <Link href={card.href} className="text-inherit no-underline hover:no-underline">
           <ColourName value={card.colorName} />
         </Link>
-      </h2>
+      </Heading>
       {card.ral ? <p className="mt-1 font-mono text-[12px] text-kg-text-2">{card.ral}</p> : null}
-      <p className="mt-auto pt-3 text-right font-mono text-[14px]">
+      <p className="mt-auto border-t border-kg-lijn pt-2.5 text-right font-mono text-[14px]">
         {priced ? (
           <>
             <VatPrice incl={card.price} suffix=" /plaat" />

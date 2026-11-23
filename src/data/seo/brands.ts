@@ -3,7 +3,12 @@ import { ZIERER_MANUAL } from "@/lib/catalog/manuals";
 
 export type SeoSection = {
   heading: string;
+  /** 3 nest onder de vorige kop. Standaard is een h2. */
+  level?: 2 | 3;
   paragraphs: string[];
+  list?: { ordered?: boolean; items: string[] };
+  /** Alinea's na de lijst. */
+  after?: string[];
   image?: { src: string; alt: string; place?: "before" | "after" };
 };
 

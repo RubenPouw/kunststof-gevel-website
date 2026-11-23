@@ -1,5 +1,6 @@
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product } from "@/lib/catalog/types";
+import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/format";
 import { site } from "@/lib/site";
 
 export function absoluteUrl(path: string) {
@@ -69,6 +70,11 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   };
 }
 
+/** Zichtbare linksyntax `[label](/pad)` wordt platte tekst in JSON-LD. */
+export function faqPlainText(text: string) {
+  return text.replace(/\[([^\]]+)\]\((\/[^)\s]+)\)/g, "$1");
+}
+
 export function faqJsonLd(faqs: readonly { q: string; a: string }[]) {
   if (!faqs.length) return null;
   return {
@@ -77,7 +83,7 @@ export function faqJsonLd(faqs: readonly { q: string; a: string }[]) {
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.q,
-      acceptedAnswer: { "@type": "Answer", text: faq.a },
+      acceptedAnswer: { "@type": "Answer", text: faqPlainText(faq.a) },
     })),
   };
 }
@@ -96,6 +102,15 @@ function offerJsonLd(price: number, inStock: boolean, url: string) {
       price: amount,
       priceCurrency: "EUR",
       valueAddedTaxIncluded: true,
+    },
+    shippingDetails: {
+      "@type": "OfferShippingDetails",
+      shippingDestination: { "@type": "DefinedRegion", addressCountry: "NL" },
+      shippingRate: {
+        "@type": "ShippingRateSettings",
+        shippingRate: { "@type": "MonetaryAmount", value: SHIPPING_FLAT, currency: "EUR" },
+        freeShippingThreshold: { "@type": "MonetaryAmount", value: FREE_SHIPPING_FROM, currency: "EUR" },
+      },
     },
   };
 }

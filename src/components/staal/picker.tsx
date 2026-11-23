@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { ColourName, colourOptionText } from "@/components/catalog/colour-name";
 import { buttonVariants } from "@/components/ui/button";
 import { SAMPLE_LIMIT, useSamples } from "@/lib/samples";
+import { STAAL_FILTER_ALL, staalFilterFacets, staalGroupVisible } from "@/lib/staal/filters";
 import {
   picksToLines,
   sampleFromStaal,
@@ -157,21 +158,56 @@ function Tray({
   );
 }
 
+function FilterButton({
+  pressed,
+  quiet,
+  onClick,
+  children,
+}: {
+  pressed: boolean;
+  quiet?: boolean;
+  onClick: () => void;
+  children: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={pressed}
+      onClick={onClick}
+      className={cn(
+        "inline-flex h-11 shrink-0 items-center border px-3 text-[15px] font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kg-navy",
+        pressed
+          ? "border-kg-navy bg-kg-navy text-kg-kalk"
+          : quiet
+            ? "border-kg-lijn bg-white text-kg-navy hover:bg-kg-kalk"
+            : "border-kg-navy bg-white text-kg-navy hover:bg-kg-kalk",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function StaalPicker({
   tree,
   groep,
   product,
   paneel,
+  brandBySlug = {},
 }: {
   tree: StaalTree;
   groep?: string;
   product?: string;
   paneel?: string;
+  brandBySlug?: Record<string, { id: string; label: string }>;
 }) {
   const router = useRouter();
-  const sections = useMemo(() => staalPickerSections(tree), [tree]);
+  const sections = useMemo(() => staalPickerSections(tree, brandBySlug), [tree, brandBySlug]);
   const blocks = useMemo(() => staalCategoryBlocks(sections), [sections]);
   const groups = useMemo(() => blocks.flatMap((block) => block.groups), [blocks]);
+  const facets = useMemo(() => staalFilterFacets(groups), [groups]);
+  const [category, setCategory] = useState(STAAL_FILTER_ALL);
+  const [brand, setBrand] = useState(STAAL_FILTER_ALL);
   const samples = useSamples();
   const slots = useMemo(() => samples.items.map(swatchFromSample), [samples.items]);
   const [formOpen, setFormOpen] = useState(false);
@@ -201,15 +237,37 @@ export function StaalPicker({
   const active =
     groups.find((group) => group.id === paneel) ??
     (product ? groups.find((group) => group.swatches.some((swatch) => swatch.productSlugs.includes(product))) : undefined);
+  const visibleSections = useMemo(
+    () =>
+      sections
+        .map((section) => ({
+          ...section,
+          groups: section.groups.filter((group) => staalGroupVisible(group, category, brand)),
+        }))
+        .filter((section) => section.groups.length),
+    [sections, category, brand],
+  );
+  const visibleBlocks = useMemo(() => staalCategoryBlocks(visibleSections), [visibleSections]);
+  const activeVisible = active && staalGroupVisible(active, category, brand) ? active : undefined;
 
   useEffect(() => {
-    const target = active
+    const target = activeVisible
       ? document.getElementById("staal-kleuren")
       : groep
         ? document.getElementById(`staal-cat-${groep}`)
         : null;
     target?.scrollIntoView({ block: "start" });
-  }, [active, groep]);
+  }, [activeVisible, groep]);
+
+  function chooseCategory(id: string) {
+    setCategory(id);
+    if (active && !staalGroupVisible(active, id, brand)) backToPanels();
+  }
+
+  function chooseBrand(id: string) {
+    setBrand(id);
+    if (active && !staalGroupVisible(active, category, id)) backToPanels();
+  }
 
   function openPanel(id: string) {
     const next = new URLSearchParams();
@@ -312,21 +370,41 @@ export function StaalPicker({
         <div>
           <h1 className="display-plp max-w-3xl">{STAAL_HEADING}</h1>
           <p className="mt-4 max-w-2xl text-[17px] leading-normal text-kg-text-2">{STAAL_INTRO}</p>
-          <p className="mt-3 mb-8 max-w-2xl text-[15px] leading-normal text-kg-text-2">
+          <p className="mt-3 max-w-2xl text-[15px] leading-normal text-kg-text-2">
             Leg een gevelstaal naast het kozijn. Lees over{" "}
             <Link href="/kleur-kozijn-en-gevelbekleding">kleur kozijn en gevelbekleding</Link>.
           </p>
-          {active ? (
+          <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Categorie">
+            <FilterButton pressed={category === STAAL_FILTER_ALL} onClick={() => chooseCategory(STAAL_FILTER_ALL)}>
+              Alle
+            </FilterButton>
+            {facets.categories.map((item) => (
+              <FilterButton key={item.id} pressed={category === item.id} onClick={() => chooseCategory(item.id)}>
+                {item.label}
+              </FilterButton>
+            ))}
+          </div>
+          <div className="mt-3 mb-8 flex flex-wrap gap-2" role="group" aria-label="Merk">
+            <FilterButton pressed={brand === STAAL_FILTER_ALL} quiet onClick={() => chooseBrand(STAAL_FILTER_ALL)}>
+              Alle merken
+            </FilterButton>
+            {facets.brands.map((item) => (
+              <FilterButton key={item.id} quiet pressed={brand === item.id} onClick={() => chooseBrand(item.id)}>
+                {item.label}
+              </FilterButton>
+            ))}
+          </div>
+          {activeVisible ? (
             <div id="staal-kleuren" className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
               <button type="button" onClick={backToPanels} className={buttonVariants({ size: "sm" })}>
                 Terug naar paneelsoorten
               </button>
-              <h2 className="mt-5 text-[28px] leading-none font-bold tracking-[-0.03em]">{active.title}</h2>
-              {active.swatches.flatMap((swatch) => swatch.productSlugs).filter((slug, index, list) => list.indexOf(slug) === index).map((slug) => (
+              <h2 className="mt-5 text-[28px] leading-none font-bold tracking-[-0.03em]">{activeVisible.title}</h2>
+              {activeVisible.swatches.flatMap((swatch) => swatch.productSlugs).filter((slug, index, list) => list.indexOf(slug) === index).map((slug) => (
                 <span key={slug} id={`staal-product-${slug}`} className="sr-only" />
               ))}
               <div className="mt-5 grid grid-cols-3 gap-x-5 gap-y-3 sm:grid-cols-4">
-                {active.swatches.map((swatch) => {
+                {activeVisible.swatches.map((swatch) => {
                   const selected = slots.some((slot) => slot.id === swatch.id);
                   const pos = slots.findIndex((slot) => slot.id === swatch.id);
                   const blocked = !selected && slots.length >= SAMPLE_LIMIT;
@@ -364,7 +442,8 @@ export function StaalPicker({
             </div>
           ) : (
             <div className="grid gap-10">
-              {blocks.map((block) => (
+              {visibleBlocks.length === 0 ? <p className="text-kg-text-2">Geen stalen in deze combinatie.</p> : null}
+              {visibleBlocks.map((block) => (
                 <section key={block.sectionId} id={`staal-cat-${block.sectionId}`} className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
                   <h2 className="text-[28px] leading-none font-bold tracking-[-0.03em]">{block.title}</h2>
                   <ul className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

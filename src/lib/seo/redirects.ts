@@ -6,7 +6,7 @@ import { preserveClickSearch } from "../tracking/clicks";
 export type RedirectRow = {
   from: string;
   to: string;
-  status: "200" | "301";
+  status: "200" | "301" | "308";
   reason: string;
 };
 
@@ -94,8 +94,24 @@ export function retiredKgTarget(path: string): string | null {
   return null;
 }
 
+/** Oude WP-permalink → blog op Render. Eén hop, ook met slash via normalizePath. */
+const blogPostRedirects: Record<string, string> = {
+  "/steenlook-vensterbank": "/blog/steenlook-vensterbank",
+  "/keralit-kleuren": "/blog/keralit-kleuren",
+  "/kunststof-rabatdelen-monteren": "/blog/kunststof-rabatdelen-monteren",
+  "/vensterbank-vervangen": "/blog/vensterbank-vervangen",
+  "/kunststof-gevelbekleding-kiezen": "/blog/kunststof-gevelbekleding-kiezen",
+  "/kunststof-gevel-schoonmaken-onderhoud": "/blog/kunststof-gevel-schoonmaken-onderhoud",
+  "/kosten-kunststof-gevelbekleding": "/blog/wat-kost-kunststof-gevelbekleding",
+};
+
 export function lookupRedirect(pathname: string): RedirectRow {
   const path = normalizePath(pathname);
+  if (path === "/dakkapel-renovatie") {
+    return { from: path, to: "/blog/dakkapel-renovatie", status: "308", reason: "blogpost" };
+  }
+  const blog = blogPostRedirects[path];
+  if (blog) return { from: path, to: blog, status: "301", reason: "blogpost" };
   const retired = retiredKgTarget(path);
   if (retired) {
     return { from: path, to: retired, status: "301", reason: "niet-op-kunststof-gevel" };

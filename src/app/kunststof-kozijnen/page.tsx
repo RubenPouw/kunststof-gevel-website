@@ -54,7 +54,7 @@ export default function KozijnenHubPage() {
             <p className="kicker mt-5">{PROFILE.name}</p>
             <h1 className="display-plp mt-2 max-w-3xl">{pageSeo.kozijnen.h1}</h1>
             <p className="mt-3 max-w-2xl text-[17px] leading-normal text-kg-text-2">
-              Ramen en deuren in één profiel. U stelt het kozijn samen op buitenwerkse maat. Op de site staat nog geen bedrag.
+              Ramen en deuren in één profiel. U stelt het kozijn samen op buitenwerkse maat. De prijs staat bij de samenstelling, inclusief btw.
             </p>
           </div>
           <div className="bevel-16 border border-kg-lijn bg-white p-3 lg:col-start-2 lg:row-span-2 lg:row-start-1">
@@ -69,7 +69,7 @@ export default function KozijnenHubPage() {
           <div className="kg-soft-card max-w-2xl p-5 lg:col-start-1 lg:row-start-2">
             <h2 className="text-[22px] font-bold tracking-[-0.03em]">Prijs</h2>
             <p className="mt-3 text-[16px] leading-normal text-kg-text-2">
-              De configurator eindigt in een vrijblijvende offerte.
+              De prijs in de configurator is inclusief btw. De schakelaar bovenaan zet hem op excl. btw. De aanvraag eindigt in een vrijblijvende offerte. Levertijd 4 weken.
             </p>
             <p className="mt-4 flex flex-wrap gap-3">
               {GROUPS.map((group) => (

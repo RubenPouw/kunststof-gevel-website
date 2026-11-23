@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
+import { GoogleReviewInline } from "@/components/reviews/google-line";
 import { AreaCalculator } from "@/components/catalog/area-calculator";
 import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
@@ -62,7 +63,6 @@ export function ProductDetail({
   crumbs,
   heading,
   deliveryNote,
-  staalHref,
 }: {
   product: Product;
   related: Product[];
@@ -71,7 +71,6 @@ export function ProductDetail({
   crumbs?: { name: string; path: string }[];
   heading?: string;
   deliveryNote?: string;
-  staalHref?: string;
 }) {
   const router = useRouter();
   const fallback = getDefaultVariant(product);
@@ -111,6 +110,14 @@ export function ProductDetail({
   const measure = describeMeasure(product.name, selected.length, product.workingWidthMm);
   const measureText =
     measure.text === "Stuk" ? "per stuk" : measure.label === "Lengte" ? measure.text : `${measure.label} ${measure.text}`;
+  const sampleColor = {
+    id: selected.sampleId,
+    brandSlug: product.brandSlug,
+    brandName: product.brand,
+    colorName: selected.colorName,
+    hex: selected.hex,
+    ral: selected.ral,
+  };
 
   function onAdd(count = qty, goCart = true) {
     if (!canBuy) return;
@@ -263,6 +270,7 @@ export function ProductDetail({
               <p className="font-mono text-[32px] leading-none font-bold">
                 {canBuy ? <VatPrice incl={selected.price} excl={unitExcl} labeled={false} /> : "Prijs op aanvraag"}
               </p>
+              <GoogleReviewInline className="mt-2" />
               <p className="mt-1 text-[14px] text-kg-text-2">
                 {canBuy ? (
                   sheet ? (
@@ -385,25 +393,13 @@ export function ProductDetail({
                 Vraag de prijs
               </Link>
             )}
-            {staalHref ? (
-              <span className="flex flex-col">
-                <Link href={staalHref} className={cn(buttonVariants({ variant: "secondary" }), "h-12 no-underline hover:no-underline")}>
-                  Gratis staal
-                </Link>
-                <span className="mt-1 text-[13px] text-kg-text-2">Zie de kleur eerst in het echt</span>
-              </span>
-            ) : null}
             {product.sampleable ? (
               <SampleAddButton
-                sample={{
-                  id: selected.sampleId,
-                  brandSlug: product.brandSlug,
-                  brandName: product.brand,
-                  colorName: selected.colorName,
-                  hex: selected.hex,
-                  ral: selected.ral,
-                }}
-                label="Staal"
+                sample={sampleColor}
+                label="Gratis staal"
+                caption="Zie de kleur eerst in het echt"
+                variant="secondary"
+                size="default"
                 className="h-12"
               />
             ) : null}
@@ -522,10 +518,14 @@ export function ProductDetail({
             "Vraag de prijs"
           )}
         </button>
-        {staalHref ? (
-          <Link href={staalHref} className={cn(buttonVariants({ variant: "secondary" }), "h-12 shrink-0 no-underline hover:no-underline")}>
-            Gratis staal
-          </Link>
+        {product.sampleable ? (
+          <SampleAddButton
+            sample={sampleColor}
+            label="Gratis staal"
+            variant="secondary"
+            size="default"
+            className="h-12 shrink-0"
+          />
         ) : null}
       </div>
     </div>

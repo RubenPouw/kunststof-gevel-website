@@ -489,6 +489,20 @@ export function sprintSpecRows(product: Product, story: SprintStory) {
   return rows;
 }
 
+export function hplSheetLink(products: Pick<Product, "slug" | "aliasSlugs">[]) {
+  return resolveSprintLink(
+    {
+      label: "HPL plaat 3050 x 1300 x 6 mm",
+      slugs: [
+        "milyt-hpl-plaat-3050-x-1300-x-6-mm-2",
+        "milyt-hpl-plaat-3050-x-1300-x-6-mm-1",
+        "milyt-hpl-plaat-3050-x-1300-x-6-mm",
+      ],
+    },
+    products,
+  );
+}
+
 export function resolveSprintLink(
   link: SprintLink,
   products: Pick<Product, "slug" | "aliasSlugs">[],

@@ -8,7 +8,7 @@ export const hubCopy = {
   title: "Kunststof kozijnen op maat",
   description:
     `Kunststof ramen en deuren in ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}. Zelf samenstellen en een vrijblijvende offerte aanvragen, zonder account.`,
-  lead: `Ramen en deuren: ${PROFILE.name}. Een 2-delige schuifpui: ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. U stelt het kozijn samen op buitenwerkse maat. Op de site staat nog geen bedrag. De configurator eindigt in een vrijblijvende offerte.`,
+  lead: `Ramen en deuren: ${PROFILE.name}. Een 2-delige schuifpui: ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte. U stelt het kozijn samen op buitenwerkse maat. De prijs staat bij de samenstelling, inclusief btw. De configurator eindigt in een vrijblijvende offerte.`,
   sections: [
     {
       heading: "Waarom één profiel",
@@ -26,8 +26,8 @@ export const hubCopy = {
     {
       heading: "Van maat tot offerte",
       paragraphs: [
-        "U vult de buitenwerkse breedte en hoogte in. De configurator zegt meteen of die maat binnen de online grenzen valt. Daarbuiten versturen we de aanvraag nog steeds, en beoordelen we hem handmatig.",
-        "Daarna indeling, hoek, kleur binnen en buiten, glas, ventilatie, dorpel en beslag. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
+        "U vult de buitenwerkse breedte en hoogte in. De configurator zegt meteen of die maat gemaakt kan worden. Een grotere maat bestelt u niet online. Neem contact op voor grotere maten.",
+        "Daarna profiel, vakvulling, eigenschappen, kleur, glas en ventilatie. De tekening schaalt mee. De link in de adresbalk is te delen. Een account is niet nodig.",
       ],
     },
   ] as CopyBlock[],
@@ -107,7 +107,7 @@ export const groupCopy: Record<KozijnGroup, { title: string; description: string
       },
       {
         q: "Hoe breed kan vierdelig?",
-        a: "Online vragen we vierdelig aan tussen de grenzen die op de maatstap staan. Daarbuiten beoordelen we de maat handmatig.",
+        a: "Een vak is maximaal 1.500 mm breed. Bij vier gelijke vakken gaat de pui tot 6.000 mm breed en 2.500 mm hoog. Groter dan dat bestelt u niet online.",
       },
     ],
   },
@@ -167,7 +167,7 @@ const layoutBody: Record<string, { paragraphs: string[]; faqs: CopyFaq[] }> = {
   draaikiepraam: {
     paragraphs: [
       "Dit is het raam dat de meeste kamers nodig hebben. Op kiep lucht u zonder de vleugel in de kamer, op draai wast u de buitenkant vanaf binnen.",
-      "Eén vak, één kruk, één scharnierzijde. De online maatgrenzen staan op de eerste stap. Een groter gat wordt een combinatie of een handmatige aanvraag.",
+      "Eén vak, één kruk, één scharnierzijde. De maatstap zegt tot hoe breed en hoog dit type gaat. Een grotere maat bestelt u niet online.",
     ],
     faqs: [
       { q: "Kan ik hem op de badkamer zetten?", a: "Ja. Kies dan meteen of het glas mat moet. Mat glas zet u in de opmerking. De glasstap kiest isolatie en gelaagdheid." },
@@ -207,7 +207,7 @@ const layoutBody: Record<string, { paragraphs: string[]; faqs: CopyFaq[] }> = {
   stolpraam: {
     paragraphs: [
       "Twee vleugels, geen vaste tussenstijl. Dicht is het één glasvlak met een naad. Open is het de volle breedte. Eén vleugel gebruikt u dagelijks, de andere zet u vast met de sluiting.",
-      "Een stolp is hoger en breder dan een enkel draaikiepraam. De online grenzen staan op de maatstap. Daarbuiten kijken we handmatig.",
+      "Een stolp is hoger en breder dan een enkel draaikiepraam. De maatstap zegt tot hoe ver dit type gaat. Een grotere maat bestelt u niet online.",
     ],
     faqs: [
       { q: "Welke vleugel gaat het eerst open?", a: "De loopvleugel, links of rechts van buiten gezien. De andere is de standvleugel." },

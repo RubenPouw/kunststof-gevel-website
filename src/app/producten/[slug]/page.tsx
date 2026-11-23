@@ -3,15 +3,12 @@ import { notFound, permanentRedirect } from "next/navigation";
 
 import { ProductDetail } from "@/app/producten/[slug]/product-detail";
 import { ProductSprintArticle } from "@/components/catalog/product-sprint-article";
-import { ReviewScoreStrip } from "@/components/reviews/score-strip";
+import { ReviewBar } from "@/components/reviews/review-bar";
 import { JsonLd } from "@/components/seo/json-ld";
 import { categoryPath } from "@/data/seo/category-pages";
 import { productQueryRobots, sprintForProduct, sprintSpecRows, SPRINT_DELIVERY_SENTENCE } from "@/data/seo/product-sprint";
 import { getCategory, getProduct, getRelatedProducts, listProducts } from "@/lib/catalog";
 import { breadcrumbJsonLd, faqJsonLd, productJsonLd } from "@/lib/seo/schema";
-import { getReviewSnapshot } from "@/lib/reviews/read";
-import { isFacadePanel } from "@/lib/catalog/derive";
-import { staalTarget } from "@/lib/staal/tree";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -62,9 +59,6 @@ export default async function ProductPage({ params }: Props) {
 
   const categoryName = category?.name ?? product.category;
   const categoryHref = categoryPath(product.category);
-  const staal = isFacadePanel(product) ? staalTarget(product) : null;
-  const staalHref = staal ? `/staalaanvraag?product=${encodeURIComponent(product.slug)}` : undefined;
-  const reviews = await getReviewSnapshot();
   const crumbs = story
     ? [...story.crumbs, { name: story.h1, path: `/producten/${product.slug}` }]
     : [
@@ -85,7 +79,7 @@ export default async function ProductPage({ params }: Props) {
       />
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
       <JsonLd data={story ? faqJsonLd(story.faqs) : null} />
-      <ReviewScoreStrip snapshot={reviews} />
+      <ReviewBar />
       <ProductDetail
         product={product}
         related={related}
@@ -94,7 +88,6 @@ export default async function ProductPage({ params }: Props) {
         crumbs={story ? story.crumbs : undefined}
         heading={story?.h1}
         deliveryNote={story ? SPRINT_DELIVERY_SENTENCE : undefined}
-        staalHref={staalHref}
       />
       <ProductSprintArticle product={product} />
     </>

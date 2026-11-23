@@ -30,7 +30,7 @@ npm start
 - `/producten/[slug]` — productdetail (kleur, lengte-SKU, calculator, stalen)
 - `/merken`, `/merken/[slug]` — merken (PLP met sidebarfilters)
 - `/stalen` — aanvraag gratis kleurstalen
-- `/winkelwagen`, `/afrekenen`: winkelwagen, daarna Shopify-checkout (Storefront cart, of een conceptbestelling als het Admin-token gezet is)
+- `/winkelwagen`, `/afrekenen`: winkelwagen, daarna Shopify-checkout (Storefront cart). Bevat de wagen een kozijn en staat `KOZIJNEN_CHECKOUT_ACTIEF` aan, dan wordt de hele wagen één conceptbestelling met het Admin-token.
 - `/zoeken` — zoeken op naam, merk, SKU
 - `/zakelijk`, `/over-ons`, `/projecten`, `/offerte`, `/contact`
 - `/blog`, `/blog/[slug]` — kennisartikelen (prijs, merken, montage, stalen)

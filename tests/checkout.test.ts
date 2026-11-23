@@ -26,6 +26,7 @@ test("isShopifyCheckoutUrl only accepts Shopify hosts", () => {
 test("checkout does not pretend success without Shopify", async () => {
   delete process.env.SHOPIFY_STORE_DOMAIN;
   delete process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+  process.env.KOZIJNEN_CHECKOUT_ACTIEF = "false";
   const empty = await createShopifyCheckout({ lines: [], customer, montage: false });
   assert.equal(empty.ok, false);
   if (empty.ok) return;

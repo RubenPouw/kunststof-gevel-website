@@ -1,0 +1,119 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+
+import { businessPoints, footerColumns, site } from "../src/lib/site.ts";
+
+const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
+
+test("header drops the landline, renames samples, and uses signal yellow", () => {
+  const header = read("../src/components/site-header.tsx");
+  assert.equal(header.includes("site.phone"), false);
+  assert.equal(header.includes("030 227 1397"), false);
+  assert.match(header, /Gratis Samples/);
+  assert.equal(/>Stalen</.test(header), false);
+  assert.equal(header.includes("hover:bg-kg-navy-2"), false);
+  assert.equal(header.includes("hover:bg-kg-kalk"), false);
+  assert.match(header, /hover:bg-kg-signal hover:text-kg-navy/);
+  assert.match(header, /Winkelwagen/);
+});
+
+test("footer keeps a visible tel link and renames projecten", () => {
+  const footer = read("../src/components/site-footer.tsx");
+  assert.match(footer, /href=\{site\.phoneHref\}/);
+  assert.match(footer, /text-\[20px\]/);
+  assert.equal(site.phone, "030 227 1397");
+  assert.equal(site.phoneHref, "tel:+31302271397");
+  assert.equal(site.address, "Binnenkamp 7a, 5321 KA Hedel");
+  assert.equal(site.kvk, "66527376");
+  assert.equal(site.btw, "NL856594842B01");
+  assert.equal(site.iban, "NL20INGB0007321511");
+  assert.match(footer, /IBAN \{site\.iban\}/);
+  const bedrijf = footerColumns.find((column) => column.title === "Bedrijf");
+  const projecten = bedrijf?.links.find((link) => link.href === "/projecten");
+  assert.equal(projecten?.label, "Montage projecten");
+});
+
+test("samples panel is one navy and the montage line says monteren", () => {
+  const samples = read("../src/components/home/samples-section.tsx");
+  assert.equal(samples.includes("bg-kg-navy-2"), false);
+  assert.match(samples, /bg-kg-navy/);
+  const band = read("../src/components/home/business-band.tsx");
+  assert.match(band, /Ook laten monteren\?/);
+  assert.equal(band.includes("laten zetten"), false);
+  assert.match(band, /Bestelt u voor uw zaak\?/);
+  assert.match(band, /href="\/zakelijk"/);
+  assert.deepEqual(businessPoints, [
+    "Zakelijk kopen met voordeel",
+    "Bestellen op rekening is mogelijk",
+    "Gemakkelijk herbestellen",
+  ]);
+  assert.match(band, /✓/);
+});
+
+test("HPL category starts with the colour hub and leaves other listings alone", () => {
+  const page = read("../src/app/hpl-plaat/page.tsx");
+  const alias = read("../src/app/hpl-platen/page.tsx");
+  const listing = read("../src/components/catalog/category-listing.tsx");
+  const hubPage = read("../src/components/catalog/hpl-hub-page.tsx");
+  const article = read("../src/components/seo/article.tsx");
+  assert.match(page, /CategoryListing/);
+  assert.match(page, /slug="hpl-platen"/);
+  assert.match(alias, /searchParams/);
+  assert.match(listing, /HplHubPage/);
+  assert.match(listing, /embedded/);
+  assert.match(listing, /faqAccordion/);
+  assert.equal(listing.includes("photoGrid"), false);
+  assert.equal(listing.includes("sheetCalculator"), false);
+  const hubAt = listing.indexOf("<HplHubPage");
+  const articleAt = listing.indexOf("<SeoArticle");
+  assert.ok(hubAt > 0 && articleAt > hubAt);
+  assert.match(hubPage, /<SheetCalculator/);
+  assert.equal(/!embedded\s*&&\s*onPlates/.test(hubPage), false);
+  assert.match(article, /faqJsonLd/);
+  assert.match(article, /<details/);
+  assert.match(article, /<dl className="space-y-4">/);
+  const products = read("../src/components/catalog/product-listing.tsx");
+  assert.match(products, /minmax\(0,3fr\)_minmax\(0,9fr\)/);
+  assert.match(products, /photoGrid \? \(\s*<ListingPhotoGrid/);
+  assert.match(products, /<ListingRow/);
+  const defaults = read("../src/lib/catalog/listing.ts");
+  assert.match(defaults, /view: "lijst"/);
+  const gevel = read("../src/app/gevelbekleding/page.tsx");
+  assert.equal(gevel.includes("photoGrid"), false);
+});
+
+test("listing rows keep a readable name and aligned controls", () => {
+  const row = read("../src/components/catalog/listing-row.tsx");
+  assert.equal(row.includes("lg:contents"), false);
+  assert.match(row, /min-w-0 flex-1/);
+  assert.match(row, /break-words/);
+  assert.match(row, /@min-\[640px\]:grid-cols-\[minmax\(7\.5rem,1fr\)_7\.5rem_8\.5rem_10\.5rem\]/);
+  const products = read("../src/components/catalog/product-listing.tsx");
+  assert.match(products, /photoGrid \? \(\s*<ListingPhotoGrid/);
+  assert.match(products, /<ListingRow/);
+});
+
+test("category cards are a carousel of packshots in the fixed order", () => {
+  const grid = read("../src/components/home/assortment-grid.tsx");
+  assert.equal(grid.includes("/categorie/gevelbekleding.webp"), false);
+  assert.equal(grid.includes("/categorie/kozijnen.webp"), false);
+  assert.equal(grid.includes("duafort"), false);
+  assert.equal(grid.includes("profex"), false);
+  assert.equal(grid.includes("canexel"), false);
+  assert.equal(grid.includes("linerio"), false);
+  assert.equal(grid.includes("wonderboard"), false);
+  assert.match(grid, /aria-label="Vorige categorieën"/);
+  assert.match(grid, /aria-label="Volgende categorieën"/);
+  assert.match(grid, /aspect-\[4\/3\]/);
+  assert.match(grid, /fit="contain"/);
+  const names = [...grid.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(names, [
+    "Gevelbekleding",
+    "Kunststof kozijnen",
+    "Dakranden",
+    "HPL platen",
+    "Plafondpanelen",
+    "Bevestiging",
+  ]);
+});

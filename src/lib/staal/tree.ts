@@ -4,6 +4,8 @@ import { normalizeProductName } from "@/lib/catalog/text-rules";
 import { correctVariantImages } from "@/lib/catalog/variant-images";
 import type { Product } from "@/lib/catalog/types";
 
+import { isBannedSampleProduct } from "./banned";
+
 export const STAAL_GROUP_QUESTION = "Kiest u eerst voor wat er nodig is, dakrand of een geveldeel?";
 export const STAAL_MULTI_NOTE =
   "* Meerdere stalen zijn mogelijk doorloop het proces dan per staal of geef dit mee in de notities.";
@@ -270,7 +272,11 @@ function emptyGroup(id: StaalGroupId, label: string, question: string): StaalNod
 
 function gevelGroup(products: Product[]): StaalNode {
   const panels = products.filter(
-    (product) => product.category === "gevelbekleding" && !isHardware(product.name) && gevelKind(product.name),
+    (product) =>
+      product.category === "gevelbekleding" &&
+      !isHardware(product.name) &&
+      !isBannedSampleProduct(product) &&
+      gevelKind(product.name),
   );
   const byKind = new Map<GevelKind, Product[]>();
   for (const product of panels) {
@@ -319,7 +325,7 @@ function gevelGroup(products: Product[]): StaalNode {
 
 function dakrandGroup(products: Product[]): StaalNode {
   const panels = products.filter((product) => {
-    if (product.category !== "dakranden" || isHardware(product.name)) return false;
+    if (product.category !== "dakranden" || isHardware(product.name) || isBannedSampleProduct(product)) return false;
     return /dakrand|boeiboord|boeideel|daktrim/.test(product.name.toLowerCase());
   });
   const byKind = new Map<DakrandKind, Product[]>();
@@ -360,7 +366,7 @@ function namedGroup(
 }
 
 function isVensterbank(product: Product) {
-  if (isHardware(product.name)) return false;
+  if (isHardware(product.name) || isBannedSampleProduct(product)) return false;
   const text = product.name.toLowerCase();
   if (!/vensterbank|overzetbank|overzet\s*vensterbank/.test(text)) return false;
   return (
@@ -371,7 +377,7 @@ function isVensterbank(product: Product) {
 }
 
 function isHplSample(product: Product) {
-  if (product.category !== "hpl-platen" || isHardware(product.name)) return false;
+  if (product.category !== "hpl-platen" || isHardware(product.name) || isBannedSampleProduct(product)) return false;
   const text = `${blob(product)} ${product.description ?? ""}`.toLowerCase();
   if (/sandwich|reiniger|compact|renolit|\babet\b|brandvertragend/.test(text)) return false;
   if (/\b(?:2|24)\s*mm\b/.test(text)) return false;

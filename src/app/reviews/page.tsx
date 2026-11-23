@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { KeurmerkLink } from "@/components/reviews/keurmerk";
-import { ReviewScoreStrip } from "@/components/reviews/score-strip";
+import { ReviewBar } from "@/components/reviews/review-bar";
 import { ReviewStars } from "@/components/reviews/stars";
 import { formatReviewDate } from "@/lib/reviews/format";
 import { getReviewSnapshot } from "@/lib/reviews/read";
@@ -20,7 +20,7 @@ export default async function ReviewsPage() {
   const snapshot = await getReviewSnapshot();
   return (
     <article className="pb-24">
-      <ReviewScoreStrip snapshot={snapshot} />
+      <ReviewBar />
       <div className="container-kg pt-12 sm:pt-16">
         <nav aria-label="Kruimelpad" className="font-mono text-[13px] text-kg-text-2">
           <Link href="/" className="no-underline hover:underline">

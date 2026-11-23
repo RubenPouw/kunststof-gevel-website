@@ -1,6 +1,8 @@
 import { colourParts, labelColour } from "@/lib/catalog/colours";
 import type { SampleColor } from "@/lib/catalog/types";
 
+import { isBannedSampleText } from "./banned";
+import { isBannedStaalGroup, staalBrandOf, staalCategoryOf } from "./filters";
 import { isBlankSampleName, sampleLineLabel, tidySampleName } from "./labels";
 import type { StaalNode, StaalTree } from "./tree";
 import type { StaalLine } from "./validate";
@@ -24,6 +26,10 @@ export type StaalPickerGroup = {
   title: string;
   image?: string;
   swatches: StaalSwatch[];
+  categoryId: string;
+  categoryLabel: string;
+  brandId: string;
+  brandLabel: string;
 };
 
 /** Site category names, in the same order as the assortment. */
@@ -73,7 +79,10 @@ function swatchName(raw: string, verbatim = false) {
   return { name: parts.name, code: parts.code, labeled };
 }
 
-export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
+export function staalPickerSections(
+  tree: StaalTree,
+  brandBySlug: Record<string, { id: string; label: string }> = {},
+): StaalPickerSection[] {
   const sections: StaalPickerSection[] = [];
   for (const group of tree.groups) {
     const groups: StaalPickerGroup[] = [];
@@ -82,9 +91,9 @@ export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
       const swatches: StaalSwatch[] = [];
       if (isVerbindingText(leaf.node.label) || leaf.labels.some(isVerbindingText)) continue;
       const usable = leaf.node.colors.flatMap((color) => {
-        if (isVerbindingText(color.name)) return [];
+        if (isVerbindingText(color.name) || isBannedSampleText(color.name)) return [];
         const parsed = swatchName(color.name, color.verbatim);
-        if (!parsed || isVerbindingText(parsed.name)) return [];
+        if (!parsed || isVerbindingText(parsed.name) || isBannedSampleText(parsed.name)) return [];
         return [{ color, parsed }];
       });
       if (usable.length) {
@@ -117,12 +126,20 @@ export function staalPickerSections(tree: StaalTree): StaalPickerSection[] {
       }
       if (!swatches.length) continue;
       const title = leaf.labels.slice(1).join(" · ") || leaf.node.label;
-      if (isVerbindingText(title)) continue;
+      const id = leaf.path.join("/");
+      if (isVerbindingText(title) || isBannedStaalGroup({ id, title, swatches })) continue;
+      const image = leaf.node.image || swatches.find((swatch) => swatch.image)?.image;
+      const category = staalCategoryOf(group.id, id, title);
+      const brand = staalBrandOf({ id, title, image, swatches }, brandBySlug);
       groups.push({
-        id: leaf.path.join("/"),
+        id,
         title,
-        image: leaf.node.image || swatches.find((swatch) => swatch.image)?.image,
+        image,
         swatches,
+        categoryId: category.id,
+        categoryLabel: category.label,
+        brandId: brand?.id ?? "",
+        brandLabel: brand?.label ?? "",
       });
     }
     if (groups.length) sections.push({ id: group.id, title: group.label, groups });

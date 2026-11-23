@@ -1,4 +1,4 @@
-import { statSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 function isFile(path) {
@@ -20,6 +20,19 @@ export async function load(url, context, nextLoad) {
       ...context,
       importAttributes: { ...context.importAttributes, type: "json" },
     });
+  }
+  if (url.endsWith(".tsx")) {
+    const { default: ts } = await import("typescript");
+    const source = readFileSync(fileURLToPath(url), "utf8");
+    const result = ts.transpileModule(source, {
+      compilerOptions: {
+        module: ts.ModuleKind.ESNext,
+        target: ts.ScriptTarget.ES2022,
+        jsx: ts.JsxEmit.ReactJSX,
+      },
+      fileName: fileURLToPath(url),
+    });
+    return { format: "module", source: result.outputText, shortCircuit: true };
   }
   return nextLoad(url, context);
 }

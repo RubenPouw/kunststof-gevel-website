@@ -214,9 +214,9 @@ export type SampleColor = {
 };
 
 export type ListingFilters = {
-  /** One brand. A single `merk` value stays this field. */
+  /** One brand. `merk` is a single slug. A list keeps only the first. */
   brandSlug?: string;
-  /** Two or more brands. Same `merk` param, comma-separated. */
+  /** Not written. If a list is still present, only the first slug is used. */
   brandSlugs?: string[];
   inStockOnly?: boolean;
   profileType?: ProfileType;

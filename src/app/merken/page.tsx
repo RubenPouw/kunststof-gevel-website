@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { listBrands, listProducts } from "@/lib/catalog";
+import { officialBrandLogo } from "@/lib/catalog/brand-logos";
 
 export const revalidate = 3600;
 
@@ -26,6 +28,7 @@ export default async function MerkenPage() {
       <div className="mt-10 grid grid-cols-2 border-y border-kg-lijn sm:grid-cols-4">
         {brands.map((brand) => {
           const count = products.filter((product) => product.brandSlug === brand.slug).length;
+          const logo = officialBrandLogo(brand.slug);
           return (
             <Link
               key={brand.slug}
@@ -33,7 +36,20 @@ export default async function MerkenPage() {
               className="border-kg-lijn p-6 text-inherit no-underline transition-colors duration-150 hover:bg-kg-kalk hover:no-underline sm:border-r"
             >
               <p className="font-mono text-[13px] text-kg-text-2">{count} producten</p>
-              <h2 className="mt-2 text-[20px] font-bold tracking-[-0.02em]">{brand.name}</h2>
+              {logo ? (
+                <h2 className="mt-2 flex h-10 items-center">
+                  <Image
+                    src={logo}
+                    alt={brand.name}
+                    width={180}
+                    height={40}
+                    unoptimized
+                    className="h-10 w-auto max-w-full object-contain object-left"
+                  />
+                </h2>
+              ) : (
+                <h2 className="mt-2 text-[20px] font-bold tracking-[-0.02em]">{brand.name}</h2>
+              )}
               <p className="mt-2 text-[14px] text-kg-text-2">{brand.summary}</p>
             </Link>
           );

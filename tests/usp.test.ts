@@ -28,7 +28,7 @@ function line(items: readonly { k: string; v: string }[]) {
   return items.map((item) => `${item.k} ${item.v}`).join(" | ");
 }
 
-test("kozijn routes get the kozijn bar, the rest keep montage and colour guarantee", () => {
+test("kozijn routes get the kozijn bar, the shop bar keeps shipping and colour guarantee", () => {
   for (const path of KOZIJN_PATHS) {
     assert.equal(isKozijnSection(path), true, path);
     const text = line(uspForPath(path));
@@ -37,15 +37,17 @@ test("kozijn routes get the kozijn bar, the rest keep montage and colour guarant
     assert.equal(/garantie/i.test(text), false, text);
     assert.equal(/voorraad/i.test(text), false, text);
   }
-  assert.match(line(uspBySection.site), /Levering max\. 3 werkdagen/);
-  assert.equal(/in overleg/.test(line(uspBySection.site)), false);
-  assert.match(line(uspForPath("/gevelbekleding")), /10 jaar garantie op kleur/);
-  assert.match(line(uspForPath("/gevelbekleding")), /Montage via offerte/);
+  const shop = line(uspForPath("/gevelbekleding"));
+  assert.equal(
+    shop,
+    "Gratis verzending vanaf €499 binnen Nederland | Afhalen uit voorraad mogelijk | 10 jaar garantie op kleur | Showroom op afspraak in Hedel",
+  );
+  assert.equal(/Montage via offerte/.test(shop), false);
   assert.equal(line(uspForPath("/")), line(uspBySection.site));
   assert.equal(line(uspForPath("/offerte")), line(uspBySection.site));
   assert.match(line(uspBySection.kozijnen), /Aluplast kozijnen op maat/);
   assert.match(line(uspBySection.kozijnen), /Werktekening met maten/);
-  assert.match(line(uspBySection.kozijnen), /Levering 4 weken/);
+  assert.match(line(uspBySection.kozijnen), /Meerdere kozijnen in één offertemand/);
   assert.match(line(uspBySection.kozijnen), /Duidelijke meetinstructie/);
 });
 

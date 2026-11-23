@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { BrandRow } from "@/components/catalog/brand-row";
 import { ListingCard } from "@/components/catalog/listing-card";
 import { ActiveFilterChips, ListingFiltersPanel } from "@/components/catalog/listing-filters";
+import { ListingPhotoGrid } from "@/components/catalog/listing-photo-grid";
 import { ListingRow } from "@/components/catalog/listing-row";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -40,6 +41,7 @@ export function ProductListing({
   view: initialView = DEFAULT_PRESENTATION.view,
   sort: initialSort = DEFAULT_PRESENTATION.sort,
   showStockChip = false,
+  photoGrid = false,
   emptyMessage,
 }: {
   cards: ListingCardModel[];
@@ -54,6 +56,8 @@ export function ProductListing({
   view?: ListingView;
   sort?: ListingSort;
   showStockChip?: boolean;
+  /** Square photo cards instead of the list or the wide raster card. HPL only. */
+  photoGrid?: boolean;
   emptyMessage?: React.ReactNode;
 }) {
   const [cards, setCards] = useState(initialCards);
@@ -202,7 +206,7 @@ export function ProductListing({
         presentation={presentation}
         onFilter={onFilter}
       />
-      <div className="mt-8 grid gap-10 lg:grid-cols-[3fr_9fr] lg:gap-5">
+      <div className="mt-8 grid min-w-0 gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,9fr)] lg:gap-5">
         <aside className="hidden h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)] lg:block">
           {showFilters ? (
             <div className="kg-soft-card p-5">
@@ -212,7 +216,7 @@ export function ProductListing({
           ) : null}
         </aside>
 
-        <div className="lg:order-none pb-24 lg:pb-0">
+        <div className="min-w-0 pb-24 lg:min-w-0 lg:pb-0">
           <ActiveFilterChips
             filters={filters}
             facets={facets}
@@ -253,17 +257,21 @@ export function ProductListing({
                   <option value="prijs-af">Prijs hoog-laag</option>
                 </select>
               </label>
-              <ViewToggle
-                view={view}
-                listHref={listingPageHref(basePath, filters, 1, { view: "lijst", sort })}
-                gridHref={listingPageHref(basePath, filters, 1, { view: "raster", sort })}
-              />
+              {photoGrid ? null : (
+                <ViewToggle
+                  view={view}
+                  listHref={listingPageHref(basePath, filters, 1, { view: "lijst", sort })}
+                  gridHref={listingPageHref(basePath, filters, 1, { view: "raster", sort })}
+                />
+              )}
             </div>
           </div>
           {cards.length === 0 ? (
             <p className="kg-soft-card mt-4 px-6 py-12 text-center text-kg-text-2">
               {emptyMessage ?? "Geen producten met deze filters."}
             </p>
+          ) : photoGrid ? (
+            <ListingPhotoGrid cards={cards} />
           ) : view === "raster" ? (
             <div className="mt-4 grid gap-3 lg:grid-cols-2">
               {cards.map((card) => (

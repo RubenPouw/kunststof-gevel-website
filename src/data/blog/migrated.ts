@@ -1,4 +1,5 @@
 import { categoryPath } from "@/data/seo/category-pages";
+import { euroPlain, FREE_SHIPPING_FROM } from "@/lib/format";
 
 import type { BlogPost } from "./posts";
 
@@ -132,6 +133,8 @@ export const migratedPosts: BlogPost[] = [
     ],
     links: [
       { href: "/blog/overzet-vensterbank-meten", label: "Overzetbank meten" },
+      { href: "/blog/vensterbank-vervangen", label: "Vensterbank vervangen" },
+      { href: "/blog/steenlook-vensterbank", label: "Steenlook vensterbank" },
       { href: categoryPath("vensterbanken"), label: "Vensterbanken" },
     ],
   },
@@ -165,6 +168,8 @@ export const migratedPosts: BlogPost[] = [
     links: [
       { href: categoryPath("vensterbanken"), label: "Banken en eindkappen" },
       { href: "/offerte", label: "Maten laten controleren" },
+      { href: "/blog/vensterbank-vervangen", label: "Vensterbank vervangen" },
+      { href: "/blog/steenlook-vensterbank", label: "Steenlook vensterbank" },
     ],
   },
   {
@@ -197,6 +202,7 @@ export const migratedPosts: BlogPost[] = [
     links: [
       { href: "/gevelbekleding?type=rabat", label: "Rabatdelen" },
       { href: "/blog/montage-kunststof-gevelbekleding", label: "Montagevolgorde" },
+      { href: "/blog/kunststof-rabatdelen-monteren", label: "Rabatdelen monteren" },
     ],
   },
   {
@@ -334,7 +340,7 @@ export const migratedPosts: BlogPost[] = [
           "Hoekstukken, tussenstukken, eindprofielen en eventueel H-verbindingsprofielen",
           "Rvs schroeven en Torx schroeven op kleur",
           "Keralit kleurstift voor de afwerking",
-          "Alle onderdelen staan bij elkaar op de pagina Keralit dakranden en boeidelen. Vanaf €499 is de verzending gratis. Heb je een groot project of veel strekkende meters? Vraag via die pagina een prijs op maat aan.",
+          `Alle onderdelen staan bij elkaar op de pagina Keralit dakranden en boeidelen. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis. Heb je een groot project of veel strekkende meters? Vraag via die pagina een prijs op maat aan.`,
         ],
       },
       {

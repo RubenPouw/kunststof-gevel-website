@@ -1,6 +1,7 @@
 import { getLayoutBySlug } from "@/lib/kozijnen/layouts";
-import { panesFor, parseConfig, sizeInRange } from "@/lib/kozijnen/model";
-import { calculatePrice, optionIdsFor, priceBook, pricesFlagActive, publicPrice } from "@/lib/kozijnen/prices";
+import { parseConfig, sizeInRange, sizeMessage } from "@/lib/kozijnen/model";
+import { pricesFlagActive, publicPrice } from "@/lib/kozijnen/prices";
+import { priceLayoutConfig } from "@/lib/kozijnen/quote-price";
 import { clientIp, rateLimitKozijn } from "@/lib/kozijnen/rate-limit";
 
 export const runtime = "nodejs";
@@ -22,18 +23,8 @@ export async function POST(request: Request) {
   const layout = getLayoutBySlug(String(raw.layout ?? ""));
   if (!layout || typeof raw.query !== "string") return Response.json({ pricesActive: false }, { status: 400 });
   const config = parseConfig(new URLSearchParams(raw.query), layout);
-  if (!sizeInRange(layout, config.width, config.height)) return Response.json({ pricesActive: false });
-  const hasSash = panesFor(layout, config).some((pane) => pane.kind !== "vast");
-  const result = calculatePrice(
-    {
-      layout: layout.slug,
-      widthMm: config.width,
-      heightMm: config.height,
-      panes: layout.panes,
-      optionIds: optionIdsFor({ ...config, hasSash }),
-    },
-    priceBook,
-    true,
-  );
-  return Response.json(publicPrice(result));
+  if (!sizeInRange(layout, config.width, config.height)) {
+    return Response.json({ pricesActive: false, error: sizeMessage(layout, config.width, config.height) }, { status: 400 });
+  }
+  return Response.json(publicPrice(priceLayoutConfig(layout, config, true)));
 }

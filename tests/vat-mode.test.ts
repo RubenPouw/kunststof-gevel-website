@@ -28,12 +28,18 @@ test("boot script sets the mode before paint and keeps cookie and storage togeth
   assert.equal(VAT_BOOT_SCRIPT.includes("—"), false);
 });
 
-test("shipping copy uses the configured amounts and 21 percent", () => {
-  assert.match(shippingEstimateInclCopy(), new RegExp(inclVat(SHIPPING_FLAT).toLocaleString("nl-NL")));
-  assert.match(shippingEstimateInclCopy(), new RegExp(inclVat(FREE_SHIPPING_FROM).toLocaleString("nl-NL")));
-  assert.match(shippingEstimateBothCopy(), /49,00/);
-  assert.match(shippingEstimateBothCopy(), /499,00/);
+test("shipping copy uses the customer incl amounts and derives excl by dividing", () => {
+  assert.equal(SHIPPING_FLAT, 49.95);
+  assert.equal(FREE_SHIPPING_FROM, 499);
+  assert.match(shippingEstimateInclCopy(), /49,95/);
+  assert.match(shippingEstimateInclCopy(), /499,00/);
+  assert.equal(shippingEstimateInclCopy().includes("59,29"), false);
+  assert.equal(shippingEstimateInclCopy().includes("603,79"), false);
+  assert.match(shippingEstimateBothCopy(), /41,28/);
+  assert.match(shippingEstimateBothCopy(), /412,40/);
+  assert.match(shippingEstimateBothCopy(), /49,95/);
   assert.match(shippingEstimateBothCopy(), /incl\. 21% btw/);
   assert.equal(shippingEstimateBothCopy().includes("—"), false);
   assert.equal(exclVat(121), 100);
+  assert.notEqual(inclVat(SHIPPING_FLAT), SHIPPING_FLAT);
 });

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { categoryPageSeo, pageSeo } from "@/data/seo/category-pages";
+import { euroPlain, FREE_SHIPPING_FROM } from "@/lib/format";
 
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
 
@@ -56,7 +57,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
     description:
       "Keralit planken en panelen: sponning 143, 167, 190 mm en potdeksel 177 mm, plus profielen. Gratis kleurstaal, op voorraad in max. 3 werkdagen.",
     intro:
-      "Keralit gevelbekleding bestel je bij ons als Keralit planken van 600 cm, met de prijs direct bij elk paneel. Kies uit vier modellen: sponning 143, 167 of 190 mm en potdeksel 177 mm, in tientallen kleuren. Alle montageprofielen, schroeven en reiniger bestel je in dezelfde order. Vraag eerst gratis een kleurstaal aan. Op voorraad heb je het binnen max. 3 werkdagen in huis.  Liever inclusief montage? Vraag een offerte aan.",
+      "Keralit gevelbekleding bestel je bij ons als Keralit planken van 600 cm, met de prijs direct bij elk paneel. Kies uit vier modellen: sponning 143, 167 of 190 mm en potdeksel 177 mm, in tientallen kleuren. Alle montageprofielen, schroeven en reiniger bestel je in dezelfde order. Vraag eerst gratis een kleurstaal aan. Op voorraad heb je het binnen max. 3 werkdagen in huis. Liever inclusief montage? Vraag een offerte aan.",
     sampleHref: "/staalaanvraag?groep=gevel",
     sections: [
       {
@@ -89,7 +90,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Kleur kiezen en bestellen",
         paragraphs: [
-          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfel je? Vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Producten op voorraad heb je binnen max. 3 werkdagen in huis en vanaf €499 is de verzending gratis.  Groot project? Vraag een offerte aan.",
+          `Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfel je? Vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Producten op voorraad heb je binnen max. 3 werkdagen in huis en vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis. Groot project? Vraag een offerte aan.`,
         ],
       },
     ],
@@ -100,7 +101,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Wat kosten Keralit planken?",
-        a: "Je betaalt per plank van 600 cm. Sponning 143 mm kost €90,49, sponning 167 mm €106,15, potdeksel 177 mm €107,93 en sponning 190 mm €116,14 (prijzen live 9 nov 2026). Profielen en schroeven komen erbij. Vanaf €499 is de verzending gratis.",
+        a: `Je betaalt per plank van 600 cm. Sponning 143 mm kost €90,49, sponning 167 mm €106,15, potdeksel 177 mm €107,93 en sponning 190 mm €116,14 (prijzen live 9 nov 2026). Profielen en schroeven komen erbij. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis.`,
       },
       {
         q: "Zijn Keralit planken hetzelfde als Keralit panelen?",
@@ -120,7 +121,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Hoe snel heb ik mijn Keralit in huis?",
-        a: "Producten op voorraad heb je binnen max. 3 werkdagen. Vanaf €499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
+        a: `Producten op voorraad heb je binnen max. 3 werkdagen. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis. Op de kunststof zit 10 jaar garantie.`,
       },
     ],
     links: [
@@ -216,7 +217,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Bestellen",
         paragraphs: [
-          "Op voorraad leveren we in max. 3 werkdagen. Kleurstalen zijn binnen 3 werkdagen thuis. Wil je de kleur eerst zien, vraag een staal aan. Groot project? Vraag een offerte aan.",
+          `Op voorraad leveren we in max. 3 werkdagen. Kleurstalen zijn binnen 3 werkdagen thuis. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis en op de kunststof zit 10 jaar garantie. Wil je de kleur eerst zien, vraag een staal aan. Groot project? Vraag een offerte aan.`,
         ],
       },
     ],

@@ -68,7 +68,7 @@ export default function OffertemandPage() {
       </p>
       <h1 className="mt-3">Offertemand</h1>
       <p className="mt-3 text-[16px] text-kg-text-2">
-        Meerdere kozijnen in één aanvraag. Een account is niet nodig. Er staat geen prijs op zolang de prijsvlag uit staat.
+        Meerdere kozijnen in één aanvraag. Een account is niet nodig. De prijs staat bij elk kozijn, inclusief btw.
       </p>
       {!ready ? null : items.length === 0 && !sent ? (
         <p className="mt-8">De mand is leeg.</p>

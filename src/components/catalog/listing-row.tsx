@@ -82,9 +82,16 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
     window.setTimeout(() => setAdded(false), 1600);
   }
 
+  const measureText =
+    measure.text === "Stuk"
+      ? "Per stuk"
+      : measure.label === "Werkende breedte"
+        ? `${measure.text} werkend`
+        : `${measure.label} ${measure.text}`;
+
   return (
-    <article className="kg-soft-card flex flex-col gap-3 p-4 lg:flex-row lg:items-center lg:gap-3">
-      <div className="flex min-w-0 gap-3 lg:contents">
+    <article className="@container kg-soft-card flex w-full min-w-0 flex-col gap-3 p-4">
+      <div className="flex min-w-0 gap-3">
         <Link href={`/producten/${card.slug}`} className="shrink-0 text-inherit no-underline hover:no-underline">
           <ProductPhoto
             image={image}
@@ -96,9 +103,9 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
             imageClassName="p-1"
           />
         </Link>
-        <div className="min-w-0 flex-1 lg:w-[220px] lg:flex-1">
-          <p className="font-mono text-[13px] text-kg-text-2">Art. {sku}</p>
-          <h3 className="mt-0.5 text-[16px] leading-snug font-medium">
+        <div className="min-w-0 flex-1">
+          <p className="font-mono text-[13px] break-words text-kg-text-2">Art. {sku}</p>
+          <h3 className="mt-0.5 text-[16px] leading-snug font-medium break-words">
             <Link href={`/producten/${card.slug}`} className="text-inherit no-underline hover:no-underline">
               {card.name}
             </Link>
@@ -106,25 +113,25 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
           {lengthChoices.length > 0 && card.workingWidthMm ? (
             <p className="mt-1 font-mono text-[13px] text-kg-text-2">{card.workingWidthMm} mm werkend</p>
           ) : null}
-          <p className="mt-1 font-mono text-[13px] whitespace-nowrap" style={{ color: status.color }}>
+          <p className="mt-1 font-mono text-[13px]" style={{ color: status.color }}>
             {delivery}
           </p>
+          {card.swatches.length > 0 ? (
+            <div className="mt-3 min-w-0">
+              <CardSwatches card={card} activeIndex={index} onHover={setHover} onPick={pickColour} name={swatch?.name ?? ""} />
+            </div>
+          ) : null}
         </div>
       </div>
 
-      {card.swatches.length > 0 ? (
-        <div className="w-full lg:w-[220px] lg:shrink-0">
-          <CardSwatches card={card} activeIndex={index} onHover={setHover} onPick={pickColour} name={swatch?.name ?? ""} />
-        </div>
-      ) : null}
-
+      <div className="grid min-w-0 grid-cols-1 items-center gap-3 @min-[420px]:grid-cols-2 @min-[640px]:grid-cols-[minmax(7.5rem,1fr)_7.5rem_8.5rem_10.5rem]">
       {lengthChoices.length > 0 ? (
-        <label className="block w-full lg:w-[112px] lg:shrink-0">
+        <label className="block min-w-0">
           <span className="sr-only">Lengte</span>
           <select
             value={lengthChoices.some((item) => item.length === variant?.length) ? variant?.length : lengthChoices[0]?.length}
             onChange={(event) => setLength(event.target.value)}
-            className="h-11 w-full border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy"
+            className="h-11 w-full min-w-0 border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy"
           >
             {lengthChoices.map((item) => (
               <option key={item.length} value={item.length}>
@@ -134,13 +141,13 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
           </select>
         </label>
       ) : (
-        <p className="flex h-11 w-full items-center border border-kg-navy bg-white px-2 font-mono text-[13px] text-kg-navy lg:w-[148px] lg:shrink-0">
+        <p className="flex h-11 min-w-0 items-center border border-kg-navy bg-white px-2 font-mono text-[13px] leading-tight text-kg-navy">
           <span className="sr-only">{measure.label}</span>
-          {measure.text === "Stuk" ? "Per stuk" : measure.label === "Werkende breedte" ? `${measure.text} werkend` : `${measure.label} ${measure.text}`}
+          {measureText}
         </p>
       )}
 
-      <div className="flex h-11 w-full items-stretch border border-kg-navy lg:w-[124px] lg:shrink-0">
+      <div className="flex h-11 min-w-0 items-stretch border border-kg-navy">
         <button
           type="button"
           className="grid w-11 place-items-center text-[18px] text-kg-navy"
@@ -169,7 +176,7 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
         </button>
       </div>
 
-      <div className="font-mono lg:w-[132px] lg:shrink-0 lg:text-right">
+      <div className="min-w-0 text-right font-mono">
         {priced ? (
           <span className="kg-price">
             <span className="kg-price-incl block">
@@ -191,18 +198,19 @@ export function ListingRow({ card }: { card: ListingCardModel }) {
         <button
           type="button"
           onClick={add}
-          className={cn(buttonVariants({ variant: "primary", size: "sm" }), "h-11 min-w-[9.5rem] lg:shrink-0")}
+          className={cn(buttonVariants({ variant: "primary", size: "sm" }), "h-11 w-full min-w-0 px-2 whitespace-normal text-center leading-tight")}
         >
           {added ? "Toegevoegd" : "In winkelwagen"}
         </button>
       ) : (
         <Link
           href={`/producten/${card.slug}`}
-          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-11 no-underline hover:no-underline lg:shrink-0")}
+          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-11 w-full min-w-0 px-2 whitespace-normal text-center leading-tight no-underline hover:no-underline")}
         >
           Bekijk
         </Link>
       )}
+      </div>
     </article>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
+import { SPRINT_DELIVERY_SENTENCE, SPRINT_SAMPLE_SENTENCE } from "@/data/seo/product-sprint";
 import { getProductsByCategory } from "@/lib/catalog";
 import { hasActiveFilters } from "@/lib/catalog/helpers";
 import { CATEGORY_PAGE_SIZE, listingPageHref } from "@/lib/catalog/listing";
@@ -224,6 +225,14 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
           "Niet schilderen. Afspoelen met water en een mild middel is genoeg. Geen schuurmiddel en geen hogedruk op korte afstand.",
         ],
       },
+      {
+        heading: "Deze pagina en de losse plaat",
+        paragraphs: [
+          "HPL plaat is de term van deze pagina. De plaat van 3050 x 1300 x 6 mm heeft een eigen product-URL. Filter op kleur blijft op deze hub, zonder een tweede HPL-pagina.",
+          SPRINT_DELIVERY_SENTENCE,
+          SPRINT_SAMPLE_SENTENCE,
+        ],
+      },
     ],
     faqs: [
       {
@@ -237,6 +246,10 @@ export const categoryStories: Record<CategorySlug, CategoryStory> = {
       {
         q: "Welke lijn gebruik ik buiten?",
         a: "HPL Compact Exterieur, op een geventileerde achterconstructie. FR als het bestek brandvertragend vraagt. Renolit eenzijdig en Abet kiest u op de afwerking die op de plaat staat.",
+      },
+      {
+        q: "Waar hoort de zoekterm HPL plaat?",
+        a: "Op deze pagina. Een losse maat, zoals 3050 x 1300 x 6 mm, staat op de productpagina van die plaat.",
       },
     ],
     links: [

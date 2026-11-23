@@ -110,8 +110,8 @@ export const articles: Article[] = [
         a: "Noteer ze alle drie. De kleinste gaat naar de aanvraag. Het verschil vangt de speling op.",
       },
       {
-        q: "Kan ik een maat buiten de online grenzen aanvragen?",
-        a: "Ja. De configurator waarschuwt. U verstuurt de aanvraag toch. We beoordelen die maat handmatig.",
+        q: "Kan ik een maat buiten de grenzen bestellen?",
+        a: "Nee. De configurator neemt die maat niet aan. Neem contact op voor grotere maten, via 030 227 1397.",
       },
     ],
     links: [
@@ -401,7 +401,7 @@ export const articles: Article[] = [
       {
         heading: "Wat we nu kunnen zeggen",
         paragraphs: [
-          "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. Een kozijn leveren we in 4 weken. Een kleur in folie kan langer duren dan wit. Hoeveel langer, zetten we er pas bij als de leverancier dat aantal dagen geeft.",
+          "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn is 4 weken. Een kleur in folie kan langer duren dan wit. Hoeveel langer, zetten we er pas bij als dat aantal weken vaststaat.",
           "Levering is in 4 weken, in heel Nederland. Afhalen kan in de showroom in Hedel, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
         ],
       },
@@ -444,8 +444,8 @@ export const articles: Article[] = [
         a: `Ramen en deuren zijn ${PROFILE.name}. Een 2-delige schuifpui is een ${SLIDING_NAME}. Een 4-delige pui rekenen we in de offerte.`,
       },
       {
-        q: "Waarom zie ik geen prijs?",
-        a: "Op de site staat nog geen bedrag bij de samenstelling. U vraagt een vrijblijvende offerte aan.",
+        q: "Is de prijs inclusief btw?",
+        a: "De prijs bij de samenstelling is inclusief btw. Bovenaan de site zet u de schakelaar op excl. btw als u het bedrag zonder btw wilt zien. Een samenstelling zonder compleet bedrag, zoals een kleur op aanvraag, blijft een vrijblijvende offerte.",
       },
       {
         q: "Moet ik een account aanmaken?",

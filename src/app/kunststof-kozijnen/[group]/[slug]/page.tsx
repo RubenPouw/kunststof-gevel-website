@@ -40,6 +40,7 @@ export default async function KozijnLayoutPage({ params }: Props) {
   if (!copy) notFound();
   const groupTitle = GROUPS.find((item) => item.id === layout.group)?.title ?? "Kozijnen";
   const pricesActive = process.env.KOZIJNEN_PRIJZEN_ACTIEF === "true";
+  const checkoutActive = pricesActive && process.env.KOZIJNEN_CHECKOUT_ACTIEF === "true";
 
   return (
     <>
@@ -76,7 +77,7 @@ export default async function KozijnLayoutPage({ params }: Props) {
         </div>
       </header>
       <div className="h-2" style={{ background: "var(--gradient-signal)" }} />
-      <KozijnConfigurator layout={layout} pricesActive={pricesActive} />
+      <KozijnConfigurator layout={layout} pricesActive={pricesActive} checkoutActive={checkoutActive} />
       <section className="bg-white">
         <div className="container-kg grid gap-10 py-14 lg:grid-cols-[minmax(0,40rem)_minmax(0,22rem)]">
         <div className="space-y-4">

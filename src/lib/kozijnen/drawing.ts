@@ -2,8 +2,8 @@ import type { Layout } from "./layouts";
 import { panesFor, type KozijnConfig } from "./model";
 import { hingeOnRight, opensInward, slideTowardRight } from "./opening";
 
-/** Aanzichtbreedte van het kader, Aluplast Ideal 7000 NL. Geen maat voor de schuifpui. */
-export const FRAME_FACE_MM = 64;
+/** Aanzichtbreedte van het kader, Aluplast Ideal 7000 NL 84 mm. Geen maat voor de schuifpui. */
+export const FRAME_FACE_MM = 84;
 
 export function frameFaceMm(slug: string): number | null {
   if (slug === "schuifpui-2-delig" || slug === "schuifpui-4-delig") return null;

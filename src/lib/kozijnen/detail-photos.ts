@@ -52,7 +52,7 @@ const AANSLAG_ZONDER = `${FILL}/widgetid-8JHa/28CiSPNtMwvZhJ9NJ8xzn8/Schermafbee
 const AANSLAG_MET = `${FILL}/widgetid-8JHa/5UMJQzn9B5YuDYqcVmvn28/Schermafbeelding-2025-10-06-om-22.16.54.png`;
 
 export const DETAIL_PHOTOS = {
-  profile: empty("profile", "Aluplast Ideal 7000 NL 64 mm", "Doorsnede van het Aluplast Ideal 7000 NL kader"),
+  profile: empty("profile", "Aluplast Ideal 7000 NL 84 mm", "Doorsnede van het Aluplast Ideal 7000 NL kader"),
   verstek: empty("verstek", "Verstek", "Hoek op verstek, de naad loopt schuin"),
   hvl: photo("hvl", "HVL", "HVL-hoek, de naad staat recht", "/kozijnen/hvl.webp", HVL_FOTO),
   folie: photo(

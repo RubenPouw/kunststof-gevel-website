@@ -8,14 +8,14 @@ import { beginCheckout } from "@/app/afrekenen/actions";
 import { shippingEstimateBothCopy, VatBoth } from "@/components/brand/vat-price";
 import { ColourName } from "@/components/catalog/colour-name";
 import { buttonVariants } from "@/components/ui/button";
-import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
+import { resolveCartLine, useCart } from "@/lib/cart";
 import { formatPrice, inclVat, roundMoney } from "@/lib/format";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: boolean }) {
-  const { lines, subtotal, remainingForFreeShipping, mountGevel, mountPrice } = useCart();
-  const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
+  const { lines, subtotal, shippingQuote, mountGevel, mountPrice } = useCart();
+  const shipping = shippingQuote.shippingExcl;
   const mount = mountGevel ? mountPrice : 0;
   const net = subtotal + mount + shipping;
   const vat = roundMoney(net * 0.21);
@@ -58,6 +58,8 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
               quantity: line.qty,
               shopifyVariantId: line.shopifyVariantId,
               kind: line.kind,
+              kozijnLayout: line.kozijnLayout,
+              kozijnQuery: line.kozijnQuery,
             })),
           )}
         />
@@ -138,10 +140,11 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
                   const resolved = resolveCartLine(line);
                   if (!resolved) return null;
                   const lineExcl = resolved.unitExcl * line.qty;
+                  const detail = resolved.kind === "kozijn" ? resolved.skuLabel : line.variantSku;
                   return (
                     <li key={line.variantSku} className="flex items-start justify-between gap-4">
                       <span>
-                        {resolved.name} · <ColourName value={resolved.colorName} /> · {line.variantSku} × {line.qty}
+                        {resolved.name} · <ColourName value={resolved.colorName} /> · {detail} × {line.qty}
                       </span>
                       <VatBoth incl={inclVat(lineExcl)} excl={lineExcl} className="text-[14px] font-bold" />
                     </li>
@@ -151,14 +154,14 @@ export function CheckoutForm({ klarna, riverty }: { klarna: boolean; riverty: bo
               <p className="mt-4 font-mono text-[13px]">
                 {shipping ? (
                   <>
-                    Verzending deze bestelling {formatPrice(shipping)} excl. btw ({formatPrice(inclVat(shipping))} incl.
-                    21% btw)
+                    Verzending deze bestelling {formatPrice(shippingQuote.shippingExcl)} excl. btw (
+                    {formatPrice(shippingQuote.shippingIncl)} incl. 21% btw)
                   </>
                 ) : (
                   "Verzending deze bestelling: gratis"
                 )}
-                {remainingForFreeShipping > 0
-                  ? `. Nog ${formatPrice(remainingForFreeShipping)} excl. btw (${formatPrice(inclVat(remainingForFreeShipping))} incl. 21% btw) tot gratis verzending`
+                {shippingQuote.remainingIncl > 0
+                  ? `. Nog ${formatPrice(shippingQuote.remainingExcl)} excl. btw (${formatPrice(shippingQuote.remainingIncl)} incl. 21% btw) tot gratis verzending`
                   : ""}
               </p>
               <dl className="mt-4 space-y-2 border-t border-kg-lijn pt-4 font-mono text-[14px]">
