@@ -1,5 +1,6 @@
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 
+import { incomingPosts } from "./incoming";
 import { migratedPosts } from "./migrated";
 
 export type BlogPost = {
@@ -279,7 +280,7 @@ const corePosts: BlogPost[] = [
       {
         heading: "Wanneer welk paneel",
         paragraphs: [
-          "Kies Keralit als de gevel lang is, de zon er vol op staat en u de nerf van dichtbij wilt zien. Het paneel vergeeft een lichte oneffenheid in de regel minder snel dan mensen denken, maar het oogt stijver.",
+          "Kies Keralit als de gevel lang is, de zon er vol op staat en u de nerf van dichtbij wilt zien. Het paneel vergeeft een lichte oneffenheid in de regel minder snel dan mensen denken, maar het oogt stijver. Het kleurenaanbod staat in [Keralit kleuren](/blog/keralit-kleuren).",
           "Kies VinyPlus als de prijs per m² zwaarder weegt en de achterconstructie recht is. Het paneel is lichter te hanteren. De aluminium hulpstukken bestelt u er los bij.",
           "Eurotexx en Kerrafront zijn de andere routes: Eurotexx voor een klassiek potdekselbeeld, Kerrafront voor een brede sponning met weinig naden.",
         ],
@@ -301,6 +302,7 @@ const corePosts: BlogPost[] = [
       { href: "/merken/keralit", label: "Keralit" },
       { href: "/merken/vinyplus", label: "VinyPlus" },
       { href: "/staalaanvraag", label: "Stalen aanvragen" },
+      { href: "/blog/keralit-kleuren", label: "Keralit kleuren" },
     ],
   },
   {
@@ -321,7 +323,7 @@ const corePosts: BlogPost[] = [
       {
         heading: "Onderhoud dat overblijft",
         paragraphs: [
-          "Afspoelen, een zachte borstel, geen schuurmiddel en geen hogedruk vlak op de naad. Schilderen hoort er niet bij. Een jaarlijkse blik op de startlat en de spouw is genoeg: bladeren in de ventilatieopening zijn het enige echte risico.",
+          "Afspoelen, een zachte borstel, geen schuurmiddel en geen hogedruk vlak op de naad. Schilderen hoort er niet bij. Een jaarlijkse blik op de startlat en de spouw is genoeg: bladeren in de ventilatieopening zijn het enige echte risico. Het stappenplan staat in [kunststof gevel schoonmaken](/blog/kunststof-gevel-schoonmaken-onderhoud).",
         ],
       },
     ],
@@ -333,6 +335,7 @@ const corePosts: BlogPost[] = [
     ],
     links: [
       { href: "/blog/montage-kunststof-gevelbekleding", label: "Montagevoorschrift in het kort" },
+      { href: "/blog/kunststof-gevel-schoonmaken-onderhoud", label: "Gevel schoonmaken" },
       { href: "/gevelbekleding", label: "Panelen bekijken" },
     ],
   },
@@ -361,7 +364,7 @@ const corePosts: BlogPost[] = [
       {
         heading: "Zelf of laten zetten",
         paragraphs: [
-          "Zelf zetten kan met deze volgorde en de handleiding van het merk, die wij met de order meesturen. Liever laten zetten: vink montage aan op de offerte. U krijgt één prijs na opname, materiaal en werk apart zichtbaar.",
+          "Zelf zetten kan met deze volgorde en de handleiding van het merk, die wij met de order meesturen. Voor rabat staat de volgorde in [kunststof rabatdelen monteren](/blog/kunststof-rabatdelen-monteren). Liever laten zetten: vink montage aan op de offerte. U krijgt één prijs na opname, materiaal en werk apart zichtbaar.",
         ],
       },
     ],
@@ -376,6 +379,7 @@ const corePosts: BlogPost[] = [
       { href: "/offerte", label: "Montage aanvragen" },
       { href: "/volgorde-kozijnen-en-gevel", label: "eerst kozijnen of eerst de gevel" },
       { href: "/blog/wat-kost-kunststof-gevelbekleding", label: "Prijs per m²" },
+      { href: "/blog/kunststof-rabatdelen-monteren", label: "Rabatdelen monteren" },
     ],
   },
   {
@@ -409,11 +413,14 @@ const corePosts: BlogPost[] = [
     links: [
       { href: "/staalaanvraag", label: "Stalen aanvragen" },
       { href: "/blog/keralit-of-vinyplus", label: "Eerst het merk kiezen" },
+      { href: "/blog/keralit-kleuren", label: "Keralit kleuren" },
     ],
   },
 ];
 
-export const blogPosts: BlogPost[] = [...corePosts, ...migratedPosts];
+export const blogPosts: BlogPost[] = [...incomingPosts, ...corePosts, ...migratedPosts].sort((a, b) =>
+  a.date < b.date ? 1 : a.date > b.date ? -1 : 0,
+);
 
 export function getBlogPost(slug: string) {
   return blogPosts.find((post) => post.slug === slug);
