@@ -6,7 +6,14 @@ import { colourFilterMatches } from "../src/lib/catalog/colours.ts";
 import { slugKey } from "../src/lib/catalog/derive.ts";
 import { CATEGORY_PAGE_SIZE, prepareListing, toListingCard } from "../src/lib/catalog/listing.ts";
 import { decodeListingState, listingRewriteTarget } from "../src/lib/catalog/paths.ts";
-import { applyListingFilters, listingFacets, listingHref, mergeListingFilters, parseListingSearchParams } from "../src/lib/catalog/helpers.ts";
+import {
+  applyListingFilters,
+  listingFacets,
+  listingHref,
+  mergeListingFilters,
+  nextBrandSelection,
+  parseListingSearchParams,
+} from "../src/lib/catalog/helpers.ts";
 import type { Product, ProductVariant } from "../src/lib/catalog/types.ts";
 import { shopifyNumericId } from "../src/lib/shopify/ids.ts";
 import { verifyShopifyWebhookHmac } from "../src/lib/shopify/webhook.ts";
@@ -189,44 +196,65 @@ test("one filter value stays a single field and a single seo segment", () => {
   );
 });
 
-test("several brands and colours share one param and round-trip through the rewrite", () => {
+test("colours stay a shared param and a brand list collapses to the first brand", () => {
   const href = listingHref(
     "/gevelbekleding",
     { colorFamily: "donker" },
     { brandSlugs: ["keralit", "eurotexx"], colorSlugs: ["antraciet", "wit"] },
   );
   const params = new URLSearchParams(href.split("?")[1]);
-  assert.equal(params.get("merk"), "keralit,eurotexx");
+  assert.equal(params.get("merk"), "keralit");
   assert.equal(params.get("kleurnaam"), "antraciet,wit");
   assert.equal(params.get("kleur"), "donker");
   const path = listingRewriteTarget("/gevelbekleding", params);
   assert.equal(
     path,
-    "/weergave/categorie/gevelbekleding/p/1/merk/keralit%2Ceurotexx/kleur/donker/kleurnaam/antraciet%2Cwit",
+    "/weergave/categorie/gevelbekleding/p/1/merk/keralit/kleur/donker/kleurnaam/antraciet%2Cwit",
   );
   const parts = path?.split("/").slice(1).map((part) => decodeURIComponent(part)) ?? [];
   const decoded = decodeListingState(parts[1] ?? "", parts[2] ?? "", parts.slice(3));
   assert.ok(decoded);
   const filters = parseListingSearchParams(Object.fromEntries(decoded.search.entries()));
-  assert.deepEqual(filters.brandSlugs, ["keralit", "eurotexx"]);
-  assert.equal(filters.brandSlug, undefined);
+  assert.equal(filters.brandSlug, "keralit");
+  assert.equal(filters.brandSlugs, undefined);
   assert.equal(filters.colorFamily, "donker");
   assert.deepEqual(filters.colorSlugs, ["antraciet", "wit"]);
+
+  const incoming = listingRewriteTarget("/gevelbekleding", new URLSearchParams("merk=vinyplus,keralit"));
+  const incomingParts = incoming?.split("/").slice(1).map((part) => decodeURIComponent(part)) ?? [];
+  const incomingState = decodeListingState(incomingParts[1] ?? "", incomingParts[2] ?? "", incomingParts.slice(3));
+  const collapsed = parseListingSearchParams(Object.fromEntries(incomingState?.search.entries() ?? []));
+  assert.equal(collapsed.brandSlug, "vinyplus");
+  assert.equal(collapsed.brandSlugs, undefined);
+  const repeated = parseListingSearchParams({ merk: ["eurotexx", "keralit"] });
+  assert.equal(repeated.brandSlug, "eurotexx");
+  assert.equal(repeated.brandSlugs, undefined);
+  assert.equal(parseListingSearchParams({ merk: "keralit%2Cvinyplus" }).brandSlug, "keralit");
+  assert.equal(parseListingSearchParams({ merk: "keralit%252Cvinyplus" }).brandSlug, "keralit");
 });
 
-test("a brand click keeps the colour filter and one remaining brand stays singular", () => {
-  const current = { colorFamily: "donker" as const, brandSlugs: ["keralit", "eurotexx"] };
-  const href = listingHref("/gevelbekleding", current, { brandSlugs: ["eurotexx"] });
+test("choosing a brand replaces the previous one and choosing it again clears it", () => {
+  assert.deepEqual(nextBrandSelection(["keralit"], "vinyplus"), ["vinyplus"]);
+  assert.deepEqual(nextBrandSelection(["vinyplus"], "vinyplus"), []);
+  assert.deepEqual(nextBrandSelection([], "keralit"), ["keralit"]);
+
+  const current = { colorFamily: "donker" as const, brandSlug: "keralit" };
+  const href = listingHref("/gevelbekleding", current, { brandSlugs: nextBrandSelection(["keralit"], "vinyplus") });
   const params = new URLSearchParams(href.split("?")[1]);
-  assert.equal(params.get("merk"), "eurotexx");
+  assert.equal(params.get("merk"), "vinyplus");
   assert.equal(params.get("kleur"), "donker");
-  const next = mergeListingFilters(current, { brandSlugs: ["eurotexx"] });
-  assert.equal(next.brandSlug, "eurotexx");
+  const next = mergeListingFilters(current, { brandSlugs: ["vinyplus"] });
+  assert.equal(next.brandSlug, "vinyplus");
   assert.equal(next.brandSlugs, undefined);
   assert.equal(next.colorFamily, "donker");
+  const cleared = mergeListingFilters(next, { brandSlugs: nextBrandSelection(["vinyplus"], "vinyplus") });
+  assert.equal(cleared.brandSlug, undefined);
+  assert.equal(cleared.brandSlugs, undefined);
+  assert.equal(cleared.colorFamily, "donker");
+  assert.equal(listingHref("/gevelbekleding", { brandSlugs: ["eurotexx", "keralit"] }, {}).endsWith("?merk=eurotexx"), true);
 });
 
-test("filters combine with or inside a dimension and and across dimensions", () => {
+test("one brand filters alone, colours stay or, and groups stay and", () => {
   const panel = { ...product(1), slug: "paneel", productGroup: "gevelpaneel" as const };
   const otherBrand = {
     ...product(2),
@@ -249,7 +277,12 @@ test("filters combine with or inside a dimension and and across dimensions", () 
   });
   assert.deepEqual(
     matched.map((item) => item.slug).sort(),
-    ["euro", "paneel"],
+    ["paneel"],
+  );
+  const secondBrand = applyListingFilters([panel, otherBrand], { brandSlug: "eurotexx" });
+  assert.deepEqual(
+    secondBrand.map((item) => item.slug),
+    ["euro"],
   );
 });
 
