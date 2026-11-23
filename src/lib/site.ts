@@ -28,6 +28,7 @@ export const site = {
   region: "Heel Nederland",
   kvk: "66527376",
   btw: "NL856594842B01",
+  iban: "NL20INGB0007321511",
   freeShippingFrom: FREE_SHIPPING_FROM,
   instagram: "https://www.instagram.com/kunststofgevel",
   instagramHandle: "@kunststofgevel",

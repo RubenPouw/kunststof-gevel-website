@@ -12,6 +12,7 @@ import { calculatePrice, internalPrice, optionIdsFor, optionNet, priceBook, pric
 import { shopPriceNote } from "../src/lib/kozijnen/quote.ts";
 import { CLAIMS, SUPPLIER } from "../src/lib/kozijnen/supplier.ts";
 import { lookupRedirect } from "../src/lib/seo/redirects.ts";
+import { site } from "../src/lib/site.ts";
 import { summaryText } from "../src/lib/kozijnen/text.ts";
 
 test("Aluplast profile publishes confirmed specs and keeps certificates empty", () => {
@@ -447,6 +448,9 @@ test("quote pdf has no amount and names the public profile", () => {
   assert.equal(text.includes("€"), false);
   assert.equal(/EKO/i.test(text), false);
   assert.match(text, /Er staat geen prijs op/);
+  assert.ok(text.includes(`${site.company}, ${site.address}`));
+  assert.ok(text.includes("Binnenkamp 7a, 5321 KA Hedel"));
+  assert.ok(text.includes(site.phone));
 });
 
 test("/kozijnen redirects in one hop to the new hub", () => {
