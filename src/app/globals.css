@@ -286,6 +286,11 @@
   border-color: var(--kg-navy);
 }
 
+.kg-soft-card.brand-row-tile[aria-current="true"] {
+  border: 2px solid var(--kg-navy);
+  background: var(--kg-kalk);
+}
+
 .kg-btw-switch {
   display: inline-flex;
   height: 32px;

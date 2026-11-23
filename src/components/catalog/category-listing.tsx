@@ -10,6 +10,7 @@ import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 import { getCategoryStory } from "@/data/seo/categories";
 import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
+import { selectedBrands } from "@/lib/catalog/helpers";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/seo/schema";
 import { ZIERER_MANUAL } from "@/lib/catalog/manuals";
@@ -108,7 +109,7 @@ export async function CategoryListing({
         showStockChip
         sampleHref={sampleHref}
         belowIntro={
-          slug === "montage" && (filters.brandSlug === "zierer" || filters.brandSlugs?.includes("zierer")) ? (
+          slug === "montage" && selectedBrands(filters)[0] === "zierer" ? (
             <p className="mt-4">
               <Link href={ZIERER_MANUAL.href}>{ZIERER_MANUAL.label} (PDF)</Link>
             </p>

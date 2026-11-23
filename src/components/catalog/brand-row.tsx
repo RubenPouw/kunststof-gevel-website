@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 
-import { listingHref, selectedBrands, toggleValue, type ListingFilterPatch } from "@/lib/catalog/helpers";
+import { listingHref, nextBrandSelection, selectedBrands, type ListingFilterPatch } from "@/lib/catalog/helpers";
 import { brandLogoSrc } from "@/lib/catalog/brand-logos";
 import type { ListingPresentation } from "@/lib/catalog/listing";
 import type { Brand, ListingFilters } from "@/lib/catalog/types";
@@ -66,8 +66,8 @@ export function BrandRow({
         >
           {tiles.map((brand) => {
             const selected = selectedBrands(filters);
-            const active = selected.includes(brand.slug);
-            const next = toggleValue(selected, brand.slug);
+            const active = selected[0] === brand.slug;
+            const next = nextBrandSelection(selected, brand.slug);
             const href = listingHref(basePath, filters, { brandSlugs: next }, presentation);
             const logo = brandLogoSrc(brand.slug);
             return (
@@ -76,7 +76,7 @@ export function BrandRow({
                 href={href}
                 aria-current={active ? "true" : undefined}
                 onClick={(event) => onFilter?.(event, { brandSlugs: next })}
-                className="kg-soft-card flex h-[76px] w-[148px] shrink-0 items-center justify-center px-3 no-underline hover:no-underline"
+                className="brand-row-tile kg-soft-card flex h-[76px] w-[148px] shrink-0 items-center justify-center px-3 no-underline hover:no-underline"
               >
                 {logo ? (
                   <Image
