@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { BrandRow } from "@/components/catalog/brand-row";
 import { ListingCard } from "@/components/catalog/listing-card";
+import { KozijnTypeTiles } from "@/components/catalog/kozijn-type-tiles";
 import { ActiveFilterChips, ListingFiltersPanel } from "@/components/catalog/listing-filters";
 import { ListingPhotoGrid } from "@/components/catalog/listing-photo-grid";
 import { ListingRow } from "@/components/catalog/listing-row";
@@ -179,6 +180,7 @@ export function ProductListing({
     showStockChip ||
     facets.places.length > 0 ||
     facets.groups.length > 1 ||
+    facets.kozijnTypes.length > 1 ||
     facets.profileTypes.filter((item) => item.slug !== "overig").length > 1 ||
     facets.colorFamilies.length > 1 ||
     facets.sheetColors.length > 1 ||
@@ -199,6 +201,13 @@ export function ProductListing({
 
   return (
     <div>
+      <KozijnTypeTiles
+        facets={facets}
+        filters={filters}
+        basePath={basePath}
+        presentation={presentation}
+        onFilter={onFilter}
+      />
       <BrandRow
         brands={brands}
         basePath={basePath}

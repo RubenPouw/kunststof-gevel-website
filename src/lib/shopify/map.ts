@@ -19,6 +19,7 @@ import type {
   ProductVariant,
   Spec,
 } from "@/lib/catalog/types";
+import { isKozijnSheet } from "@/lib/catalog/kozijn-types";
 import { categorySlugs } from "@/lib/catalog/types";
 
 import type { ShopifyImage, ShopifyProduct, ShopifyVariant } from "./types";
@@ -143,6 +144,7 @@ export function categoryFromCollectionHandle(handle: string): CategorySlug | und
 export function categoryFromTitle(title: string): CategorySlug | undefined {
   const t = title.toLowerCase();
   if (isHplSheetText(t)) return "hpl-platen";
+  if (isKozijnSheet(t)) return "hpl-platen";
   if (/(vensterbank|overzetbank|overzetvensterbank)/.test(t)) return "vensterbanken";
   if (/\bunipanel\b/.test(t) && /(bouwpaneel|sierlijst)/.test(t)) return "dakranden";
   if (/(dakrand|boeideel)/.test(t)) return "dakranden";
@@ -167,11 +169,13 @@ export function inferCategory(
   product: Pick<ShopifyProduct, "productType" | "title" | "tags" | "handle">,
   collectionHandles: string[] = [],
 ): CategorySlug {
+  const blob = `${product.title} ${product.handle.replace(/-/g, " ")}`;
   const fromType = categoryFromProductType(product.productType);
-  const fromTitle = categoryFromTitle(`${product.title} ${product.handle.replace(/-/g, " ")}`);
+  const fromTitle = categoryFromTitle(blob);
   if (fromType === "dakranden" || fromType === "plafondpanelen") return fromType;
   if (fromTitle === "dakranden" || fromTitle === "plafondpanelen") return fromTitle;
   if (fromType === "vensterbanken" || fromTitle === "vensterbanken") return "vensterbanken";
+  if (isKozijnSheet(blob)) return "hpl-platen";
   if (fromType) return fromType;
 
   for (const handle of collectionHandles) {
@@ -191,11 +195,13 @@ export function inferCategory(
 export function resolvePublicCategory(
   product: Pick<Product, "category" | "productType" | "name" | "slug" | "brandSlug">,
 ): CategorySlug {
+  const blob = `${product.name} ${product.slug.replace(/-/g, " ")} ${product.brandSlug}`;
   const fromType = product.productType ? categoryFromProductType(product.productType) : undefined;
-  const fromTitle = categoryFromTitle(`${product.name} ${product.slug.replace(/-/g, " ")} ${product.brandSlug}`);
+  const fromTitle = categoryFromTitle(blob);
   if (fromType === "dakranden" || fromType === "plafondpanelen") return fromType;
   if (fromTitle === "dakranden" || fromTitle === "plafondpanelen") return fromTitle;
   if (fromType === "vensterbanken" || fromTitle === "vensterbanken") return "vensterbanken";
+  if (isKozijnSheet(blob)) return "hpl-platen";
   if (fromType) return fromType;
   return product.category;
 }

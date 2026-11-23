@@ -1,3 +1,5 @@
+import type { EindkapSystem, KozijnType } from "./kozijn-types";
+
 export const categorySlugs = [
   "gevelbekleding",
   "dakranden",
@@ -223,6 +225,12 @@ export type ListingFilters = {
   profileTypes?: ProfileType[];
   productGroup?: ProductGroup;
   productGroups?: ProductGroup[];
+  /** Finer type on /kozijnafwerking. Same `type` query as the gevel profile. */
+  kozijnType?: KozijnType;
+  kozijnTypes?: KozijnType[];
+  /** Second filter for eindkappen: Keralit, Novaboard, Lignodur, Milinboard. */
+  eindkapSystem?: EindkapSystem;
+  eindkapSystems?: EindkapSystem[];
   colorFamily?: ColorFamily;
   workingWidthMm?: number;
   /** Exact colour name, slugified. One `kleurnaam` value. */

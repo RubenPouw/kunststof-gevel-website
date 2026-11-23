@@ -9,6 +9,7 @@ import { databaseUrl } from "@/lib/db/client";
 import { readStoredProducts } from "@/lib/db/store";
 import { isShopifyConfigured } from "@/lib/shopify/config";
 import { fetchShopifySearchHandles, loadShopifyCatalog } from "@/lib/shopify/catalog";
+import { withKozijnPhotos } from "@/lib/catalog/kozijn-types";
 import { brandsFromProducts, resolvePublicCategory } from "@/lib/shopify/map";
 
 import {
@@ -135,9 +136,11 @@ async function loadCatalog(): Promise<CatalogData> {
 
 function withColourLabels(data: CatalogData): CatalogData {
   // Re-apply name mapping on stored rows so an old width, type or category does not stick.
-  const products = data.products
-    .filter((product) => !isHiddenOnKunststofGevel(product))
-    .map((product) => withManuals(enrichProduct({ ...product, category: resolvePublicCategory(product) })));
+  const products = withKozijnPhotos(
+    data.products
+      .filter((product) => !isHiddenOnKunststofGevel(product))
+      .map((product) => withManuals(enrichProduct({ ...product, category: resolvePublicCategory(product) }))),
+  );
   if (data.source === "static") return { ...data, products };
   return { ...data, products, brands: brandsFromProducts(products) };
 }

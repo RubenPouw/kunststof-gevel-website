@@ -238,7 +238,7 @@ export function HplHub({
         <p className="mt-3 max-w-2xl text-[16px] leading-[1.5] text-kg-text-2">
           {onPlates
             ? "Compact Exterieur, Renolit eenzijdig en Milyt. Hele plaat, 3050 × 1300 × 6 mm, 3,965 m². U kiest een kleur of een decor. Wij zagen niet op maat."
-            : "Sandwichpanelen, HPL-reiniger en de Milyt-plaat van 2 mm. De kleurwand is de plaat van 6 mm."}
+            : "Sandwichpanelen, de PVC plaat, HPL-reiniger en de Milyt-plaat van 2 mm. De kleurwand is de plaat van 6 mm."}
         </p>
         {filters}
       </section>
@@ -253,7 +253,7 @@ export function HplHub({
         <p className="mt-4 max-w-2xl text-kg-text-2">
           {onPlates
             ? "Compact Exterieur, Renolit eenzijdig en Milyt. Hele plaat, 3050 × 1300 × 6 mm, 3,965 m². U kiest een kleur of een decor. Wij zagen niet op maat."
-            : "Sandwichpanelen, HPL-reiniger en de Milyt-plaat van 2 mm. De kleurwand is de plaat van 6 mm."}
+            : "Sandwichpanelen, de PVC plaat, HPL-reiniger en de Milyt-plaat van 2 mm. De kleurwand is de plaat van 6 mm."}
         </p>
         <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
           <Link href="/staalaanvraag?groep=hpl">Gratis kleurstalen aanvragen</Link>

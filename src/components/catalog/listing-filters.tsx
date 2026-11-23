@@ -9,12 +9,15 @@ import {
   listingHref,
   selectedBrands,
   selectedColorSlugs,
+  selectedEindkapSystems,
   selectedGroups,
+  selectedKozijnTypes,
   selectedPlaces,
   selectedProfileTypes,
   toggleValue,
   type ListingFilterPatch,
 } from "@/lib/catalog/helpers";
+import { eindkapSystemLabels, kozijnTypeLabels } from "@/lib/catalog/kozijn-types";
 import type { ListingFacets, ListingPresentation } from "@/lib/catalog/listing";
 import {
   colorFamilies,
@@ -79,6 +82,22 @@ export function ActiveFilterChips({
       patch: { profileTypes: toggleValue(selectedProfileTypes(filters), slug) },
     });
   }
+  for (const slug of selectedKozijnTypes(filters)) {
+    chips.push({
+      key: `kozijn-${slug}`,
+      label: kozijnTypeLabels[slug],
+      href: listingHref(basePath, filters, { kozijnTypes: [], eindkapSystems: [] }, presentation),
+      patch: { kozijnTypes: [], eindkapSystems: [] },
+    });
+  }
+  for (const slug of selectedEindkapSystems(filters)) {
+    chips.push({
+      key: `systeem-${slug}`,
+      label: eindkapSystemLabels[slug],
+      href: listingHref(basePath, filters, { eindkapSystems: [] }, presentation),
+      patch: { eindkapSystems: [] },
+    });
+  }
   if (filters.colorFamily) {
     chips.push({
       key: `familie-${filters.colorFamily}`,
@@ -131,6 +150,8 @@ export function ActiveFilterChips({
       inStockOnly: false,
       productGroups: null,
       profileTypes: null,
+      kozijnTypes: null,
+      eindkapSystems: null,
       colorFamily: "",
       colorSlugs: null,
       ral: "",
@@ -182,6 +203,9 @@ export function ListingFiltersPanel({
 }) {
   const groups = selectedGroups(filters);
   const types = selectedProfileTypes(filters);
+  const kozijnSelected = selectedKozijnTypes(filters);
+  const systems = selectedEindkapSystems(filters);
+  const onKozijn = basePath.split("?")[0] === "/kozijnafwerking";
   const colorSlugs = selectedColorSlugs(filters);
   const places = selectedPlaces(filters);
   const showGroups = facets.groups.length > 1;
@@ -219,7 +243,58 @@ export function ListingFiltersPanel({
           />
         </FilterSection>
       ) : null}
-      {showGroups ? (
+      {onKozijn && facets.kozijnTypes.length > 1 ? (
+        <FilterSection title="Producttype">
+          {facets.kozijnTypes.map((item) => {
+            const active = kozijnSelected[0] === item.slug;
+            const next = active ? [] : [item.slug];
+            return (
+              <FilterCheck
+                key={item.slug}
+                href={listingHref(
+                  basePath,
+                  filters,
+                  { kozijnTypes: next, eindkapSystems: item.slug === "eindkap" && !active ? systems : [] },
+                  presentation,
+                )}
+                active={active}
+                label={kozijnTypeLabels[item.slug]}
+                count={item.count}
+                onClick={(event) =>
+                  onFilter(event, {
+                    kozijnTypes: next,
+                    eindkapSystems: item.slug === "eindkap" && !active ? systems : [],
+                  })
+                }
+              />
+            );
+          })}
+        </FilterSection>
+      ) : null}
+      {onKozijn && (kozijnSelected.length === 0 || kozijnSelected[0] === "eindkap") && facets.eindkapSystems.length > 1 ? (
+        <FilterSection title="Systeem">
+          {facets.eindkapSystems.map((item) => {
+            const active = systems[0] === item.slug;
+            const next = active ? [] : [item.slug];
+            return (
+              <FilterCheck
+                key={item.slug}
+                href={listingHref(
+                  basePath,
+                  filters,
+                  { kozijnTypes: ["eindkap"], eindkapSystems: next },
+                  presentation,
+                )}
+                active={active}
+                label={eindkapSystemLabels[item.slug]}
+                count={item.count}
+                onClick={(event) => onFilter(event, { kozijnTypes: ["eindkap"], eindkapSystems: next })}
+              />
+            );
+          })}
+        </FilterSection>
+      ) : null}
+      {!onKozijn && showGroups ? (
         <FilterSection title="Producttype">
           {facets.groups.map((item) => {
             const active = groups.includes(item.slug);
@@ -236,7 +311,7 @@ export function ListingFiltersPanel({
             );
           })}
         </FilterSection>
-      ) : profileChoices.length > 1 ? (
+      ) : !onKozijn && profileChoices.length > 1 ? (
         <FilterSection title="Producttype">
           {profileChoices.map((item) => {
             const active = types.includes(item.slug);

@@ -214,6 +214,13 @@ function facetsForPage(all: Product[], filters: ListingFilters) {
   const types = listingFacets(
     applyListingFilters(all, withoutFilters(filters, ["profileType", "profileTypes"])),
   );
+  const kozijn = listingFacets(
+    applyListingFilters(
+      all,
+      withoutFilters(filters, ["kozijnType", "kozijnTypes", "eindkapSystem", "eindkapSystems"]),
+    ),
+  );
+  const systems = listingFacets(applyListingFilters(all, withoutFilters(filters, ["eindkapSystem", "eindkapSystems"])));
   const widths = listingFacets(applyListingFilters(all, withoutFilters(filters, ["workingWidthMm"])));
   const colors = listingFacets(
     applyListingFilters(all, withoutFilters(filters, ["colorFamily", "colorSlug", "colorSlugs", "ral"])),
@@ -224,6 +231,8 @@ function facetsForPage(all: Product[], filters: ListingFilters) {
   return {
     ...groups,
     profileTypes: types.profileTypes,
+    kozijnTypes: kozijn.kozijnTypes,
+    eindkapSystems: systems.eindkapSystems,
     widths: widths.widths,
     colorFamilies: colors.colorFamilies,
     sheetColors: colors.sheetColors,
