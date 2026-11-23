@@ -75,7 +75,7 @@ test("a kozijn without an online price cannot be sold", () => {
   const { layout, query } = layoutQuery();
   assert.equal(priceKozijnOrder(layout.slug, query, { KOZIJNEN_PRIJZEN_ACTIEF: "true" }), null);
   assert.equal(priceKozijnOrder("bestaat-niet", query, flags), null);
-  assert.equal(priceKozijnOrder(layout.slug, query.replace("b=1000", "b=10"), flags), null);
+  assert.equal(priceKozijnOrder(layout.slug, query.replace("b=1000", "b=2000"), flags), null);
   const withScreen = new URLSearchParams(query);
   withScreen.set("hor", "inzet");
   assert.equal(priceKozijnOrder(layout.slug, withScreen.toString(), flags), null);

@@ -11,6 +11,7 @@ import {
   type LaminatedId,
   type LowGlassId,
 } from "./config";
+import { dimensionsAllowed, dimensionMessages } from "./limits/check";
 import { getLayoutBySlug, type Layout } from "./layouts";
 
 export const KOZIJN_STORAGE_KEY = "kg-kozijn-concept";
@@ -237,18 +238,11 @@ export function defaultConfig(layout: Layout): KozijnConfig {
 }
 
 export function sizeInRange(layout: Layout, width: number, height: number) {
-  const box = layout.limits;
-  if (width < box.minWidth || width > box.maxWidth || height < box.minHeight || height > box.maxHeight) return false;
-  if (box.maxAreaM2 != null && width * height > Math.round(box.maxAreaM2 * 1_000_000)) return false;
-  if (box.maxSashWidth != null) {
-    const flex = layout.panes.reduce((sum, pane) => sum + pane.flex, 0);
-    if (flex <= 0) return false;
-    for (const pane of layout.panes) {
-      if (pane.kind !== "draai" && pane.kind !== "draaikiep") continue;
-      if (width * pane.flex > box.maxSashWidth * flex) return false;
-    }
-  }
-  return true;
+  return dimensionsAllowed(layout.limits, layout.panes, width, height);
+}
+
+export function sizeMessage(layout: Layout, width: number, height: number) {
+  return dimensionMessages(layout.limits, layout.panes, width, height).join(" ");
 }
 
 export function applyLaminatedDefault(config: KozijnConfig, layout: Layout): KozijnConfig {
