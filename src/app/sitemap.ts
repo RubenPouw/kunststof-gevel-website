@@ -41,6 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/offerte-montage",
     ...clusterList.map((page) => page.path),
     "/contact",
+    "/showroom",
     "/zakelijk",
     "/projecten",
     "/reviews",

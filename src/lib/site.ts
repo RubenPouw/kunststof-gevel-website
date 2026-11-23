@@ -88,6 +88,7 @@ export const footerColumns = [
     title: "Service",
     links: [
       { href: "/contact", label: "Contact" },
+      { href: "/showroom", label: "Showroom Hedel" },
       { href: "/offerte", label: "Offerte" },
       { href: "/gevel-en-kozijnen-renoveren", label: "Gevel en kozijnen" },
       { href: "/staalaanvraag", label: "Kleurstalen" },

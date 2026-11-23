@@ -547,7 +547,8 @@ from,to,status,reason
 /profex-gevelbekleding,/merken/profex,301,brand
 /projecten,/projecten,200,same-url
 /shop,/gevelbekleding,301,shop-is-category
-/showroom-kunststof-gevel,/contact,301,showroom-staat-op-contact
+/showroom,/showroom,200,same-url
+/showroom-kunststof-gevel,/showroom,301,showroompagina
 /sitemap_index.xml,/sitemap.xml,301,old-sitemap
 /staalaanvraag,/staalaanvraag,200,same-url
 /track-order,/contact,301,geen-losse-ordertracking

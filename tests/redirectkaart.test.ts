@@ -35,6 +35,7 @@ const STATIC = new Set([
   "/staalaanvraag",
   "/offerte",
   "/contact",
+  "/showroom",
   "/zakelijk",
   "/projecten",
   "/reviews",

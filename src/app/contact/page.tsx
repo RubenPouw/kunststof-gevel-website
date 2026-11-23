@@ -40,7 +40,13 @@ export default function ContactPage() {
         </a>
         <div className="border border-[var(--color-border)] bg-surface p-5">
           <p className="text-[13px] text-[var(--color-text-muted)]">Showroom</p>
-          <p className="mt-1 font-heading text-[22px] font-semibold">{site.address}</p>
+          <Link
+            href="/showroom"
+            className="mt-1 block font-heading text-[22px] font-semibold text-inherit no-underline hover:underline"
+          >
+            Showroom Hedel
+          </Link>
+          <p className="text-[13px] text-[var(--color-text-muted)]">{site.address}</p>
           <p className="text-[13px] text-[var(--color-text-muted)]">{site.addressNote}</p>
           <p className="text-[13px] text-[var(--color-text-muted)]">{site.hours}</p>
           <p className="mt-2 text-[13px] text-[var(--color-text-muted)]">

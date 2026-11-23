@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import { SectionHead } from "@/components/brand/section-head";
@@ -46,6 +47,9 @@ export function FaqReviews() {
             <a href={site.phoneHref}>{site.phone}</a>
             {" · "}
             <a href={site.whatsapp}>WhatsApp {site.mobileDisplay}</a>
+          </p>
+          <p className="mt-4">
+            <Link href="/showroom">Showroom Hedel, afspraak maken</Link>
           </p>
         </div>
       </div>

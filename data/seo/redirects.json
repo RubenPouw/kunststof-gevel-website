@@ -3288,10 +3288,16 @@
     "reason": "shop-is-category"
   },
   {
+    "from": "/showroom",
+    "to": "/showroom",
+    "status": "200",
+    "reason": "same-url"
+  },
+  {
     "from": "/showroom-kunststof-gevel",
-    "to": "/contact",
+    "to": "/showroom",
     "status": "301",
-    "reason": "showroom-staat-op-contact"
+    "reason": "showroompagina"
   },
   {
     "from": "/sitemap_index.xml",

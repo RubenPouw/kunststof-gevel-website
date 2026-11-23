@@ -27,9 +27,13 @@ export function SiteFooter({ webwinkelkeur = null }: { webwinkelkeur?: Webwinkel
           <p className="mt-4 font-mono text-[13px] text-kg-grind">
             {site.company}
             <br />
-            {site.address}
+            <Link href="/showroom" className="text-kg-kalk no-underline hover:underline">
+              {site.address}
+            </Link>
             <br />
-            {site.addressNote}
+            <Link href="/showroom" className="text-kg-kalk no-underline hover:underline">
+              {site.addressNote}
+            </Link>
             <br />
             <a href={site.mobileHref} className="text-kg-kalk no-underline hover:underline">
               {site.mobileDisplay}
