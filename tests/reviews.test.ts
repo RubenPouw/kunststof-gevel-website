@@ -121,9 +121,9 @@ test("google stars map onto 1 to 5 and a row older than 30 days expires", () => 
 });
 
 test("the static Google line stays separate from WebwinkelKeur", () => {
-  assert.equal(googleScoreLabel(GOOGLE_REVIEW_STAT.rating, GOOGLE_REVIEW_STAT.count), "Google 4,9 / 126 reviews");
+  assert.equal(googleScoreLabel(GOOGLE_REVIEW_STAT.rating, GOOGLE_REVIEW_STAT.count), "Google 4,9 / 128 reviews");
   assert.equal(GOOGLE_REVIEW_STAT.href.includes("placeid=ChIJpTqzqNL_hy8RDIC8CeY0l9g"), true);
-  assert.equal(GOOGLE_REVIEW_STAT.count, 126);
+  assert.equal(GOOGLE_REVIEW_STAT.count, 128);
   assert.equal(googleReviewScoreText(), "4,9");
   assert.equal(googleReviewHref(), GOOGLE_REVIEW_STAT.href);
   assert.equal(
@@ -167,18 +167,18 @@ test("variant C shows Google from the static total and keeps WebwinkelKeur as a 
   assert.match(strip, /GOOGLE_REVIEW_STAT/);
   assert.match(strip, /w-full no-underline hover:no-underline sm:w-auto/);
   assert.equal(strip.includes("KeurmerkLink"), false);
-  assert.equal(strip.includes("126"), false);
+  assert.equal(strip.includes("128"), false);
   assert.equal(strip.includes("4,9"), false);
 
   assert.match(line, /Google \{score\}/);
   assert.match(line, /GOOGLE_REVIEW_STAT\.count/);
   assert.match(line, /tone="signal"/);
-  assert.equal(line.includes("126"), false);
+  assert.equal(line.includes("128"), false);
   assert.equal(line.includes("4,9"), false);
 
   assert.match(usp, /GoogleReviewInline/);
   assert.equal(usp.includes("Google 4,9 / 5"), false);
-  assert.equal(usp.includes("126"), false);
+  assert.equal(usp.includes("128"), false);
 
   const priceAt = product.indexOf("font-mono text-[32px]");
   const lineAt = product.indexOf("<GoogleReviewInline");
