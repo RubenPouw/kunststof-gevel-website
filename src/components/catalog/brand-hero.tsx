@@ -8,9 +8,11 @@ import { cn } from "@/lib/utils";
 export function BrandHero({
   brand,
   intro,
+  heading,
 }: {
   brand: Brand;
   intro: string;
+  heading?: string;
 }) {
   return (
     <section className="container-kg pt-8 lg:pt-10">
@@ -27,7 +29,7 @@ export function BrandHero({
             {" / "}
             {brand.name}
           </p>
-          <h1 className="display-plp mt-3">{brand.name}</h1>
+          <h1 className="display-plp mt-3">{heading || brand.name}</h1>
           <p className="mt-4 max-w-lg text-[16px] text-kg-text-2">{intro}</p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link href="/#stalen" className={cn(buttonVariants({ variant: "primary" }), "no-underline hover:no-underline")}>

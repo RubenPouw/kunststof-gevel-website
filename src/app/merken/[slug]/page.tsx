@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const products = await getProductsByBrand(brand.slug);
   const pages = Math.ceil(products.length / PAGE_SIZE);
   return {
-    title: story?.metaTitle ?? brand.name,
+    title: story?.absoluteTitle ? { absolute: story.metaTitle } : (story?.metaTitle ?? brand.name),
     description: story?.description ?? brand.summary,
     alternates: { canonical: `/merken/${brand.slug}` },
     ...(pages > 1 ? { pagination: { next: `/merken/${brand.slug}?pagina=2` } } : {}),

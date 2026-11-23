@@ -1141,7 +1141,7 @@
   },
   {
     "from": "/product/profex-duafort-hoekprofiel-2-delig",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "accessory-family"
   },
@@ -1159,25 +1159,25 @@
   },
   {
     "from": "/product/profex-eindprofiel-2-delig",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "accessory-family"
   },
   {
     "from": "/product/profex-start-profiel-300-cm",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "accessory-family"
   },
   {
     "from": "/product/profex-ventilatieprofiel",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "accessory-family"
   },
   {
     "from": "/product/profex-verbindingsprofiel-2-delig",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "accessory-family"
   },
@@ -4465,7 +4465,7 @@
   },
   {
     "from": "/wp-content/uploads/2025/08/Schermafbeelding-2025-08-13-om-17.51.06.png",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4483,19 +4483,19 @@
   },
   {
     "from": "/wp-content/uploads/2025/09/binnen-buitenhoekprofiel.png",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2025/09/ongedierte-profiel_2.png",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "image-to-parent-page"
   },
   {
     "from": "/wp-content/uploads/2025/09/verbindingprofiel.png",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "image-to-parent-page"
   },
@@ -4657,7 +4657,7 @@
   },
   {
     "from": "/wp-content/uploads/2026/05/eindprofiel_1.png",
-    "to": "/montage?merk=profex",
+    "to": "/merken/profex",
     "status": "301",
     "reason": "image-to-parent-page"
   },

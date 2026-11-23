@@ -114,10 +114,10 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /product/stoelprofiel-16-mm-inwendig/,,200,,/montage
 /product/reparatiestift/,,200,,/montage
 /product/startprofiel-horizontale-bekleding-6-meter-per-lengte/,,200,,/montage
-/product/profex-duafort-hoekprofiel-2-delig/,,200,,/montage?merk=profex
-/product/profex-eindprofiel-2-delig/,,200,,/montage?merk=profex
-/product/profex-verbindingsprofiel-2-delig/,,200,,/montage?merk=profex
-/product/profex-ventilatieprofiel/,,200,,/montage?merk=profex
+/product/profex-duafort-hoekprofiel-2-delig/,,200,,/merken/profex
+/product/profex-eindprofiel-2-delig/,,200,,/merken/profex
+/product/profex-verbindingsprofiel-2-delig/,,200,,/merken/profex
+/product/profex-ventilatieprofiel/,,200,,/merken/profex
 /product/profex-duafort-velling-paneel/,,200,,/merken/profex
 /product/pe-tape-3-x-12-mm-25-mtr-per-rol/,,200,,/montage
 /product/milyt-hpl-plaat/,,200,,/hpl-plaat
@@ -198,7 +198,7 @@ oude_url,prioriteit,status,zoektermen,nieuwe_url
 /product/keralit-tweezijdig-ventilatieprofiel/,,200,,/producten/tweezijdig-ventilatieprofiel
 /product/keralit-167-mm-sponning-kopen-onderhoudsarm-duurzaam/,,200,,/producten/keralit-sponningdeel-167mm
 /product/keralit-sponning-143-mm/,,200,,/producten/keralit-sponningdeel-143mm
-/product/profex-start-profiel-300-cm/,,200,,/montage?merk=profex
+/product/profex-start-profiel-300-cm/,,200,,/merken/profex
 /product/eindkap-inwendig-hoekprofiel-uitwendig-hoekprofiel-smal/,,200,,/montage
 /product/keralit-trim-kraal-aansluitprofiel-17mm/,,200,,/montage?merk=keralit
 /product/ongelijkzijdig-u-profiel-10-mm-omrandingsprofiel/,,200,,/montage

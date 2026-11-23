@@ -204,24 +204,250 @@
       "priceNote": "Prijs live shop niet op de kaart; indicatie tot leverancierslijst."
     },
     {
-      "slug": "profex-duafort-rabat-125",
-      "name": "Duafort Rabat 125 mm",
+      "slug": "profex-dubbel-rabat-300",
+      "name": "Profex Dubbel Rabat 300 mm",
       "vendor": "Profex",
       "brandSlug": "profex",
       "category": "gevelbekleding",
-      "description": "Duafort rabat 125 mm, gebruikt als Canexel-vervanger. Licht, onderhoudsarm, klassieke overlapping.",
+      "description": "Profex dubbel rabat, 300 mm dekkend en 270 mm werkend. Eén lengte van 6 m dekt 1,62 m². Dikte 16 mm, houtstructuur, onderhoudsarm.",
       "specs": [
-        { "label": "Werkende breedte", "value": "125 mm" },
+        { "label": "Werkende breedte", "value": "270 mm" },
+        { "label": "Dekkende breedte", "value": "300 mm" },
         { "label": "Lengte", "value": "6 m" },
-        { "label": "Materiaal", "value": "PVC" },
-        { "label": "Toepassing", "value": "Canexel-vervanger" }
+        { "label": "Dikte", "value": "16 mm" },
+        { "label": "Oppervlak", "value": "1,62 m² per lengte" },
+        { "label": "Materiaal", "value": "PVC houtlook" }
       ],
-      "relatedSlugs": [],
-      "paletteId": "profex",
-      "skuPrefix": "PX-DF125",
+      "relatedSlugs": ["profex-startprofiel-3m", "profex-hoekprofiel-2-delig-3m", "profex-stootvoeg-dubbel-rabat"],
+      "paletteId": "profex-rabat",
+      "skuPrefix": "PX-DR300",
       "length": "6 m",
-      "price": 43.09,
-      "inStock": true
+      "price": 96.79,
+      "fixedLength": true,
+      "inStock": true,
+      "images": [{ "url": "/staal/panelen/profex-gevel.svg", "alt": "Profex dubbel rabat gevelbekleding met houtstructuur" }]
+    },
+    {
+      "slug": "profex-potdeksel-198",
+      "name": "Profex Potdeksel 198 mm",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "gevelbekleding",
+      "description": "Profex potdeksel, 198 mm dekkend en 168 mm werkend. Eén lengte van 6 m dekt 1,01 m². Dikte 16 mm, met overlapping en houtstructuur.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "168 mm" },
+        { "label": "Dekkende breedte", "value": "198 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Dikte", "value": "16 mm" },
+        { "label": "Oppervlak", "value": "1,01 m² per lengte" },
+        { "label": "Materiaal", "value": "PVC houtlook" }
+      ],
+      "relatedSlugs": ["profex-startprofiel-3m", "profex-hoekprofiel-2-delig-3m", "profex-stootvoeg-potdeksel"],
+      "fixedLength": true,
+      "inStock": true,
+      "images": [{ "url": "/staal/panelen/profex-gevel.svg", "alt": "Profex potdeksel gevelbekleding met houtstructuur" }],
+      "variants": [
+        { "sku": "PX-PD198-WIT", "ean": "", "colorName": "Wit", "ral": "RAL 9010", "hex": "#F4F1EA", "length": "6 m", "price": 60.35, "inStock": true, "popular": true },
+        { "sku": "PX-PD198-LGR", "ean": "", "colorName": "Lichtgrijs", "ral": "RAL 7035", "hex": "#D7D7D7", "length": "6 m", "price": 60.35, "inStock": true },
+        { "sku": "PX-PD198-DGR", "ean": "", "colorName": "Donkergrijs", "ral": "RAL 7005", "hex": "#6B6E6B", "length": "6 m", "price": 60.35, "inStock": true },
+        { "sku": "PX-PD198-CRW", "ean": "", "colorName": "Cremewit", "ral": "RAL 9001", "hex": "#E8DCC8", "length": "6 m", "price": 60.35, "inStock": true },
+        { "sku": "PX-PD198-ZWA", "ean": "", "colorName": "Zwart", "hex": "#1A1A1A", "length": "6 m", "price": 90.84, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-velling-165",
+      "name": "Profex Velling 165 mm",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "gevelbekleding",
+      "description": "Profex vellingdeel, 165 mm dekkend en 135 mm werkend. Eén lengte van 6 m dekt 0,81 m². Dikte 16 mm, houtstructuur, strakke schuine naad.",
+      "specs": [
+        { "label": "Werkende breedte", "value": "135 mm" },
+        { "label": "Dekkende breedte", "value": "165 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Dikte", "value": "16 mm" },
+        { "label": "Oppervlak", "value": "0,81 m² per lengte" },
+        { "label": "Materiaal", "value": "PVC houtlook" }
+      ],
+      "relatedSlugs": ["profex-startprofiel-3m", "profex-hoekprofiel-2-delig-3m", "profex-stootvoeg-velling"],
+      "paletteId": "profex-velling",
+      "skuPrefix": "PX-VL165",
+      "length": "6 m",
+      "price": 48.4,
+      "fixedLength": true,
+      "inStock": true,
+      "images": [{ "url": "/staal/panelen/profex-gevel.svg", "alt": "Profex vellingdeel gevelbekleding met houtstructuur" }]
+    },
+    {
+      "slug": "profex-boeideel-310",
+      "name": "Profex Boeideel 310 mm",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "dakranden",
+      "description": "Profex boeideel 310 mm hoog en 10 mm dik. Lengte 6 m, voor de dakrand bij een Profex gevel. Prijs per lengte.",
+      "specs": [
+        { "label": "Hoogte", "value": "310 mm" },
+        { "label": "Dikte", "value": "10 mm" },
+        { "label": "Lengte", "value": "6 m" },
+        { "label": "Materiaal", "value": "PVC" }
+      ],
+      "relatedSlugs": ["profex-dubbel-rabat-300", "profex-hoekprofiel-2-delig-3m"],
+      "fixedLength": true,
+      "inStock": true,
+      "images": [{ "url": "/staal/panelen/profex-gevel.svg", "alt": "Profex boeideel 310 mm voor de dakrand" }],
+      "variants": [
+        { "sku": "PX-BD310", "ean": "", "colorName": "Standaard", "hex": "#E8DCC8", "length": "6 m", "price": 180, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-startprofiel-3m",
+      "name": "Profex Startprofiel 3 m",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Startprofiel 3 m voor Profex gevelbekleding. Zet het onderaan, zodat de eerste plank recht en geventileerd begint.",
+      "specs": [
+        { "label": "Lengte", "value": "3 m" },
+        { "label": "Type", "value": "Startprofiel" },
+        { "label": "Systeem", "value": "Profex" }
+      ],
+      "relatedSlugs": ["profex-dubbel-rabat-300", "profex-ventilatieprofiel-3m"],
+      "variants": [
+        { "sku": "PX-ST3", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "3 m", "price": 9.95, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-ventilatieprofiel-3m",
+      "name": "Profex Ventilatieprofiel 3 m",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Ventilatieprofiel 3 m voor Profex. Houdt de luchtstroom achter de gevel open, onder en boven.",
+      "specs": [
+        { "label": "Lengte", "value": "3 m" },
+        { "label": "Type", "value": "Ventilatieprofiel" },
+        { "label": "Systeem", "value": "Profex" }
+      ],
+      "relatedSlugs": ["profex-startprofiel-3m", "profex-dubbel-rabat-300"],
+      "variants": [
+        { "sku": "PX-VT3", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "3 m", "price": 9.95, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-hoekprofiel-2-delig-3m",
+      "name": "Profex Hoekprofiel 2-delig 3 m",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Tweedelig hoekprofiel 3 m voor een buitenhoek in het Profex-systeem. Twee delen, zodat de hoek strak sluit.",
+      "specs": [
+        { "label": "Lengte", "value": "3 m" },
+        { "label": "Type", "value": "2-delig" },
+        { "label": "Toepassing", "value": "Buitenhoek" }
+      ],
+      "relatedSlugs": ["profex-dubbel-rabat-300", "profex-buitenhoek-300"],
+      "variants": [
+        { "sku": "PX-HK3", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "3 m", "price": 12.95, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-verbindingsprofiel-2-delig-3m",
+      "name": "Profex Verbindingsprofiel 2-delig 3 m",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Tweedelig verbindingsprofiel 3 m. De naad tussen twee Profex-lengtes in de lengterichting.",
+      "specs": [
+        { "label": "Lengte", "value": "3 m" },
+        { "label": "Type", "value": "2-delig" },
+        { "label": "Toepassing", "value": "Verbinding in de lengte" }
+      ],
+      "relatedSlugs": ["profex-dubbel-rabat-300", "profex-verbinding-300"],
+      "variants": [
+        { "sku": "PX-VB3", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "3 m", "price": 12.95, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-buitenhoek-300",
+      "name": "Profex Buitenhoek 300 mm",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Buitenhoek 300 mm per stuk, voor de hoek van een Profex dubbel rabat. Prijs per stuk.",
+      "specs": [
+        { "label": "Maat", "value": "300 mm" },
+        { "label": "Eenheid", "value": "Per stuk" },
+        { "label": "Voor", "value": "Dubbel rabat 300 mm" }
+      ],
+      "relatedSlugs": ["profex-dubbel-rabat-300", "profex-hoekprofiel-2-delig-3m"],
+      "variants": [
+        { "sku": "PX-BH300", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "stuk", "price": 11.96, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-verbinding-300",
+      "name": "Profex Verbinding 300 mm",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Verbinding 300 mm per stuk, voor de naad van een Profex dubbel rabat. Prijs per stuk.",
+      "specs": [
+        { "label": "Maat", "value": "300 mm" },
+        { "label": "Eenheid", "value": "Per stuk" },
+        { "label": "Voor", "value": "Dubbel rabat 300 mm" }
+      ],
+      "relatedSlugs": ["profex-dubbel-rabat-300", "profex-verbindingsprofiel-2-delig-3m"],
+      "variants": [
+        { "sku": "PX-VR300", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "stuk", "price": 10.96, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-stootvoeg-dubbel-rabat",
+      "name": "Profex Stootvoegverbinding dubbel rabat",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Stootvoegverbinding per stuk voor Profex dubbel rabat. Zet twee lengtes in elkaars verlengde.",
+      "specs": [
+        { "label": "Eenheid", "value": "Per stuk" },
+        { "label": "Voor", "value": "Dubbel rabat" }
+      ],
+      "relatedSlugs": ["profex-dubbel-rabat-300"],
+      "variants": [
+        { "sku": "PX-SVDR", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "stuk", "price": 7.95, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-stootvoeg-velling",
+      "name": "Profex Stootvoegverbinding velling",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Stootvoegverbinding per stuk voor het Profex vellingdeel. Zet twee lengtes in elkaars verlengde.",
+      "specs": [
+        { "label": "Eenheid", "value": "Per stuk" },
+        { "label": "Voor", "value": "Velling" }
+      ],
+      "relatedSlugs": ["profex-velling-165"],
+      "variants": [
+        { "sku": "PX-SVVL", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "stuk", "price": 6.95, "inStock": true }
+      ]
+    },
+    {
+      "slug": "profex-stootvoeg-potdeksel",
+      "name": "Profex Stootvoegverbinding potdeksel",
+      "vendor": "Profex",
+      "brandSlug": "profex",
+      "category": "montage",
+      "description": "Stootvoegverbinding per stuk voor Profex potdeksel. Zet twee lengtes in elkaars verlengde.",
+      "specs": [
+        { "label": "Eenheid", "value": "Per stuk" },
+        { "label": "Voor", "value": "Potdeksel" }
+      ],
+      "relatedSlugs": ["profex-potdeksel-198"],
+      "variants": [
+        { "sku": "PX-SVPD", "ean": "", "colorName": "Standaard", "hex": "#C5C1B8", "length": "stuk", "price": 6.95, "inStock": true }
+      ]
     },
     {
       "slug": "zierer-hoekstuk-50x50x345",
@@ -491,32 +717,6 @@
           "hex": "#9A8F84",
           "length": "stuk",
           "price": 7.36,
-          "inStock": true
-        }
-      ]
-    },
-    {
-      "slug": "afdichtingsprofiel-pvc-45",
-      "name": "Afdichtingsprofiel PVC 45 mm breed toepassing horizontaal",
-      "vendor": "Profex",
-      "brandSlug": "profex",
-      "category": "kozijnafwerking",
-      "description": "Horizontaal afdichtingsprofiel 45 mm PVC, voor aansluiting plaat of kozijn.",
-      "specs": [
-        { "label": "Breedte", "value": "45 mm" },
-        { "label": "Toepassing", "value": "Horizontaal" },
-        { "label": "Materiaal", "value": "PVC" }
-      ],
-      "relatedSlugs": [],
-      "variants": [
-        {
-          "sku": "PX-AF45-WIT",
-          "ean": "",
-          "colorName": "Wit",
-          "ral": "RAL 9010",
-          "hex": "#F4F1EA",
-          "length": "stuk",
-          "price": 14.52,
           "inStock": true
         }
       ]

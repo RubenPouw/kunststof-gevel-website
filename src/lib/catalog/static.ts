@@ -16,6 +16,7 @@ import type {
   CategorySlug,
   Product,
   ProductBadge,
+  ProductImage,
   ProductVariant,
   Spec,
 } from "./types";
@@ -58,6 +59,9 @@ type RawProduct = {
   price?: number;
   inStock?: boolean;
   stockText?: string;
+  /** When true, do not invent a 3 m price from the 6 m length. */
+  fixedLength?: boolean;
+  images?: ProductImage[];
   variants?: RawVariant[];
 };
 
@@ -124,12 +128,13 @@ function threeMeterPrice(slug: string, sixMeterPrice: number) {
 }
 
 function expandLengthVariants(raw: RawProduct, variants: ProductVariant[]): ProductVariant[] {
+  if (raw.fixedLength) return variants;
   const workingWidthMm = parseWorkingWidthMm(raw.name, raw.specs);
   const profileType = inferProfileType(raw.name);
   const facade =
     raw.category === "gevelbekleding" &&
     Boolean(workingWidthMm) &&
-    ["sponning", "potdeksel", "rabat", "rondkant", "quattro"].includes(profileType);
+    ["sponning", "potdeksel", "rabat", "velling", "rondkant", "quattro"].includes(profileType);
   const lengths = new Set(variants.map((variant) => variant.length));
   if (!facade || !lengths.has("6 m") || lengths.has("3 m")) return variants;
 
@@ -186,7 +191,7 @@ function hydrate(raw: RawProduct): Product {
     palette: variants.map((variant) => variant.hex),
     colors: [],
     length,
-    images: [],
+    images: raw.images ?? [],
     source: "static",
     profileType: inferProfileType(raw.name),
     sampleable: false,

@@ -45,14 +45,16 @@ export function sampleId(brandSlug: string, colorName: string, skuSuffix?: strin
 export function inferProfileType(name: string, productType?: string): ProfileType {
   const t = `${name} ${productType ?? ""}`.toLowerCase();
   if (/steenstrip|wildverband/.test(t)) return "steenstrip";
+  if (/stootvoeg/.test(t)) return "profiel";
   if (/sponning/.test(t)) return "sponning";
   if (/potdeksel/.test(t)) return "potdeksel";
+  if (/velling/.test(t)) return "velling";
   if (/rondkant/.test(t)) return "rondkant";
   if (/quattro/.test(t)) return "quattro";
-  if (/rabat|duafort/.test(t)) return "rabat";
+  if (/rabat/.test(t)) return "rabat";
   if (/dakrand|boeideel/.test(t)) return "dakrand";
   if (/vensterbank|overzet/.test(t)) return "vensterbank";
-  if (/profiel|schroef|clip|verbind|startpr|eindkap|ventilatie|kit/.test(t)) return "profiel";
+  if (/profiel|schroef|clip|verbind|startpr|eindkap|ventilatie|kit|\bhoek\b/.test(t)) return "profiel";
   return "overig";
 }
 
@@ -68,7 +70,7 @@ export function roundMoney(value: number) {
   return Math.round(value * 100) / 100;
 }
 
-const CLADDING_PROFILES: ProfileType[] = ["sponning", "potdeksel", "rabat", "rondkant", "quattro"];
+const CLADDING_PROFILES: ProfileType[] = ["sponning", "potdeksel", "rabat", "velling", "rondkant", "quattro"];
 
 export function isFacadePanel(product: Pick<Product, "category" | "name" | "workingWidthMm" | "profileType">) {
   if (!product.workingWidthMm) return false;

@@ -4,8 +4,16 @@ import Link from "next/link";
 import { officialBrandLogo } from "@/lib/catalog/brand-logos";
 import type { Brand } from "@/lib/catalog/types";
 
+function marqueeBrands(brands: Brand[]) {
+  const list = brands.filter((brand) => brand.slug !== "overig");
+  const head = list.slice(0, 8);
+  if (head.some((brand) => brand.slug === "profex")) return head;
+  const profex = list.find((brand) => brand.slug === "profex");
+  return profex ? [...head, profex] : head;
+}
+
 export function BrandMarquee({ brands }: { brands: Brand[] }) {
-  const items = brands.slice(0, 8);
+  const items = marqueeBrands(brands);
 
   return (
     <section className="container-kg section-kg" aria-label="Merken">

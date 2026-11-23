@@ -18,20 +18,22 @@ const groups = staalPickerSections(applyFillout(buildStaalTree(staticProducts)),
   (section) => section.groups,
 );
 const facets = staalFilterFacets(groups);
-const banned = /duafort|profex|canexel|linerio|wonderboard/i;
+const banned = /duafort|canexel|linerio|wonderboard/i;
 
 test("staal filters come from the samples that are actually there", () => {
   assert.deepEqual(
     facets.categories.map((item) => [item.label, item.swatches]),
     [
-      ["Potdeksel", 44],
+      ["Potdeksel", 49],
       ["Sponning", 135],
-      ["Rabat", 32],
+      ["Rabat", 37],
+      ["Velling", 4],
       ["Vario", 5],
       ["Multisponning", 23],
       ["Steenstrip", 11],
       ["Modern Wood", 5],
       ["Dakranden", 52],
+      ["Boeidelen", 1],
       ["Vensterbanken", 3],
     ],
   );
@@ -43,6 +45,7 @@ test("staal filters come from the samples that are actually there", () => {
       ["Eurotexx", 26],
       ["Kerrafront", 20],
       ["Zierer", 11],
+      ["Profex", 15],
       ["Milexx", 5],
       ["Milinboard", 3],
     ],

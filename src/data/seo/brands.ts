@@ -22,11 +22,22 @@ export type SeoLink = {
   label: string;
 };
 
+export type BrandProfileTile = {
+  href: string;
+  label: string;
+  detail: string;
+};
+
 export type BrandStory = {
   slug: string;
   metaTitle: string;
+  /** Title already includes the site name, so the layout template must not append it. */
+  absoluteTitle?: boolean;
+  /** Visible H1. Falls back to the brand name. */
+  heading?: string;
   description: string;
   lead: string;
+  profiles?: BrandProfileTile[];
   sections: SeoSection[];
   faqs: SeoFaq[];
   links: SeoLink[];
@@ -201,28 +212,89 @@ export const brandStories: BrandStory[] = [
   },
   {
     slug: "profex",
-    metaTitle: "Profex Duafort rabat",
+    metaTitle: "Profex kunststof gevelbekleding | kunststof-gevel.nl",
+    absoluteTitle: true,
+    heading: "Profex kunststof gevelbekleding",
     description:
-      "Profex Duafort rabat als lichte, onderhoudsarme vervanger van Canexel-achtige bekleding.",
-    lead: "Profex Duafort is een licht rabat. Het komt in de plaats van oudere Canexel-achtige platen die zacht zijn geworden.",
+      "Profex gevelbekleding: velling, dubbel rabat en potdeksel. Houtstructuur, onderhoudsarm, kleurvast, nooit meer schilderen. Levering in max. 3 werkdagen.",
+    lead: "Profex is kunststof gevelbekleding met een houtstructuur. U kiest velling, dubbel rabat of potdeksel, en een boeideel voor de dakrand. De prijs op de kaart is de hele lengte.",
+    profiles: [
+      { href: "/merken/profex?type=velling", label: "Velling", detail: "165 mm, werkend 135 mm" },
+      { href: "/merken/profex?type=rabat", label: "Dubbel rabat", detail: "300 mm, werkend 270 mm" },
+      { href: "/merken/profex?type=potdeksel", label: "Potdeksel", detail: "198 mm, werkend 168 mm" },
+      { href: "/merken/profex?type=dakrand", label: "Boeideel", detail: "310 mm, dikte 10 mm" },
+    ],
     sections: [
       {
-        heading: "Vervangen zonder schilderbeurt",
+        heading: "Profielen",
         paragraphs: [
-          "Het paneel is onderhoudsarm: geen beits, geen jaarlijkse lak. De achterconstructie maakt of breekt het resultaat. Haal zachte platen en zachte regels weg, zet een geventileerde regelmaat terug en start onderaan met het startprofiel.",
-          "Kleuren vallen het best te beoordelen met een staal op de bestaande gevel, niet op een beeldscherm.",
+          "Drie gevelprofielen, elk in een lengte van 6 m en 16 mm dik. De velling heeft een schuine naad en een werkende breedte van 135 mm. Het dubbel rabat dekt 270 mm werkend, het potdeksel 168 mm. Minder naden op een lange wand, een klassiekere overlap bij potdeksel.",
+          "Het boeideel is 310 mm hoog en 10 mm dik, ook 6 m. Dat is de dakrand, geen gevelplank. Hulpstukken bestelt u erbij: startprofiel, ventilatieprofiel, hoek, verbinding en stootvoeg. Een gevel zonder die profielen is geen afgewerkt systeem.",
+        ],
+      },
+      {
+        heading: "Kleuren op de gevel",
+        paragraphs: [
+          "De gevelplanken lopen in wit RAL 9010, lichtgrijs RAL 7035, donkergrijs RAL 7005 en cremewit RAL 9001. Dubbel rabat heeft daar crème RAL 1013 bij. Potdeksel heeft ook zwart, tegen een hogere lengteprijs.",
+          "De houtstructuur ziet u pas goed op een staal, naast de bestaande gevel en in daglicht. Een foto maakt grijs vlakker dan de plank is.",
+        ],
+      },
+      {
+        heading: "Voordelen",
+        paragraphs: [
+          "Profex is onderhoudsarm en kleurvast. U schildert de gevel niet meer: geen beits, geen jaarlijkse lak. De houtstructuur blijft het beeld, het kunststof het werk.",
+        ],
+        list: {
+          items: [
+            "Onderhoudsarm: wassen met water en een zachte borstel",
+            "Kleurvast, zonder een nieuwe verflaag",
+            "Nooit meer schilderen",
+            "Houtstructuur in de plank, niet een gladde plaat",
+          ],
+        },
+      },
+      {
+        heading: "Toepassingen",
+        paragraphs: [
+          "Profex past op een woning, een recreatiewoning en een chalet. Rechte gevels en een dakrand in dezelfde familie. Op een chalet vervangt u verweerd hout zonder het gewicht van nieuwe planken in massief hout.",
+          "De achterconstructie moet recht en geventileerd zijn. Zachte regels haalt u weg. Het paneel verbergt een zachte regel niet.",
+        ],
+      },
+      {
+        heading: "Montage",
+        paragraphs: [
+          "Onderaan het startprofiel, daarna de planken, en de ventilatie open houden. Hoeken en naden sluit u met het Profex-profiel dat bij dat model hoort. Meng geen hoek van een ander merk op een Profex-plank.",
+          "Montage door Cavemen kan in dezelfde opdracht als het materiaal. U stuurt maten en foto's mee, wij rekenen planken, hulpstukken en montage in één offerte.",
         ],
       },
     ],
     faqs: [
       {
-        q: "Is Duafort een Keralit-paneel?",
-        a: "Nee. Het is een eigen systeem. Hulpstukken van Profex horen bij Profex.",
+        q: "Moet ik Profex schilderen?",
+        a: "Nee. De plank is onderhoudsarm en kleurvast. Nooit meer schilderen: afnemen met water is het onderhoud.",
+      },
+      {
+        q: "Wat is de prijs, per meter of per lengte?",
+        a: "De prijs op de kaart is de hele lengte, inclusief btw. Een gevelplank is 6 m. Start-, ventilatie-, hoek- en verbindingsprofielen zijn 3 m. Buitenhoek, verbinding en stootvoeg zijn per stuk. Daarnaast staat de prijs per m², gerekend met de werkende breedte.",
+      },
+      {
+        q: "Hoe snel wordt Profex geleverd?",
+        a: "Levering in max. 3 werkdagen wanneer de kleur op voorraad is. Staat een kleur er niet, dan hoort u de levertijd voordat u bestelt.",
+      },
+      {
+        q: "Kan Cavemen de gevel monteren?",
+        a: "Ja. Montage door Cavemen regelt u via de offerte. Materiaal en montage kunnen in één opdracht.",
+      },
+      {
+        q: "Welke hulpstukken heb ik nodig?",
+        a: "Minimaal een startprofiel en een ventilatieprofiel, plus een hoek of buitenhoek waar de gevel draait. Een stootvoeg waar twee lengtes elkaar raken. De bijpassende artikelen staan bij elk paneel.",
       },
     ],
     links: [
-      { href: "/blog/levensduur-kunststof-gevel", label: "Levensduur en onderhoud" },
-      { href: "/staalaanvraag", label: "Staal aanvragen" },
+      { href: "/gevelbekleding", label: "Alle gevelbekleding" },
+      { href: "/montage", label: "Accessoires" },
+      { href: "/offerte-montage", label: "Montage door Cavemen" },
+      { href: "/staalaanvraag", label: "Kleurstalen aanvragen" },
     ],
   },
   {

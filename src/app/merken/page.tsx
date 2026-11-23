@@ -9,7 +9,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Merken",
-  description: "Keralit, VinyPlus, Eurotexx en de HPL lijnen uit de shop.",
+  description: "Keralit, VinyPlus, Eurotexx, Profex en de HPL lijnen uit de shop.",
   alternates: { canonical: "/merken" },
 };
 
@@ -21,7 +21,7 @@ export default async function MerkenPage() {
       <p className="font-mono text-[13px] text-kg-text-2">Merken</p>
       <h1 className="display-plp mt-2">Alle merken uit voorraad</h1>
       <p className="mt-4 max-w-2xl text-kg-text-2">
-        Kies een merk. U ziet daarna profiel, kleur en werkende breedte. Zelfde garantie,
+        Kies een merk, waaronder Profex. U ziet daarna profiel, kleur en werkende breedte. Zelfde garantie,
         dezelfde hulpstukken erbij. Twijfelt u tussen Keralit en VinyPlus?{" "}
         <Link href="/blog/keralit-of-vinyplus">Lees de vergelijking</Link>.
       </p>
