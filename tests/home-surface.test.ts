@@ -24,6 +24,11 @@ test("footer keeps a visible tel link and renames projecten", () => {
   assert.match(footer, /text-\[20px\]/);
   assert.equal(site.phone, "030 227 1397");
   assert.equal(site.phoneHref, "tel:+31302271397");
+  assert.equal(site.address, "Binnenkamp 7a, 5321 KA Hedel");
+  assert.equal(site.kvk, "66527376");
+  assert.equal(site.btw, "NL856594842B01");
+  assert.equal(site.iban, "NL20INGB0007321511");
+  assert.match(footer, /IBAN \{site\.iban\}/);
   const bedrijf = footerColumns.find((column) => column.title === "Bedrijf");
   const projecten = bedrijf?.links.find((link) => link.href === "/projecten");
   assert.equal(projecten?.label, "Montage projecten");

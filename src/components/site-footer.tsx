@@ -41,6 +41,8 @@ export function SiteFooter({ webwinkelkeur = null }: { webwinkelkeur?: Webwinkel
             KvK {site.kvk}
             <br />
             BTW {site.btw}
+            <br />
+            IBAN {site.iban}
           </p>
         </div>
         {footerColumns.map((column) => (
