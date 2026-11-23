@@ -11,6 +11,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import { kozijnCartLine, kozijnConfigQuery } from "@/lib/kozijnen/cart-line";
 import { FRAME_COLORS, LAMINATED, LOW_GLASS, PROFILE, publicProfileName } from "@/lib/kozijnen/config";
+import { inputMaxWidth, limitIntro } from "@/lib/kozijnen/limits/check";
 import { layoutPath, layoutsIn, type Layout } from "@/lib/kozijnen/layouts";
 import { VatPrice } from "@/components/brand/vat-price";
 import { addBasketItem, readBasket, writeBasket } from "@/lib/kozijnen/basket";
@@ -27,6 +28,7 @@ import {
   resumeVisible,
   serializeConfig,
   sizeInRange,
+  sizeMessage,
   type KozijnConfig,
   type StepId,
 } from "@/lib/kozijnen/model";
@@ -107,8 +109,13 @@ export function KozijnConfigurator({
 
   useEffect(() => {
     if (!pricesActive) return;
-    const controller = new AbortController();
     const query = serializeConfig(config);
+    if (!sizeInRange(layout, config.width, config.height)) {
+      setPrice({ pricesActive: false });
+      setPriceFor(query);
+      return;
+    }
+    const controller = new AbortController();
     void fetch("/api/kozijnen/prijs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -127,7 +134,7 @@ export function KozijnConfigurator({
         setPriceFor(query);
       });
     return () => controller.abort();
-  }, [config, layout.slug, pricesActive]);
+  }, [config, layout, pricesActive]);
 
   useEffect(() => {
     if (!ready) return;
@@ -623,18 +630,37 @@ function SizeStep({
   onChange: (partial: Partial<KozijnConfig>) => void;
 }) {
   const box = layout.limits;
+  const maxWidth = inputMaxWidth(box, layout.panes);
+  const message = inRange ? "" : sizeMessage(layout, config.width, config.height);
+  const widthInvalid = !inRange && (config.width <= 0 || (box.minWidth != null && config.width < box.minWidth) || (maxWidth != null && config.width > maxWidth));
+  const heightInvalid =
+    !inRange && (config.height <= 0 || (box.minHeight != null && config.height < box.minHeight) || (box.maxHeight != null && config.height > box.maxHeight));
   return (
     <div>
-      <p className="max-w-2xl text-[16px] leading-normal text-kg-text-2">
-        Online aanvragen tussen {box.minWidth} en {box.maxWidth} mm breed, en {box.minHeight} en {box.maxHeight} mm hoog.
-      </p>
+      <p className="max-w-2xl text-[16px] leading-normal text-kg-text-2">{limitIntro(box, layout.panes)}</p>
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
-        <Field label="Breedte (mm)" value={config.width} invalid={!inRange} onChange={(width) => onChange({ width })} />
-        <Field label="Hoogte (mm)" value={config.height} invalid={!inRange} onChange={(height) => onChange({ height })} />
+        <Field
+          label="Breedte (mm)"
+          value={config.width}
+          invalid={widthInvalid}
+          min={box.minWidth}
+          max={maxWidth}
+          describedBy={widthInvalid ? "kozijn-maat-fout" : undefined}
+          onChange={(width) => onChange({ width })}
+        />
+        <Field
+          label="Hoogte (mm)"
+          value={config.height}
+          invalid={heightInvalid}
+          min={box.minHeight}
+          max={box.maxHeight}
+          describedBy={heightInvalid ? "kozijn-maat-fout" : undefined}
+          onChange={(height) => onChange({ height })}
+        />
       </div>
       {inRange ? null : (
-        <p className="mt-6 border border-kg-navy bg-white px-4 py-3 text-[14px] text-kg-navy" role="alert">
-          Deze maat valt buiten {box.minWidth} tot {box.maxWidth} mm breed en {box.minHeight} tot {box.maxHeight} mm hoog. U kunt de aanvraag wel versturen. We beoordelen hem handmatig.
+        <p id="kozijn-maat-fout" className="mt-6 border border-kg-navy bg-white px-4 py-3 text-[14px] text-kg-navy" role="alert">
+          {message}
         </p>
       )}
       <p className="mt-6 text-[16px]">
@@ -644,14 +670,38 @@ function SizeStep({
   );
 }
 
-function Field({ label, value, invalid = false, onChange }: { label: string; value: number; invalid?: boolean; onChange: (value: number) => void }) {
+function Field({
+  label,
+  value,
+  invalid = false,
+  min,
+  max,
+  describedBy,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  invalid?: boolean;
+  min?: number;
+  max?: number;
+  describedBy?: string;
+  onChange: (value: number) => void;
+}) {
   return (
     <label className="block text-[15px]">
       {label}
       <input
+        type="number"
         inputMode="numeric"
+        min={min}
+        max={max}
+        step={1}
         aria-invalid={invalid}
-        className={cn("mt-2 h-14 w-full border bg-white px-4 font-mono text-[20px]", invalid ? "border-kg-navy" : "border-kg-lijn")}
+        aria-describedby={describedBy}
+        className={cn(
+          "mt-2 h-14 w-full border bg-white px-4 font-mono text-[20px] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+          invalid ? "border-kg-navy" : "border-kg-lijn",
+        )}
         value={Number.isFinite(value) ? value : ""}
         onChange={(event) => {
           const next = Number(event.target.value);

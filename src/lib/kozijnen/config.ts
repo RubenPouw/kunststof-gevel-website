@@ -1,7 +1,7 @@
 /**
  * Aluplast Ideal 7000 NL. Eén profiel.
  * Onbevestigde cijfers blijven null en worden niet op de site getoond.
- * Maatgrenzen zijn voorlopige online aanvraaggrenzen, geen fabriekscertificaat.
+ * Maatgrenzen staan per type in limits/. Een ontbrekend veld is niet gepubliceerd.
  * Leveranciersnaam en keurmerkvlaggen staan in supplier.ts (alleen server).
  */
 
@@ -61,38 +61,7 @@ export function profileSpecSentence() {
   return `Kader ${PROFILE.frameChambers} kamers, vleugel ${PROFILE.sashChambers} kamers, ${PROFILE.gaskets} dichtingen, glas tot ${PROFILE.glassMaxMm} mm. Inbouwdiepte ${PROFILE.depthMm} mm. In de berekening komt dit profiel op Uw ${decimalComma(PROFILE.uwDouble)} met dubbel glas en Uw ${decimalComma(PROFILE.uwTriple)} met triple. Levertijd ${PROFILE.leadTimeWeeks} weken.`;
 }
 
-export type SizeBox = {
-  minWidth: number;
-  maxWidth: number;
-  minHeight: number;
-  maxHeight: number;
-  /** Maximaal glasoppervlak in m². Alleen gezet waar dat de grens is. */
-  maxAreaM2?: number;
-  /** Maximale breedte van één draaiende vleugel, in mm. */
-  maxSashWidth?: number;
-};
-
-/**
- * Draaikiep: maximaal ongeveer 1512 mm breed per vleugel.
- * Vast glas: maximaal 3,35 m².
- * 600×600 is getest. Overige grenzen blijven de online aanvraagband.
- * De maximale hoogte van een draaikiepraam loopt hier nog niet mee met de breedte.
- */
-export const SIZE_LIMITS: Record<string, SizeBox> = {
-  "vast-raam": { minWidth: 600, maxWidth: 3350, minHeight: 600, maxHeight: 3350, maxAreaM2: 3.35 },
-  draairaam: { minWidth: 600, maxWidth: 1512, minHeight: 600, maxHeight: 2600, maxSashWidth: 1512 },
-  draaikiepraam: { minWidth: 600, maxWidth: 1512, minHeight: 600, maxHeight: 2600, maxSashWidth: 1512 },
-  "draaikiepraam-met-vast-raam": { minWidth: 770, maxWidth: 2500, minHeight: 600, maxHeight: 2200, maxSashWidth: 1512 },
-  "vast-draaikiep-vast": { minWidth: 1290, maxWidth: 3000, minHeight: 600, maxHeight: 2200, maxSashWidth: 1512 },
-  "draaikiep-vast-draaikiep": { minWidth: 1290, maxWidth: 3300, minHeight: 600, maxHeight: 2200, maxSashWidth: 1512 },
-  stolpraam: { minWidth: 1166, maxWidth: 2926, minHeight: 968, maxHeight: 2284, maxSashWidth: 1512 },
-  "schuifpui-2-delig": { minWidth: 1600, maxWidth: 4000, minHeight: 1142, maxHeight: 2400 },
-  "schuifpui-4-delig": { minWidth: 2000, maxWidth: 6000, minHeight: 1142, maxHeight: 2400 },
-  achterdeur: { minWidth: 722, maxWidth: 1200, minHeight: 1849, maxHeight: 2500 },
-  "dubbele-achterdeur": { minWidth: 1272, maxWidth: 2312, minHeight: 1849, maxHeight: 2500 },
-  tuindeur: { minWidth: 722, maxWidth: 1200, minHeight: 1849, maxHeight: 2772 },
-  "openslaande-tuindeuren": { minWidth: 1272, maxWidth: 2312, minHeight: 1960, maxHeight: 2774 },
-};
+export { SIZE_LIMITS, sizeBox, type SizeBox } from "./limits";
 
 /** Snelle keuzes, akkoord naast de AP-lijst. TODO(leverancier): foliecodes en de volledige AP-lijst. */
 export const FRAME_COLORS = [
@@ -140,8 +109,4 @@ export type CornerId = (typeof CORNERS)[number]["id"];
 
 export function colorById(id: string) {
   return FRAME_COLORS.find((color) => color.id === id) ?? FRAME_COLORS[0];
-}
-
-export function sizeBox(slug: string): SizeBox {
-  return SIZE_LIMITS[slug] ?? SIZE_LIMITS["draaikiepraam"];
 }

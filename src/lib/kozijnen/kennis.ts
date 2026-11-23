@@ -110,8 +110,8 @@ export const articles: Article[] = [
         a: "Noteer ze alle drie. De kleinste gaat naar de aanvraag. Het verschil vangt de speling op.",
       },
       {
-        q: "Kan ik een maat buiten de online grenzen aanvragen?",
-        a: "Ja. De configurator waarschuwt. U verstuurt de aanvraag toch. We beoordelen die maat handmatig.",
+        q: "Kan ik een maat buiten de grenzen bestellen?",
+        a: "Nee. De configurator neemt die maat niet aan. Neem contact op voor grotere maten, via 030 227 1397.",
       },
     ],
     links: [

@@ -43,25 +43,34 @@ test("Aluplast profile publishes confirmed specs and keeps certificates empty", 
   assert.equal(/garantie|levertijd|certificaat/i.test(source), true);
 });
 
-test("online size defaults come from the config, not a client price", () => {
+test("published maxima come from the per-type limit files", () => {
   const dk = SIZE_LIMITS.draaikiepraam;
-  assert.equal(dk.minWidth, 600);
-  assert.equal(dk.maxWidth, 1512);
-  assert.equal(dk.maxSashWidth, 1512);
-  assert.equal(SIZE_LIMITS["vast-raam"].maxAreaM2, 3.35);
-  assert.equal(SIZE_LIMITS["schuifpui-2-delig"].minWidth, 1600);
-  assert.equal(SIZE_LIMITS["openslaande-tuindeuren"].minHeight, 1960);
+  assert.equal(dk.maxWidth, 1230);
+  assert.equal(dk.maxHeight, 1480);
+  assert.equal(dk.minWidth, undefined);
+  assert.equal(SIZE_LIMITS.draairaam.maxWidth, 1230);
+  assert.equal(SIZE_LIMITS["vast-raam"].maxWidth, 1500);
+  assert.equal(SIZE_LIMITS["vast-raam"].maxHeight, 1500);
+  assert.equal(SIZE_LIMITS.stolpraam.maxWidth, 2092);
+  assert.equal(SIZE_LIMITS.stolpraam.maxHeight, 2495);
+  assert.equal(SIZE_LIMITS["draaikiepraam-met-vast-raam"].maxWidth, 1634);
+  assert.equal(SIZE_LIMITS["schuifpui-2-delig"].maxWidth, 3100);
+  assert.equal(SIZE_LIMITS["schuifpui-2-delig"].maxHeight, 2400);
+  assert.equal(SIZE_LIMITS["schuifpui-4-delig"].maxSashWidth, 1500);
+  assert.equal(SIZE_LIMITS["schuifpui-4-delig"].maxHeight, 2500);
+  assert.equal(SIZE_LIMITS["schuifpui-4-delig"].maxWidth, undefined);
+  assert.equal(SIZE_LIMITS.achterdeur.maxWidth, undefined);
+  assert.equal(SIZE_LIMITS["openslaande-tuindeuren"].minHeight, undefined);
   const layout = getLayoutBySlug("draaikiepraam");
   const vast = getLayoutBySlug("vast-raam");
   assert.ok(layout && vast);
   assert.equal(sizeInRange(layout, 1000, 1200), true);
-  assert.equal(sizeInRange(layout, 600, 600), true);
-  assert.equal(sizeInRange(layout, 1512, 1200), true);
-  assert.equal(sizeInRange(layout, 1513, 1200), false);
-  assert.equal(sizeInRange(layout, 599, 600), false);
-  assert.equal(sizeInRange(vast, 2000, 1675), true);
-  assert.equal(sizeInRange(vast, 2000, 1676), false);
-  assert.equal(sizeInRange(vast, 600, 600), true);
+  assert.equal(sizeInRange(layout, 1230, 1480), true);
+  assert.equal(sizeInRange(layout, 1231, 1200), false);
+  assert.equal(sizeInRange(layout, 1000, 1481), false);
+  assert.equal(sizeInRange(vast, 1500, 1500), true);
+  assert.equal(sizeInRange(vast, 1501, 1500), false);
+  assert.equal(layout.defaultWidth <= 1230 && layout.defaultHeight <= 1480, true);
 });
 
 test("laminated glass follows doors and low sills", () => {
