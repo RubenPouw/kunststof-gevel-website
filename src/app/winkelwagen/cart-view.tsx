@@ -9,7 +9,7 @@ import { ColourName } from "@/components/catalog/colour-name";
 import { ShippingEstimate, VatPrice } from "@/components/brand/vat-price";
 import { buttonVariants } from "@/components/ui/button";
 import { quoteOrderDiscount } from "@/lib/catalog/volume-discount";
-import { FREE_SHIPPING_FROM, resolveCartLine, SHIPPING_FLAT, useCart } from "@/lib/cart";
+import { resolveCartLine, useCart } from "@/lib/cart";
 import { formatLengthMm, formatNlNumber, formatPrice, inclVat } from "@/lib/format";
 import { PROFILE } from "@/lib/kozijnen/config";
 import { buildMontageQuoteDraft, montageQuoteHref, saveMontageQuoteDraft } from "@/lib/montage-quote";
@@ -21,13 +21,13 @@ export function CartView() {
     setQty,
     remove,
     subtotal,
-    remainingForFreeShipping,
     mountGevel,
     setMountGevel,
     gevelM2,
     mountPrice,
+    shippingQuote,
   } = useCart();
-  const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : lines.length ? SHIPPING_FLAT : 0;
+  const shipping = shippingQuote.shippingExcl;
   const volume = quoteOrderDiscount(inclVat(subtotal));
   const net = subtotal - volume.discountExcl + shipping;
   const montageViaOfferte = mountGevel && gevelM2 > 0;
@@ -244,7 +244,13 @@ export function CartView() {
             </div>
             <div className="flex justify-between gap-3">
               <dt>Verzending</dt>
-              <dd>{shipping ? <VatPrice incl={inclVat(shipping)} excl={shipping} /> : "gratis"}</dd>
+              <dd>
+                {shipping ? (
+                  <VatPrice incl={shippingQuote.shippingIncl} excl={shippingQuote.shippingExcl} />
+                ) : (
+                  "gratis"
+                )}
+              </dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt>
@@ -270,9 +276,9 @@ export function CartView() {
           <p className="kg-vat-excl mt-2 font-mono text-[13px] text-kg-text-2">
             Totaal incl. 21% btw {formatPrice(totalIncl)}
           </p>
-          {remainingForFreeShipping > 0 && lines.length > 0 ? (
+          {shippingQuote.remainingIncl > 0 && lines.length > 0 ? (
             <p className="mt-2 font-mono text-[13px] text-kg-text-2">
-              Nog <VatPrice incl={inclVat(remainingForFreeShipping)} excl={remainingForFreeShipping} /> tot gratis
+              Nog <VatPrice incl={shippingQuote.remainingIncl} excl={shippingQuote.remainingExcl} /> tot gratis
               verzending
             </p>
           ) : null}

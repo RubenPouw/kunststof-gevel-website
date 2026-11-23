@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LegalPage } from "@/components/legal/prose";
-import { formatPrice } from "@/lib/format";
+import { shippingPolicyCopy } from "@/lib/format";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function ShippingPage() {
       <section>
         <h2>Verzenden</h2>
         <p className="mt-3">
-          We leveren in Nederland. Onder {formatPrice(site.freeShippingFrom)} rekenen we in de winkelwagen {formatPrice(49)} verzending als indicatie. Daarboven is de indicatie gratis. Het bedrag in de Shopify-checkout is leidend, omdat de vervoerder en het gewicht daar worden bepaald.
+          {shippingPolicyCopy()}
         </p>
         <p className="mt-3">
           Lange panelen gaan mee met een lengtetransport. Een levertijd op de site is geen belofte van een vaste week. We bevestigen de levertijd na de bestelling.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { categoryPageSeo, pageSeo } from "@/data/seo/category-pages";
+import { euroPlain, FREE_SHIPPING_FROM } from "@/lib/format";
 
 import type { SeoFaq, SeoLink, SeoSection } from "./brands";
 
@@ -89,7 +90,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Kleur kiezen en bestellen",
         paragraphs: [
-          "Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfel je? Vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Producten op voorraad heb je binnen maximaal 4 werkdagen in huis en vanaf €499 is de verzending gratis. Groot project? Vraag een offerte aan.",
+          `Keralit is er in tientallen kleuren, van houtnerf zoals natuur eiken en vergrijsd ceder tot RAL-kleuren zoals antraciet (RAL 7016). Twijfel je? Vraag een gratis kleurstaal aan. Op de kunststof zit 10 jaar garantie. Producten op voorraad heb je binnen maximaal 4 werkdagen in huis en vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis. Groot project? Vraag een offerte aan.`,
         ],
       },
     ],
@@ -100,7 +101,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Wat kosten Keralit planken?",
-        a: "Je betaalt per plank van 600 cm. Sponning 143 mm kost €90,49, sponning 167 mm €106,15, potdeksel 177 mm €107,93 en sponning 190 mm €116,14 (prijzen live 9 nov 2026). Profielen en schroeven komen erbij. Vanaf €499 is de verzending gratis.",
+        a: `Je betaalt per plank van 600 cm. Sponning 143 mm kost €90,49, sponning 167 mm €106,15, potdeksel 177 mm €107,93 en sponning 190 mm €116,14 (prijzen live 9 nov 2026). Profielen en schroeven komen erbij. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis.`,
       },
       {
         q: "Zijn Keralit planken hetzelfde als Keralit panelen?",
@@ -120,7 +121,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       },
       {
         q: "Hoe snel heb ik mijn Keralit in huis?",
-        a: "Producten op voorraad heb je binnen maximaal 4 werkdagen. Vanaf €499 is de verzending gratis. Op de kunststof zit 10 jaar garantie.",
+        a: `Producten op voorraad heb je binnen maximaal 4 werkdagen. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis. Op de kunststof zit 10 jaar garantie.`,
       },
     ],
     links: [
@@ -217,7 +218,7 @@ export const landingStories: Record<LandingSlug, LandingStory> = {
       {
         heading: "Bestellen",
         paragraphs: [
-          "Producten op voorraad heb je binnen maximaal 4 werkdagen in huis. Vanaf €499 is de verzending gratis en op de kunststof zit 10 jaar garantie. Wil je de kleur eerst zien, vraag een staal aan. Groot project? Vraag een offerte aan.",
+          `Producten op voorraad heb je binnen maximaal 4 werkdagen in huis. Vanaf ${euroPlain(FREE_SHIPPING_FROM)} is de verzending gratis en op de kunststof zit 10 jaar garantie. Wil je de kleur eerst zien, vraag een staal aan. Groot project? Vraag een offerte aan.`,
         ],
       },
     ],

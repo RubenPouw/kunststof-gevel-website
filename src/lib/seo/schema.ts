@@ -1,5 +1,6 @@
 import { getDefaultVariant } from "@/lib/catalog/helpers";
 import type { Product } from "@/lib/catalog/types";
+import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/format";
 import { site } from "@/lib/site";
 
 export function absoluteUrl(path: string) {
@@ -123,6 +124,15 @@ export function productJsonLd(product: Product, categoryName: string) {
         price: variant.price.toFixed(2),
         priceCurrency: "EUR",
         valueAddedTaxIncluded: true,
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "NL" },
+        shippingRate: {
+          "@type": "ShippingRateSettings",
+          shippingRate: { "@type": "MonetaryAmount", value: SHIPPING_FLAT, currency: "EUR" },
+          freeShippingThreshold: { "@type": "MonetaryAmount", value: FREE_SHIPPING_FROM, currency: "EUR" },
+        },
       },
     };
   }

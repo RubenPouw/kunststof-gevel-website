@@ -1,4 +1,5 @@
 import { categoryPath } from "@/data/seo/category-pages";
+import { FREE_SHIPPING_FROM } from "@/lib/format";
 
 export const site = {
   name: "kunststof-gevel.nl",
@@ -27,7 +28,7 @@ export const site = {
   region: "Heel Nederland",
   kvk: "66527376",
   btw: "NL856594842B01",
-  freeShippingFrom: 499,
+  freeShippingFrom: FREE_SHIPPING_FROM,
   instagram: "https://www.instagram.com/kunststofgevel",
   instagramHandle: "@kunststofgevel",
   origin: "https://www.kunststof-gevel.nl",
