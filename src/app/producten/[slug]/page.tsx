@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 
 import { ProductDetail } from "@/app/producten/[slug]/product-detail";
-import { ReviewScoreStrip } from "@/components/reviews/score-strip";
+import { ReviewBar } from "@/components/reviews/review-bar";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getCategory, getProduct, getRelatedProducts, listProducts } from "@/lib/catalog";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/schema";
-import { getReviewSnapshot } from "@/lib/reviews/read";
 import { isFacadePanel } from "@/lib/catalog/derive";
 import { staalTarget } from "@/lib/staal/tree";
 
@@ -52,7 +51,6 @@ export default async function ProductPage({ params }: Props) {
   const categoryName = category?.name ?? product.category;
   const staal = isFacadePanel(product) ? staalTarget(product) : null;
   const staalHref = staal ? `/staalaanvraag?product=${encodeURIComponent(product.slug)}` : undefined;
-  const reviews = await getReviewSnapshot();
   return (
     <>
       <JsonLd data={productJsonLd(product, categoryName)} />
@@ -63,7 +61,7 @@ export default async function ProductPage({ params }: Props) {
           { name: product.name, path: `/producten/${product.slug}` },
         ])}
       />
-      <ReviewScoreStrip snapshot={reviews} />
+      <ReviewBar />
       <ProductDetail product={product} related={related} categoryName={categoryName} staalHref={staalHref} />
     </>
   );

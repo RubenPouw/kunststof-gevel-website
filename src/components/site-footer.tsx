@@ -4,13 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Logo } from "@/components/brand/logo";
+import { ReviewScoreStrip, type WebwinkelkeurScore } from "@/components/reviews/score-strip";
 import { footerColumns, legalNav, site } from "@/lib/site";
 
-export function SiteFooter() {
+export function SiteFooter({ webwinkelkeur = null }: { webwinkelkeur?: WebwinkelkeurScore | null }) {
   const pathname = usePathname() ?? "/";
   if (pathname === "/afrekenen" || pathname.startsWith("/afrekenen/")) return null;
   return (
-    <footer className="mt-auto bg-kg-navy text-kg-grind print:hidden">
+    <footer className="mt-auto print:hidden">
+      <ReviewScoreStrip webwinkelkeur={webwinkelkeur} />
+      <div className="bg-kg-navy text-kg-grind">
       <div className="h-1.5" style={{ background: "var(--gradient-signal)" }} />
       <div className="container-kg grid gap-10 py-14 lg:grid-cols-[5fr_2fr_2fr_3fr] lg:gap-5">
         <div>
@@ -73,6 +76,7 @@ export function SiteFooter() {
             </li>
           ))}
         </ul>
+      </div>
       </div>
     </footer>
   );

@@ -10,7 +10,7 @@ export const WEBWINKELKEUR_SHOP_ID_DEFAULT = "1214873";
  */
 export const GOOGLE_REVIEW_STAT = {
   rating: 4.9,
-  count: 126,
+  count: 128,
   href: "https://search.google.com/local/reviews?placeid=ChIJpTqzqNL_hy8RDIC8CeY0l9g",
 } as const;
 
