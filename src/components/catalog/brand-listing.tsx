@@ -4,6 +4,7 @@ import { BrandHero } from "@/components/catalog/brand-hero";
 import { ColourSwatch } from "@/components/catalog/colour-swatch";
 import { GuaranteeBand } from "@/components/catalog/guarantee-band";
 import { ProductListing } from "@/components/catalog/product-listing";
+import { VinyplusProfileBlock } from "@/components/catalog/vinyplus-profile-block";
 import { SeoArticle } from "@/components/seo/article";
 import { getBrandStory } from "@/data/seo/brands";
 import { getBrand, getProductsByBrand } from "@/lib/catalog";
@@ -46,6 +47,7 @@ export async function BrandListing({
     <div className="bg-kg-kalk pb-8">
       <BrandHero brand={brand} intro={story?.lead ?? brand.summary} heading={story?.heading} />
       <div className="container-kg">
+        {slug === "vinyplus" ? <VinyplusProfileBlock products={all} /> : null}
         {story?.profiles?.length ? (
           <nav className="mb-8 grid grid-cols-2 gap-px border border-kg-lijn bg-kg-lijn lg:grid-cols-4" aria-label={`${brand.name} profielen`}>
             {story.profiles.map((tile) => (
