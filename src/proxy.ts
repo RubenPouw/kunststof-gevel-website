@@ -72,7 +72,7 @@ export function proxy(request: NextRequest) {
     url.hostname = decision.host;
     url.port = "";
   }
-  const status = lookupRedirect(request.nextUrl.pathname).status === "308" ? 308 : 301;
+  const status = lookupRedirect(request.nextUrl.pathname, request.nextUrl.search).status === "308" ? 308 : 301;
   return seal(NextResponse.redirect(url, status), host, decision.noindex);
 }
 

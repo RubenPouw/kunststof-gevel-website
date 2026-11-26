@@ -49,6 +49,16 @@ export function normalizeProductName(name: string) {
 }
 
 /** Strip supplier boilerplate. The shop brand stays, the groothandel not. */
+/** Linerio and Wonderboard are not sold on this site. Strip the names from customer-facing text. */
+export function withoutRetiredShopBrands(text: string) {
+  return text
+    .replace(/\blinerio\b/gi, "")
+    .replace(/\bwonderboard\b/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([.,;:])/g, "$1")
+    .trim();
+}
+
 /** Remove a laminate brand we do not sell. Customer-facing text must not keep the name. */
 export function withoutTrespa(text: string) {
   return text
@@ -112,7 +122,7 @@ export function extractHplColor(text: string): { colorName?: string; ral?: strin
 }
 
 export function sanitizeDescription(description: string, title: string) {
-  let text = withoutTrespa(description).replace(/\s+/g, " ").trim();
+  let text = withoutRetiredShopBrands(withoutTrespa(description)).replace(/\s+/g, " ").trim();
   text = text
     .replace(/onderdeel van het heering-assortiment bij aj fust\.?/gi, "")
     .replace(/leverbaar via aj fust\.?/gi, "")
@@ -123,8 +133,8 @@ export function sanitizeDescription(description: string, title: string) {
     .replace(/^[,.\s]+|[,.\s]+$/g, "")
     .trim();
 
-  if (text.length < 24 || text.toLowerCase() === withoutTrespa(title).toLowerCase()) return "";
-  return withoutTrespa(text);
+  if (text.length < 24 || text.toLowerCase() === withoutRetiredShopBrands(withoutTrespa(title)).toLowerCase()) return "";
+  return withoutRetiredShopBrands(withoutTrespa(text));
 }
 
 export function parseLengthMeters(length: string): number | undefined {

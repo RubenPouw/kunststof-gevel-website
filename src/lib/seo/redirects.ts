@@ -12,7 +12,43 @@ export type RedirectRow = {
 
 export const redirectRows = rows as RedirectRow[];
 
-const byFrom = new Map(redirectRows.map((row) => [row.from, row]));
+type QueryRule = { params: Array<[string, string]>; row: RedirectRow };
+
+function splitRule(from: string) {
+  const index = from.indexOf("?");
+  const path = normalizePath(index === -1 ? from : from.slice(0, index));
+  if (index === -1) return { path, params: [] as Array<[string, string]> };
+  return { path, params: [...new URLSearchParams(from.slice(index + 1)).entries()] };
+}
+
+const byFrom = new Map<string, RedirectRow>();
+const queryByPath = new Map<string, QueryRule[]>();
+for (const row of redirectRows) {
+  const rule = splitRule(row.from);
+  if (rule.params.length) {
+    const list = queryByPath.get(rule.path) ?? [];
+    list.push({ params: rule.params, row });
+    queryByPath.set(rule.path, list);
+    continue;
+  }
+  byFrom.set(rule.path, row);
+}
+
+function searchParamsOf(search: string) {
+  const text = search.startsWith("?") ? search.slice(1) : search;
+  return new URLSearchParams(text);
+}
+
+/** Path plus the attribute in the approved map. Other parameters do not block the match. */
+function matchQuery(path: string, search: string): RedirectRow | null {
+  const rules = queryByPath.get(path);
+  if (!rules?.length || !search) return null;
+  const incoming = searchParamsOf(search);
+  const hits = rules.filter((rule) => rule.params.every(([key, value]) => incoming.get(key) === value));
+  if (!hits.length) return null;
+  hits.sort((a, b) => b.params.length - a.params.length);
+  return hits[0].row;
+}
 
 const PUBLIC_BRANDS = [
   "milinboard",
@@ -52,6 +88,10 @@ function brandOf(value: string) {
 
 /** Patterns for old URLs that were not in the crawled sitemap. */
 export function fallbackTarget(path: string) {
+  // Duafort is not a brand page. The proposal sends both old URLs to gevelbekleding.
+  if (path === "/duafort-gevelbekleding" || path === "/merk/duafort" || path === "/merk/canexel") {
+    return "/gevelbekleding";
+  }
   if (path.startsWith("/product/")) {
     const slug = path.slice("/product/".length);
     const brand = brandOf(slug);
@@ -79,6 +119,7 @@ export function fallbackTarget(path: string) {
   }
   if (path.startsWith("/merk/")) {
     const slug = path.slice("/merk/".length);
+    if (slug === "duafort" || slug === "canexel") return "/gevelbekleding";
     return (PUBLIC_BRANDS as readonly string[]).includes(slug) ? `/merken/${slug}` : "/merken";
   }
   if (path.startsWith("/wp-content/")) return "/gevelbekleding";
@@ -86,11 +127,10 @@ export function fallbackTarget(path: string) {
 }
 
 /** Linerio is off the shop. Wonderboard stays in Shopify for the other site. */
+const RETIRED_KG = /linerio|wonderboard/i;
+
 export function retiredKgTarget(path: string): string | null {
-  if (path === "/merken/linerio" || path === "/merken/wonderboard") return "/gevelbekleding";
-  if (!path.startsWith("/producten/")) return null;
-  const slug = path.slice("/producten/".length);
-  if (/linerio|wonderboard/i.test(slug)) return "/gevelbekleding";
+  if (RETIRED_KG.test(path)) return "/gevelbekleding";
   return null;
 }
 
@@ -105,17 +145,27 @@ const blogPostRedirects: Record<string, string> = {
   "/kosten-kunststof-gevelbekleding": "/blog/wat-kost-kunststof-gevelbekleding",
 };
 
-export function lookupRedirect(pathname: string): RedirectRow {
-  const path = normalizePath(pathname);
+export function lookupRedirect(pathname: string, search = ""): RedirectRow {
+  let pathInput = pathname || "/";
+  let searchInput = search || "";
+  const embedded = pathInput.indexOf("?");
+  if (embedded !== -1) {
+    const extra = pathInput.slice(embedded + 1);
+    pathInput = pathInput.slice(0, embedded);
+    searchInput = searchInput ? `${extra}&${searchInput.replace(/^\?/, "")}` : extra;
+  }
+  const path = normalizePath(pathInput);
+  const retired = retiredKgTarget(path);
+  if (retired) {
+    return { from: path, to: retired, status: "301", reason: "niet-op-kunststof-gevel" };
+  }
+  const queried = matchQuery(path, searchInput);
+  if (queried) return queried;
   if (path === "/dakkapel-renovatie") {
     return { from: path, to: "/blog/dakkapel-renovatie", status: "308", reason: "blogpost" };
   }
   const blog = blogPostRedirects[path];
   if (blog) return { from: path, to: blog, status: "301", reason: "blogpost" };
-  const retired = retiredKgTarget(path);
-  if (retired) {
-    return { from: path, to: retired, status: "301", reason: "niet-op-kunststof-gevel" };
-  }
   const known = byFrom.get(path);
   if (known) return known;
   const categoryHop = categoryRedirectTarget(path);
@@ -145,7 +195,7 @@ export function resolveNavigation(
 ): NavDecision {
   const hostname = input.host.split(":")[0].toLowerCase();
   const noindex = hostname.endsWith(".onrender.com") || env.noindex === "1" || env.noindex === "true";
-  const row = lookupRedirect(input.pathname);
+  const row = lookupRedirect(input.pathname, input.search);
   const target = splitTarget(row.to);
   const normalized = normalizePath(input.pathname);
   const apex = hostname === "kunststof-gevel.nl";
