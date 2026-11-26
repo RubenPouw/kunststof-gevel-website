@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { categoryPageSeo } from "@/data/seo/category-pages";
 
 import { slugKey } from "@/lib/catalog/derive";
+import { isKozijnSheet } from "@/lib/catalog/kozijn-types";
 import { colorFamilies, colorFamilyLabels, type ColorFamily, type Product } from "@/lib/catalog/types";
 
 export const HPL_HUB_PATH = "/hpl-plaat";
@@ -241,12 +242,13 @@ export function hplColorCards(products: Product[]): HplCard[] {
   });
 }
 
-/** Sandwich, cleaner and the thin 2 mm sheet. Not the exterior colour wall. */
+/** Sandwich, the PVC plaat, cleaner and the thin 2 mm sheet. Not the exterior colour wall. */
 export function hplRelatedProducts(products: Product[]) {
   return products
     .filter((product) => {
-      if (product.category === "hpl-platen") return false;
       const blob = `${product.name} ${product.slug}`.toLowerCase();
+      if (isKozijnSheet(blob)) return true;
+      if (product.category === "hpl-platen") return false;
       if (!blob.includes("hpl")) return false;
       return /sandwich|reiniger|1150|2\s*mm|2mm/.test(blob);
     })

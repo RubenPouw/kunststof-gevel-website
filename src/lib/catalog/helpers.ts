@@ -2,12 +2,25 @@ import { ceilingPlaceOf, type CeilingPlace } from "./ceiling";
 import { colourCodeIn, colourSearchTokens, labelColour, supplierColourName } from "./colours";
 import type { ListingPresentation, ListingSort, ListingView } from "./listing";
 import { slugKey } from "./derive";
+import {
+  eindkapSystems,
+  isEindkapSystem,
+  isKozijnType,
+  kozijnTilePrefers,
+  kozijnTypes,
+  eindkapSystemOf,
+  kozijnTypeOf,
+  productPhoto,
+  type EindkapSystem,
+  type KozijnType,
+} from "./kozijn-types";
 import type {
   Brand,
   ColorFamily,
   ListingFilters,
   Product,
   ProductGroup,
+  ProductImage,
   ProductVariant,
   ProfileType,
 } from "./types";
@@ -21,6 +34,10 @@ export type ListingFilterPatch = {
   profileTypes?: ProfileType[] | null;
   productGroup?: ProductGroup | null;
   productGroups?: ProductGroup[] | null;
+  kozijnType?: KozijnType | "" | null;
+  kozijnTypes?: KozijnType[] | null;
+  eindkapSystem?: EindkapSystem | "" | null;
+  eindkapSystems?: EindkapSystem[] | null;
   colorFamily?: ColorFamily | "";
   workingWidthMm?: number;
   colorSlug?: string | "";
@@ -105,6 +122,18 @@ export function selectedProfileTypes(filters: ListingFilters) {
   return filters.profileTypes?.length ? filters.profileTypes : filters.profileType ? [filters.profileType] : [];
 }
 
+export function selectedKozijnTypes(filters: ListingFilters): KozijnType[] {
+  return filters.kozijnTypes?.length ? filters.kozijnTypes : filters.kozijnType ? [filters.kozijnType] : [];
+}
+
+export function selectedEindkapSystems(filters: ListingFilters): EindkapSystem[] {
+  return filters.eindkapSystems?.length
+    ? filters.eindkapSystems
+    : filters.eindkapSystem
+      ? [filters.eindkapSystem]
+      : [];
+}
+
 export function selectedColorSlugs(filters: ListingFilters) {
   return filters.colorSlugs?.length ? filters.colorSlugs : filters.colorSlug ? [filters.colorSlug] : [];
 }
@@ -127,6 +156,18 @@ export function mergeListingFilters(current: ListingFilters, patch: ListingFilte
   const types = assignList(
     pickList<ProfileType>(patch, "profileTypes", "profileType", current.profileTypes, current.profileType),
   );
+  const kozijn = assignList(
+    pickList<KozijnType>(patch, "kozijnTypes", "kozijnType", current.kozijnTypes, current.kozijnType),
+  );
+  const systems = assignList(
+    pickList<EindkapSystem>(
+      patch,
+      "eindkapSystems",
+      "eindkapSystem",
+      current.eindkapSystems,
+      current.eindkapSystem,
+    ),
+  );
   const colors = assignList(pickList<string>(patch, "colorSlugs", "colorSlug", current.colorSlugs, current.colorSlug));
   const places = assignList(
     pickList<CeilingPlace>(patch, "ceilingPlaces", "ceilingPlace", current.ceilingPlaces, current.ceilingPlace),
@@ -139,6 +180,10 @@ export function mergeListingFilters(current: ListingFilters, patch: ListingFilte
     profileTypes: types.many,
     productGroup: groups.one,
     productGroups: groups.many,
+    kozijnType: kozijn.one,
+    kozijnTypes: kozijn.many,
+    eindkapSystem: systems.one,
+    eindkapSystems: systems.many,
     colorFamily: "colorFamily" in patch ? patch.colorFamily || undefined : current.colorFamily,
     workingWidthMm: "workingWidthMm" in patch ? patch.workingWidthMm : current.workingWidthMm,
     colorSlug: colors.one,
@@ -204,11 +249,15 @@ export function applyListingFilters(list: Product[], filters: ListingFilters) {
   const brands = selectedBrands(filters);
   const groups = selectedGroups(filters);
   const types = selectedProfileTypes(filters);
+  const kozijn = selectedKozijnTypes(filters);
+  const systems = selectedEindkapSystems(filters);
   const colorSlugs = selectedColorSlugs(filters);
   return list.filter((product) => {
     if (brands.length && !brands.includes(product.brandSlug)) return false;
     if (filters.inStockOnly && !product.inStock) return false;
     if (types.length && !types.includes(product.profileType)) return false;
+    if (kozijn.length && !kozijn.includes(kozijnTypeOf(product) as KozijnType)) return false;
+    if (systems.length && !systems.includes(eindkapSystemOf(product) as EindkapSystem)) return false;
     if (groups.length && (!product.productGroup || !groups.includes(product.productGroup))) return false;
     if (filters.workingWidthMm && product.workingWidthMm !== filters.workingWidthMm) return false;
     if (filters.colorFamily && !product.colors.some((color) => color.family === filters.colorFamily)) {
@@ -245,8 +294,11 @@ export function parseListingSearchParams(
 ): ListingFilters {
   const brandParts = brandParam(firstParam(searchParams.merk));
   const voorraad = firstParam(searchParams.voorraad);
-  const typeParts = splitCsv(firstParam(searchParams.type)).filter((item): item is ProfileType =>
-    profileTypes.includes(item as ProfileType),
+  const typeRaw = splitCsv(firstParam(searchParams.type));
+  const kozijnParts = typeRaw.filter((item): item is KozijnType => isKozijnType(item));
+  const typeParts = typeRaw.filter((item): item is ProfileType => profileTypes.includes(item as ProfileType));
+  const systemParts = splitCsv(firstParam(searchParams.systeem)).filter((item): item is EindkapSystem =>
+    isEindkapSystem(item),
   );
   const groupParts = splitCsv(firstParam(searchParams.groep)).filter((item): item is ProductGroup =>
     productGroups.includes(item as ProductGroup),
@@ -257,6 +309,8 @@ export function parseListingSearchParams(
   const ralRaw = firstParam(searchParams.ral);
   const brands = assignList(brandParts);
   const types = assignList(typeParts);
+  const kozijn = assignList(kozijnParts);
+  const systems = assignList(systemParts);
   const groups = assignList(groupParts);
   const colors = assignList(colorParts);
   const colorFamily = colorFamilies.find((item) => item === kleurRaw);
@@ -275,6 +329,10 @@ export function parseListingSearchParams(
     profileTypes: types.many,
     productGroup: groups.one,
     productGroups: groups.many,
+    kozijnType: kozijn.one,
+    kozijnTypes: kozijn.many,
+    eindkapSystem: systems.one,
+    eindkapSystems: systems.many,
     colorFamily,
     workingWidthMm,
     colorSlug: colors.one,
@@ -290,6 +348,8 @@ export function hasActiveFilters(filters: ListingFilters) {
     selectedBrands(filters).length ||
       filters.inStockOnly ||
       selectedProfileTypes(filters).length ||
+      selectedKozijnTypes(filters).length ||
+      selectedEindkapSystems(filters).length ||
       selectedGroups(filters).length ||
       filters.colorFamily ||
       filters.workingWidthMm ||
@@ -312,12 +372,13 @@ export function listingHref(
   const [path, existing] = basePath.split("?");
   const params = new URLSearchParams(existing);
   const next = mergeListingFilters(current, patch);
-  ["merk", "voorraad", "type", "groep", "kleur", "breedte", "kleurnaam", "ral", "plek", "weergave", "sorteer", "pagina"].forEach(
+  ["merk", "voorraad", "type", "systeem", "groep", "kleur", "breedte", "kleurnaam", "ral", "plek", "weergave", "sorteer", "pagina"].forEach(
     (key) => params.delete(key),
   );
   writeList(params, "merk", selectedBrands(next));
   if (next.inStockOnly) params.set("voorraad", "1");
-  writeList(params, "type", selectedProfileTypes(next));
+  writeList(params, "type", selectedKozijnTypes(next).length ? selectedKozijnTypes(next) : selectedProfileTypes(next));
+  writeList(params, "systeem", selectedEindkapSystems(next));
   writeList(params, "groep", selectedGroups(next));
   if (next.colorFamily) params.set("kleur", next.colorFamily);
   if (next.workingWidthMm) params.set("breedte", String(next.workingWidthMm));
@@ -333,6 +394,9 @@ export function listingHref(
 export function listingFacets(list: Product[]) {
   const types = new Map<ProfileType, number>();
   const groups = new Map<ProductGroup, number>();
+  const kozijnCounts = new Map<KozijnType, number>();
+  const kozijnTiles = new Map<KozijnType, { name: string; image: ProductImage }>();
+  const systemCounts = new Map<EindkapSystem, number>();
   const families = new Map<ColorFamily, { count: number; hex: string }>();
   const widths = new Map<number, number>();
   const sheetColors = new Map<string, { name: string; count: number; hex: string; family: ColorFamily }>();
@@ -343,6 +407,19 @@ export function listingFacets(list: Product[]) {
     const place = ceilingPlaceOf(product);
     if (place) places.set(place, (places.get(place) ?? 0) + 1);
     types.set(product.profileType, (types.get(product.profileType) ?? 0) + 1);
+    const kozijnType = kozijnTypeOf(product);
+    if (kozijnType) {
+      kozijnCounts.set(kozijnType, (kozijnCounts.get(kozijnType) ?? 0) + 1);
+      const image = productPhoto(product);
+      const current = kozijnTiles.get(kozijnType);
+      const prefer = image && kozijnTilePrefers(kozijnType, product.name);
+      const currentPrefers = current ? kozijnTilePrefers(kozijnType, current.name) : false;
+      if (image && (!current || (prefer && !currentPrefers))) {
+        kozijnTiles.set(kozijnType, { name: product.name, image });
+      }
+    }
+    const system = eindkapSystemOf(product);
+    if (system) systemCounts.set(system, (systemCounts.get(system) ?? 0) + 1);
     if (product.productGroup) groups.set(product.productGroup, (groups.get(product.productGroup) ?? 0) + 1);
     if (product.workingWidthMm) {
       widths.set(product.workingWidthMm, (widths.get(product.workingWidthMm) ?? 0) + 1);
@@ -382,6 +459,16 @@ export function listingFacets(list: Product[]) {
       .sort((a, b) => b.count - a.count),
     groups: productGroups
       .map((slug) => ({ slug, count: groups.get(slug) ?? 0 }))
+      .filter((item) => item.count > 0),
+    kozijnTypes: kozijnTypes
+      .map((slug) => ({
+        slug,
+        count: kozijnCounts.get(slug) ?? 0,
+        image: kozijnTiles.get(slug)?.image,
+      }))
+      .filter((item) => item.count > 0),
+    eindkapSystems: eindkapSystems
+      .map((slug) => ({ slug, count: systemCounts.get(slug) ?? 0 }))
       .filter((item) => item.count > 0),
     colorFamilies: [...families.entries()]
       .map(([slug, value]) => ({

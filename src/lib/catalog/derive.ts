@@ -13,6 +13,7 @@ import {
   splitColorAndLength,
   withoutTrespa,
 } from "@/lib/catalog/text-rules";
+import { isKozijnSheet } from "@/lib/catalog/kozijn-types";
 import { isBlankSampleName, sampleLineLabel, tidySampleName } from "@/lib/staal/labels";
 
 import type {
@@ -180,8 +181,9 @@ export function applyColourLabels(product: Product): Product {
 export const HPL_SHEET_SIZE = "3050 × 1300 mm";
 
 export function enrichProduct(product: Product): Product {
-  const sheet = product.category === "hpl-platen" || product.saleUnit === "sheet";
   const name = withoutTrespa(product.name);
+  const movedSheet = isKozijnSheet(`${name} ${product.slug}`);
+  const sheet = !movedSheet && (product.category === "hpl-platen" || product.saleUnit === "sheet");
   const workingWidthMm = sheet ? undefined : parseWorkingWidthMm(name, product.specs);
   const profileType = sheet
     ? "overig"

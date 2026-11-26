@@ -6,6 +6,7 @@ export const LISTING_QUERY_KEYS = [
   "merk",
   "voorraad",
   "type",
+  "systeem",
   "groep",
   "kleur",
   "breedte",

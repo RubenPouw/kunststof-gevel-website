@@ -62,7 +62,8 @@ test("product type and collection land on the HPL category", () => {
   assert.equal(categoryFromProductType("HPL plaat"), "hpl-platen");
   assert.equal(categoryFromCollectionHandle("hpl-platen"), "hpl-platen");
   assert.equal(categoryFromTitle("HPL plaat wit"), "hpl-platen");
-  assert.equal(categoryFromTitle("Sandwichpaneel HPL 24 mm"), undefined);
+  assert.equal(categoryFromTitle("Sandwichpaneel HPL 24 mm"), "hpl-platen");
+  assert.equal(categoryFromTitle("PVC plaat 3000 x 1500 x 1,5 mm"), "hpl-platen");
   const brand = inferBrand({
     vendor: "AJ Fust",
     title: "HPL Compact Exterieur Antraciet RAL 7016",
