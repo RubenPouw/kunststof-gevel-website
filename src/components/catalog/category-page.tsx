@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CategoryBrandStrip } from "@/components/catalog/category-brand-strip";
 import { ProductListing } from "@/components/catalog/product-listing";
 import { ReviewBar } from "@/components/reviews/review-bar";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
@@ -60,6 +61,7 @@ export function CategoryPage({
           <Link href={sampleHref}>Gratis kleurstalen aanvragen</Link>
         </p>
       ) : null}
+      <CategoryBrandStrip brands={brandOptions} />
 
       {sheetCalculator ? (
         <div className="mt-8 max-w-3xl">

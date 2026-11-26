@@ -3,8 +3,8 @@ import Link from "next/link";
 import { BrandHero } from "@/components/catalog/brand-hero";
 import { ColourSwatch } from "@/components/catalog/colour-swatch";
 import { GuaranteeBand } from "@/components/catalog/guarantee-band";
+import { BrandProfileBlock } from "@/components/catalog/brand-profile-block";
 import { ProductListing } from "@/components/catalog/product-listing";
-import { VinyplusProfileBlock } from "@/components/catalog/vinyplus-profile-block";
 import { SeoArticle } from "@/components/seo/article";
 import { getBrandStory } from "@/data/seo/brands";
 import { getBrand, getProductsByBrand } from "@/lib/catalog";
@@ -29,11 +29,14 @@ export async function BrandListing({
   filters,
   page,
   presentation = DEFAULT_PRESENTATION,
+  showLogo = true,
 }: {
   slug: string;
   filters: ListingFilters;
   page: number;
   presentation?: ListingPresentation;
+  /** Logo above the profile block. On unless a caller turns it off. */
+  showLogo?: boolean;
 }) {
   const brand = await getBrand(slug);
   if (!brand) return null;
@@ -47,7 +50,7 @@ export async function BrandListing({
     <div className="bg-kg-kalk pb-8">
       <BrandHero brand={brand} intro={story?.lead ?? brand.summary} heading={story?.heading} />
       <div className="container-kg">
-        {slug === "vinyplus" ? <VinyplusProfileBlock products={all} /> : null}
+        <BrandProfileBlock products={all} brand={brand} showLogo={showLogo} />
         {story?.profiles?.length ? (
           <nav className="mb-8 grid grid-cols-2 gap-px border border-kg-lijn bg-kg-lijn lg:grid-cols-4" aria-label={`${brand.name} profielen`}>
             {story.profiles.map((tile) => (
