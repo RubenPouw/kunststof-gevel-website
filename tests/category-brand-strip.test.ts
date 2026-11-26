@@ -80,3 +80,11 @@ test("strip copy names the choice and skips banned words", () => {
   assert.equal(brandPage.includes("logo=1"), false);
   assert.match(readFileSync(new URL("../src/components/catalog/brand-listing.tsx", import.meta.url), "utf8"), /showLogo = true/);
 });
+
+test("the category listing drops the Onze merken carousel and the homepage keeps its bar", () => {
+  const products = readFileSync(new URL("../src/components/catalog/product-listing.tsx", import.meta.url), "utf8");
+  const home = readFileSync(new URL("../src/app/page.tsx", import.meta.url), "utf8");
+  assert.equal(products.includes("BrandRow"), false);
+  assert.equal(products.includes("Onze merken"), false);
+  assert.match(home, /<BrandMarquee/);
+});
