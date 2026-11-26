@@ -1,5 +1,5 @@
 /** These names never appear as a sample or as a filter on the staalaanvraag. */
-const BANNED_SAMPLE = /duafort|profex|canexel|linerio|wonderboard/i;
+const BANNED_SAMPLE = /duafort|canexel|linerio|wonderboard/i;
 
 export function isBannedSampleText(value: string) {
   return BANNED_SAMPLE.test(value);

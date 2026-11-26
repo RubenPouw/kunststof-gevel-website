@@ -101,7 +101,10 @@ function isHardware(name: string) {
 
 /** Live product shots for panels whose catalog record has no photo. Not project photos. */
 const PANEL_PHOTO: Record<string, string> = {
-  "profex-duafort-rabat-125": "/staal/panelen/duafort-rabat-125.webp",
+  "profex-dubbel-rabat-300": "/staal/panelen/profex-gevel.svg",
+  "profex-potdeksel-198": "/staal/panelen/profex-gevel.svg",
+  "profex-velling-165": "/staal/panelen/profex-gevel.svg",
+  "profex-boeideel-310": "/staal/panelen/profex-gevel.svg",
   "kerrafront-dubbel-sponningdeel-332": "/staal/panelen/kerrafront-dubbel-sponningdeel.webp",
   "milinboard-overzetvensterbank-380": "/staal/panelen/milinboard-overzetvensterbank.webp",
 };
@@ -152,6 +155,7 @@ function gevelKind(name: string): GevelKind | null {
     return "multisponning";
   }
   if (/potdeksel/.test(text)) return "potdeksel";
+  if (/velling/.test(text)) return "sponning";
   if (/sponning|rondkant|rabat|trend|shadow/.test(text)) return "sponning";
   return null;
 }
@@ -159,7 +163,7 @@ function gevelKind(name: string): GevelKind | null {
 function dakrandKind(name: string): DakrandKind {
   const text = name.toLowerCase();
   if (/daktrim/.test(text)) return "daktrim";
-  if (/boeiboord|boeideel/.test(text)) return "boeiboord";
+  if (/boeiboord/.test(text)) return "boeiboord";
   return "dakrand";
 }
 

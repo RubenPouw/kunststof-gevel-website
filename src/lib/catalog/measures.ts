@@ -14,7 +14,7 @@ const TRIM =
   /profiel|hoekstuk|\bhoek\b|stootvoeg|eindkap|verbind|buitenhoek|binnenhoek|afdeklijst|afdekgevel|tussenstuk|afwatering|\btrim\b|\bkraal\b|afdicht|startpr\.?|verb\.?\s*st\.?|omrandingprof\.?|ventilatierooster/i;
 
 const PANEL =
-  /rabat|sponningschroot|sponningdeel|\bsponning\b|potdeksel|rondkant|quattro|\bvario\b|platpaneel|wandpaneel|steenstrip|leisteen|unipanel|bouwpaneel|paneelvulling|paneelplus|foodcare|extra stabil|plafond\s*paneel|buitenplafond|binnenplafond|gevelpaneel|dakrand\s*paneel|wonderboard|\bpaneel\b/i;
+  /rabat|sponningschroot|sponningdeel|\bsponning\b|velling|potdeksel|rondkant|quattro|\bvario\b|platpaneel|wandpaneel|steenstrip|leisteen|unipanel|bouwpaneel|paneelvulling|paneelplus|foodcare|extra stabil|plafond\s*paneel|buitenplafond|binnenplafond|gevelpaneel|dakrand\s*paneel|boeideel|wonderboard|\bpaneel\b/i;
 
 const NUMBER = String.raw`(\d+(?:[.,]\d+)?)`;
 

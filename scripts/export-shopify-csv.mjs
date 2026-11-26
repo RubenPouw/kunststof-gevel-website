@@ -21,9 +21,10 @@ function inferProfileType(name) {
   if (/steenstrip|wildverband/.test(t)) return "steenstrip";
   if (/sponning/.test(t)) return "sponning";
   if (/potdeksel/.test(t)) return "potdeksel";
+  if (/velling/.test(t)) return "velling";
   if (/rondkant/.test(t)) return "rondkant";
   if (/quattro/.test(t)) return "quattro";
-  if (/\brabat\b|duafort/.test(t)) return "rabat";
+  if (/\brabat\b/.test(t)) return "rabat";
   return "overig";
 }
 
@@ -52,8 +53,9 @@ function colorVariantsOf(item) {
 function variantsOf(item) {
   const colors = colorVariantsOf(item);
   const facade =
+    !item.fixedLength &&
     item.category === "gevelbekleding" &&
-    ["sponning", "potdeksel", "rabat", "rondkant", "quattro"].includes(inferProfileType(item.name));
+    ["sponning", "potdeksel", "rabat", "velling", "rondkant", "quattro"].includes(inferProfileType(item.name));
   const lengths = new Set(colors.map((variant) => variant.length));
   if (!facade || !lengths.has("6 m") || lengths.has("3 m")) return colors;
 

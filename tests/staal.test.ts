@@ -84,7 +84,7 @@ test("gevel splits potdeksel by brand and sponning by product", () => {
   assert.ok(gevel);
   const potdeksel = gevel.children?.find((child) => child.id === "potdeksel");
   assert.equal(potdeksel?.question, "Merk Potdeksel");
-  assert.deepEqual(potdeksel?.children?.map((child) => child.label).sort(), ["Eurotexx", "Keralit"]);
+  assert.deepEqual(potdeksel?.children?.map((child) => child.label).sort(), ["Eurotexx", "Keralit", "Profex"]);
   assert.ok(potdeksel?.children?.every((child) => child.colors.length > 1 && !child.skipColor));
 
   const sponning = gevel.children?.find((child) => child.id === "sponning");
@@ -94,7 +94,8 @@ test("gevel splits potdeksel by brand and sponning by product", () => {
   assert.match(sponningText, /167/);
   assert.match(sponningText, /190/);
   assert.match(sponningText, /Rondkant/);
-  assert.doesNotMatch(sponningText, /Quattro|Duafort|Profex|Canexel|Linerio|Wonderboard/);
+  assert.match(sponningText, /Profex Velling/);
+  assert.doesNotMatch(sponningText, /Quattro|Duafort|Canexel|Linerio|Wonderboard/);
 
   const multi = gevel.children?.find((child) => child.id === "multisponning");
   assert.equal(multi?.question, "Kies het soort Multisponning");
@@ -129,7 +130,8 @@ test("verbindstukken are not a panel and not a colour", () => {
     assert.equal(present.has(slug), false, slug);
   }
   assert.doesNotMatch(text, /verbind/i);
-  assert.doesNotMatch(text, /duafort|profex|canexel|linerio|wonderboard/i);
+  assert.doesNotMatch(text, /duafort|canexel|linerio|wonderboard/i);
+  assert.match(text, /Profex/);
   assert.deepEqual(
     staalCategoryBlocks(sections).map((block) => block.title),
     ["Gevelbekleding", "Dakranden", "Vensterbanken"],

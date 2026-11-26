@@ -174,6 +174,8 @@ def family_target(slug: str) -> tuple[str, str]:
         "voeg",
     )
     if any(token in text for token in accessory):
+        if brand == "profex":
+            return "/merken/profex", "brand-family"
         if brand:
             return f"/montage?merk={brand}", "accessory-family"
         return "/montage", "accessory-family"
@@ -198,6 +200,8 @@ def product_target(slug: str, by_norm: dict[str, list[str]]) -> tuple[str, str]:
 
 def image_target(path: str, parent: str, page_target: dict[str, str]) -> str:
     name = path.lower()
+    if "profex" in name or "duafort" in name:
+        return "/merken/profex"
     if "eurotexx" in name:
         return "/merken/eurotexx"
     if "milexx" in name:

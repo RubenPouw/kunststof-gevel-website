@@ -36,7 +36,7 @@ export async function brandViewMetadata(
   const story = getBrandStory(brand.slug);
   const path = `/merken/${brand.slug}`;
   return {
-    title: story?.metaTitle ?? brand.name,
+    title: story?.absoluteTitle ? { absolute: story.metaTitle } : (story?.metaTitle ?? brand.name),
     description: story?.description ?? brand.summary,
     alternates: { canonical: path },
     robots: hasActiveFilters(filters) ? { index: false, follow: true } : undefined,

@@ -33,6 +33,7 @@ const CATEGORY_RULES: { id: string; label: string; test: RegExp }[] = [
   { id: "vario", label: "Vario", test: /\bvario\b/i },
   { id: "potdeksel", label: "Potdeksel", test: /potdeksel/i },
   { id: "rabat", label: "Rabat", test: /rabat/i },
+  { id: "velling", label: "Velling", test: /velling/i },
   { id: "steenstrip", label: "Steenstrip", test: /steenstrip|wildverband|leisteen|\bgrof\b/i },
   { id: "multisponning", label: "Multisponning", test: /quattro|multisponning|multi[\s-]*sponning|dubbel[\s-]*sponning/i },
   { id: "sponning", label: "Sponning", test: /sponning|rondkant|\bshadow\b|\btrend\b/i },
@@ -42,6 +43,7 @@ const CATEGORY_RANK = [
   "potdeksel",
   "sponning",
   "rabat",
+  "velling",
   "vario",
   "multisponning",
   "steenstrip",
@@ -53,7 +55,7 @@ const CATEGORY_RANK = [
   "plafond",
 ];
 
-const BRAND_RANK = ["keralit", "vinyplus", "eurotexx", "kerrafront", "zierer", "milexx", "milinboard", "florence", "novicell", "unipanel"];
+const BRAND_RANK = ["keralit", "vinyplus", "eurotexx", "kerrafront", "zierer", "profex", "milexx", "milinboard", "florence", "novicell", "unipanel"];
 
 /**
  * Vario and wildverband do not print a brand on the sample card.

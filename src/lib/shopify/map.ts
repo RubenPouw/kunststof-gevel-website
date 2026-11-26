@@ -72,7 +72,7 @@ const KNOWN_BRANDS: Brand[] = [
   { slug: "eurotexx", name: "Eurotexx", summary: "Potdeksel, rabat en bijpassende hulpstukken voor renovatie." },
   { slug: "kerrafront", name: "Kerrafront", summary: "Brede sponningdelen, onder andere 332 mm multi en dubbel." },
   { slug: "zierer", name: "Zierer", summary: "Steenstrips en hoekstukken voor plint, aanbouw en latei." },
-  { slug: "profex", name: "Profex", summary: "Duafort rabat als Canexel-vervanger, licht en onderhoudsarm." },
+  { slug: "profex", name: "Profex", summary: "Kunststof gevelbekleding met houtstructuur: velling, dubbel rabat, potdeksel en boeideel." },
   { slug: "milexx", name: "Milexx", summary: "Volschuim dakranden en hoeken, passend bij kunststof overstek." },
   { slug: "fronto", name: "Fronto", summary: "Kunststof gevel- en afwerkprofielen." },
   { slug: "werzalit", name: "Werzalit", summary: "Vensterbanken en plaatmateriaal." },
@@ -148,7 +148,7 @@ export function categoryFromTitle(title: string): CategorySlug | undefined {
   if (/(dakrand|boeideel)/.test(t)) return "dakranden";
   if (/\bflorence\b/.test(t) || /(plafond\s*paneel|buitenplafond|binnenplafond)/.test(t)) return "plafondpanelen";
   if (
-    /(rabat|sponning|gevelpaneel|wandpaneel|potdeksel|steenstrip|leisteen|gevelbekleding|rondkant|quattro|vario|gevel)/.test(
+    /(rabat|sponning|velling|gevelpaneel|wandpaneel|potdeksel|steenstrip|leisteen|gevelbekleding|rondkant|quattro|vario|gevel)/.test(
       t,
     )
   ) {
