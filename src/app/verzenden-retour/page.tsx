@@ -24,7 +24,7 @@ export default function ShippingPage() {
           {shippingPolicyCopy()}
         </p>
         <p className="mt-3">
-          Lange panelen gaan mee met een lengtetransport. Een levertijd op de site is geen belofte van een vaste week. We bevestigen de levertijd na de bestelling.
+          Lange panelen gaan mee met een lengtetransport. Producten op voorraad leveren we in max. 3 werkdagen. Kozijnen leveren we in 4 weken.
         </p>
       </section>
       <section>

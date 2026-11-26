@@ -9,7 +9,8 @@ import { ReviewBar } from "@/components/reviews/review-bar";
 import { categoryPageSeo, categoryPath } from "@/data/seo/category-pages";
 import type { SeoFaq, SeoLink, SeoSection } from "@/data/seo/brands";
 import { getCategoryStory } from "@/data/seo/categories";
-import { brandsInProducts, getCategory, getProductsByCategory, type CategorySlug } from "@/lib/catalog";
+import { hplSheetLink } from "@/data/seo/product-sprint";
+import { brandsInProducts, getCategory, getProductsByCategory, listProducts, type CategorySlug } from "@/lib/catalog";
 import { selectedBrands } from "@/lib/catalog/helpers";
 import { CATEGORY_PAGE_SIZE, DEFAULT_PRESENTATION, prepareListing, type ListingPresentation } from "@/lib/catalog/listing";
 import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/seo/schema";
@@ -58,6 +59,8 @@ export async function CategoryListing({
   );
 
   if (slug === "hpl-platen") {
+    const plate = hplSheetLink(await listProducts());
+    const hplLinks = [...(plate ? [plate] : []), ...(story?.links ?? [])];
     return (
       <>
         {schema}
@@ -80,7 +83,12 @@ export async function CategoryListing({
         />
         <ReviewBar />
         {story ? (
-          <SeoArticle sections={story.sections} faqs={story.faqs} links={story.links} faqAccordion />
+          <SeoArticle
+            sections={story.sections}
+            faqs={story.faqs}
+            links={hplLinks}
+            faqAccordion
+          />
         ) : null}
       </>
     );

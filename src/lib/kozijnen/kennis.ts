@@ -402,7 +402,7 @@ export const articles: Article[] = [
         heading: "Wat we nu kunnen zeggen",
         paragraphs: [
           "U hoort op werkdagen binnen 24 uur iets terug op een aanvraag. De levertijd van het kozijn is 4 weken. Een kleur in folie kan langer duren dan wit. Hoeveel langer, zetten we er pas bij als dat aantal weken vaststaat.",
-          "Levering is in overleg, in heel Nederland. Afhalen kan in de showroom in Hedel, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
+          "Levering is in 4 weken, in heel Nederland. Afhalen kan in de showroom in Hedel, op afspraak. Verzendkosten hangen af van de maat en staan niet als vast tarief op deze site.",
         ],
       },
       {

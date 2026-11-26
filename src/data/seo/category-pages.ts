@@ -60,7 +60,7 @@ export const categoryPageSeo: Record<CategorySlug, CategoryPageSeo> = {
     title: "Overzet vensterbank binnen | Kunststof vensterbank",
     h1: "Kunststof overzet vensterbank voor binnen",
     description:
-      "Overzet vensterbank voor binnen: Milinboard 380 mm schuif je over je oude bank. Wit of crème, met eindkappen. Voorraad in max. 4 werkdagen.",
+      "Overzet vensterbank voor binnen: schuif je over de bestaande bank, zonder sloop. Met eindkappen. Levering in max. 3 werkdagen.",
     previousSlugs: ["vensterbanken"],
     direct: true,
   },
@@ -79,7 +79,7 @@ export const categoryPageSeo: Record<CategorySlug, CategoryPageSeo> = {
     title: "HPL plaat kopen | Voor gevel en dakkapel",
     h1: "HPL plaat voor gevel, dakkapel en boeiboord",
     description:
-      "HPL plaat 3050 x 1300 x 6 mm. Hele plaat, ongeveer 3,965 m². Compact exterieur, FR brandvertragend, Renolit eenzijdig en Abet. Filter op kleur en RAL.",
+      "HPL plaat en HPL gevelplaat voor gevel, dakkapel en dakrand. Hele platen, onderhoudsarm. Compact, FR, Renolit en Abet. Levering in max. 3 werkdagen.",
     previousSlugs: ["hpl-platen"],
     direct: true,
   },
@@ -121,7 +121,7 @@ export const pageSeo = {
     title: "Keralit boeideel en dakranden kopen | 200 tot 350 mm",
     h1: "Keralit boeideel en dakranden",
     description:
-      `Keralit boeideel in 200, 250, 300 of 350 mm, met profielen en hoekstukken. Zelfde kleur als je gevel. Gratis verzending vanaf ${euroPlain(FREE_SHIPPING_FROM)}.`,
+      "Keralit boeideel in 200, 250, 300 of 350 mm, met profielen en hoekstukken. Zelfde kleur als je gevel. Op voorraad in max. 3 werkdagen.",
     brand: "keralit",
   },
   boeiVinyplus: {
@@ -188,18 +188,19 @@ export const boeiKeralitArticle: {
   links: SeoLink[];
 } = {
   intro:
-    "Een Keralit boeideel is het dakrandpaneel waarmee je de dakrand strak en onderhoudsarm afwerkt. Kies de breedte die bij je overstek past en combineer met dezelfde kleur als je Keralit gevelbekleding.",
+    "Deze pagina is de eigenaar van de term Keralit boeideel. Een boeideel is het dakrandpaneel waarmee je de dakrand afwerkt. Het losse paneel, bijvoorbeeld 250 mm, heeft een eigen productpagina.",
   sections: [
     {
       heading: "Welke breedte kies je?",
       paragraphs: [
-        "Keralit dakrandpanelen zijn er in 200, 250, 300 en 350 mm. Meet de hoogte van je boei of overstek en kies de breedte die past, met ruimte voor het montageprofiel.",
+        "Keralit dakrandpanelen zijn er in 200, 250, 300 en 350 mm. Meet de hoogte van de boei en kies de breedte die het vlak volledig afdekt. 250 mm is de maat als 200 mm te smal is en 300 mm te breed.",
+        "Op voorraad leveren we in max. 3 werkdagen. Kleurstalen zijn binnen 3 werkdagen thuis.",
       ],
     },
     {
       heading: "Profielen en hoeken",
       paragraphs: [
-        "Naast het paneel heb je aansluit- en eindprofielen, en hoek- of tussenstukken nodig. Bestel alles in dezelfde order, in dezelfde kleur.",
+        "Naast het paneel heb je een montageprofiel, een eindprofiel en een trim of kraal nodig. Hoek- en tussenstukken horen bij de breedte. Bestel ze in dezelfde kleur.",
       ],
     },
     {
@@ -213,7 +214,11 @@ export const boeiKeralitArticle: {
   faqs: [
     {
       q: "Wat is een Keralit boeideel?",
-      a: "Het kunststof dakrandpaneel van Keralit waarmee je de dakrand of boei afwerkt. In de shop zie je het ook als dakrandpaneel.",
+      a: "Hetzelfde als een Keralit dakrandpaneel. Boeideel is de gebruikelijke term. Deze pagina verzamelt de breedtes. Elk paneel heeft een eigen URL.",
+    },
+    {
+      q: "Welke breedte heb ik nodig?",
+      a: "De breedte die de dakrand afdekt: 200, 250, 300 of 350 mm. Dekking die net tekort komt, laat een strook zien. Neem dan de bredere maat.",
     },
     {
       q: "Kan ik de dakrand over mijn oude boeideel heen?",

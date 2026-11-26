@@ -312,6 +312,7 @@ function mapVariant(product: ShopifyProduct, variant: ShopifyVariant, index: num
     colorName: color,
     hex: colorHex(color, product.title),
     length,
+    // One variant is one whole length (usually 6 m), not a metre. Checkout charges this same amount.
     price: Number.parseFloat(variant.price.amount) || 0,
     inStock: variant.availableForSale,
     stockText: variant.availableForSale ? undefined : "Niet op voorraad",

@@ -1,5 +1,8 @@
 import { HplHub } from "@/components/catalog/hpl-hub";
 import { SheetCalculator } from "@/components/catalog/sheet-calculator";
+import { SeoArticle } from "@/components/seo/article";
+import { getCategoryStory } from "@/data/seo/categories";
+import { hplSheetLink } from "@/data/seo/product-sprint";
 import { listProducts } from "@/lib/catalog";
 import { hplColorCards, hplRelatedProducts, parseHplHubSearch } from "@/lib/catalog/hpl-hub";
 import { toListingCard } from "@/lib/catalog/listing";
@@ -19,6 +22,8 @@ export async function HplHubPage({
   const plates = hplColorCards(products);
   const related = hplRelatedProducts(products).map(toListingCard);
   const onPlates = query.onderdeel !== "overig";
+  const story = embedded ? null : getCategoryStory("hpl-platen");
+  const plate = story ? hplSheetLink(products) : null;
 
   return (
     <>
@@ -37,6 +42,13 @@ export async function HplHubPage({
             <p className="mt-6 text-kg-text-2">Ziet u de platen nog niet, bel <a href={site.phoneHref}>{site.phone}</a>.</p>
           ) : null}
         </section>
+      ) : null}
+      {onPlates && story ? (
+        <SeoArticle
+          sections={story.sections}
+          faqs={story.faqs}
+          links={[...(plate ? [plate] : []), ...story.links]}
+        />
       ) : null}
     </>
   );
