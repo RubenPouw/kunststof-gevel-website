@@ -15,11 +15,9 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { getFeaturedProducts, listBrands, listCategories, listProducts } from "@/lib/catalog";
 import { faqJsonLd } from "@/lib/seo/schema";
 import { getReviewSnapshot } from "@/lib/reviews/read";
-import { faqs } from "@/lib/site";
+import { faqs, homePageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = homePageMetadata();
 
 export const revalidate = 3600;
 

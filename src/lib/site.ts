@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { categoryPath } from "@/data/seo/category-pages";
 import { FREE_SHIPPING_FROM } from "@/lib/format";
 
@@ -35,8 +37,27 @@ export const site = {
   origin: "https://www.kunststof-gevel.nl",
 } as const;
 
+/** Document title for the homepage. Absolute, so the root title template does not append the site name again. */
+export const homeTitle = "Kunststof gevelbekleding kopen | Kunststof-gevel.nl";
+
+export function homePageMetadata(): Metadata {
+  return {
+    alternates: { canonical: "/" },
+    title: { absolute: homeTitle },
+    openGraph: {
+      type: "website",
+      locale: "nl_NL",
+      siteName: site.name,
+      title: { absolute: homeTitle },
+      description: site.description,
+      url: "/",
+    },
+  };
+}
+
 export const hero = {
   kicker: "Kunststof gevelbekleding · Keralit · VinyPlus · Eurotexx",
+  heading: "Kunststof gevelbekleding, dakranden en vensterbanken",
   title: "Nooit meer schilderen.",
   subtitle: "Vervang hout door kunststof.",
   body: "Kunststof gevelbekleding, dakranden en kozijnafwerking. Showroom op afspraak in Hedel. Zelf monteren of montage via een offerte.",
