@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { BrandRow } from "@/components/catalog/brand-row";
 import { ListingCard } from "@/components/catalog/listing-card";
 import { ActiveFilterChips, ListingFiltersPanel } from "@/components/catalog/listing-filters";
 import { ListingPhotoGrid } from "@/components/catalog/listing-photo-grid";
@@ -199,13 +198,6 @@ export function ProductListing({
 
   return (
     <div id="producten" className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
-      <BrandRow
-        brands={brands}
-        basePath={basePath}
-        filters={filters}
-        presentation={presentation}
-        onFilter={onFilter}
-      />
       <div className="mt-8 grid min-w-0 gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,9fr)] lg:gap-5">
         <aside className="hidden h-fit lg:sticky lg:top-[calc(var(--kg-chrome)+12px)] lg:block">
           {showFilters ? (
