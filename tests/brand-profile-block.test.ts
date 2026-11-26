@@ -202,7 +202,7 @@ test("the block component does not hardcode a price", () => {
   assert.match(source, /lengthOffer/);
   assert.match(source, /SampleAddButton/);
   assert.match(source, /\/staalaanvraag/);
-  assert.match(source, /showLogo/);
+  assert.match(source, /showLogo = true/);
 });
 
 test("Keralit shows the gevelpanelen and leaves the dakrand out", () => {

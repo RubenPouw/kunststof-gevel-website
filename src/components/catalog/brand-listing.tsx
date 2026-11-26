@@ -29,13 +29,13 @@ export async function BrandListing({
   filters,
   page,
   presentation = DEFAULT_PRESENTATION,
-  showLogo = false,
+  showLogo = true,
 }: {
   slug: string;
   filters: ListingFilters;
   page: number;
   presentation?: ListingPresentation;
-  /** `?logo=1` places the brand logo above the profile block. */
+  /** Logo above the profile block. On unless a caller turns it off. */
   showLogo?: boolean;
 }) {
   const brand = await getBrand(slug);

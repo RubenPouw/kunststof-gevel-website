@@ -24,11 +24,11 @@ function logoSrc(slug: string) {
 export function BrandProfileBlock({
   products,
   brand,
-  showLogo = false,
+  showLogo = true,
 }: {
   products: Product[];
   brand: Brand;
-  /** Logo, then the title, then the cards. Off by default. `?logo=1` on the brand page turns it on. */
+  /** Logo, then the title, then the cards. On by default. */
   showLogo?: boolean;
 }) {
   const selection = pickBrandProfiles(products, brand);

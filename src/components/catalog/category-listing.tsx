@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CategoryBrandStrip } from "@/components/catalog/category-brand-strip";
 import { CategoryPage } from "@/components/catalog/category-page";
 import { HplHubPage } from "@/components/catalog/hpl-hub-page";
 import { KozijnPassenBlock } from "@/components/kozijn-passen-block";
@@ -71,6 +72,7 @@ export async function CategoryListing({
                 <Link href={sampleHref}>Gratis kleurstalen aanvragen</Link>
               </p>
             ) : null}
+            <CategoryBrandStrip brands={await brandsInProducts(await getProductsByCategory("hpl-platen"))} />
           </div>
         </div>
         <HplHubPage
