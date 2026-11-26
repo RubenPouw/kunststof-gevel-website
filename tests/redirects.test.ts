@@ -99,7 +99,11 @@ test("active -1 product urls 301 to the clean slug", () => {
   for (const [duplicate, clean] of Object.entries(pairs)) {
     const from = `/producten/${duplicate}`;
     const to = `/producten/${clean}`;
-    assert.equal(targets.get(from), to, from);
+    if (/linerio|wonderboard/i.test(duplicate)) {
+      assert.equal(targets.get(from), "/gevelbekleding", from);
+    } else {
+      assert.equal(targets.get(from), to, from);
+    }
     const decision = resolveNavigation({
       host: "www.kunststof-gevel.nl",
       pathname: from,

@@ -83,12 +83,26 @@ test("the Profex page names the profiles, the USPs and a one-hop canonical", () 
   for (const path of [
     "/profex-gevelbekleding",
     "/merk/profex",
+    "/product/profex-eindprofiel-2-delig",
     "/product/profex-duafort-hoekprofiel-2-delig",
+    "/product/profex-duafort-velling-paneel",
+    "/product/profex-dubbel-rabat-270-mm",
+    "/product/profex-start-profiel-300-cm",
     "/product/profex-ventilatieprofiel",
-    "/product/duafort-rabat-125-mm-canexel-vervanger",
+    "/product/profex-verbindingsprofiel-2-delig",
   ]) {
     const row = lookupRedirect(path);
     assert.equal(row.to, "/merken/profex", path);
+    assert.equal(row.status, "301", path);
     assert.equal(lookupRedirect("/merken/profex").status, "200");
+  }
+  assert.equal(lookupRedirect("/product/duafort-rabat-125-mm-canexel-vervanger").to, "/rabatdelen");
+
+  for (const path of ["/merk/duafort", "/merk/duafort/", "/duafort-gevelbekleding", "/duafort-gevelbekleding/"]) {
+    const row = lookupRedirect(path);
+    assert.equal(row.to, "/gevelbekleding", path);
+    assert.equal(row.status, "301", path);
+    assert.equal(lookupRedirect("/gevelbekleding").status, "200");
+    assert.equal(lookupRedirect("/gevelbekleding").to, "/gevelbekleding");
   }
 });

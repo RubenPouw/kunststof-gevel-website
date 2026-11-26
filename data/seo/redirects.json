@@ -36,6 +36,18 @@
     "reason": "same-url"
   },
   {
+    "from": "/dakkapel-renovatie",
+    "to": "/blog/dakkapel-renovatie",
+    "status": "308",
+    "reason": "golive"
+  },
+  {
+    "from": "/duafort-gevelbekleding",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
     "from": "/eurotexx-gevelbekleding",
     "to": "/merken/eurotexx",
     "status": "301",
@@ -66,10 +78,34 @@
     "reason": "hpl-hub"
   },
   {
+    "from": "/keralit-boeideel-dakrand-afwerken",
+    "to": "/blog/keralit-boeideel-dakrand-afwerken",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
+    "from": "/keralit-boeideel-dakrand-afwerken/",
+    "to": "/blog/keralit-boeideel-dakrand-afwerken",
+    "status": "301",
+    "reason": "rewritten-article"
+  },
+  {
     "from": "/keralit-dakranden",
     "to": "/boeidelen/keralit",
     "status": "301",
     "reason": "category-brand"
+  },
+  {
+    "from": "/keralit-gevelbekleding",
+    "to": "/keralit-gevelbekleding",
+    "status": "200",
+    "reason": "ranking-page"
+  },
+  {
+    "from": "/keralit-kleuren",
+    "to": "/blog/keralit-kleuren",
+    "status": "301",
+    "reason": "golive"
   },
   {
     "from": "/keralit-montage",
@@ -108,10 +144,22 @@
     "reason": "service-is-contact"
   },
   {
+    "from": "/kosten-kunststof-gevelbekleding",
+    "to": "/blog/wat-kost-kunststof-gevelbekleding",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
     "from": "/kozijn-vensterbank-afwerking",
     "to": "/kozijnafwerking",
     "status": "301",
     "reason": "category"
+  },
+  {
+    "from": "/kozijnen",
+    "to": "/kunststof-kozijnen",
+    "status": "301",
+    "reason": "kozijnen-hub"
   },
   {
     "from": "/kunststof-binnenplafonds",
@@ -126,10 +174,28 @@
     "reason": "category"
   },
   {
+    "from": "/kunststof-gevel-schoonmaken-onderhoud",
+    "to": "/blog/kunststof-gevel-schoonmaken-onderhoud",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
+    "from": "/kunststof-gevelbekleding",
+    "to": "/",
+    "status": "301",
+    "reason": "homepage-owns-the-term"
+  },
+  {
     "from": "/kunststof-gevelbekleding-in-houtlook-keralit-vinyplus-zijn-de-toppers",
     "to": "/blog/keralit-of-vinyplus",
     "status": "301",
     "reason": "duplicate-of-comparison"
+  },
+  {
+    "from": "/kunststof-gevelbekleding-kiezen",
+    "to": "/blog/kunststof-gevelbekleding-kiezen",
+    "status": "301",
+    "reason": "golive"
   },
   {
     "from": "/kunststof-gevelbekleding-soorten-voordelen",
@@ -168,6 +234,12 @@
     "reason": "rewritten-article"
   },
   {
+    "from": "/kunststof-rabatdelen-monteren",
+    "to": "/blog/kunststof-rabatdelen-monteren",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
     "from": "/kunststof-vensterbank",
     "to": "/kunststof-vensterbank",
     "status": "200",
@@ -198,6 +270,12 @@
     "reason": "locatiebestand"
   },
   {
+    "from": "/merk/duafort",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
     "from": "/merk/eurotexx",
     "to": "/merken/eurotexx",
     "status": "301",
@@ -208,6 +286,12 @@
     "to": "/merken/florence",
     "status": "301",
     "reason": "brand"
+  },
+  {
+    "from": "/merk/keralit",
+    "to": "/merken/keralit",
+    "status": "301",
+    "reason": "golive"
   },
   {
     "from": "/merk/kerrafront",
@@ -240,6 +324,12 @@
     "reason": "brand"
   },
   {
+    "from": "/merk/zierer",
+    "to": "/merken/zierer",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
     "from": "/milexx-dakranden",
     "to": "/boeidelen/milexx",
     "status": "301",
@@ -270,10 +360,22 @@
     "reason": "plafond-merk"
   },
   {
+    "from": "/overzet-vensterbank",
+    "to": "/kunststof-vensterbank",
+    "status": "301",
+    "reason": "vensterbank-page"
+  },
+  {
     "from": "/overzet-vensterbank-meten-monteren",
     "to": "/blog/overzet-vensterbank-meten",
     "status": "301",
     "reason": "rewritten-article"
+  },
+  {
+    "from": "/overzet-vensterbank/",
+    "to": "/kunststof-vensterbank",
+    "status": "301",
+    "reason": "vensterbank-page"
   },
   {
     "from": "/page-sitemap.xml",
@@ -306,6 +408,18 @@
     "reason": "category"
   },
   {
+    "from": "/product-categorie/categorieen/kunststof-gevelbekleding/eurotexx",
+    "to": "/merken/eurotexx",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
+    "from": "/product-categorie/kozijn-afwerking-vensterbanken",
+    "to": "/kunststof-vensterbank",
+    "status": "301",
+    "reason": "vensterbank-page"
+  },
+  {
     "from": "/product-categorie/kozijn-afwerking-vensterbanken/kunststof-vensterbank",
     "to": "/kunststof-vensterbank",
     "status": "301",
@@ -320,6 +434,12 @@
   {
     "from": "/product-categorie/kozijn-afwerking-vensterbanken/plaatmateriaal",
     "to": "/kozijnafwerking",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-dakranden-boei-delen",
+    "to": "/boeidelen",
     "status": "301",
     "reason": "category"
   },
@@ -374,6 +494,12 @@
   {
     "from": "/product-categorie/kunststof-dakranden-boei-delen/vinyplus/montage-materialen-vinyplus-kunststof-dakranden-boei-delen",
     "to": "/boeidelen/vinyplus",
+    "status": "301",
+    "reason": "category"
+  },
+  {
+    "from": "/product-categorie/kunststof-gevelbekleding",
+    "to": "/gevelbekleding",
     "status": "301",
     "reason": "category"
   },
@@ -475,9 +601,9 @@
   },
   {
     "from": "/product/afdichtingsprofiel-pvc-45-mm-breed-toepassing-horizontaal",
-    "to": "/montage",
+    "to": "/producten/milyt-horizontaal-afdichtingsprofiel-45-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/aluminium-startprofiel-3m1",
@@ -487,15 +613,15 @@
   },
   {
     "from": "/product/bevestigingsschroeven-3-x-40-mm",
-    "to": "/zierer-steenstrips",
+    "to": "/producten/zierer-schroeven-3-x-40-mm",
     "status": "301",
-    "reason": "steenstrip-family"
+    "reason": "golive"
   },
   {
     "from": "/product/bevestigingsschroeven-35-x-30-mm",
-    "to": "/montage",
+    "to": "/producten/zierer-schroeven-3-5-x-30-mm",
     "status": "301",
-    "reason": "montage-family"
+    "reason": "golive"
   },
   {
     "from": "/product/buitenhoek-300-mm",
@@ -505,9 +631,9 @@
   },
   {
     "from": "/product/duafort-rabat-125-mm-canexel-vervanger",
-    "to": "/merken/profex",
+    "to": "/rabatdelen",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eindkap-400-mm-overzet-vensterbank",
@@ -517,9 +643,9 @@
   },
   {
     "from": "/product/eindkap-inwendig-hoekprofiel-uitwendig-hoekprofiel-smal",
-    "to": "/montage",
+    "to": "/producten/keralit-eindkap-voor-2827-2828",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eindkap-steenlook-vensterbank-500-mm",
@@ -529,15 +655,15 @@
   },
   {
     "from": "/product/eindkap-vensterbank-type-b",
-    "to": "/kunststof-vensterbank",
+    "to": "/producten/milinboard-type-b-eindkap-2-zijdig-420-mm",
     "status": "301",
-    "reason": "vensterbank-page"
+    "reason": "golive"
   },
   {
     "from": "/product/eindprofiel-19-mm-inwendig-5m1-per-lengte",
-    "to": "/montage",
+    "to": "/producten/eindprofiel-19-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eurotexx-dubbel-rabat",
@@ -547,15 +673,15 @@
   },
   {
     "from": "/product/eurotexx-eindprofiel-2-delig-6m1-per-lengte",
-    "to": "/montage?merk=eurotexx",
+    "to": "/producten/eindprofiel-2-delig-17-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eurotexx-hoekprofiel-2-delig-6m1-per-lengte",
-    "to": "/montage?merk=eurotexx",
+    "to": "/producten/hoekprofiel-2-delig-17-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eurotexx-potdeksel-180-mm",
@@ -583,33 +709,33 @@
   },
   {
     "from": "/product/eurotexx-ventilatie-afsluitprofiel-2-delig-17-mm-inwendig",
-    "to": "/montage?merk=eurotexx",
+    "to": "/producten/2-delig-ventilatie-afsluitprofiel",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eurotexx-ventilatie-afsluitprofiel-65-x-17-mm",
-    "to": "/montage?merk=eurotexx",
+    "to": "/producten/ventilatie-afsluitprofiel-65x17-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eurotexx-ventilatieprofiel",
-    "to": "/montage?merk=eurotexx",
+    "to": "/producten/ventilatieprofiel-50x25x2-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eurotexx-ventilatieprofiel-30-x-50-x-20-mm",
-    "to": "/montage?merk=eurotexx",
+    "to": "/producten/ventilatieprofiel-30x50-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/eurotexx-verbindingsprofiel-2-delig-6m1",
-    "to": "/montage?merk=eurotexx",
+    "to": "/producten/eurotexx-2-delig-verbindingsprofiel-17-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/florence-binnenplafond-paneel-250x10mm-verschillende-lengtes",
@@ -619,9 +745,9 @@
   },
   {
     "from": "/product/florence-buitenplafond-h-verbindingprofiel-165mm",
-    "to": "/merken/florence",
+    "to": "/producten/florence-h-verbindingprofiel-16-5mm",
     "status": "301",
-    "reason": "plafond-family"
+    "reason": "golive"
   },
   {
     "from": "/product/florence-buitenplafond-paneel-250x165-mm",
@@ -649,9 +775,9 @@
   },
   {
     "from": "/product/florence-startprofiel-2-dl-buitenplafond",
-    "to": "/merken/florence",
+    "to": "/producten/startprofiel-2-dl-florence-buitenplafond",
     "status": "301",
-    "reason": "plafond-family"
+    "reason": "golive"
   },
   {
     "from": "/product/h-profiel-10x40x25x1-mm",
@@ -661,15 +787,15 @@
   },
   {
     "from": "/product/h-verbindingprofiel-10mm-keralit-dakrand",
-    "to": "/boeidelen/keralit",
+    "to": "/producten/h-verbindingprofiel-10mm",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/hpl-reiniger-1000-ml",
-    "to": "/montage",
+    "to": "/producten/milyt-hpl-reiniger-1-liter",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-167-mm-sponning-kopen-onderhoudsarm-duurzaam",
@@ -685,21 +811,21 @@
   },
   {
     "from": "/product/keralit-basis-eindprofiel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/basis-aluminium-eindprofiel",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-basis-uitwendig-hoekprofiel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/basis-aluminium-uitwendig-hoekprofiel",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-basis-verbindingsprofiel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/basis-aluminium-verbindingprofiel",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-dakrand-boeiboordmontageprofiel",
@@ -709,9 +835,9 @@
   },
   {
     "from": "/product/keralit-dakrand-eindprofiel-10-mm",
-    "to": "/boeidelen/keralit",
+    "to": "/producten/eindprofiel-10mm-voor-keralit-dakrand",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-dakrand-montage-profiel-10-mm",
@@ -721,9 +847,9 @@
   },
   {
     "from": "/product/keralit-dakrand-montage-profiel-17-mm-kopie",
-    "to": "/boeidelen/keralit",
+    "to": "/producten/keralit-dakrandmontageprofiel-17mm",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-dakrand-paneel-200-mm",
@@ -751,15 +877,15 @@
   },
   {
     "from": "/product/keralit-dakrand-trim-kraal-aansluitprofiel",
-    "to": "/boeidelen/keralit",
+    "to": "/producten/trim-kraal-aansluitpr-10mm-keralit-dakr",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-dakrand-tussenstuk-350-mm",
-    "to": "/boeidelen/keralit",
+    "to": "/producten/tussenstuk-350mm-keralit-dakrand",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-eindkap-connector-143-mm",
@@ -768,28 +894,40 @@
     "reason": "accessory-family"
   },
   {
-    "from": "/product/keralit-eindkap-voor-uitwendig-hoekprofiel",
-    "to": "/montage?merk=keralit",
+    "from": "/product/keralit-eindkap-connector-143-mm?attribute_pa_links-rechts=links",
+    "to": "/producten/eindkap-connector-links-voor-2814-5st",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/keralit-eindkap-connector-143-mm?attribute_pa_links-rechts=rechts",
+    "to": "/producten/eindkap-connector-rechts-voor-2814-5st",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/keralit-eindkap-voor-uitwendig-hoekprofiel",
+    "to": "/producten/eindkap-uitw-rechthoekverb-prof-keralit",
+    "status": "301",
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-eindprofiel-17-mm",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/eindprofiel-17mm-keralit",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-geventileerd-platprofiel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/platprofiel-geperforeerd-30x1mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-hoekstuk-dakrand-klassiek",
-    "to": "/boeidelen/keralit",
+    "to": "/producten/hoekstuk-sierlijst-klassiek",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-hoekstuk-sierlijst-modern",
@@ -811,9 +949,9 @@
   },
   {
     "from": "/product/keralit-omrandingsprofiel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/omrandingprof-met-ontwatering-keralit",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-potdeksel-177-mm",
@@ -823,15 +961,15 @@
   },
   {
     "from": "/product/keralit-reiniger-1-ltr",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/keralitreiniger-1000ml",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-schroef-30mm-rvs-200-stuks",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/keralit-schroef-4x30mm-rvs-200-stuks",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-sponning-143-mm",
@@ -847,45 +985,45 @@
   },
   {
     "from": "/product/keralit-startprofiel-horizontaal-22mm-ventilatie",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/startprofiel-horizontaal-22mm-ventilatie",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-startprofiel-horizontaal-50mm-ventilatie",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/startprofiel-verticaal-50mm-ventilatie",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-trim-kraal-aansluiting-klassiek",
-    "to": "/merken/keralit",
+    "to": "/producten/trim-kraal-sierlijst-klassiek",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-trim-kraal-aansluitprofiel-17mm",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/trim-kraal-aansluitprofiel-17mm-keralit",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-trim-kraal-ventilatieprofiel-voor-de-gevel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/trim-kraal-vent-keralit-gevel",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-trim-sierlijst-modern",
-    "to": "/merken/keralit",
+    "to": "/producten/trim-kraal-sierlijst-modern",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-tussenstuk-sierlijst-klassiek",
-    "to": "/merken/keralit",
+    "to": "/producten/tussenstuk-sierlijst-klassiek",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-tweezijdig-ventilatieprofiel",
@@ -895,39 +1033,39 @@
   },
   {
     "from": "/product/keralit-uitwendig-hoekprofiel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/uitw-rechthoekprofiel-keralit-46x46mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-uitwendig-hoekprofiel-smal",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/keralit-uitwendig-hoekprofiel-32x32mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-verbindingsprofiel",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/verbindingprofiel-keralit",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-verbindstuk-voor-143-mm",
-    "to": "/merken/keralit",
+    "to": "/producten/keralit-verbindingstuk-voor-2814",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-verbindstuk-voor-potdeksel-177-mm-kopie",
-    "to": "/merken/keralit",
+    "to": "/producten/keralit-verbindingstuk-voor-2817",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-verbindstuk-voor-sponning-167-mm",
-    "to": "/merken/keralit",
+    "to": "/producten/keralit-verbindingstuk-voor-2815",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/keralit-verbindstuk-voor-sponning-190-mm",
@@ -937,9 +1075,9 @@
   },
   {
     "from": "/product/keralit-verlengd-eindprofiel-17x44mm",
-    "to": "/montage?merk=keralit",
+    "to": "/producten/verlengd-eindprofiel-17x44mm-keralit",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/kerrafront-dubbel-sponningdeel-332-mm",
@@ -955,15 +1093,15 @@
   },
   {
     "from": "/product/kerrafront-gevelpaneel-trend",
-    "to": "/merken/kerrafront",
+    "to": "/producten/kerrafront-trend-gevelpaneel-320-mm-structuur",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/kerrafront-hoekprofiel-2-delig-17-mm-inwendig",
-    "to": "/montage?merk=kerrafront",
+    "to": "/producten/kerrafront-2-delig-hoekprofiel-17-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/kerrafront-multi-sponningdeel-332mm",
@@ -973,9 +1111,9 @@
   },
   {
     "from": "/product/kerrafront-startprofiel-5m1",
-    "to": "/montage?merk=kerrafront",
+    "to": "/producten/universeel-startprofiel",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/kerrafront-ventilatie-afsluitprofiel-2-delig-17-mm-inwendig",
@@ -985,21 +1123,21 @@
   },
   {
     "from": "/product/kerrafront-ventilatie-afsluitprofiel-65-x-17-mm",
-    "to": "/montage?merk=kerrafront",
+    "to": "/producten/ventilatie-afsluitprofiel-65x17-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/kerrafront-ventilatieprofiel-30-x-50-x-20-mm",
-    "to": "/montage?merk=kerrafront",
+    "to": "/producten/ventilatieprofiel-30x50-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/kerrafront-verbindingsprofiel-2-delig-17-mm-inwendig",
-    "to": "/montage?merk=kerrafront",
+    "to": "/producten/kerrafront-2-del-verbindingspr-17-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/kunststof-plafondpaneel-250-mm-ideaal-voor-badkamer-en-binnengebruik",
@@ -1015,15 +1153,33 @@
   },
   {
     "from": "/product/lamina-damp-open-folie",
-    "to": "/montage",
+    "to": "/producten/lamina-110-150-cm-rol-a-25-meter",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/milexx-big-board-dakrandpaneel",
     "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/milexx-big-board-dakrandpaneel?attribute_pa_hoogte-van-het-paneel=225-x-35-x-16-mm",
+    "to": "/producten/milexx-volschuim-big-board-225x16-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-big-board-dakrandpaneel?attribute_pa_hoogte-van-het-paneel=300-x-35-x-16-mm",
+    "to": "/producten/milexx-volschuim-big-board-300x16-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-big-board-dakrandpaneel?attribute_pa_hoogte-van-het-paneel=394-x-35-x-16-mm",
+    "to": "/producten/milexx-volschuim-big-board-395x16-mm",
+    "status": "301",
+    "reason": "golive-query"
   },
   {
     "from": "/product/milexx-binnenhoek-400-mm",
@@ -1039,15 +1195,15 @@
   },
   {
     "from": "/product/milexx-buitenhoek-400-mm",
-    "to": "/montage?merk=milexx",
+    "to": "/producten/buitenhoek-400-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/milexx-ongelijkzijdig-u-profiel-10-mm-inwendig",
-    "to": "/montage?merk=milexx",
+    "to": "/producten/u-profiel-10x20x37x1-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/milexx-verbinding-300-mm",
@@ -1057,15 +1213,63 @@
   },
   {
     "from": "/product/milexx-verbinding-400-mm",
-    "to": "/montage?merk=milexx",
+    "to": "/producten/verbinding-400-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm",
     "to": "/boeidelen/milexx",
     "status": "301",
     "reason": "dakrand-family"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=100-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-100x35-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=150-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-150x35-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=175-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-175x35-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=200-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-200x35-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=225-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-225x35-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=250-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-250x35-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=300-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-300x35-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-dakrandpanelen-haakse-hoek-35-mm?attribute_pa_hoogte-van-het-paneel=400-x-35-x-9-mm",
+    "to": "/producten/volschuim-paneel-haakse-hoek-400x35-mm",
+    "status": "301",
+    "reason": "golive-query"
   },
   {
     "from": "/product/milexx-volschuim-platpaneel",
@@ -1080,6 +1284,54 @@
     "reason": "accessory-family"
   },
   {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=100-x-9-mm",
+    "to": "/producten/volschuim-platpaneel-100x9-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=150-x-9-mm",
+    "to": "/producten/volschuim-platpaneel-150x9-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=175-x-9-mm",
+    "to": "/producten/volschuim-platpaneel-175x9-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=200-x-9-mm",
+    "to": "/producten/volschuim-platpaneel-200x9-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=225-x-9-mm",
+    "to": "/producten/volschuim-platpaneel-225x9-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=250-x-9-mm",
+    "to": "/producten/volschuim-platpaneel-250x9-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=300-x-9-mm-2-zijdig-afgerond",
+    "to": "/producten/volschuim-plat-300x9-mm-2-zijdig-afgerond-1",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milexx-volschuim-platpaneel?attribute_pa_afmeting-platpaneel=400-x-9-mm-2-zijdig-afgerond",
+    "to": "/producten/volschuim-plat-400x9-mm-2-zijdig-afgerond",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
     "from": "/product/milinboard-overzetvensterbank-380-mm",
     "to": "/producten/milinboard-overzetvensterbank-380-mm",
     "status": "301",
@@ -1092,10 +1344,52 @@
     "reason": "vensterbank-page"
   },
   {
+    "from": "/product/milinboard-steenlook-vensterbank?attribute_pa_diepte-vensterbank=250-mm",
+    "to": "/producten/milinboard-steenlook-vensterbank-250-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milinboard-steenlook-vensterbank?attribute_pa_diepte-vensterbank=300-mm",
+    "to": "/producten/milinboard-steenlook-vensterbank-300-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milinboard-steenlook-vensterbank?attribute_pa_diepte-vensterbank=400-mm",
+    "to": "/producten/milinboard-steenlook-vensterbank-400-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
     "from": "/product/milinboard-vensterbank-type-b",
     "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "vensterbank-page"
+  },
+  {
+    "from": "/product/milinboard-vensterbank-type-b?attribute_pa_diepte-vensterbank=200-mm",
+    "to": "/producten/milinboard-vensterbank-type-b-200-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milinboard-vensterbank-type-b?attribute_pa_diepte-vensterbank=250-mm",
+    "to": "/producten/milinboard-vensterbank-type-b-250-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milinboard-vensterbank-type-b?attribute_pa_diepte-vensterbank=300-mm",
+    "to": "/producten/milinboard-vensterbank-type-b-300-mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milinboard-vensterbank-type-b?attribute_pa_diepte-vensterbank=400-mm",
+    "to": "/producten/milinboard-vensterbank-type-b-400-mm",
+    "status": "301",
+    "reason": "golive-query"
   },
   {
     "from": "/product/milyt-hpl-plaat",
@@ -1104,10 +1398,22 @@
     "reason": "hpl-sheet"
   },
   {
-    "from": "/product/msp-high-tack-lijm-290-ml",
-    "to": "/montage",
+    "from": "/product/milyt-hpl-plaat?attribute_pa_glad-houtnerf=1-zijdig-structuur-folie",
+    "to": "/producten/milyt-hpl-plaat-3050-x-1300-x-6-mm-1",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/milyt-hpl-plaat?attribute_pa_glad-houtnerf=glad",
+    "to": "/producten/milyt-hpl-plaat-3050-x-1300-x-6-mm-2",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/msp-high-tack-lijm-290-ml",
+    "to": "/producten/milyt-high-tack-lijmkoker-290-ml",
+    "status": "301",
+    "reason": "golive"
   },
   {
     "from": "/product/novaboard-eindkap",
@@ -1116,10 +1422,46 @@
     "reason": "vensterbank-page"
   },
   {
+    "from": "/product/novaboard-eindkap?attribute_pa_links-rechts=links",
+    "to": "/producten/novaboard-eindkap-links",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/novaboard-eindkap?attribute_pa_links-rechts=rechts",
+    "to": "/producten/novaboard-eindkap-rechts",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
     "from": "/product/novaboard-kunststof-vensterbank",
     "to": "/kunststof-vensterbank",
     "status": "301",
     "reason": "vensterbank-page"
+  },
+  {
+    "from": "/product/novaboard-kunststof-vensterbank?attribute_pa_diepte-vensterbank=200-mm",
+    "to": "/producten/novaboard-vensterbank-200mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/novaboard-kunststof-vensterbank?attribute_pa_diepte-vensterbank=250-mm",
+    "to": "/producten/novaboard-vensterbank-250mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/novaboard-kunststof-vensterbank?attribute_pa_diepte-vensterbank=300-mm",
+    "to": "/producten/novaboard-vensterbank-300mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/novaboard-kunststof-vensterbank?attribute_pa_diepte-vensterbank=400-mm",
+    "to": "/producten/novaboard-vensterbank-400mm",
+    "status": "301",
+    "reason": "golive-query"
   },
   {
     "from": "/product/ongelijkzijdig-u-profiel-10-mm-omrandingsprofiel",
@@ -1129,9 +1471,9 @@
   },
   {
     "from": "/product/pe-tape-3-x-12-mm-25-mtr-per-rol",
-    "to": "/montage",
+    "to": "/producten/milyt-pe-tape-3x12-mm-rol-a-25-mtr",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/primer-universeel-1000-ml",
@@ -1143,19 +1485,19 @@
     "from": "/product/profex-duafort-hoekprofiel-2-delig",
     "to": "/merken/profex",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-product-nog-niet-in-de-shop"
   },
   {
     "from": "/product/profex-duafort-velling-paneel",
     "to": "/merken/profex",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "profex-product-nog-niet-in-de-shop"
   },
   {
     "from": "/product/profex-dubbel-rabat-270-mm",
     "to": "/merken/profex",
     "status": "301",
-    "reason": "brand-family"
+    "reason": "profex-product-nog-niet-in-de-shop"
   },
   {
     "from": "/product/profex-eindprofiel-2-delig",
@@ -1167,25 +1509,25 @@
     "from": "/product/profex-start-profiel-300-cm",
     "to": "/merken/profex",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-product-nog-niet-in-de-shop"
   },
   {
     "from": "/product/profex-ventilatieprofiel",
     "to": "/merken/profex",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-product-nog-niet-in-de-shop"
   },
   {
     "from": "/product/profex-verbindingsprofiel-2-delig",
     "to": "/merken/profex",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "profex-product-nog-niet-in-de-shop"
   },
   {
     "from": "/product/reparatiestift",
-    "to": "/montage",
+    "to": "/producten/reparatiestift-voor-folie",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/rvs-a4-schroef-alu-hout-zelfborend-42x23-100st",
@@ -1195,21 +1537,21 @@
   },
   {
     "from": "/product/startprofiel-horizontale-bekleding-6-meter-per-lengte",
-    "to": "/montage",
+    "to": "/producten/startprofiel-voor-horizontale-bekleding",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/startprofiel-verticale-bekleding-40-x-18-mm-6-meter-lengte",
-    "to": "/montage",
+    "to": "/producten/vinyplus-startpr-verticale-bekleding",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/stoelprofiel-16-mm-inwendig",
-    "to": "/montage",
+    "to": "/producten/stoelprofiel-35-5x10-5x10-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/torx-schroeven-in-ral-kleur",
@@ -1218,10 +1560,22 @@
     "reason": "montage-family"
   },
   {
-    "from": "/product/trim-kraal-vent-keralit-dakrand-600-cm",
-    "to": "/boeidelen/keralit",
+    "from": "/product/torx-schroeven-in-ral-kleur?attribute_pa_torx-maten=torx-rvs-48x60mm-100-st",
+    "to": "/producten/torx-schroef-4-8x60-mm-100-stuks",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/torx-schroeven-in-ral-kleur?attribute_pa_torx-maten=torx-rvs-schroef-48x38mm",
+    "to": "/producten/torx-schroef-4-8x38-mm-100-stuks",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/trim-kraal-vent-keralit-dakrand-600-cm",
+    "to": "/producten/trim-kraal-vent-keralit-dakrand",
+    "status": "301",
+    "reason": "golive"
   },
   {
     "from": "/product/tussenstuk-sierlijst-modern-keralit",
@@ -1240,6 +1594,36 @@
     "to": "/merken/unipanel",
     "status": "301",
     "reason": "brand-family"
+  },
+  {
+    "from": "/product/unipanel-bouwpaneel?attribute_pa_maten-unipanel=185-mm-x-16-mm",
+    "to": "/producten/unipanel-bouwpaneel-185x16mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/unipanel-bouwpaneel?attribute_pa_maten-unipanel=235-mm-x-16-mm",
+    "to": "/producten/unipanel-bouwpaneel-235x16mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/unipanel-bouwpaneel?attribute_pa_maten-unipanel=285-mm-x-16-mm",
+    "to": "/producten/unipanel-bouwpaneel-285x16mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/unipanel-bouwpaneel?attribute_pa_maten-unipanel=385-mm-x-16-mm",
+    "to": "/producten/unipanel-bouwpaneel-385x16mm",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/unipanel-bouwpaneel?attribute_pa_maten-unipanel=610-mm-x-16-mm",
+    "to": "/producten/unipanel-bouwpaneel-610x16mm",
+    "status": "301",
+    "reason": "golive-query"
   },
   {
     "from": "/product/unipanel-schroef",
@@ -1261,63 +1645,63 @@
   },
   {
     "from": "/product/vinyplus-afwateringsprofiel-6-meter-lengte",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/afwateringprofiel-20x20x35x3-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-bevestigingsclip-35-x-32-mm-haaks",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/bevestigingsclip-35x32-mm-staal",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-buitenhoekprofiel-in-kleur-lengte-6-mtr",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/buitenhoek-18-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-dakrand-montageprofiel",
-    "to": "/boeidelen/vinyplus",
+    "to": "/producten/dakrand-montageprofiel",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-dakrandpaneel-200-x-35-x-16-mm",
-    "to": "/boeidelen/vinyplus",
+    "to": "/producten/vinyplus-dakrandpaneel-200x16-mm",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-dakrandpaneel-295-35-16mm",
-    "to": "/boeidelen/vinyplus",
+    "to": "/producten/vinyplus-dakrandpaneel-295x16-mm",
     "status": "301",
-    "reason": "dakrand-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-eindprofiel-in-kleur-6-meter-per-lengte",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/eindprofiel-18-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-montage-buitenhoekprofiel-3m1",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/montageprofiel-buitenhoek",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-montage-eindprofiel-3m1",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/montageprofiel-eindprofiel",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-montage-verbindingsprofiel-3-meter-per-lengte",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/montageprofiel-verbinding",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-quattro",
@@ -1333,15 +1717,27 @@
   },
   {
     "from": "/product/vinyplus-reparatiestift",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/reparatiestift-voor-folie",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-rondkant-eindkap-180-mm",
     "to": "/montage?merk=vinyplus",
     "status": "301",
     "reason": "accessory-family"
+  },
+  {
+    "from": "/product/vinyplus-rondkant-eindkap-180-mm?attribute_pa_links-rechts=links",
+    "to": "/producten/vinyplus-rondkant-eindkap-180-mm-links",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/vinyplus-rondkant-eindkap-180-mm?attribute_pa_links-rechts=rechts",
+    "to": "/producten/vinyplus-rondkant-eindkap-180-mm-rechts",
+    "status": "301",
+    "reason": "golive-query"
   },
   {
     "from": "/product/vinyplus-rondkantpaneel",
@@ -1351,27 +1747,27 @@
   },
   {
     "from": "/product/vinyplus-stoelprofiel-16-mm-inwendig",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/stoelprofiel-16x50x20x3-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-stootvoegverbinding-150-mm-rabatdelen",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/vinyplus-rabat-stootvoegverbinding",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-stootvoegverbinding-150-mm-tbv-rondkantpaneel",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/vinyplus-rondkant-stootvoegverbinding",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-structuurfolie-reiniger-1000-ml",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/structuurfolie-reiniger-1000-ml",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-vario-299mm-gevelpaneel",
@@ -1381,21 +1777,21 @@
   },
   {
     "from": "/product/vinyplus-ventilatieprofiel-50x25x20-mm",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/ventilatieprofiel-50x25x2-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-verbinding-300-mm-in-kleur",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/verbinding-300-mm",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/vinyplus-verbindingsprofiel-in-kleur-6-meter-per-lengte",
-    "to": "/montage?merk=vinyplus",
+    "to": "/producten/verbindingsprofiel-18-mm-inwendig",
     "status": "301",
-    "reason": "accessory-family"
+    "reason": "golive"
   },
   {
     "from": "/product/voegband-epdm-verticale-toepassing",
@@ -1404,28 +1800,40 @@
     "reason": "accessory-family"
   },
   {
-    "from": "/product/zierer-hoekstuk-50-x-50-x-345-mm-grof",
-    "to": "/zierer-steenstrips",
+    "from": "/product/voegband-epdm-verticale-toepassing?attribute_pa_soort-epdm=voegband-vlak-epdm-45-mm-breed-toepassing-verticaal",
+    "to": "/producten/epdm-voegband-45-mm-vlak-50-mtr",
     "status": "301",
-    "reason": "steenstrip-family"
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/voegband-epdm-verticale-toepassing?attribute_pa_soort-epdm=voegband-vlak-epdm-60-mm-breed-toepassing-verticaal",
+    "to": "/producten/epdm-voegband-60-mm-vlak-50-mtr",
+    "status": "301",
+    "reason": "golive-query"
+  },
+  {
+    "from": "/product/zierer-hoekstuk-50-x-50-x-345-mm-grof",
+    "to": "/producten/zierer-hoekstuk-359-mm-grof",
+    "status": "301",
+    "reason": "golive"
   },
   {
     "from": "/product/zierer-hoekstuk-50-x-50-x-345-mm-wildverband",
-    "to": "/zierer-steenstrips",
+    "to": "/producten/zierer-hoekstuk-359-mm-wildverband",
     "status": "301",
-    "reason": "steenstrip-family"
+    "reason": "golive"
   },
   {
     "from": "/product/zierer-leisteen",
-    "to": "/zierer-steenstrips",
+    "to": "/producten/zierer-leisteenplaat-1096x359-mm-3-4m2",
     "status": "301",
-    "reason": "steenstrip-family"
+    "reason": "golive"
   },
   {
     "from": "/product/zierer-startprofiel-51-x-14-x-1-mm",
-    "to": "/zierer-steenstrips",
+    "to": "/producten/startprofiel-51x14x1-mm-staal",
     "status": "301",
-    "reason": "steenstrip-family"
+    "reason": "golive"
   },
   {
     "from": "/product/zierer-steenstrip-grof-34m2",
@@ -1441,15 +1849,15 @@
   },
   {
     "from": "/product/zierer-ventilatie-afsluitprofiel-65-x-17-mm",
-    "to": "/zierer-steenstrips",
+    "to": "/producten/zierer-ventilatie-afsluitprofiel-65-x-17-mm",
     "status": "301",
-    "reason": "steenstrip-family"
+    "reason": "golive"
   },
   {
     "from": "/product/zierer-ventilatieprofiel-50-25-x-20-mm",
-    "to": "/zierer-steenstrips",
+    "to": "/producten/zierer-ventilatieprofiel-50-x-25-x-2-0-mm",
     "status": "301",
-    "reason": "steenstrip-family"
+    "reason": "golive"
   },
   {
     "from": "/product_brand-sitemap.xml",
@@ -2136,76 +2544,148 @@
     "reason": "shopify-duplicate-handle"
   },
   {
-    "from": "/producten/linerio-afwerkprofiel-l-2650x30x21-mm-1",
-    "to": "/producten/linerio-afwerkprofiel-l-2650x30x21-mm",
+    "from": "/producten/linerio-afwerkprofiel-l-2650x30x21-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-afwerkprofiel-l-2650x30x21-mm-1",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-afwerkprofiel-s-2650x25x12-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-afwerkprofiel-s-2650x25x12-mm-1",
-    "to": "/producten/linerio-afwerkprofiel-s-2650x25x12-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-afwerkprofiel-s-m-2650x25x12-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-afwerkprofiel-s-m-2650x25x12-mm-1",
-    "to": "/producten/linerio-afwerkprofiel-s-m-2650x25x12-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-eindprofiel-l-2650x32x21-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-eindprofiel-l-2650x32x21-mm-1",
-    "to": "/producten/linerio-eindprofiel-l-2650x32x21-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-eindprofiel-m-2650x26x12-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-eindprofiel-m-2650x26x12-mm-1",
-    "to": "/producten/linerio-eindprofiel-m-2650x26x12-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-eindprofiel-s-2650x35x12-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-eindprofiel-s-2650x35x12-mm-1",
-    "to": "/producten/linerio-eindprofiel-s-2650x35x12-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-startprofiel-l-2650x61x21-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-startprofiel-l-2650x61x21-mm-1",
-    "to": "/producten/linerio-startprofiel-l-2650x61x21-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-startprofiel-m-2650x42x12-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-startprofiel-m-2650x42x12-mm-1",
-    "to": "/producten/linerio-startprofiel-m-2650x42x12-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-startprofiel-s-2650x28x12",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-startprofiel-s-2650x28x12-1",
-    "to": "/producten/linerio-startprofiel-s-2650x28x12",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-wandpaneel-l-115mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-wandpaneel-l-115mm-1",
-    "to": "/producten/linerio-wandpaneel-l-115mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-wandpaneel-m-115mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-wandpaneel-m-115mm-1",
-    "to": "/producten/linerio-wandpaneel-m-115mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/linerio-wandpaneel-s-115mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/linerio-wandpaneel-s-115mm-1",
-    "to": "/producten/linerio-wandpaneel-s-115mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/luchtdrukkitspuit-tbv-2-comp-voeg-1",
@@ -3126,52 +3606,100 @@
     "reason": "shopify-duplicate-handle"
   },
   {
-    "from": "/producten/wonderboard-2500x1200x2-3-mm-structuur-1",
-    "to": "/producten/wonderboard-2500x1200x2-3-mm-structuur",
+    "from": "/producten/wonderboard-2500x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-2500x1200x2-3-mm-structuur-1",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-2750x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/wonderboard-2750x1200x2-3-mm-structuur-1",
-    "to": "/producten/wonderboard-2750x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-3000x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/wonderboard-3000x1200x2-3-mm-structuur-1",
-    "to": "/producten/wonderboard-3000x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-3500x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/wonderboard-3500x1200x2-3-mm-structuur-1",
-    "to": "/producten/wonderboard-3500x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-4000x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/wonderboard-4000x1200x2-3-mm-structuur-1",
-    "to": "/producten/wonderboard-4000x1200x2-3-mm-structuur",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-maskingtape-30-mm-rol-33-mtr",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/wonderboard-maskingtape-30-mm-rol-33-mtr-1",
-    "to": "/producten/wonderboard-maskingtape-30-mm-rol-33-mtr",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-plafondtegel-1195x595x3-mm",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/wonderboard-plafondtegel-1195x595x3-mm-1",
-    "to": "/producten/wonderboard-plafondtegel-1195x595x3-mm",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
+  },
+  {
+    "from": "/producten/wonderboard-plafondtegel-595x595x2-3mm-s",
+    "to": "/gevelbekleding",
+    "status": "301",
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/wonderboard-plafondtegel-595x595x2-3mm-s-1",
-    "to": "/producten/wonderboard-plafondtegel-595x595x2-3mm-s",
+    "to": "/gevelbekleding",
     "status": "301",
-    "reason": "shopify-duplicate-handle"
+    "reason": "niet-op-kunststof-gevel"
   },
   {
     "from": "/producten/z-profiel-20x20x35x3-mm-1",
@@ -3306,6 +3834,18 @@
     "reason": "same-url"
   },
   {
+    "from": "/stalen",
+    "to": "/staalaanvraag",
+    "status": "301",
+    "reason": "staalaanvraag"
+  },
+  {
+    "from": "/steenlook-vensterbank",
+    "to": "/blog/steenlook-vensterbank",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
     "from": "/track-order",
     "to": "/contact",
     "status": "301",
@@ -3324,6 +3864,12 @@
     "reason": "montage-brand"
   },
   {
+    "from": "/vensterbank-vervangen",
+    "to": "/blog/vensterbank-vervangen",
+    "status": "301",
+    "reason": "golive"
+  },
+  {
     "from": "/verzenden-retourneren",
     "to": "/verzenden-retour",
     "status": "301",
@@ -3334,6 +3880,12 @@
     "to": "/boeidelen/vinyplus",
     "status": "301",
     "reason": "category-brand"
+  },
+  {
+    "from": "/vinyplus-gevelbekleding",
+    "to": "/merken/vinyplus",
+    "status": "301",
+    "reason": "brand"
   },
   {
     "from": "/vinyplus-montage-materiaal",
@@ -4722,81 +5274,9 @@
     "reason": "montage-brand"
   },
   {
-    "from": "/kozijnen",
-    "to": "/kunststof-kozijnen",
-    "status": "301",
-    "reason": "kozijnen-hub"
-  },
-  {
-    "from": "/keralit-gevelbekleding",
-    "to": "/keralit-gevelbekleding",
-    "status": "200",
-    "reason": "ranking-page"
-  },
-  {
     "from": "/zierer-steenstrips",
     "to": "/zierer-steenstrips",
     "status": "200",
     "reason": "ranking-page"
-  },
-  {
-    "from": "/kunststof-gevelbekleding",
-    "to": "/",
-    "status": "301",
-    "reason": "homepage-owns-the-term"
-  },
-  {
-    "from": "/vinyplus-gevelbekleding",
-    "to": "/merken/vinyplus",
-    "status": "301",
-    "reason": "brand"
-  },
-  {
-    "from": "/product-categorie/kunststof-gevelbekleding",
-    "to": "/gevelbekleding",
-    "status": "301",
-    "reason": "category"
-  },
-  {
-    "from": "/product-categorie/kunststof-dakranden-boei-delen",
-    "to": "/boeidelen",
-    "status": "301",
-    "reason": "category"
-  },
-  {
-    "from": "/product-categorie/kozijn-afwerking-vensterbanken",
-    "to": "/kunststof-vensterbank",
-    "status": "301",
-    "reason": "vensterbank-page"
-  },
-  {
-    "from": "/stalen",
-    "to": "/staalaanvraag",
-    "status": "301",
-    "reason": "staalaanvraag"
-  },
-  {
-    "from": "/overzet-vensterbank",
-    "to": "/kunststof-vensterbank",
-    "status": "301",
-    "reason": "vensterbank-page"
-  },
-  {
-    "from": "/overzet-vensterbank/",
-    "to": "/kunststof-vensterbank",
-    "status": "301",
-    "reason": "vensterbank-page"
-  },
-  {
-    "from": "/keralit-boeideel-dakrand-afwerken",
-    "to": "/blog/keralit-boeideel-dakrand-afwerken",
-    "status": "301",
-    "reason": "rewritten-article"
-  },
-  {
-    "from": "/keralit-boeideel-dakrand-afwerken/",
-    "to": "/blog/keralit-boeideel-dakrand-afwerken",
-    "status": "301",
-    "reason": "rewritten-article"
   }
 ]

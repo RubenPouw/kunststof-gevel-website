@@ -11,6 +11,7 @@ import { lookupRedirect, resolveNavigation } from "../src/lib/seo/redirects.ts";
 import brands from "../src/data/catalog/brands.json" with { type: "json" };
 import handles from "../data/seo/catalog-handles.json" with { type: "json" };
 import duplicatePublicSlugs from "../data/seo/duplicate-public-slugs.json" with { type: "json" };
+import productsJson from "../src/data/catalog/products.json" with { type: "json" };
 
 const STATIC = new Set([
   "/",
@@ -63,6 +64,7 @@ for (const slug of landingSlugs) STATIC.add(`/${slug}`);
 
 const productSlugs = new Set<string>(handles as string[]);
 for (const clean of Object.values(duplicatePublicSlugs as Record<string, string>)) productSlugs.add(clean);
+for (const item of (productsJson as { items: { slug: string }[] }).items) productSlugs.add(item.slug);
 
 function served(pathname: string) {
   if (STATIC.has(pathname)) return true;

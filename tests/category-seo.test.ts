@@ -88,7 +88,7 @@ test("approved category and legacy redirects land in one hop", () => {
     ["/keralit-dakranden", "/boeidelen/keralit"],
     ["/vinyplus-dakranden", "/boeidelen/vinyplus"],
     ["/milexx-dakranden", "/boeidelen/milexx"],
-    ["/product/keralit-dakrand-eindprofiel-10-mm", "/boeidelen/keralit"],
+    ["/product/keralit-dakrand-eindprofiel-10-mm", "/producten/eindprofiel-10mm-voor-keralit-dakrand"],
     ["/hpl-platen", "/hpl-plaat"],
     ["/vensterbanken", "/kunststof-vensterbank"],
     ["/stalen", "/staalaanvraag"],
