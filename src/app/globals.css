@@ -241,10 +241,21 @@
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
 }
 
+/* Homepage H1 only. Unlayered so it wins over the base h1 size. */
+.home-h1 {
+  font: 700 44px / 1.05 var(--font-heading);
+  letter-spacing: -0.04em;
+}
+
 @media (max-width: 1023px) {
   h1 {
     font: 700 40px / 1 var(--font-heading);
     letter-spacing: -0.04em;
+  }
+
+  .home-h1 {
+    font: 700 30px / 1.08 var(--font-heading);
+    letter-spacing: -0.035em;
   }
 
   h2 {

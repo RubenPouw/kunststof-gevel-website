@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { clusterList, clusterPages } from "../src/data/seo/kozijn-cluster.ts";
-import { footerColumns, hero, homeGuides } from "../src/lib/site.ts";
+import { footerColumns, hero, homeGuides, homePageMetadata, homeTitle } from "../src/lib/site.ts";
 import { quoteDeliveryLines, validateQuote } from "../src/lib/quote.ts";
 
 const forbiddenInTitle = [
@@ -68,9 +68,15 @@ test("only the pillar is added to menu, footer and the homepage card", () => {
   assert.ok(card);
   assert.equal(card.title, "kunststof kozijnen en gevelbekleding");
   assert.equal(homeGuides.filter((guide) => guide.href === "/gevel-en-kozijnen-renoveren").length, 1);
+  assert.equal(hero.heading, "Kunststof gevelbekleding, dakranden en vensterbanken");
   assert.equal(hero.title, "Nooit meer schilderen.");
+  assert.equal(homeTitle, "Kunststof gevelbekleding kopen | Kunststof-gevel.nl");
+  const meta = homePageMetadata();
+  assert.deepEqual(meta.title, { absolute: homeTitle });
+  assert.deepEqual(meta.openGraph?.title, { absolute: homeTitle });
   const home = readFileSync(new URL("../src/app/page.tsx", import.meta.url), "utf8");
-  assert.equal(/title:/.test(home), false);
+  assert.match(home, /homePageMetadata\(\)/);
+  assert.equal(/title:\s*["'`]/.test(home), false);
 });
 
 test("montage mail carries colour, frame count and the removal question", () => {
