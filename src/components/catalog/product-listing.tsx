@@ -198,7 +198,7 @@ export function ProductListing({
   const productWord = total === 1 ? "product" : "producten";
 
   return (
-    <div>
+    <div id="producten" className="scroll-mt-[calc(var(--kg-chrome)+16px)]">
       <BrandRow
         brands={brands}
         basePath={basePath}

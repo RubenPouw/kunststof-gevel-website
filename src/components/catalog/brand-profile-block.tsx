@@ -1,35 +1,69 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { ProductPhoto } from "@/components/brand/product-photo";
 import { VatPrice } from "@/components/brand/vat-price";
 import { SampleAddButton } from "@/components/samples/sample-add-button";
 import { buttonVariants } from "@/components/ui/button";
+import { officialBrandLogo, brandLogoSrc } from "@/lib/catalog/brand-logos";
 import {
-  VINYPLUS_PROFILE_COPY,
+  BRAND_PROFILE_COPY,
   lengthCaption,
-  pickVinyplusProfiles,
-  vinyplusLengthOffer,
+  lengthOffer,
+  pickBrandProfiles,
   widthLabel,
-} from "@/lib/catalog/vinyplus-profiles";
-import type { Product } from "@/lib/catalog/types";
+} from "@/lib/catalog/brand-profiles";
+import type { Brand, Product } from "@/lib/catalog/types";
 import { productAlt } from "@/lib/seo/alt";
 import { cn } from "@/lib/utils";
 
-export function VinyplusProfileBlock({ products }: { products: Product[] }) {
-  const profiles = pickVinyplusProfiles(products);
-  if (profiles.length === 0) return null;
+function logoSrc(slug: string) {
+  return officialBrandLogo(slug) ?? brandLogoSrc(slug);
+}
+
+export function BrandProfileBlock({
+  products,
+  brand,
+  showLogo = false,
+}: {
+  products: Product[];
+  brand: Brand;
+  /** Logo, then the title, then the cards. Off by default. `?logo=1` on the brand page turns it on. */
+  showLogo?: boolean;
+}) {
+  const selection = pickBrandProfiles(products, brand);
+  if (selection.products.length === 0) return null;
+  const logo = showLogo ? logoSrc(brand.slug) : undefined;
+  const columns = selection.products.length > 4 ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4";
 
   return (
-    <section className="my-8" aria-labelledby="vinyplus-profielen-titel">
-      <h2 id="vinyplus-profielen-titel" className="text-[22px] font-bold tracking-[-0.03em]">
-        {VINYPLUS_PROFILE_COPY.title}
+    <section className="my-8" aria-labelledby="profielblok-titel">
+      {showLogo ? (
+        <div className="mb-4 flex h-12 items-center">
+          {logo ? (
+            <Image
+              src={logo}
+              alt={brand.name}
+              width={180}
+              height={48}
+              unoptimized
+              className="h-10 w-auto max-w-[12rem] object-contain object-left"
+            />
+          ) : (
+            <p className="text-[18px] font-bold tracking-[-0.02em] text-kg-navy">{brand.name}</p>
+          )}
+        </div>
+      ) : null}
+      <h2 id="profielblok-titel" className="text-[22px] font-bold tracking-[-0.03em]">
+        {BRAND_PROFILE_COPY.title}
       </h2>
-      <p className="mt-1 max-w-2xl text-[15px] text-kg-text-2">{VINYPLUS_PROFILE_COPY.lead}</p>
-      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {profiles.map((product) => {
-          const offer = vinyplusLengthOffer(product);
-          const color =
-            product.colors.find((item) => item.name === offer?.variant.colorName) ?? product.colors[0];
+      <p className="mt-1 max-w-2xl text-[15px] text-kg-text-2">
+        {selection.sheets ? BRAND_PROFILE_COPY.sheetLead : BRAND_PROFILE_COPY.lead}
+      </p>
+      <div className={cn("mt-5 grid grid-cols-1 gap-4", columns)}>
+        {selection.products.map((product) => {
+          const offer = lengthOffer(product);
+          const color = product.colors.find((item) => item.name === offer?.variant.colorName) ?? product.colors[0];
           const width = widthLabel(product);
           const image = offer?.variant.image ?? product.images[0];
           return (
@@ -58,7 +92,7 @@ export function VinyplusProfileBlock({ products }: { products: Product[] }) {
                       <VatPrice incl={offer.incl} labeled={false} />
                     </>
                   ) : (
-                    VINYPLUS_PROFILE_COPY.onRequest
+                    BRAND_PROFILE_COPY.onRequest
                   )}
                 </div>
                 <p className="kg-vat font-mono text-[13px] text-kg-text-2">
@@ -70,7 +104,7 @@ export function VinyplusProfileBlock({ products }: { products: Product[] }) {
                     href={`/producten/${product.slug}`}
                     className={cn(buttonVariants({ variant: "primary", size: "sm" }), "w-full no-underline hover:no-underline")}
                   >
-                    {VINYPLUS_PROFILE_COPY.view}
+                    {BRAND_PROFILE_COPY.view}
                   </Link>
                   {product.sampleable && color ? (
                     <SampleAddButton
@@ -82,7 +116,7 @@ export function VinyplusProfileBlock({ products }: { products: Product[] }) {
                         hex: color.hex,
                         ral: color.ral,
                       }}
-                      label={VINYPLUS_PROFILE_COPY.sample}
+                      label={BRAND_PROFILE_COPY.sample}
                       className="w-full"
                     />
                   ) : (
@@ -90,7 +124,7 @@ export function VinyplusProfileBlock({ products }: { products: Product[] }) {
                       href="/staalaanvraag"
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full no-underline hover:no-underline")}
                     >
-                      {VINYPLUS_PROFILE_COPY.sample}
+                      {BRAND_PROFILE_COPY.sample}
                     </Link>
                   )}
                 </div>
@@ -99,6 +133,13 @@ export function VinyplusProfileBlock({ products }: { products: Product[] }) {
           );
         })}
       </div>
+      {selection.hasMore ? (
+        <p className="mt-4">
+          <Link href="#producten" className="font-mono text-[13px] text-kg-navy underline">
+            {BRAND_PROFILE_COPY.all}
+          </Link>
+        </p>
+      ) : null}
     </section>
   );
 }

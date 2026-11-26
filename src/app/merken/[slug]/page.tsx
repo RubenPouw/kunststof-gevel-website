@@ -7,7 +7,10 @@ import { getBrand, getProductsByBrand, listBrands } from "@/lib/catalog";
 import { PAGE_SIZE } from "@/lib/catalog/listing";
 import { staticBrands } from "@/lib/catalog/static";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ logo?: string | string[] }>;
+};
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -36,9 +39,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BrandPage({ params }: Props) {
+function logoFlag(value: string | string[] | undefined) {
+  const flag = Array.isArray(value) ? value[0] : value;
+  return flag === "1";
+}
+
+export default async function BrandPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const listing = await BrandListing({ slug, filters: {}, page: 1 });
+  const query = searchParams ? await searchParams : {};
+  const listing = await BrandListing({ slug, filters: {}, page: 1, showLogo: logoFlag(query.logo) });
   if (!listing) notFound();
   return listing;
 }
