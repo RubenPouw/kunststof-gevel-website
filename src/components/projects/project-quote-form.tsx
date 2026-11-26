@@ -68,7 +68,7 @@ export function ProjectQuoteForm({
               Vul dit in voor een snelle gratis offerte
             </h2>
             <p className="mt-3 max-w-xl text-[16px] leading-normal text-kg-text-2">
-              Wij doen ons best om deze binnen 48 uur te behandelen. Cavemen monteert de gevel en de kozijnen.
+              Wij doen ons best om deze binnen 24 uur te behandelen. Cavemen monteert de gevel en de kozijnen.
             </p>
             <p className="sr-only" aria-hidden>
               <label>
@@ -271,7 +271,7 @@ function Thanks({ tracked, reference }: { tracked: boolean; reference: string })
         Bedankt. Uw offerteaanvraag is binnen.
       </h2>
       <p className="mt-3 max-w-xl text-[16px] leading-normal text-kg-text-2">
-        Wij doen ons best om binnen 48 uur te reageren.
+        Wij doen ons best om binnen 24 uur te reageren.
         {reference ? (
           <>
             {" "}
